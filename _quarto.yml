@@ -15,7 +15,7 @@ website:
       - href: publications/index.md
         text: 學術出版
       - href: lab/index.md
-        text: AI 實驗室
+        text: AI 教學與研究
       - href: knowledge/index.md
         text: AI 知識站
       - href: students/index.qmd

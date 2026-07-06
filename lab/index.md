@@ -1,10 +1,10 @@
 ---
-title: "AI 實驗室"
+title: "AI 教學與研究"
 subtitle: "AI Tools, Teaching Resources & Case Studies"
 ---
 
 ::: {.callout-tip appearance="minimal"}
-本實驗室著重於「方法分享」與「工具教學」，提供教學上使用的工具介紹、適用場景，以及實際的案例分析。
+本專區著重於「方法分享」與「工具教學」，提供教學上使用的工具介紹、適用場景，以及實際的案例分析。
 :::
 
 ## <i class="bi bi-tools"></i> 教學工具介紹
