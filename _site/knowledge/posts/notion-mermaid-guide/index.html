@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-07-06">
 
-<title>A Beginner’s Guide to Mermaid: Create Diagrams with Code – 張修瑋 | H-W Chang</title>
+<title>index – 張修瑋 | H-W Chang</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -41,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-6173f5686b6dc2ceb0e5493eb8c44299.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-3c42df8464511f4fef92bada5d5e5d7d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-b391a402afc7e63efb9717a485c8baa9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-20d3272ad77804ae1091cbb5752f7b88.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,6 +73,9 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script src="../../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -152,12 +155,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">A Beginner’s Guide to Mermaid: Create Diagrams with Code</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Teaching</div>
-    <div class="quarto-category">Tools</div>
-    <div class="quarto-category">AI</div>
-  </div>
-  </div>
+</div>
 
 
 
@@ -209,7 +207,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Delete any text in the “Code” panel and you’re ready to start.</li>
 </ol>
 <p>Let’s make your first diagram. Copy and paste the code below into the “Code” panel:</p>
-<pre class="mermaid"><code>graph TD
+<pre class="{mermaid}"><code>graph TD
     A[Hello] --&gt; B[World]</code></pre>
 <p>Instantly, you should see a diagram appear:</p>
 <p>[Hello] –&gt; [World]</p>
@@ -293,14 +291,25 @@ ul.task-list li input[type="checkbox"] {
 <section id="example-should-i-buy-coffee-flowchart" class="level3">
 <h3 class="anchored" data-anchor-id="example-should-i-buy-coffee-flowchart"><strong>Example: “Should I Buy Coffee?” Flowchart</strong></h3>
 <p>Let’s combine these to make a useful flowchart. Copy this into the Live Editor.</p>
-<pre class="mermaid"><code>%% This is a comment. Mermaid ignores it.
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%% This is a comment. Mermaid ignores it.
 graph TD
     A[Start] --&gt; B{Am I sleepy?}
     B -- "Yes" --&gt; C(Buy Coffee)
     B -- "No" --&gt; D{Do I have a meeting?}
     D -- "Yes" --&gt; C(Buy Coffee)
     D -- "No" --&gt; E((End))
-    C --&gt; E</code></pre>
+    C --&gt; E
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>This code creates a clear decision-making process.</p>
 <hr>
 </section>
@@ -312,13 +321,24 @@ graph TD
 <li>Defining a Class:</li>
 </ol>
 <p>A class is a box with a name, attributes, and methods.</p>
-<pre class="mermaid"><code>classDiagram
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">classDiagram
     class Customer {
         -int customerId
         -string name
         +placeOrder(order) : void
         +getHistory() : Order[]
-    }</code></pre>
+    }
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <ul>
 <li><strong>Visibility:</strong> The <code>+</code> (public), (private), and <code>#</code> (protected) symbols define visibility.</li>
 <li><strong>Attributes:</strong> <code>+attributeName: type</code> (e.g., <code>string name</code>)</li>
@@ -378,7 +398,12 @@ graph TD
 <section id="example-e-commerce-system-class-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="example-e-commerce-system-class-diagram"><strong>Example: E-Commerce System Class Diagram</strong></h3>
 <p>This is a complete example showing a <code>Customer</code> placing an <code>Order</code>, which has many <code>OrderItems</code>. This is the classic way to model a Many-to-Many relationship.</p>
-<pre class="mermaid"><code>classDiagram
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">classDiagram
     direction LR %% Left-to-Right layout is nice here
 
     %% --- Classes ---
@@ -424,7 +449,13 @@ graph TD
 
     %% 1. A Product can be in 0 or more OrderItems
     %% 2. An OrderItem includes exactly 1 Product
-    Product "1" -- "0..*" OrderItem : "includes"</code></pre>
+    Product "1" -- "0..*" OrderItem : "includes"
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="part-3-sequence-diagrams-a-quick-look" class="level3">
@@ -445,7 +476,12 @@ graph TD
 </section>
 <section id="example-user-login-sequence" class="level3">
 <h3 class="anchored" data-anchor-id="example-user-login-sequence"><strong>Example: User Login Sequence</strong></h3>
-<pre class="mermaid"><code>sequenceDiagram
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
     participant User
     participant WebServer
     participant Database
@@ -460,7 +496,13 @@ graph TD
     deactivate Database
     
     WebServer --&gt;&gt; User: 4. Respond with AuthToken
-    deactivate WebServer</code></pre>
+    deactivate WebServer
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="your-next-steps" class="level3">
