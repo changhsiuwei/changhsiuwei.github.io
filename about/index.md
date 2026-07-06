@@ -4,7 +4,7 @@ subtitle: "Curriculum Vitae"
 ---
 
 ::: {.callout-note appearance="minimal"}
-## 張修瑋 (H-W Chang)
+## 張修瑋 (H.W. Chang)
 **國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU
 :::
 

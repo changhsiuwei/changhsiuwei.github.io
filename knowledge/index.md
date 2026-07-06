@@ -1,5 +1,5 @@
 ---
-title: "知識站 (Knowledge)"
+title: "AI 知識站 (AI Knowledge)"
 listing:
   contents: posts
   sort: "date desc"

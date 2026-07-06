@@ -196,6 +196,8 @@
   },
   "active": "21f72a38571cb6c6",
   "lastOpenFiles": [
+    "admin_app/app.R",
+    "admin_app",
     "lab/index.md",
     "about/index.md",
     "index.md",
@@ -212,7 +214,6 @@
     "site_libs/quarto-search/fuse.min.js",
     "site_libs/quarto-search/autocomplete.umd.js",
     "site_libs/quarto-html/quarto-syntax-highlighting-3c42df8464511f4fef92bada5d5e5d7d.css",
-    "site_libs/quarto-html/tippy.css",
     "test-mermaid2.md",
     "test-mermaid.md",
     "knowledge/posts/notion-mermaid-guide/image.png",

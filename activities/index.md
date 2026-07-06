@@ -9,17 +9,18 @@ subtitle: "Recent Activities, Talks & Workshops"
 :::
 
 ### 2026
+- **專題演講**: [駕馭 AI 的智慧少年](https://www.youtube.com/watch?v=_AIOPmPS2qM)<br>*台北市召會第四聚會所*　|　2026/07
 
 - **Invited Talk**: AI 代理人在財會自動化的應用  
-  *國立臺北商業大學 (NTUB)* | 2026/04
+  *國立臺北商業大學 (NTUB)*　|　2026/04
 
 - **Workshop**: AI 與財報深度洞察 (AI 精煉班)  
-  *長庚大學 (CGU)* | 2026/03
+  *長庚大學 (CGU)*　|　2026/03
 
 ### 2025
 
 - **Conference Presentation**: 名人執行長公開背書對供應鏈夥伴的影響  
-  *Taiwan Accounting Association Annual Conference, Taipei* | 2025/11
+  *Taiwan Accounting Association Annual Conference, Taipei*　|　2025/11
 
 - **Conference Presentation**: Pricing the Blame: How Event Attribution Shapes Audit Fees in Corporate Groups  
-  *Taiwan Accounting Association Annual Conference, Taipei* | 2025/11
+  *Taiwan Accounting Association Annual Conference, Taipei*　|　2025/11

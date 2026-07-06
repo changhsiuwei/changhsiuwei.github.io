@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "張修瑋 | H-W Chang"
+  title: "張修瑋  H.W. Chang"
   favicon: profile.png
   navbar:
     left:
@@ -17,9 +17,9 @@ website:
       - href: lab/index.md
         text: AI 實驗室
       - href: knowledge/index.md
-        text: 知識站
+        text: AI 知識站
   page-footer:
-    center: "© 2025–2026 張修瑋 (H-W Chang) · National Taipei University"
+    center: "© 2025–2026 張修瑋 (H.W. Chang) · National Taipei University"
     background: dark
 
 format:
