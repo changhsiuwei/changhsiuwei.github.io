@@ -1,0 +1,16 @@
+/* 基本自定義樣式 */
+
+body {
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
+}
+
+.quarto-title-banner {
+  background-color: #f8f9fa;
+  color: #212529;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* 讓 navbar 稍微有質感一點 */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,.05);
+}

@@ -1,0 +1,481 @@
+/*-- scss:defaults --*/
+
+/* === Color Palette (User-specified) === */
+$primary:       #403F6F !default;
+$secondary:     #3F4B6F !default;
+$dark:          #2C344E !default;
+$light:         #E4EAFF !default;
+$accent:        #C8D5FF !default;
+
+/* === Typography Scale === */
+$font-family-sans-serif: 'Plus Jakarta Sans', 'Inter', 'Noto Sans TC', system-ui, -apple-system, sans-serif !default;
+$font-family-monospace:  'JetBrains Mono', 'Fira Code', 'Consolas', monospace !default;
+$headings-font-family:   'Plus Jakarta Sans', 'Noto Sans TC', sans-serif !default;
+$headings-font-weight:   800 !default;
+$font-size-base:         1.05rem !default;
+
+/* === Bootstrap Variable Overrides === */
+$body-bg:       #F7F8FC !default;
+$body-color:    #2C344E !default;
+$link-color:    #3F4B6F !default;
+$navbar-bg:     $primary !default;
+$navbar-fg:     #ffffff !default;
+$border-radius: 12px !default;
+$border-radius-lg: 16px !default;
+
+/* === Line Height & Spacing === */
+$line-height-base: 1.8 !default;
+$paragraph-margin-bottom: 1.25rem !default;
+
+/*-- scss:rules --*/
+
+/* ===================================================
+   GOOGLE FONTS IMPORT
+   =================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ===================================================
+   GLOBAL BODY
+   =================================================== */
+body {
+  background-color: #F7F8FC;
+  font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  color: #2C344E;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===================================================
+   HEADINGS — TYPOGRAPHIC HIERARCHY
+   =================================================== */
+h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #2C344E;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+h2 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #403F6F;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #E4EAFF;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #3F4B6F;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #403F6F;
+  margin-top: 1.25rem;
+}
+
+/* ===================================================
+   NAVBAR — PREMIUM GRADIENT
+   =================================================== */
+.navbar {
+  background: linear-gradient(135deg, #2C344E 0%, #403F6F 60%, #3F4B6F 100%) !important;
+  box-shadow: 0 4px 20px rgba(44, 52, 78, 0.2);
+  padding: 0.75rem 0;
+  border-bottom: 3px solid rgba(200, 213, 255, 0.15);
+}
+
+.navbar-brand, .navbar-title {
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-link {
+  color: rgba(228, 234, 255, 0.85) !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.45rem 0.9rem !important;
+  border-radius: 8px;
+  margin: 0 2px;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+  background-color: rgba(228, 234, 255, 0.12);
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+  background-color: rgba(228, 234, 255, 0.18);
+}
+
+/* ===================================================
+   MAIN CONTENT CONTAINER — MAX WIDTH & SPACING
+   =================================================== */
+.container, main.content {
+  max-width: 900px;
+}
+
+main.content {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+/* ===================================================
+   ABOUT PAGE — TRESTLES / JOLLA TEMPLATE
+   =================================================== */
+.quarto-about-trestles, .quarto-about-jolla {
+  margin-top: 1.5rem;
+}
+
+.quarto-about-trestles .about-image,
+.quarto-about-jolla .about-image {
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 6px #ffffff,
+    0 0 0 8px #C8D5FF,
+    0 12px 40px rgba(44, 52, 78, 0.15);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quarto-about-trestles .about-image:hover,
+.quarto-about-jolla .about-image:hover {
+  transform: scale(1.04);
+}
+
+/* About page link buttons */
+.quarto-about-trestles .about-links a,
+.quarto-about-jolla .about-links a {
+  background: linear-gradient(135deg, #E4EAFF, #f0f3ff);
+  color: #403F6F;
+  border-radius: 24px;
+  padding: 0.55rem 1.3rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1.5px solid #C8D5FF;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(64, 63, 111, 0.06);
+}
+
+.quarto-about-trestles .about-links a:hover,
+.quarto-about-jolla .about-links a:hover {
+  background: linear-gradient(135deg, #403F6F, #3F4B6F);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(64, 63, 111, 0.2);
+  border-color: #403F6F;
+}
+
+/* ===================================================
+   TITLE BANNERS
+   =================================================== */
+.quarto-title-banner {
+  background: linear-gradient(135deg, #E4EAFF 0%, #C8D5FF 100%) !important;
+  color: #2C344E !important;
+  border-bottom: none;
+  padding: 3.5rem 0;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 24px rgba(64, 63, 111, 0.06);
+}
+
+.quarto-title-banner h1, .quarto-title-banner .title {
+  color: #2C344E !important;
+  font-weight: 800;
+}
+
+.quarto-title-banner .subtitle {
+  color: #3F4B6F !important;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* ===================================================
+   CALLOUT BOXES — USED FOR PUBLICATIONS & SECTIONS
+   =================================================== */
+div.callout {
+  border-radius: 14px !important;
+  border-left-width: 4px !important;
+  box-shadow: 0 2px 12px rgba(44, 52, 78, 0.04);
+  margin-bottom: 1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+div.callout:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(44, 52, 78, 0.08);
+}
+
+div.callout-note {
+  border-left-color: #403F6F !important;
+  background-color: rgba(228, 234, 255, 0.25) !important;
+}
+
+div.callout-tip {
+  border-left-color: #3F4B6F !important;
+  background-color: rgba(200, 213, 255, 0.2) !important;
+}
+
+div.callout-warning {
+  border-left-color: #C8A23F !important;
+  background-color: rgba(255, 248, 225, 0.35) !important;
+}
+
+div.callout .callout-title-container {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* ===================================================
+   TABLES — CLEAN ACADEMIC STYLE
+   =================================================== */
+.table, table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.table thead th, table thead th {
+  background: linear-gradient(135deg, #403F6F, #3F4B6F);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  border: none;
+}
+
+.table thead th:first-child {
+  border-radius: 12px 0 0 0;
+}
+
+.table thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+
+.table tbody td, table tbody td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #E4EAFF;
+  vertical-align: top;
+}
+
+.table tbody tr:hover, table tbody tr:hover {
+  background-color: rgba(228, 234, 255, 0.35);
+}
+
+.table tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 12px;
+}
+
+.table tbody tr:last-child td:last-child {
+  border-radius: 0 0 12px 0;
+}
+
+/* ===================================================
+   GRID SYSTEM CARDS — FOR RESEARCH AREAS ETC.
+   =================================================== */
+.g-col-12.g-col-md-4, .g-col-12.g-col-md-6 {
+  transition: transform 0.25s ease;
+}
+
+.g-col-12.g-col-md-4:hover, .g-col-12.g-col-md-6:hover {
+  transform: translateY(-4px);
+}
+
+/* ===================================================
+   INLINE CODE TAGS — USED FOR JOURNAL RANKINGS
+   =================================================== */
+code {
+  background: linear-gradient(135deg, #E4EAFF, #f0f3ff);
+  color: #403F6F;
+  padding: 0.2em 0.55em;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid rgba(200, 213, 255, 0.5);
+}
+
+pre code {
+  background: #2C344E;
+  color: #E4EAFF;
+  padding: 1.2rem;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  border: none;
+}
+
+/* ===================================================
+   HORIZONTAL RULES
+   =================================================== */
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C8D5FF, transparent);
+  margin: 2.5rem 0;
+  opacity: 0.6;
+}
+
+/* ===================================================
+   LINKS — ELEGANT UNDERLINE ANIMATION
+   =================================================== */
+a {
+  color: #3F4B6F;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+a:hover {
+  color: #403F6F;
+}
+
+main a:not(.btn):not(.nav-link):not(.about-link):not(.quarto-navigation-tool):not([class*="callout"]) {
+  background-image: linear-gradient(120deg, #C8D5FF 0%, #E4EAFF 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.15em;
+  background-position: 0 100%;
+  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 1px;
+}
+
+main a:not(.btn):not(.nav-link):not(.about-link):not(.quarto-navigation-tool):not([class*="callout"]):hover {
+  background-size: 100% 85%;
+}
+
+/* ===================================================
+   CARDS & LISTING ITEMS
+   =================================================== */
+.card, .quarto-listing-item {
+  border: 1px solid rgba(200, 213, 255, 0.3) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px rgba(44, 52, 78, 0.04) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.card:hover, .quarto-listing-item:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 32px rgba(44, 52, 78, 0.1) !important;
+}
+
+/* ===================================================
+   BADGES
+   =================================================== */
+.badge {
+  background: linear-gradient(135deg, #E4EAFF, #f0f3ff);
+  color: #403F6F;
+  border: 1px solid #C8D5FF;
+  padding: 0.35em 0.75em;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+/* ===================================================
+   SIDEBAR TOC — REFINED
+   =================================================== */
+.sidebar nav[role="doc-toc"] {
+  padding-top: 1.5rem;
+}
+
+.sidebar nav[role="doc-toc"] a {
+  color: #3F4B6F;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.3rem 0;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar nav[role="doc-toc"] a:hover {
+  color: #403F6F;
+  border-left-color: #403F6F;
+  background: none;
+}
+
+.sidebar nav[role="doc-toc"] a.active {
+  color: #403F6F;
+  font-weight: 700;
+  border-left-color: #403F6F;
+}
+
+/* ===================================================
+   FOOTER
+   =================================================== */
+.nav-footer {
+  background: linear-gradient(135deg, #2C344E, #403F6F);
+  color: rgba(228, 234, 255, 0.7);
+  border-top: none;
+  padding: 1.5rem 0;
+}
+
+.nav-footer a {
+  color: #C8D5FF;
+}
+
+/* ===================================================
+   SCROLL ANIMATIONS (SUBTLE)
+   =================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main section, main .grid, main div.callout, main .quarto-about-trestles, main .quarto-about-jolla {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* ===================================================
+   RESPONSIVE REFINEMENTS
+   =================================================== */
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.35rem; }
+  h3 { font-size: 1.1rem; }
+
+  .navbar {
+    padding: 0.5rem 0;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  body {
+    font-size: 1rem;
+  }
+}
+
+/* ===================================================
+   SELECTION HIGHLIGHT — BRAND COLOR
+   =================================================== */
+::selection {
+  background-color: #C8D5FF;
+  color: #2C344E;
+}
