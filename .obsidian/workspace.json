@@ -11,12 +11,14 @@
             "id": "10d5cf038696559b",
             "type": "leaf",
             "state": {
-              "type": "mk-space",
+              "type": "markdown",
               "state": {
-                "path": "knowledge/posts/notion-mermaid-guide"
+                "file": "knowledge/index.md",
+                "mode": "source",
+                "source": false
               },
               "icon": "lucide-file",
-              "title": "notion-mermaid-guide"
+              "title": "index"
             }
           }
         ]
@@ -196,6 +198,10 @@
   },
   "active": "10d5cf038696559b",
   "lastOpenFiles": [
+    "_site/site_libs/quarto-diagram/mermaid.css",
+    "_site/site_libs/quarto-diagram/mermaid.min.js",
+    "_site/site_libs/quarto-diagram/mermaid-init.js",
+    "_site/site_libs/quarto-diagram",
     "knowledge/posts/notion-mermaid-guide/image.png",
     "knowledge/posts/welcome/index.md",
     "lab/index.md",
@@ -206,9 +212,6 @@
     "lab/index_files",
     "knowledge/posts/welcome/index.html",
     "knowledge/posts/welcome/index_files/mediabag",
-    "knowledge/posts/welcome/index_files",
-    "knowledge/posts/notion-mermaid-guide/index.html",
-    "knowledge/posts/notion-mermaid-guide/index_files/mediabag",
     "knowledge/posts/notion-mermaid-guide/index.md",
     "profile.png",
     "publications/index.md",
