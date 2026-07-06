@@ -56,3 +56,5 @@ International Tax & Public Finance
 | 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
 | 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
 | 2026/03 | <i class="bi bi-mortarboard text-primary"></i> 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
+
+: {tbl-colwidths="[15, 85]"}
