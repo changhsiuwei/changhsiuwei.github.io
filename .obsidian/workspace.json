@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "knowledge/posts/哈囉.md",
+                "file": "lab/index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "哈囉"
+              "title": "index"
             }
           }
         ]
@@ -198,6 +198,9 @@
   },
   "active": "10d5cf038696559b",
   "lastOpenFiles": [
+    "about/index.md",
+    "index.md",
+    "knowledge/posts/welcome/index.md",
     "knowledge/posts/哈囉.md",
     "knowledge/index.md",
     "_site/test-mermaid3.html",
@@ -214,13 +217,10 @@
     "test-mermaid2.md",
     "test-mermaid.md",
     "knowledge/posts/notion-mermaid-guide/image.png",
-    "knowledge/posts/welcome/index.md",
     "lab/index.md",
     "knowledge/posts/notion-mermaid-guide/index.md",
     "profile.png",
     "publications/index.md",
-    "activities/index.md",
-    "about/index.md",
-    "index.md"
+    "activities/index.md"
   ]
 }
