@@ -27,7 +27,7 @@ about:
 
 ::: {.g-col-12 .g-col-md-4}
 <div class="premium-icon-box"><i class="bi bi-cpu"></i></div>
-### 人工智慧應用
+### 人工智慧在財會的應用
 AI Applications in Accounting & Finance
 :::
 
