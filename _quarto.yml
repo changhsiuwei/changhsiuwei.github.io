@@ -18,6 +18,8 @@ website:
         text: AI 實驗室
       - href: knowledge/index.md
         text: AI 知識站
+      - href: students/index.qmd
+        text: 學生專區
   page-footer:
     center: "© 2025–2026 張修瑋 (H.W. Chang) · National Taipei University"
     background: dark
