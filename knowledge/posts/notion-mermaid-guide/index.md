@@ -1,4 +1,4 @@
----
+﻿---
 title: "A Beginner's Guide to Mermaid: Create Diagrams with Code"
 date: "2026-07-06"
 categories: [Teaching, Tools, AI]
@@ -29,7 +29,7 @@ The best way to learn is by doing. We will use the **Mermaid Live Editor**.
 
 Let's make your first diagram. Copy and paste the code below into the "Code" panel:
 
-```mermaid
+```{mermaid}
 graph TD
     A[Hello] --> B[World]
 ```
@@ -76,7 +76,7 @@ You connect nodes using arrows. You can also add labels to the arrows.
 
 Let's combine these to make a useful flowchart. Copy this into the Live Editor.
 
-```mermaid
+```{mermaid}
 %% This is a comment. Mermaid ignores it.
 graph TD
     A[Start] --> B{Am I sleepy?}
@@ -101,7 +101,7 @@ This is one of the most powerful features of Mermaid. It's perfect for planning 
 
 A class is a box with a name, attributes, and methods.
 
-```mermaid
+```{mermaid}
 classDiagram
     class Customer {
         -int customerId
@@ -139,7 +139,7 @@ You add multiplicity in quotes "" to define the business rules for a relationshi
 
 This is a complete example showing a `Customer` placing an `Order`, which has many `OrderItems`. This is the classic way to model a Many-to-Many relationship.
 
-```mermaid
+```{mermaid}
 classDiagram
     direction LR %% Left-to-Right layout is nice here
 
@@ -211,7 +211,7 @@ Sequence diagrams are great for showing how different systems (or objects) inter
 
 ### **Example: User Login Sequence**
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     participant User
     participant WebServer
