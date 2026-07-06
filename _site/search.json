@@ -4,7 +4,7 @@
     "href": "students/index.html",
     "title": "指導學生專區",
     "section": "",
-    "text": "Note歡迎來到指導學生專區\n\n\n\n這裡放置了僅限本實驗室成員查看的內部資訊。請同學務必詳閱以下指導原則與規範，這將對你的研究生涯有極大幫助。\n\n\n\n1. 碩士論文撰寫基本功\n\n尋找研究題目：請先閱讀頂級期刊（如 TAR, JAR, JAE 等）近三年的文獻，尋找你感興趣的缺口。\n文獻回顧：不要只是「條列式」翻譯文獻，要寫出文獻之間的對話與邏輯關聯。\n格式規範：請嚴格遵守 APA 格式，並參考本實驗室提供的 論文寫作格式範本 (Word)。\n時間管理：碩一請盡快決定研究方向，碩二上學期完成 Proposal，碩二下全力衝刺實證與寫作。\n\n\n\n2. 量化工具的使用介紹\n會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具： - Stata / SAS：實驗室的主要實證工具。請先熟悉基本的資料清理 (Data Cleaning)、合併 (Merge)、迴歸分析 (Regression) 與固定效應模型。 - Python / R：推薦用於文字探勘 (Text Mining)、爬蟲 (Web Scraping) 及機器學習預測模型。 - WRDS 資料庫：請盡早申請帳號，熟悉 Compustat, CRSP, Audit Analytics 等常用資料庫的變數定義。\n\n\n3. 如何正確地使用 AI 工具\nAI 是強大的輔助工具，但「你」才是研究的主人。請遵守以下使用規範： - 輔助潤飾，絕不代寫：你可以使用 ChatGPT / Claude 來改善英文文法與語句流暢度，但嚴禁讓 AI 直接幫你生成整段論文內容。 - 批判性思考：AI 產生的文獻探討與程式碼經常帶有「幻覺 (Hallucination)」，請務必親自驗證每一篇引用的文獻是否真實存在，以及程式碼的邏輯是否正確。 - 資料安全：絕對禁止將未公開的機密資料、購買授權的資料集，或是實驗室尚未發表的原始手稿，直接貼入公開的 AI 對話框中。\n\n\n\n📅 近期進度報告排程\n\n\n\n日期\n報告人\n論文研讀主題\n\n\n\n\n2026/08/10\n王小明\n最新 AI 模型架構解析\n\n\n2026/08/17\n李小華\n實驗數據分析與討論\n\n\n\n(以上內容皆可透過 Shiny CMS 系統隨時登入修改)"
+    "text": "Note歡迎來到指導學生專區\n\n\n\n這裡放置了僅限本實驗室成員查看的內部資訊。請同學務必詳閱以下指導原則與規範，這將對你的研究生涯有極大幫助。\n\n\n\n1. 碩士論文撰寫基本功\n\n尋找研究題目：請先閱讀頂級期刊（如 TAR, JAR, JAE 等）近三年的文獻，尋找你感興趣的缺口。\n文獻回顧：不要只是「條列式」翻譯文獻，要寫出文獻之間的對話與邏輯關聯。\n格式規範：請嚴格遵守 APA 格式，並參考本實驗室提供的 論文寫作格式範本 (Word)。\n時間管理：碩一請盡快決定研究方向，碩二上學期完成 Proposal，碩二下全力衝刺實證與寫作。\n\n\n\n2. 量化工具的使用介紹\n會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具： - Stata / SAS：實驗室的主要實證工具。請先熟悉基本的資料清理 (Data Cleaning)、合併 (Merge)、迴歸分析 (Regression) 與固定效應模型。 - Python / R：推薦用於文字探勘 (Text Mining)、爬蟲 (Web Scraping) 及機器學習預測模型。 - WRDS 資料庫：請盡早申請帳號，熟悉 Compustat, CRSP, Audit Analytics 等常用資料庫的變數定義。\n\n\n3. 如何正確地使用 AI 工具\nAI 是強大的輔助工具，但「你」才是研究的主人。請遵守以下使用規範： - 輔助潤飾，絕不代寫：你可以使用 ChatGPT / Claude 來改善英文文法與語句流暢度，但嚴禁讓 AI 直接幫你生成整段論文內容。 - 批判性思考：AI 產生的文獻探討與程式碼經常帶有「幻覺 (Hallucination)」，請務必親自驗證每一篇引用的文獻是否真實存在，以及程式碼的邏輯是否正確。 - 資料安全：絕對禁止將未公開的機密資料、購買授權的資料集，或是實驗室尚未發表的原始手稿，直接貼入公開的 AI 對話框中。\n\n\n\n📅 近期進度報告排程\n\n\n\n日期\n報告人\n論文研讀主題"
   },
   {
     "objectID": "lab/index.html",
@@ -123,14 +123,14 @@
     "href": "knowledge/index.html",
     "title": "AI 知識站 (AI Knowledge)",
     "section": "",
-    "text": "這裡是我記錄每週聽到的優質廣播、閱讀到的好文章，以及一些個人觀點整理的地方。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n矽盾島之後的十年抉擇：如何用「問、用、管、造」在老齡化海嘯中重建台灣的人才密度\n\n\n\n心得\n\nAI 教育\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n歡迎來到我的知識站\n\n\n\n心得\n\n隨筆\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n張修瑋\n\n\n\n\n\nNo matching items"
+    "text": "這裡是我記錄每週聽到的優質廣播、閱讀到的好文章，以及一些個人觀點整理的地方。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n矽盾島之後的十年抉擇：如何用「問、用、管、造」在老齡化海嘯中重建台灣的人才密度\n\n\n\n心得\n\nAI 教育\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n當 AI 走進會計課堂：我的教學實踐與自我介紹\n\n\n\n隨筆\n\n教學實踐\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n張修瑋\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "knowledge/posts/welcome/index.html",
     "href": "knowledge/posts/welcome/index.html",
-    "title": "歡迎來到我的知識站",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
     "section": "",
-    "text": "這是我知識站的第一篇文章！\n未來我會在這個分類下，定期更新我當週聽到的 Podcast 廣播精華，或是看到的不錯的科技、商業、財會相關的深度文章整理。"
+    "text": "這是我知識站的第一篇文章。\n我是張修瑋，目前在國立臺北大學會計學系擔任助理教授。建立這個網站，是希望記錄自己在教學現場的嘗試，也想與大家分享我對科技、商業和財會領域的實際觀察。"
   },
   {
     "objectID": "knowledge/posts/welcome/index.html#本週閱讀筆記",
@@ -166,5 +166,40 @@
     "title": "學術出版",
     "section": "🎤 研討會發表 (Conference Presentations)",
     "text": "🎤 研討會發表 (Conference Presentations)\n\n\n\n\n\n\n\n\n年份\n研討會\n論文\n\n\n\n\n2025\nTaiwan Accounting Association, Taipei\n名人執行長公開背書對供應鏈夥伴的影響 🏆\n\n\n2025\nTaiwan Accounting Association, Taipei\nPricing the Blame 🏆\n\n\n2023\nTaiwan Accounting Association, Taipei\nNavigating Supply Chain Crises\n\n\n2022\nTaiwan Accounting Association, Tainan\nThe Moderating Role of Accounting Quality\n\n\n2022\nAAA/Deloitte Doctoral Consortium, Texas\nThe Moderating Role of Accounting Quality\n\n\n2021\nTaiwan Economic Association, Taipei\nNetwork Externalities & Trade Costs"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#從沒有助教新手爸爸的挑戰開始",
+    "href": "knowledge/posts/welcome/index.html#從沒有助教新手爸爸的挑戰開始",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
+    "section": "從「沒有助教、新手爸爸」的挑戰開始",
+    "text": "從「沒有助教、新手爸爸」的挑戰開始\n去年八月，我來到臺北大學任教。剛開學時，我面臨一個非常具體的生存挑戰：我這學期的班級有 48 人。\n根據學校規定，修課人數未滿 50 人是無法配置教學助理（TA）的。這意味著從課堂公告、課堂維護、出題、改考卷，到所有的行政雜事，我都必須獨自完成。更考驗體力的是，那時我剛升格為新手爸爸，家裡還有一位剛出生的寶寶。\n在有限的時間與雙重壓力下，我開始思考：我能不能把 AI 當作我的超級助教？"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#我的教學哲學ai-是對手而不是外包商",
+    "href": "knowledge/posts/welcome/index.html#我的教學哲學ai-是對手而不是外包商",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
+    "section": "我的教學哲學：AI 是對手，而不是外包商",
+    "text": "我的教學哲學：AI 是對手，而不是外包商\n在導入工具前，我看見了《Nature》期刊上的一篇報導，裡面有兩個實驗讓我思考良久：\n\n虛假的掌握感：北京清華大學的研究發現，用 AI 輔助學習的學生，當下考試成績很高，但兩週後再測，成績反而比沒用 AI 的學生更差。因為 AI 給了他們「我懂了」的錯覺，知識並沒有真正進入長期記憶。\n大腦連線性降低：MIT 的腦電波實驗顯示，直接依賴 AI 寫作的學生，大腦區域間的活躍連結降低了。\n\n這就是所謂的「認知債務（Cognitive Debt）」。如果我們只用 AI 來省力、逃避思考，大腦功能就會逐漸退化。\n因此，我對 AI 的定位是：它是用來「增加思維阻力」的對手，而不是幫你寫作業的外包商。\n學習就像健身，肌肉是靠自己一次次舉鐵練出來的。AI 可以是最好的教練，引導你如何發力，但它絕對不能代替你「硬舉」。"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#我在課堂上的兩大實驗",
+    "href": "knowledge/posts/welcome/index.html#我在課堂上的兩大實驗",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
+    "section": "我在課堂上的兩大實驗",
+    "text": "我在課堂上的兩大實驗\n在這樣的理念下，我嘗試在教學內容中融入了新的實作：\n\n1. 成本會計中的「預測式 AI」\n傳統的預算編製多半是用過去幾個月的平均數來推估，但在資料時代，這樣顯然不夠。我設計了一個教案，帶著學生利用 Google Colab 雲端環境，處理 Kaggle 平台上 Rossmann 歐洲連鎖藥妝店的真實歷史數據。\n在課程中，我不要求學生非得成為工程師，但我要求他們必須搞懂「邏輯」。例如「資料洩漏（Data Leakage）」的概念——在填補缺失值時，我們只能用過去的平均數，不能偷看未來的數據。這就像考試不能拿明天的解答來寫今天的考卷，不僅是寫程式的防錯邏輯，更是會計強調的誠信與資訊品質。\n\n\n2. 會計資訊系統（AIS）與「氣氛編程（Vibe Coding）」\n過去會計系學生做資料分析，最大的門檻就是「寫程式」，常常一看到英文代碼就卻步。\n這學期我導入了「自然語言編程（Vibe Coding）」的概念。我告訴學生：「你不需要背程式碼，你只需要會用中文下指令。」我帶領他們實作，利用 AI 寫出自動抓取公開資訊觀測站（MOPS）月營收與四大財務報表的爬蟲程式。\n當他們發現自己不用改程式碼，只要在 Colab 上像操作 App 一樣點選年份、月份，就能在一秒內把原本需要手動複製貼上一整晚的財報數據整理成整齊的 Excel 時，那種學習的成就感是主動且真實的。"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#科技如何協助我重塑教師的角色",
+    "href": "knowledge/posts/welcome/index.html#科技如何協助我重塑教師的角色",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
+    "section": "科技如何協助我重塑教師的角色",
+    "text": "科技如何協助我重塑教師的角色\n身為教師，我同樣在日常工作中實踐人機協作： * 出題與解題的自動化：我將教材餵給 AI，透過精確的 Prompt 指令產出難易度配置合適的試卷，並要求它為每一題撰寫詳細的解析，這讓出題的效率明顯提升。 * 規劃自動化批改流水線：參考台灣大學呂學一教授的教學實驗，我正著手規劃一套「批改機器人」流程。學生考完試後直接將手寫答案拍照上傳，透過 OCR 辨識，結合 AI 提供具體的個人化評語，指出邏輯漏洞，這能省下繁瑣的改卷時間。 * 多語言友善教學：為了解決班上越南、印尼、馬來西亞等外籍學生的語言門檻，我計劃利用開源套件，將每堂課的錄音轉成逐字稿並翻譯成他們的母語，藉此降低聽課難度。"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#結語",
+    "href": "knowledge/posts/welcome/index.html#結語",
+    "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
+    "section": "結語",
+    "text": "結語\n在 AI 時代，我們不能再當只會重複性工作的作業員，而必須轉變為「導演」。在面對工具時，要有「謀定而後動」的思維：\n\nPlan（策劃）：看清課程的核心目標。\nAction（執行）：透過精準的指令引導 AI 完成繁瑣工作。\nCheck（檢核）：用我們的專業與品味，去校對和驗證最終的結果。\n\n未來，我會在這個網站定期分享我當週的教學心得、科技工具的操作實踐，以及財會相關的深度觀點。不談宏大敘事，只記錄具體的痛點與解法。\n如果你對 AI 輔助教學、資料科學在財會的應用感興趣，歡迎常來這裡，與我一起探討、對練。"
   }
 ]

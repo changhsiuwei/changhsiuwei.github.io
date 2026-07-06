@@ -6,3 +6,4 @@
 .makemd/
 
 admin_app/
+.password_secret.txt

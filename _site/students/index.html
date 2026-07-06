@@ -199,7 +199,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="近期進度報告排程" class="level3">
 <h3 class="anchored" data-anchor-id="近期進度報告排程">📅 近期進度報告排程</h3>
-<table class="caption-top table">
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">日期</th>
@@ -208,19 +208,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;">2026/08/10</td>
-<td style="text-align: left;">王小明</td>
-<td style="text-align: left;">最新 AI 模型架構解析</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2026/08/17</td>
-<td style="text-align: left;">李小華</td>
-<td style="text-align: left;">實驗數據分析與討論</td>
-</tr>
 </tbody>
 </table>
-<p><em>(以上內容皆可透過 Shiny CMS 系統隨時登入修改)</em></p>
 
 
 </section>
@@ -766,9 +755,15 @@ document.getElementById('student-pw').addEventListener('keypress', function (e) 
 
 
 
-// 保持登入狀態
+// 自動放行邏輯：如果是本地端預覽 (Shiny CMS) 或已登入
 
-if (sessionStorage.getItem('student_auth') === 'true') {
+if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+
+   document.getElementById('password-overlay').style.display = 'none';
+
+   document.getElementById('quarto-content').style.display = 'block';
+
+} else if (sessionStorage.getItem('student_auth') === 'true') {
 
    document.getElementById('password-overlay').style.display = 'none';
 
