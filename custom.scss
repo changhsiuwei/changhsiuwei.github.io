@@ -1,4 +1,4 @@
-/*-- scss:defaults --*/
+﻿/*-- scss:defaults --*/
 
 /* === Color Palette (User-specified) === */
 $primary:       #403F6F !default;
@@ -48,7 +48,7 @@ body {
 }
 
 /* ===================================================
-   HEADINGS — TYPOGRAPHIC HIERARCHY
+   HEADINGS ??TYPOGRAPHIC HIERARCHY
    =================================================== */
 h1 {
   font-size: 2.4rem;
@@ -88,7 +88,7 @@ h4 {
 }
 
 /* ===================================================
-   NAVBAR — PREMIUM GRADIENT
+   NAVBAR ??PREMIUM GRADIENT
    =================================================== */
 .navbar {
   background: linear-gradient(135deg, #2C344E 0%, #403F6F 60%, #3F4B6F 100%) !important;
@@ -126,7 +126,7 @@ h4 {
 }
 
 /* ===================================================
-   MAIN CONTENT CONTAINER — MAX WIDTH & SPACING
+   MAIN CONTENT CONTAINER ??MAX WIDTH & SPACING
    =================================================== */
 .container, main.content {
   max-width: 900px;
@@ -138,7 +138,7 @@ main.content {
 }
 
 /* ===================================================
-   ABOUT PAGE — TRESTLES / JOLLA TEMPLATE
+   ABOUT PAGE ??TRESTLES / JOLLA TEMPLATE
    =================================================== */
 .quarto-about-trestles, .quarto-about-jolla {
   margin-top: 1.5rem;
@@ -206,7 +206,7 @@ main.content {
 }
 
 /* ===================================================
-   CALLOUT BOXES — USED FOR PUBLICATIONS & SECTIONS
+   CALLOUT BOXES ??USED FOR PUBLICATIONS & SECTIONS
    =================================================== */
 div.callout {
   border-radius: 14px !important;
@@ -242,7 +242,7 @@ div.callout .callout-title-container {
 }
 
 /* ===================================================
-   TABLES — CLEAN ACADEMIC STYLE
+   TABLES ??CLEAN ACADEMIC STYLE
    =================================================== */
 .table, table {
   border-collapse: separate;
@@ -289,7 +289,7 @@ div.callout .callout-title-container {
 }
 
 /* ===================================================
-   GRID SYSTEM CARDS — FOR RESEARCH AREAS ETC.
+   GRID SYSTEM CARDS ??FOR RESEARCH AREAS ETC.
    =================================================== */
 .g-col-12.g-col-md-4, .g-col-12.g-col-md-6 {
   transition: transform 0.25s ease;
@@ -300,7 +300,7 @@ div.callout .callout-title-container {
 }
 
 /* ===================================================
-   INLINE CODE TAGS — USED FOR JOURNAL RANKINGS
+   INLINE CODE TAGS ??USED FOR JOURNAL RANKINGS
    =================================================== */
 code {
   background: linear-gradient(135deg, #E4EAFF, #f0f3ff);
@@ -314,8 +314,8 @@ code {
 }
 
 pre code {
-  background: #2C344E;
-  color: #E4EAFF;
+  
+  
   padding: 1.2rem;
   border-radius: 12px;
   font-family: 'JetBrains Mono', monospace;
@@ -334,7 +334,7 @@ hr {
 }
 
 /* ===================================================
-   LINKS — ELEGANT UNDERLINE ANIMATION
+   LINKS ??ELEGANT UNDERLINE ANIMATION
    =================================================== */
 a {
   color: #3F4B6F;
@@ -390,7 +390,7 @@ main a:not(.btn):not(.nav-link):not(.about-link):not(.quarto-navigation-tool):no
 }
 
 /* ===================================================
-   SIDEBAR TOC — REFINED
+   SIDEBAR TOC ??REFINED
    =================================================== */
 .sidebar nav[role="doc-toc"] {
   padding-top: 1.5rem;
@@ -473,7 +473,7 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
 }
 
 /* ===================================================
-   SELECTION HIGHLIGHT — BRAND COLOR
+   SELECTION HIGHLIGHT ??BRAND COLOR
    =================================================== */
 ::selection {
   background-color: #C8D5FF;

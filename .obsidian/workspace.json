@@ -186,6 +186,9 @@
   "active": "10d5cf038696559b",
   "lastOpenFiles": [
     "profile.png",
+    "knowledge/posts/notion-mermaid-guide/index.md",
+    "knowledge/posts/notion-mermaid-guide/image.png",
+    "lab/index.md",
     "site_libs/quarto-search/quarto-search.js",
     "site_libs/quarto-search/fuse.min.js",
     "site_libs/quarto-search/autocomplete.umd.js",
@@ -197,7 +200,6 @@
     "site_libs/clipboard",
     "site_libs",
     "publications/index.md",
-    "lab/index.md",
     "knowledge/posts/welcome/index.md",
     "knowledge/index.md",
     "activities/index.md",

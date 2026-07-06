@@ -27,6 +27,7 @@ format:
     theme:
       - cosmo
       - custom.scss
+    highlight-style: dracula
     toc: true
     toc-depth: 3
     smooth-scroll: true
