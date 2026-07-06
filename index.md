@@ -3,6 +3,7 @@ title: "張修瑋 (H.W. Chang)"
 subtitle: "國立臺北大學會計學系 助理教授 <br> Assistant Professor, <br> Dept. of Accountancy, NTPU"
 image: profile.png
 about:
+  id: hero-heading
   template: trestles
   image-shape: round
   image-width: 12em
@@ -15,11 +16,13 @@ about:
       href: "https://drive.google.com/file/d/1mmz5jxjUmZvtFVZIgTckq4fEvFW3VcjU/view?usp=sharing"
 ---
 
+:::{#hero-heading}
 ## 關於我
 
 我是張修瑋，目前任職於國立臺北大學會計學系。我的研究專注於人工智慧在會計與財務領域的應用，包括資本市場、投資者關注度與機器學習在會計的應用。我同時熱衷於將 AI 工具融入教學實務，致力於培養下一代具備數位素養的會計專業人才。
 
 *"Honoring God and benefiting people! (榮神益人！)"*
+:::
 
 ## 研究領域
 
