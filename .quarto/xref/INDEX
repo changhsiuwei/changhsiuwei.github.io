@@ -58,5 +58,11 @@
   },
   "knowledge/posts/notion-mermaid-guide/index.qmd": {
     "index.html": "8b838985"
+  },
+  "test-mermaid2.md": {
+    "test-mermaid2.html": "ba39b61b"
+  },
+  "test-mermaid3.md": {
+    "test-mermaid3.html": "2927e422"
   }
 }

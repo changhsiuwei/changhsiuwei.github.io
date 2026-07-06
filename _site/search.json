@@ -145,5 +145,19 @@
     "title": "AI 實驗室",
     "section": " 實際案例分享",
     "text": "實際案例分享\n\n\n\n\n\n\nNote案例 A：自動化對帳系統模型雛形\n\n\n\n這是一個專為中小型企業設計的系統概念，旨在減少人工比對 Excel 表單的繁瑣時間，大幅提升會計人員效率。"
+  },
+  {
+    "objectID": "test-mermaid2.html",
+    "href": "test-mermaid2.html",
+    "title": "Test",
+    "section": "",
+    "text": "graph TD\n  A --&gt; B"
+  },
+  {
+    "objectID": "test-mermaid3.html",
+    "href": "test-mermaid3.html",
+    "title": "Test",
+    "section": "",
+    "text": "graph TD\n  A --&gt; B"
   }
 ]
