@@ -1,11 +1,5 @@
 [
   {
-    "listing": "/knowledge.html",
-    "items": [
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
     "listing": "/knowledge/index.html",
     "items": [
       "/knowledge/posts/welcome/index.html"

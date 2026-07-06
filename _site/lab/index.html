@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-6173f5686b6dc2ceb0e5493eb8c44299.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-27e4d5c32648214c70713ba647a4176c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b391a402afc7e63efb9717a485c8baa9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -133,8 +133,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#教學工具介紹" id="toc-教學工具介紹" class="nav-link active" data-scroll-target="#教學工具介紹">🛠️ 教學工具介紹</a></li>
-  <li><a href="#實際案例分享" id="toc-實際案例分享" class="nav-link" data-scroll-target="#實際案例分享">📋 實際案例分享</a></li>
+  <li><a href="#教學工具介紹" id="toc-教學工具介紹" class="nav-link active" data-scroll-target="#教學工具介紹"><i class="bi bi-tools"></i> 教學工具介紹</a></li>
+  <li><a href="#實際案例分享" id="toc-實際案例分享" class="nav-link" data-scroll-target="#實際案例分享"><i class="bi bi-clipboard-data"></i> 實際案例分享</a></li>
   </ul>
 </nav>
     </div>
@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <section id="教學工具介紹" class="level2">
-<h2 class="anchored" data-anchor-id="教學工具介紹">🛠️ 教學工具介紹</h2>
+<h2 class="anchored" data-anchor-id="教學工具介紹"><i class="bi bi-tools"></i> 教學工具介紹</h2>
 <div class="grid">
 <div class="g-col-12 g-col-md-6">
 <div class="callout callout-style-default callout-note no-icon callout-titled">
@@ -181,12 +181,12 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>💬 ChatGPT 於財務報表分析之應用
+<span class="screen-reader-only">Note</span><i class="bi bi-chat-square-text text-primary"></i> ChatGPT 於財務報表分析之應用
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>適用場景</strong>：協助學生快速抓取財報重點，進行初步的財務比率分析。<br>
-<strong>難度</strong>：⭐ 入門<br>
+<strong>難度</strong>：<i class="bi bi-star-fill text-warning"></i> 入門<br>
 <em>操作指南即將推出</em></p>
 </div>
 </div>
@@ -198,12 +198,12 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>📊 Python 資料視覺化教案
+<span class="screen-reader-only">Note</span><i class="bi bi-bar-chart text-primary"></i> Python 資料視覺化教案
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>適用場景</strong>：將繁雜的會計數據轉化為直觀的圖表。<br>
-<strong>難度</strong>：⭐⭐ 進階<br>
+<strong>難度</strong>：<i class="bi bi-star-fill text-warning"></i><i class="bi bi-star-fill text-warning"></i> 進階<br>
 <em>包含完整 Jupyter Notebook 範例程式碼</em></p>
 </div>
 </div>
@@ -212,7 +212,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 </section>
 <section id="實際案例分享" class="level2">
-<h2 class="anchored" data-anchor-id="實際案例分享">📋 實際案例分享</h2>
+<h2 class="anchored" data-anchor-id="實際案例分享"><i class="bi bi-clipboard-data"></i> 實際案例分享</h2>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -223,7 +223,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>這是一個展示如何利用簡單的腳本自動核對兩份 Excel 表格的教學案例，大幅節省人工作業時間。</p>
+<p>這是一個專為中小型企業設計的系統概念，旨在減少人工比對 Excel 表單的繁瑣時間，大幅提升會計人員效率。</p>
 </div>
 </div>
 
@@ -304,7 +304,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/changhsiuwei\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

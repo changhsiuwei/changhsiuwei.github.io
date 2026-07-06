@@ -479,3 +479,34 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
   background-color: #C8D5FF;
   color: #2C344E;
 }
+
+/* ===================================================
+   PREMIUM ICONS
+   =================================================== */
+.premium-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #E4EAFF, #C8D5FF);
+  color: #403F6F;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(64, 63, 111, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.premium-icon-box:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(64, 63, 111, 0.2);
+}
+.bi {
+  margin-right: 0.3rem;
+}
+.text-warning {
+  color: #C8A23F !important;
+}
+.text-primary {
+  color: #403F6F !important;
+}

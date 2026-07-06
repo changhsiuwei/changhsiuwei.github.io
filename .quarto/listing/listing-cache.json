@@ -1,11 +1,5 @@
 {
   "listingMap": {
-    "knowledge.qmd": [
-      "posts"
-    ],
-    "knowledge\\index.qmd": [
-      "posts"
-    ],
     "knowledge\\index.md": [
       "posts"
     ]

@@ -3,7 +3,7 @@
     "path": "C:/Users/f1240/Desktop/Quarto_Website/index.md",
     "project_path": "index.md",
     "type": "markdown",
-    "hash": "1917342992",
+    "hash": "874703332",
     "contents": "",
     "dirty": false,
     "created": 1783310993788.0,
@@ -11,14 +11,16 @@
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "57,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1783310331,
+    "lastKnownWriteTime": 1783313096,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1783310331,
+    "last_content_update": 1783313096,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -8,7 +8,7 @@ subtitle: "Curriculum Vitae"
 **國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU
 :::
 
-## 🎓 學歷 (Education)
+## <i class="bi bi-mortarboard"></i> 學歷 (Education)
 
 ::: {.grid}
 
@@ -44,25 +44,25 @@ June 2013
 
 ---
 
-## 💼 經歷 (Professional Experience)
+## <i class="bi bi-briefcase"></i> 經歷 (Professional Experience)
 
 | 期間 | 職位 | 單位 |
 |------|------|------|
-| 2025 – 至今 | **Assistant Professor** | 國立臺北大學 會計學系 |
-| 2022 – 2022 | **Analyst (分析員)** | KPMG Taiwan 安侯建業 國際稅務部 |
-| 2018 – 2019 | **Tax Executive (稅務員)** | 財政部臺北國稅局 徵收科 |
+| 2025 – 迄今 | **Assistant Professor** | 國立臺北大學 會計學系 |
+| 2022 – 2022 | **Analyst (實習)** | KPMG Taiwan 安侯建業 稅務投資部 |
+| 2018 – 2019 | **Tax Executive (稅務員)** | 財政部中區國稅局 審查一科 |
 
 ---
 
-## 🏆 榮譽與獎項 (Honors & Awards)
+## <i class="bi bi-trophy"></i> 榮譽與獎項 (Honors & Awards)
 
-- 🥇 **Best Academic Paper Award** (x2) — 2025 台灣會計學會年會
-- 🏅 **Excellence Award** — the 17th TSC Thesis Award 2024
-- 🎖️ **NTU Presidential Award for Graduate Students** — Academic Year 2023
-- 🌏 **NSTC Ph.D. Students Study Abroad Program** — 2023, Rotman School of Management, University of Toronto
+- **Best Academic Paper Award** (x2) — 2025 台灣會計學會年會
+- **Excellence Award** — the 17th TSC Thesis Award 2024
+- **NTU Presidential Award for Graduate Students** — Academic Year 2023
+- **NSTC Ph.D. Students Study Abroad Program** — 2023, Rotman School of Management, University of Toronto
 
 ---
 
-## 🤝 服務 (Service)
+## <i class="bi bi-people"></i> 服務 (Service)
 
 - **會計教育AI應用兼任研究員** — 中華會計學會 | Apr 2025 – June 2025

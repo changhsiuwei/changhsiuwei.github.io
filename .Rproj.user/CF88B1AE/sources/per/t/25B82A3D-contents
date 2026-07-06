@@ -32,17 +32,20 @@ about:
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-4}
-### 🤖 人工智慧應用
+<div class="premium-icon-box"><i class="bi bi-cpu"></i></div>
+### 人工智慧應用
 AI Applications in Accounting & Finance
 :::
 
 ::: {.g-col-12 .g-col-md-4}
-### 📊 資本市場研究
+<div class="premium-icon-box"><i class="bi bi-graph-up-arrow"></i></div>
+### 資本市場研究
 Capital Markets & Corporate Governance
 :::
 
 ::: {.g-col-12 .g-col-md-4}
-### 🏛️ 企業稅務
+<div class="premium-icon-box"><i class="bi bi-bank"></i></div>
+### 企業稅務
 International Tax & Public Finance
 :::
 
@@ -52,6 +55,6 @@ International Tax & Public Finance
 
 | 日期 | 事件 |
 |------|------|
-| 2026/04 | 📢 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
-| 2026/04 | 📄 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
-| 2026/03 | 🎓 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
+| 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
+| 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
+| 2026/03 | <i class="bi bi-mortarboard text-primary"></i> 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
