@@ -28,25 +28,18 @@
     "text": "研討會發表 (Conference Presentations)\n\n\n\n\n\n\n\n\n年份\n研討會\n論文\n\n\n\n\n2025\nTaiwan Accounting Association, Taipei\n名人執行長公開背書對供應鏈夥伴的影響 \n\n\n2025\nTaiwan Accounting Association, Taipei\nPricing the Blame \n\n\n2023\nTaiwan Accounting Association, Taipei\nNavigating Supply Chain Crises\n\n\n2022\nTaiwan Accounting Association, Tainan\nThe Moderating Role of Accounting Quality\n\n\n2022\nAAA/Deloitte Doctoral Consortium, Texas\nThe Moderating Role of Accounting Quality"
   },
   {
-    "objectID": "knowledge/posts/welcome/index.html",
-    "href": "knowledge/posts/welcome/index.html",
-    "title": "歡迎來到我的知識站",
+    "objectID": "knowledge/posts/測試.html",
+    "href": "knowledge/posts/測試.html",
+    "title": "這是一篇測試文章",
     "section": "",
-    "text": "這是我知識站的第一篇文章！\n未來我會在這個分類下，定期更新我當週聽到的 Podcast 廣播精華，或是看到的不錯的科技、商業、財會相關的深度文章整理。"
-  },
-  {
-    "objectID": "knowledge/posts/welcome/index.html#本週閱讀筆記",
-    "href": "knowledge/posts/welcome/index.html#本週閱讀筆記",
-    "title": "歡迎來到我的知識站",
-    "section": "本週閱讀筆記",
-    "text": "本週閱讀筆記\n\n主題一：大型語言模型如何改變會計稽核的未來。\n主題二：資料科學工具在教學上的痛點與解法。\n\n敬請期待！"
+    "text": "hi! 這是我在 Obsidian 寫的第一篇測試文章！"
   },
   {
     "objectID": "knowledge/index.html",
     "href": "knowledge/index.html",
     "title": "知識站 (Knowledge)",
     "section": "",
-    "text": "這裡是我記錄每週聽到的優質廣播、閱讀到的好文章，以及一些個人觀點整理的地方。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA Beginner’s Guide to Mermaid: Create Diagrams with Code\n\n\n\nTeaching\n\nTools\n\nAI\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n歡迎來到我的知識站\n\n\n\n心得\n\n隨筆\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n張修瑋\n\n\n\n\n\nNo matching items"
+    "text": "這裡是我記錄每週聽到的優質廣播、閱讀到的好文章，以及一些個人觀點整理的地方。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n歡迎來到我的知識站\n\n\n\n心得\n\n隨筆\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n張修瑋\n\n\n\n\n\n\n\n\n\n\n\n\n這是一篇測試文章\n\n\n\n隨筆\n\n測試\n\n\n\n\n\n\n\n\n\nJul 6, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "activities/index.html",
@@ -119,11 +112,18 @@
     "text": "最新動態\n\n\n\n\n\n\n\n日期\n事件\n\n\n\n\n2026/04\n 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」\n\n\n2026/04\n 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表\n\n\n2026/03\n 長庚大學 AI 精煉班授課：AI 與財報深度洞察"
   },
   {
-    "objectID": "knowledge/posts/notion-mermaid-guide/index.html",
-    "href": "knowledge/posts/notion-mermaid-guide/index.html",
-    "title": "A Beginner’s Guide to Mermaid: Create Diagrams with Code",
+    "objectID": "knowledge/posts/welcome/index.html",
+    "href": "knowledge/posts/welcome/index.html",
+    "title": "歡迎來到我的知識站",
     "section": "",
-    "text": "Welcome! This guide will teach you how to create beautiful, complex diagrams simply by writing text.\n\nWhat is Mermaid?\n\n\n\nimage.png\n\n\n\nMermaid is a simple, text-based language that lets you create charts and diagrams.\nInstead of using a mouse to drag and drop shapes, you just write code that describes your diagram.\nWhy use Mermaid?\n\nIt’s Fast: Writing text is often much faster than clicking and dragging.\nIt’s Easy to Edit: Just change a line of text to update your diagram.\nIt’s Great for Version Control: You can track changes to your diagrams in Git, just like code.\nIt’s Integrated: Mermaid works in many of the tools you already use, like GitHub, GitLab, Notion, and other Markdown editors.\n\n\n\n\nGetting Started: The Mermaid Live Editor\nThe best way to learn is by doing. We will use the Mermaid Live Editor.\n\nOpen this link in a new tab: https://mermaid.live\nYou will see a “Code” panel on the left and a “Diagram” panel on the right.\nDelete any text in the “Code” panel and you’re ready to start.\n\nLet’s make your first diagram. Copy and paste the code below into the “Code” panel:\ngraph TD\n    A[Hello] --&gt; B[World]\nInstantly, you should see a diagram appear:\n[Hello] –&gt; [World]\nCongratulations! You’ve just made your first Mermaid diagram.\n\n\n\nPart 1: Flowcharts (The Basics)\nFlowcharts are the most common diagram to start with.\n1. Declaration: You always start by declaring your diagram type. For flowcharts, this is graph followed by a direction.\n\ngraph TD (Top to Down)\ngraph LR (Left to Right)\n\n\nNodes (The Shapes):\n\nA node is a shape with text. You give it a unique ID (like A or B) and then define its shape and text.\n\n\n\nShape\nSyntax\nExample Code\n\n\n\n\nRectangle (Default)\nid[Text]\nA[Start]\n\n\nRounded Rectangle\nid(Text)\nB(Process)\n\n\nCircle\nid((Text))\nC((End))\n\n\nDiamond (Decision)\nid{Text}\nD{Is it Friday?}\n\n\n\n\nLinks (The Arrows):\n\nYou connect nodes using arrows. You can also add labels to the arrows.\n\n\n\nLink Type\nSyntax\nExample Code\n\n\n\n\nArrow Link\n--&gt;\nA --&gt; B\n\n\nLabeled Link\n-- \"label\" --&gt;\nD -- \"Yes\" --&gt; C\n\n\nDotted Link\n-.-&gt;\nA -.-&gt; C\n\n\n\n\n\nExample: “Should I Buy Coffee?” Flowchart\nLet’s combine these to make a useful flowchart. Copy this into the Live Editor.\n\n\n\n\n\n%% This is a comment. Mermaid ignores it.\ngraph TD\n    A[Start] --&gt; B{Am I sleepy?}\n    B -- \"Yes\" --&gt; C(Buy Coffee)\n    B -- \"No\" --&gt; D{Do I have a meeting?}\n    D -- \"Yes\" --&gt; C(Buy Coffee)\n    D -- \"No\" --&gt; E((End))\n    C --&gt; E\n\n\n\n\n\n\nThis code creates a clear decision-making process.\n\n\n\nPart 2: UML Class Diagrams (The Core Skill)\nThis is one of the most powerful features of Mermaid. It’s perfect for planning a database or an application. (This will use the syntax we’ve been discussing).\n1. Declaration: Start with classDiagram.\n\nDefining a Class:\n\nA class is a box with a name, attributes, and methods.\n\n\n\n\n\nclassDiagram\n    class Customer {\n        -int customerId\n        -string name\n        +placeOrder(order) : void\n        +getHistory() : Order[]\n    }\n\n\n\n\n\n\n\nVisibility: The + (public), (private), and # (protected) symbols define visibility.\nAttributes: +attributeName: type (e.g., string name)\nMethods: +methodName(parameters): returnType (e.g., +getHistory() : Order[])\n\n\nRelationships (The Lines):\n\nThis is how you show how classes are connected.\n\n\n\n\n\n\n\n\nRelationship\nSyntax\nMeaning\n\n\n\n\nInheritance\nParent &lt;|-- Child\n“Child” is a “Parent”\n\n\nComposition\nWhole *-- Part\n“Part” cannot exist without “Whole”\n\n\nAggregation\nWhole o-- Part\n“Part” can exist without “Whole”\n\n\nAssociation\nClassA -- ClassB\n“ClassA” is related to “ClassB”\n\n\n\n\nMultiplicity (The Numbers):\n\nYou add multiplicity in quotes “” to define the business rules for a relationship.\n\n\"1\" or \"1..1\": Exactly one\n\"0..*\" or \"*\": Zero or more\n\"1..*\": One or more\n\"0..1\": Zero or one\n\n\n\nExample: E-Commerce System Class Diagram\nThis is a complete example showing a Customer placing an Order, which has many OrderItems. This is the classic way to model a Many-to-Many relationship.\n\n\n\n\n\nclassDiagram\n    direction LR %% Left-to-Right layout is nice here\n\n    %% --- Classes ---\n    class Customer {\n        +int CustomerID\n        -string Name\n        -string Email\n        +placeOrder()\n    }\n\n    class Order {\n        +int OrderID\n        -date OrderDate\n        -string Status\n        +calculateTotal()\n    }\n\n    class Product {\n        +int ProductID\n        -string SKU\n        -string Description\n        -double Price\n    }\n\n    %% This is the 'Linking Table' for the M:N relationship\n    class OrderItem {\n        +int Quantity\n        +double PriceAtTimeOfSale\n    }\n\n    %% --- Relationships ---\n    \n    %% 1. Customer places 0 or more Orders\n    %% 2. An Order belongs to exactly 1 Customer\n    Customer \"1\" -- \"0..*\" Order : \"places\"\n\n    %% Order and Product are Many-to-Many,\n    %% so we resolve it with the OrderItem class.\n\n    %% 1. An Order has 1 or more OrderItems\n    %% 2. An OrderItem is part of exactly 1 Order\n    Order \"1\" *-- \"1..*\" OrderItem : \"contains\"\n\n    %% 1. A Product can be in 0 or more OrderItems\n    %% 2. An OrderItem includes exactly 1 Product\n    Product \"1\" -- \"0..*\" OrderItem : \"includes\"\n\n\n\n\n\n\n\n\n\nPart 3: Sequence Diagrams (A Quick Look)\nSequence diagrams are great for showing how different systems (or objects) interact over time.\n1. Declaration: Start with sequenceDiagram.\n2. Participants: These are the “columns.”\n\nparticipant A\nparticipant B\n\n3. Messages:\n\nA -&gt;&gt; B: Message Text (Solid line, solid arrow for a call)\nB --&gt;&gt; A: Reply Text (Dotted line, solid arrow for a reply)\n\n4. Activations: Use activate and deactivate to show when a participant is “working.”\n\n\nExample: User Login Sequence\n\n\n\n\n\nsequenceDiagram\n    participant User\n    participant WebServer\n    participant Database\n    \n    User -&gt;&gt; WebServer: 1. POST /login (username, password)\n    \n    activate WebServer\n    WebServer -&gt;&gt; Database: 2. FindUser(username, hashedPassword)\n    \n    activate Database\n    Database --&gt;&gt; WebServer: 3. UserRecord\n    deactivate Database\n    \n    WebServer --&gt;&gt; User: 4. Respond with AuthToken\n    deactivate WebServer\n\n\n\n\n\n\n\n\n\nYour Next Steps\nYou’ve learned the three most common diagram types!\n\nPractice: The best way to learn is to model things you know. Try to make a flowchart of your morning routine or a class diagram for your favorite hobby (e.g., Book, Author, Library).\nUse Comments: Use %% at the start of a line to write a comment. This is very helpful for complex diagrams.\nExplore the Docs: Mermaid can do so much more! (Gantt charts, Pie charts, ER diagrams, etc.). The Official Mermaid Documentation is the best place to learn more.\n\nCongratulations on learning a new and powerful skill!"
+    "text": "這是我知識站的第一篇文章！\n未來我會在這個分類下，定期更新我當週聽到的 Podcast 廣播精華，或是看到的不錯的科技、商業、財會相關的深度文章整理。"
+  },
+  {
+    "objectID": "knowledge/posts/welcome/index.html#本週閱讀筆記",
+    "href": "knowledge/posts/welcome/index.html#本週閱讀筆記",
+    "title": "歡迎來到我的知識站",
+    "section": "本週閱讀筆記",
+    "text": "本週閱讀筆記\n\n主題一：大型語言模型如何改變會計稽核的未來。\n主題二：資料科學工具在教學上的痛點與解法。\n\n敬請期待！"
   },
   {
     "objectID": "lab/index.html",
@@ -145,19 +145,5 @@
     "title": "AI 實驗室",
     "section": " 實際案例分享",
     "text": "實際案例分享\n\n\n\n\n\n\nNote案例 A：自動化對帳系統模型雛形\n\n\n\n這是一個專為中小型企業設計的系統概念，旨在減少人工比對 Excel 表單的繁瑣時間，大幅提升會計人員效率。"
-  },
-  {
-    "objectID": "test-mermaid2.html",
-    "href": "test-mermaid2.html",
-    "title": "Test",
-    "section": "",
-    "text": "graph TD\n  A --&gt; B"
-  },
-  {
-    "objectID": "test-mermaid3.html",
-    "href": "test-mermaid3.html",
-    "title": "Test",
-    "section": "",
-    "text": "graph TD\n  A --&gt; B"
   }
 ]

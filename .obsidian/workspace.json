@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "knowledge/posts/測試.md",
+                "file": "knowledge/posts/哈囉.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "測試"
+              "title": "哈囉"
             }
           }
         ]
@@ -75,7 +75,7 @@
             }
           },
           {
-            "id": "c3ed8c62a1702435",
+            "id": "21f72a38571cb6c6",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -198,7 +198,7 @@
   },
   "active": "10d5cf038696559b",
   "lastOpenFiles": [
-    "knowledge/posts/測試.md",
+    "knowledge/posts/哈囉.md",
     "knowledge/index.md",
     "_site/test-mermaid3.html",
     "test-mermaid3.html",
