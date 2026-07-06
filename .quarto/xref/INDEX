@@ -73,5 +73,8 @@
   },
   "students/index.qmd": {
     "index.html": "a4158de6"
+  },
+  "maintain_quarto_shiny_cms/SKILL.md": {
+    "SKILL.html": "3dfb1bec"
   }
 }

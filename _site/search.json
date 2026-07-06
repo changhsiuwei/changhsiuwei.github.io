@@ -4,26 +4,26 @@
     "href": "students/index.html",
     "title": "指導學生專區",
     "section": "",
-    "text": "Note歡迎來到指導學生專區\n\n\n\n這裡放置了僅限本實驗室成員查看的內部資訊。請同學務必詳閱以下指導原則與規範，這將對你的研究生涯有極大幫助。\n\n\n\n1. 碩士論文撰寫基本功\n\n尋找研究題目：請先閱讀頂級期刊（如 TAR, JAR, JAE 等）近三年的文獻，尋找你感興趣的缺口。\n文獻回顧：不要只是「條列式」翻譯文獻，要寫出文獻之間的對話與邏輯關聯。\n格式規範：請嚴格遵守 APA 格式，並參考本實驗室提供的 論文寫作格式範本 (Word)。\n時間管理：碩一請盡快決定研究方向，碩二上學期完成 Proposal，碩二下全力衝刺實證與寫作。\n\n\n\n2. 量化工具的使用介紹\n會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具： - Stata / SAS：實驗室的主要實證工具。請先熟悉基本的資料清理 (Data Cleaning)、合併 (Merge)、迴歸分析 (Regression) 與固定效應模型。 - Python / R：推薦用於文字探勘 (Text Mining)、爬蟲 (Web Scraping) 及機器學習預測模型。 - WRDS 資料庫：請盡早申請帳號，熟悉 Compustat, CRSP, Audit Analytics 等常用資料庫的變數定義。\n\n\n3. 如何正確地使用 AI 工具\nAI 是強大的輔助工具，但「你」才是研究的主人。請遵守以下使用規範： - 輔助潤飾，絕不代寫：你可以使用 ChatGPT / Claude 來改善英文文法與語句流暢度，但嚴禁讓 AI 直接幫你生成整段論文內容。 - 批判性思考：AI 產生的文獻探討與程式碼經常帶有「幻覺 (Hallucination)」，請務必親自驗證每一篇引用的文獻是否真實存在，以及程式碼的邏輯是否正確。 - 資料安全：絕對禁止將未公開的機密資料、購買授權的資料集，或是實驗室尚未發表的原始手稿，直接貼入公開的 AI 對話框中。\n\n\n\n📅 近期進度報告排程\n\n\n\n日期\n報告人\n論文研讀主題"
+    "text": "Note歡迎來到指導學生專區\n\n\n\n這裡放置了僅限本研究團隊成員（指導學生）查看的內部資訊。請同學務必詳閱以下指導原則與規範，這將對你的研究生涯有極大幫助。\n\n\n\n1. 碩士論文撰寫基本功\n\n尋找研究題目：請先閱讀頂級期刊（如 TAR, JAR, JAE 等）近三年的文獻，尋找你感興趣的缺口。\n文獻回顧：不要只是「條列式」翻譯文獻，要寫出文獻之間的對話與邏輯關聯。\n格式規範：請嚴格遵守 APA 格式，並參考本團隊提供的 論文寫作格式範本 (Word)。\n時間管理：碩一請盡快決定研究方向，碩二上學期完成 Proposal，碩二下全力衝刺實證與寫作。\n\n\n\n2. 量化工具的使用介紹\n會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具： - Stata / SAS：本團隊的主要實證工具。請先熟悉基本的資料清理 (Data Cleaning)、合併 (Merge)、迴歸分析 (Regression) 與固定效應模型。 - Python / R：推薦用於文字探勘 (Text Mining)、爬蟲 (Web Scraping) 及機器學習預測模型。 - WRDS 資料庫：請盡早申請帳號，熟悉 Compustat, CRSP, Audit Analytics 等常用資料庫的變數定義。\n\n\n3. 如何正確地使用 AI 工具\nAI 是強大的輔助工具，但「你」才是研究的主人。請遵守以下使用規範： - 輔助潤飾，絕不代寫：你可以使用 ChatGPT / Claude 來改善英文文法與語句流暢度，但嚴禁讓 AI 直接幫你生成整段論文內容。 - 批判性思考：AI 產生的文獻探討與程式碼經常帶有「幻覺 (Hallucination)」，請務必親自驗證每一篇引用的文獻是否真實存在，以及程式碼的邏輯是否正確。 - 資料安全：絕對禁止將未公開的機密資料、購買授權的資料集，或是研究團隊尚未發表的原始手稿，直接貼入公開的 AI 對話框中。\n\n\n\n📅 近期進度報告排程\n\n\n\n日期\n報告人\n論文研讀主題"
   },
   {
     "objectID": "lab/index.html",
     "href": "lab/index.html",
-    "title": "AI 實驗室",
+    "title": "AI 教學與研究",
     "section": "",
-    "text": "本實驗室著重於「方法分享」與「工具教學」，提供教學上使用的工具介紹、適用場景，以及實際的案例分析。"
+    "text": "本專區著重於「方法分享」與「工具教學」，提供教學上使用的工具介紹、適用場景，以及實際的案例分析。"
   },
   {
     "objectID": "lab/index.html#教學工具介紹",
     "href": "lab/index.html#教學工具介紹",
-    "title": "AI 實驗室",
+    "title": "AI 教學與研究",
     "section": " 教學工具介紹",
     "text": "教學工具介紹\n\n\n\n\n\n\n\n\nNote ChatGPT 於財務報表分析之應用\n\n\n\n適用場景：協助學生快速抓取財報重點，進行初步的財務比率分析。\n難度： 入門\n操作指南即將推出\n\n\n\n\n\n\n\n\n\n\nNote Python 資料視覺化教案\n\n\n\n適用場景：將繁雜的會計數據轉化為直觀的圖表。\n難度： 進階\n包含完整 Jupyter Notebook 範例程式碼"
   },
   {
     "objectID": "lab/index.html#實際案例分享",
     "href": "lab/index.html#實際案例分享",
-    "title": "AI 實驗室",
+    "title": "AI 教學與研究",
     "section": " 實際案例分享",
     "text": "實際案例分享\n\n\n\n\n\n\nNote案例 A：自動化對帳系統模型雛形\n\n\n\n這是一個專為中小型企業設計的系統概念，旨在減少人工比對 Excel 表單的繁瑣時間，大幅提升會計人員效率。"
   },
@@ -179,7 +179,7 @@
     "href": "knowledge/posts/welcome/index.html#我的教學哲學ai-是對手而不是外包商",
     "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
     "section": "我的教學哲學：AI 是對手，而不是外包商",
-    "text": "我的教學哲學：AI 是對手，而不是外包商\n在導入工具前，我看見了《Nature》期刊上的一篇報導，裡面有兩個實驗讓我思考良久：\n\n虛假的掌握感：北京清華大學的研究發現，用 AI 輔助學習的學生，當下考試成績很高，但兩週後再測，成績反而比沒用 AI 的學生更差。因為 AI 給了他們「我懂了」的錯覺，知識並沒有真正進入長期記憶。\n大腦連線性降低：MIT 的腦電波實驗顯示，直接依賴 AI 寫作的學生，大腦區域間的活躍連結降低了。\n\n這就是所謂的「認知債務（Cognitive Debt）」。如果我們只用 AI 來省力、逃避思考，大腦功能就會逐漸退化。\n因此，我對 AI 的定位是：它是用來「增加思維阻力」的對手，而不是幫你寫作業的外包商。\n學習就像健身，肌肉是靠自己一次次舉鐵練出來的。AI 可以是最好的教練，引導你如何發力，但它絕對不能代替你「硬舉」。"
+    "text": "我的教學哲學：AI 是對手，而不是外包商\n\n在導入工具前，我看見了《Nature》期刊上的一篇報導，裡面有兩個實驗讓我思考良久：\n\n虛假的掌握感：北京清華大學的研究發現，用 AI 輔助學習的學生，當下考試成績很高，但兩週後再測，成績反而比沒用 AI 的學生更差。因為 AI 給了他們「我懂了」的錯覺，知識並沒有真正進入長期記憶。\n大腦連線性降低：MIT 的腦電波實驗顯示，直接依賴 AI 寫作的學生，大腦區域間的活躍連結降低了。\n\n這就是所謂的「認知債務（Cognitive Debt）」。如果我們只用 AI 來省力、逃避思考，大腦功能就會逐漸退化。\n因此，我對 AI 的定位是：它是用來「增加思維阻力」的對手，而不是幫你寫作業的外包商。\n學習就像健身，肌肉是靠自己一次次舉鐵練出來的。AI 可以是最好的教練，引導你如何發力，但它絕對不能代替你「硬舉」。"
   },
   {
     "objectID": "knowledge/posts/welcome/index.html#我在課堂上的兩大實驗",
@@ -201,5 +201,47 @@
     "title": "當 AI 走進會計課堂：我的教學實踐與自我介紹",
     "section": "結語",
     "text": "結語\n在 AI 時代，我們不能再當只會重複性工作的作業員，而必須轉變為「導演」。在面對工具時，要有「謀定而後動」的思維：\n\nPlan（策劃）：看清課程的核心目標。\nAction（執行）：透過精準的指令引導 AI 完成繁瑣工作。\nCheck（檢核）：用我們的專業與品味，去校對和驗證最終的結果。\n\n未來，我會在這個網站定期分享我當週的教學心得、科技工具的操作實踐，以及財會相關的深度觀點。不談宏大敘事，只記錄具體的痛點與解法。\n如果你對 AI 輔助教學、資料科學在財會的應用感興趣，歡迎常來這裡，與我一起探討、對練。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html",
+    "href": "maintain_quarto_shiny_cms/SKILL.html",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "這份文件記錄了本專案 (Quarto + Shiny CMS) 的系統架構、歷史除錯經驗與未來維護準則。當需要為此網站進行更新、功能擴充或介面改良時，請務必遵循以下規範。\n\n\n\n前端展示：使用 Quarto 建立的靜態網站 (HTML/CSS/JS)，透過 GitHub Actions 自動編譯並部署到 gh-pages 分支。\n後端管理 (Shiny CMS)：透過 R Shiny (admin_app/app.R) 建立的本地端編輯器。讓使用者能透過 GUI 介面編寫 Markdown、上傳圖片、修改密碼，並透過 git 系統一鍵推播上網。\n\n\n\n\n\n前端驗證：位於 students/_password.html，透過 JS 讀取 students/password_hash.txt 進行 SHA-256 驗證。\n快取問題迴避：fetch 時必須加上時間戳記（?t=...）作為 Cache-buster，避免瀏覽器使用舊的快取密碼檔。\n防止輸入空白：在 app.R 寫入 Hash 與 _password.html 讀取密碼時，皆須使用 trim() 以防止使用者誤觸空白鍵導致 Hash 不符。\n本地明文備份：密碼設定成功後，會在本地產生 .password_secret.txt，此檔案已加入 .gitignore 絕對不可上傳。Shiny UI 會讀取此檔以提示使用者目前密碼。\n\n\n\n\n\nCSS 網格系統保護：Quarto 的核心排版依賴 #quarto-content 的 CSS Grid。在解開密碼牆時，絕對禁止使用 style.display = 'block'，這會徹底摧毀排版！應使用 CSS 類別開關（例如 :not(.unlocked) { display: none !important; }）。\n響應式排版 (Responsive Design)：絕對不要對 .container 寫死 max-width，這會與 Bootstrap 的 RWD 媒體查詢衝突，導致手機版介面重疊。\n局部 About 版型：在 Quarto 的 YAML 中使用 about: id: xxx，並在內文使用 :::{#xxx} 來限定頭像版面的範圍，這樣下方的「表格」或大面積元素才能順利展開為滿版寬度，避免過度擁擠。\n\n\n\n\n\nRStudio 白畫面 Bug：RStudio 內建的 Viewer 容易在多次啟動 Shiny 後當機（白畫面）。請在 app.R 結尾強制使用 shinyApp(ui, server, options = list(launch.browser = TRUE))，以確保 App 使用使用者的預設瀏覽器 (如 Chrome) 穩定開啟。\n檔案路徑與鎖定：如果遇到 Quarto 預覽卡住或無法寫入檔案，這通常是 quarto preview 程序鎖死檔案。在必要時，可以透過終端機執行 Stop-Process -Name quarto -Force 強制關閉。\n\n\n\n\n\n本地編輯不等於上線：使用者在 Shiny 中點擊的「儲存」皆只會在本地端生效。\n一鍵發布邏輯：Shiny 內的「🚀 一鍵發布至 GitHub」按鈕實際上是執行 git add ., git commit, git push。\n時間差問題：推播至 GitHub 後，GitHub Actions 需要約 2-3 分鐘 來執行 quarto publish。開發者必須提醒使用者：發布後請等待 3 分鐘，並在瀏覽器使用 Ctrl + F5 清除快取，才能看到最新結果。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html#系統架構總覽-architecture-overview",
+    "href": "maintain_quarto_shiny_cms/SKILL.html#系統架構總覽-architecture-overview",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "前端展示：使用 Quarto 建立的靜態網站 (HTML/CSS/JS)，透過 GitHub Actions 自動編譯並部署到 gh-pages 分支。\n後端管理 (Shiny CMS)：透過 R Shiny (admin_app/app.R) 建立的本地端編輯器。讓使用者能透過 GUI 介面編寫 Markdown、上傳圖片、修改密碼，並透過 git 系統一鍵推播上網。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html#密碼保護機制-password-logic",
+    "href": "maintain_quarto_shiny_cms/SKILL.html#密碼保護機制-password-logic",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "前端驗證：位於 students/_password.html，透過 JS 讀取 students/password_hash.txt 進行 SHA-256 驗證。\n快取問題迴避：fetch 時必須加上時間戳記（?t=...）作為 Cache-buster，避免瀏覽器使用舊的快取密碼檔。\n防止輸入空白：在 app.R 寫入 Hash 與 _password.html 讀取密碼時，皆須使用 trim() 以防止使用者誤觸空白鍵導致 Hash 不符。\n本地明文備份：密碼設定成功後，會在本地產生 .password_secret.txt，此檔案已加入 .gitignore 絕對不可上傳。Shiny UI 會讀取此檔以提示使用者目前密碼。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html#ui-介面與排版改良-ui-layout-styling",
+    "href": "maintain_quarto_shiny_cms/SKILL.html#ui-介面與排版改良-ui-layout-styling",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "CSS 網格系統保護：Quarto 的核心排版依賴 #quarto-content 的 CSS Grid。在解開密碼牆時，絕對禁止使用 style.display = 'block'，這會徹底摧毀排版！應使用 CSS 類別開關（例如 :not(.unlocked) { display: none !important; }）。\n響應式排版 (Responsive Design)：絕對不要對 .container 寫死 max-width，這會與 Bootstrap 的 RWD 媒體查詢衝突，導致手機版介面重疊。\n局部 About 版型：在 Quarto 的 YAML 中使用 about: id: xxx，並在內文使用 :::{#xxx} 來限定頭像版面的範圍，這樣下方的「表格」或大面積元素才能順利展開為滿版寬度，避免過度擁擠。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html#shiny-cms-維護-shiny-maintenance",
+    "href": "maintain_quarto_shiny_cms/SKILL.html#shiny-cms-維護-shiny-maintenance",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "RStudio 白畫面 Bug：RStudio 內建的 Viewer 容易在多次啟動 Shiny 後當機（白畫面）。請在 app.R 結尾強制使用 shinyApp(ui, server, options = list(launch.browser = TRUE))，以確保 App 使用使用者的預設瀏覽器 (如 Chrome) 穩定開啟。\n檔案路徑與鎖定：如果遇到 Quarto 預覽卡住或無法寫入檔案，這通常是 quarto preview 程序鎖死檔案。在必要時，可以透過終端機執行 Stop-Process -Name quarto -Force 強制關閉。"
+  },
+  {
+    "objectID": "maintain_quarto_shiny_cms/SKILL.html#發布與更新流程-deployment-pipeline",
+    "href": "maintain_quarto_shiny_cms/SKILL.html#發布與更新流程-deployment-pipeline",
+    "title": "網站維護與更新指南 (Maintain Quarto Shiny CMS)",
+    "section": "",
+    "text": "本地編輯不等於上線：使用者在 Shiny 中點擊的「儲存」皆只會在本地端生效。\n一鍵發布邏輯：Shiny 內的「🚀 一鍵發布至 GitHub」按鈕實際上是執行 git add ., git commit, git push。\n時間差問題：推播至 GitHub 後，GitHub Actions 需要約 2-3 分鐘 來執行 quarto publish。開發者必須提醒使用者：發布後請等待 3 分鐘，並在瀏覽器使用 Ctrl + F5 清除快取，才能看到最新結果。"
   }
 ]
