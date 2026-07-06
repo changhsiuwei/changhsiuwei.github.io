@@ -384,7 +384,7 @@ server <- function(input, output, session) {
         target_path <- file.path(target_dir, safe_filename)
         
         file.copy(img_info$datapath[i], target_path, overwrite = TRUE)
-        md_codes <- c(md_codes, sprintf("![](%s)", safe_filename))
+        md_codes <- c(md_codes, sprintf("![請在此輸入圖片標題](%s)", safe_filename))
       }
       
       output$upload_image_msg <- renderUI({
