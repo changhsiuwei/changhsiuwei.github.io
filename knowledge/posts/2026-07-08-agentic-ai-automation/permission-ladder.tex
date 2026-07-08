@@ -1,0 +1,52 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{line}{HTML}{CBD5E1}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluesoft}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greensoft}{HTML}{DCFCE7}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldsoft}{HTML}{FEF3C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redsoft}{HTML}{FEE2E2}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{23}\selectfont,text=navy,align=center,text width=14.5cm] at (8,8.82) {Agent 的權限要一階一階放};
+\node[font=\fontsize{10.3}{13.8}\selectfont,text=muted,align=center,text width=13.2cm] at (8,7.94) {能力可以很大，權限必須很窄；越接近不可逆動作，越要停下來。};
+
+\draw[rounded corners=10pt,fill=bluesoft,draw=blue,line width=1pt] (1.0,5.7) rectangle (4.0,7.1);
+\node[font=\bfseries\fontsize{10.6}{13}\selectfont,text=navy,align=center,text width=2.55cm] at (2.5,6.6) {只讀};
+\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.45cm] at (2.5,6.13) {讀資料、摘要\\不能改原檔};
+
+\draw[rounded corners=10pt,fill=greensoft,draw=green,line width=1pt] (4.6,4.85) rectangle (7.6,6.25);
+\node[font=\bfseries\fontsize{10.6}{13}\selectfont,text=navy,align=center,text width=2.55cm] at (6.1,5.75) {產草稿};
+\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.45cm] at (6.1,5.28) {可新增建議\\不能覆蓋};
+
+\draw[rounded corners=10pt,fill=goldsoft,draw=gold,line width=1pt] (8.2,4.0) rectangle (11.2,5.4);
+\node[font=\bfseries\fontsize{10.6}{13}\selectfont,text=navy,align=center,text width=2.55cm] at (9.7,4.9) {改副本};
+\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.45cm] at (9.7,4.43) {留下版本\\人工合併};
+
+\draw[rounded corners=10pt,fill=redsoft,draw=red,line width=1.05pt] (11.8,3.15) rectangle (15.0,4.75);
+\node[font=\bfseries\fontsize{10.6}{13}\selectfont,text=navy,align=center,text width=2.75cm] at (13.4,4.25) {不可逆動作};
+\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.75cm] at (13.4,3.72) {寄出、刪除、付款\\公開發布};
+
+\draw[->,draw=navy,line width=1pt] (4.08,6.4) -- (4.5,5.78);
+\draw[->,draw=navy,line width=1pt] (7.68,5.54) -- (8.1,4.92);
+\draw[->,draw=navy,line width=1pt] (11.28,4.72) -- (11.7,4.12);
+
+\draw[draw=line,line width=.9pt] (1.0,2.15)--(15.0,2.15);
+\node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.2cm] at (8,1.55) {好用的 agent 不是到處都能進，而是每一道門都有清楚的鑰匙規則。};
+\end{tikzpicture}
+\end{document}
