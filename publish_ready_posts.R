@@ -198,16 +198,82 @@ tex_to_markdown <- function(text) {
   trimws(text)
 }
 
+pptx_xml_text <- function(xml_text) {
+  matches <- regmatches(xml_text, gregexpr("<a:t[^>]*>.*?</a:t>", xml_text, perl = TRUE))[[1]]
+  if (length(matches) == 1 && identical(matches, "-1")) return(character(0))
+  text <- gsub("^<a:t[^>]*>|</a:t>$", "", matches, perl = TRUE)
+  text <- gsub("&lt;", "<", text, fixed = TRUE)
+  text <- gsub("&gt;", ">", text, fixed = TRUE)
+  text <- gsub("&amp;", "&", text, fixed = TRUE)
+  text <- gsub("&quot;", '"', text, fixed = TRUE)
+  text <- gsub("&apos;", "'", text, fixed = TRUE)
+  trimws(text[nzchar(text)])
+}
+
+pptx_to_markdown <- function(path) {
+  temp_dir <- tempfile("pptx-extract-")
+  dir.create(temp_dir, recursive = TRUE, showWarnings = FALSE)
+  on.exit(unlink(temp_dir, recursive = TRUE, force = TRUE), add = TRUE)
+
+  listing <- utils::unzip(path, list = TRUE)
+  slide_files <- listing$Name[grepl("^ppt/slides/slide[0-9]+\\.xml$", listing$Name)]
+  note_files <- listing$Name[grepl("^ppt/notesSlides/notesSlide[0-9]+\\.xml$", listing$Name)]
+  slide_order <- as.integer(sub("^ppt/slides/slide([0-9]+)\\.xml$", "\\1", slide_files))
+  note_order <- as.integer(sub("^ppt/notesSlides/notesSlide([0-9]+)\\.xml$", "\\1", note_files))
+  slide_files <- slide_files[order(slide_order)]
+  note_files <- note_files[order(note_order)]
+
+  utils::unzip(path, files = c(slide_files, note_files), exdir = temp_dir)
+
+  blocks <- character(0)
+  for (i in seq_along(slide_files)) {
+    slide_path <- file.path(temp_dir, slide_files[[i]])
+    slide_xml <- paste(readLines(slide_path, warn = FALSE, encoding = "UTF-8"), collapse = "")
+    slide_text <- paste(pptx_xml_text(slide_xml), collapse = " ")
+    slide_text <- gsub("\\s+", " ", slide_text)
+
+    note_text <- ""
+    if (i <= length(note_files)) {
+      note_path <- file.path(temp_dir, note_files[[i]])
+      if (file.exists(note_path)) {
+        note_xml <- paste(readLines(note_path, warn = FALSE, encoding = "UTF-8"), collapse = "")
+        note_text <- paste(pptx_xml_text(note_xml), collapse = " ")
+        note_text <- gsub("\\s+", " ", note_text)
+      }
+    }
+
+    if (!nzchar(slide_text) && !nzchar(note_text)) next
+    block <- paste0("## Slide ", i, "\n\n", slide_text)
+    if (nzchar(note_text) && !identical(note_text, as.character(i))) {
+      block <- paste0(block, "\n\n", note_text)
+    }
+    blocks <- c(blocks, block)
+  }
+
+  first <- if (length(blocks) > 0) sub("^## Slide [0-9]+\\n\\n", "", blocks[[1]]) else tools::file_path_sans_ext(basename(path))
+  first <- trimws(gsub("\\s+", " ", first))
+  title <- trimws(sub("\\s+[0-9]+\\s+20[0-9]{2}.*$", "", first))
+  if (!nzchar(title)) title <- tools::file_path_sans_ext(basename(path))
+
+  paste0(
+    "# ", title, "\n\n",
+    "> 來源簡報：", basename(path), "\n\n",
+    paste(blocks, collapse = "\n\n"),
+    "\n"
+  )
+}
+
 find_content_file <- function(folder) {
   files <- list.files(folder, recursive = TRUE, full.names = TRUE, all.files = FALSE, no.. = TRUE)
   files <- files[file.info(files)$isdir == FALSE]
   ext <- tolower(tools::file_ext(files))
-  candidates <- files[ext %in% c("md", "qmd", "txt", "tex")]
+  candidates <- files[ext %in% c("md", "qmd", "txt", "tex", "pptx")]
   candidates <- candidates[!grepl("(^|/)(README|metadata|post|meta)\\.(ya?ml|txt)$", gsub("\\\\", "/", basename(candidates)), ignore.case = TRUE)]
   if (length(candidates) == 0) return(character(0))
   priority_names <- c("content.md", "content.qmd", "post.md", "post.qmd", "index.md", "index.qmd", "article.md", "article.qmd")
   score <- match(tolower(basename(candidates)), priority_names)
-  score[is.na(score)] <- 100 + seq_len(sum(is.na(score)))
+  score[is.na(score)] <- ifelse(tolower(tools::file_ext(candidates[is.na(score)])) == "pptx", 90, 100) +
+    seq_len(sum(is.na(score)))
   candidates[order(score)][[1]]
 }
 
@@ -316,7 +382,11 @@ import_ready_folder <- function(folder) {
   }
 
   ext <- tolower(tools::file_ext(content_file))
-  raw <- read_text(content_file)
+  if (ext == "pptx") {
+    raw <- pptx_to_markdown(content_file)
+  } else {
+    raw <- read_text(content_file)
+  }
   if (ext == "tex") {
     raw <- tex_to_markdown(raw)
   }

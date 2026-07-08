@@ -55,6 +55,7 @@ categories: AI教育, 教學實踐
 - `.md`、`.qmd`：直接作為文章內容。
 - `.txt`：作為純文字內容匯入。
 - `.tex`：做基本 LaTeX 到 Markdown 轉換；複雜表格、TikZ、公式圖需由 Codex 進一步整理。
+- `.pptx`：可先抽出每張投影片與備註文字，作為文章草稿；正式發文時 Codex 會依主題挑選或擷取需要的圖片。
 - `.pdf`：Codex 會先擷取內容與圖片，再整理成 `content.md`。
 - `.png`、`.jpg`、`.jpeg`、`.webp`、`.gif`、`.svg`：自動複製到正式文章資料夾。
 

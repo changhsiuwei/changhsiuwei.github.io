@@ -18,4 +18,4 @@ post_ready/
 
 - 這裡的草稿素材預設不會同步到 GitHub。
 - 已發布資料夾會移到 `post_ready/_published/`。
-- 如果只有 PDF 或複雜 TeX，Codex 會先擷取文字與圖片，必要時重繪說明圖，再正式發布。
+- 如果只有 PDF、PPTX 或複雜 TeX，Codex 會先擷取文字與圖片，必要時重繪說明圖，再正式發布。
