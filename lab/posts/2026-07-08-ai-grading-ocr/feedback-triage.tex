@@ -1,0 +1,48 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Noto Sans TC}{\setCJKmainfont{Noto Sans TC}}{\setCJKmainfont{Microsoft JhengHei}}
+\setmainfont{Arial}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{paper}{HTML}{FBFAF7}
+\definecolor{navy}{HTML}{152238}
+\definecolor{muted}{HTML}{647184}
+\definecolor{blue}{HTML}{9AB6FF}
+\definecolor{bluesoft}{HTML}{EEF3FF}
+\definecolor{green}{HTML}{2D7A55}
+\definecolor{greensoft}{HTML}{EDF7F2}
+\definecolor{gold}{HTML}{B38B2E}
+\definecolor{goldsoft}{HTML}{FFF8E6}
+\definecolor{red}{HTML}{B9473A}
+\definecolor{redsoft}{HTML}{FFF0EF}
+\definecolor{line}{HTML}{D9DDE5}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy] at (8,8.82) {AI 回饋不要寫成一團鼓勵};
+\node[font=\fontsize{10.5}{13}\selectfont,text=muted] at (8,8.12) {三句話就夠：少了什麼、混淆什麼、下一步改什麼};
+
+\draw[rounded corners=10pt,fill=redsoft,draw=red,line width=.8pt] (1.25,3.2) rectangle (5.0,6.4);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (3.13,5.72) {少了什麼};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (3.13,5.32) {指出缺漏的觀念或證據};
+\draw[rounded corners=5pt,fill=white,draw=line,line width=.7pt] (1.75,4.15) rectangle (4.5,4.85);
+\node[font=\fontsize{8.2}{10}\selectfont,text=navy] at (3.13,4.5) {沒有說明假設};
+
+\draw[rounded corners=10pt,fill=goldsoft,draw=gold,line width=.8pt] (6.12,3.2) rectangle (9.87,6.4);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (8,5.72) {混淆什麼};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (8,5.32) {點出錯誤分類或因果};
+\draw[rounded corners=5pt,fill=white,draw=line,line width=.7pt] (6.62,4.15) rectangle (9.38,4.85);
+\node[font=\fontsize{8.2}{10}\selectfont,text=navy] at (8,4.5) {把相關當成因果};
+
+\draw[rounded corners=10pt,fill=greensoft,draw=green,line width=.8pt] (11.0,3.2) rectangle (14.75,6.4);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (12.88,5.72) {下一步先改};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (12.88,5.32) {給一個可以立刻做的動作};
+\draw[rounded corners=5pt,fill=white,draw=line,line width=.7pt] (11.5,4.15) rectangle (14.25,4.85);
+\node[font=\fontsize{8.2}{10}\selectfont,text=navy] at (12.88,4.5) {先重畫表格};
+
+\draw[->,line width=1pt,draw=navy] (5.08,4.8)--(5.92,4.8);
+\draw[->,line width=1pt,draw=navy] (9.95,4.8)--(10.82,4.8);
+\draw[draw=line,line width=.7pt] (1.25,1.55)--(14.75,1.55);
+\node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,1.02) {好回饋不是安慰學生，而是讓他知道下一筆該往哪裡改};
+\end{tikzpicture}
+\end{document}
