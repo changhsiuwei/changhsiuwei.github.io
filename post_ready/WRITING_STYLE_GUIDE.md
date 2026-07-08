@@ -60,6 +60,28 @@ Avoid:
 - "結論"
 - "重要啟示"
 
+## Reading rhythm
+
+Use more than one layer of paragraph signposts when the article is long.
+For a 2,000+ Chinese-character post, aim for 5-7 main `##` headings and
+4-6 smaller `###` paragraph headings. The smaller headings should not be labels;
+they should sound like a judgment, a turn, or a sentence the writer is willing
+to stand behind.
+
+After every heading, give the reader air. Do not put one dense wall of text
+under a heading. Use short paragraphs, usually 1-3 sentences each. A paragraph
+should carry one move: a scene, a claim, an example, a warning, or a turn back
+to practice.
+
+The page should feel like a professional essay or Substack-style field note:
+readers should be able to skim the headings, stop at any paragraph, and still
+feel that a person is thinking in front of them.
+
+Before publishing, inspect the rendered HTML, not only the Markdown source.
+Readers must never see raw Markdown markers such as `#` or `*` in the article
+body. Headings and emphasis are acceptable only when Quarto renders them into
+clean visual text.
+
 ## AI teaching article rules
 
 For AI teaching and research posts, every article needs at least one of these:
