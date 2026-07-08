@@ -19,9 +19,26 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Render site
+        run: quarto render
+
+      - name: Publish clean site to gh-pages
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -rf /tmp/quarto-site
+          mkdir -p /tmp/quarto-site
+          cp -R _site/. /tmp/quarto-site/
+          touch /tmp/quarto-site/.nojekyll
+
+          git switch --orphan gh-pages-deploy
+          git rm -rf . >/dev/null 2>&1 || true
+          cp -R /tmp/quarto-site/. .
+
+          git add -A
+          git commit -m "Deploy Quarto site"
+          git push --force origin HEAD:gh-pages
