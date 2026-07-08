@@ -56,8 +56,6 @@
 \node[tealcard,minimum width=2.7cm,text width=2.25cm] (revise) at (4.8,-.65) {修正判斷};
 \draw[softflow,draw=rose] (start) -- (out); \draw[softflow,draw=rose] (out) -- (flat); \draw[softflow,draw=rose] (flat) -- (empty);
 \draw[flow] (start) -- (first); \draw[flow] (first) -- (ask); \draw[flow] (ask) -- (revise);
-\node[fine,text=rose] at (1.7,2.12) {外包路徑};
-\node[fine,text=accent] at (1.7,-1.55) {學習路徑};
 \node[quietcard,minimum width=8.8cm,text width=8.35cm] at (.5,-2.75) {課堂要評量的，不是「有沒有用 AI」，而是「判斷有沒有留下痕跡」。};
 \end{tikzpicture}
 \end{document}

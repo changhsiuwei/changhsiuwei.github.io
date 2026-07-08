@@ -60,6 +60,27 @@ Avoid the following vocabulary unless it appears inside a source title or exact
 technical name: 深入研究, 見證, 證明, 格局, 強調, 凸顯, 關鍵的, 錯綜複雜的, 細緻入微的,
 充滿活力的, 展示, 促進, 與...一致, 不可磨滅的印記.
 
+## Taiwan usage rules
+
+Write for Taiwan readers. Avoid awkward translated Chinese, Americanized
+phrasing, and Mainland startup jargon. If a phrase makes the reader pause to
+decode the metaphor, replace it with a plain Taiwan usage.
+
+Preferred replacements:
+
+- Use `提示詞`, not `prompt`, unless naming a code variable or UI label.
+- Use `檢查`, `查核`, `驗收`, or `確認`, not `巡邏`.
+- Use `查證過程`, `查核紀錄`, or `執行紀錄`, not `驗證線路`.
+- Use `穩定流程`, `操作方式`, or `復原機制`, not vague metaphorical `路徑` when it
+  does not mean a file path.
+- Use `復原`, `回到上一版`, or `回復機制`, not Mainland-style `回退`.
+- Use `品質`, not `質量`, unless discussing physics.
+- Use `介面`, not `接口`, except in a technical API context where `API` is clearer.
+- Use `人工判斷` or `人工核對`, not `人眼判斷`.
+
+Keep correct technical terms when they are actually technical, such as `檔案路徑`
+or `圖片路徑`. Do not replace those mechanically.
+
 ## Article structure
 
 Use structure as thinking, not as a template.

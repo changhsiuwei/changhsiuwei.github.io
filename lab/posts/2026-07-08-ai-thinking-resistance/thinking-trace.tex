@@ -28,7 +28,7 @@
 }
 \node[stagebox,draw=blue,fill=bluebg] (raw) at (2.25,5.05) {\bfseries 原始判斷\\短、粗、可錯};
 \node[stagebox,draw=gold,fill=goldbg] (ai) at (5.7,5.05) {\bfseries AI 反駁\\找漏洞與替代解釋};
-\node[stagebox,draw=blue,fill=bluebg] (check) at (9.15,5.05) {\bfseries 查證路徑\\來源、數字、定義};
+\node[stagebox,draw=blue,fill=bluebg] (check) at (9.15,5.05) {\bfseries 查證過程\\來源、數字、定義};
 \node[stagebox,draw=green,fill=greenbg] (rev) at (12.6,5.05) {\bfseries 修正說明\\接受、拒絕、保留};
 \foreach \a/\b in {raw/ai,ai/check,check/rev} {\draw[->,draw=navy,line width=1.1pt] (\a)--(\b);}
 \draw[rounded corners=9pt,draw=line,fill=white,line width=.9pt] (2.0,2.65) rectangle (14.0,3.55);
