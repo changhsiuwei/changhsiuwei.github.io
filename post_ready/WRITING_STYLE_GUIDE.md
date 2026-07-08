@@ -103,6 +103,19 @@ The ending does not need a neat summary. It should feel like a door closing with
 one hard sentence, a live question, or a small image that keeps working after
 the article ends.
 
+## Titles and summaries
+
+Titles across a series must not all use the same rhetorical mold. Avoid making
+every title a `不是 X，而是 Y`, `真正的 X`, or `最重要的是 X` sentence. A strong
+set of titles should vary its entrances: one may be a concrete question, one a
+sharp observation, one a classroom scene, one a professional warning, one a
+compressed thesis.
+
+The title should sound like the article has already made a judgment. The
+summary should add the concrete stakes: what the reader will inspect, change,
+or stop doing after reading. Do not use the summary as a polite restatement of
+the title.
+
 ## Image placement
 
 Do not let every article open with a diagram. Unless the image itself is the

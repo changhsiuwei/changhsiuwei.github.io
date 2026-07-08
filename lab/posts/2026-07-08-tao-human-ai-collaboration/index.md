@@ -1,5 +1,5 @@
 ---
-title: "高手用 AI，不是為了快，而是讓答案經得起追問"
+title: "高手用 AI 後，工作才剛開始"
 author: "張修瑋"
 date: "2026-07-08"
 categories:
@@ -7,7 +7,7 @@ categories:
   - AI教育
   - 人機協作
   - 研究方法
-description: "陶哲軒案例給教師的提醒，不是學生也該多用 AI，而是我們要教學生在答案出現後如何檢查、刪除、追問與負責。"
+description: "陶哲軒案例提醒我們：工具給出方向後，學生更需要練習寫判準、刪除漂亮錯誤、保存被拒絕的答案。"
 image: judgment-record.png
 draft: false
 ---

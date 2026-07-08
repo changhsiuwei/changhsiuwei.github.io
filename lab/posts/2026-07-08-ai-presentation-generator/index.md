@@ -1,5 +1,5 @@
 ---
-title: "AI 做簡報最危險的地方，是它太會把空白填滿"
+title: "AI 很會填滿投影片，講者要先學會刪掉"
 author: "張修瑋"
 date: "2026-07-08"
 categories:
@@ -7,7 +7,7 @@ categories:
   - AI教育
   - 簡報製作
   - 自動化
-description: "AI 可以很快生出投影片，但簡報真正需要訓練的是分鏡、刪除、停頓與講者判斷。畫面越滿，越可能表示我們還沒想清楚。"
+description: "簡報工作流要先寫分鏡、主張、證據與停頓；投影片越滿，越要追問哪一頁其實沒有存在理由。"
 image: deletion-audit.png
 draft: false
 ---
