@@ -53,7 +53,8 @@ Do not use these habits:
 - Do not close with "總結來說", "總而言之", "展望未來", or a polite generic ending.
 - Do not add source notes such as "本文整理自..." in reader-facing text.
 - Do not use three decorative adjectives when one concrete detail would do.
-- Do not use bold text to rescue a weak sentence.
+- Do not use bold text to rescue a weak sentence. Use bold only for deliberate
+  paragraph-level signpost headings or truly necessary emphasis.
 
 Avoid the following vocabulary unless it appears inside a source title or exact
 technical name: 深入研究, 見證, 證明, 格局, 強調, 凸顯, 關鍵的, 錯綜複雜的, 細緻入微的,
@@ -100,6 +101,11 @@ Avoid:
 For a 2,000+ Chinese-character article, use several reader-facing section or
 paragraph headings. Let the reader breathe after each heading. Do not place one
 dense wall of text under a heading.
+
+Paragraph-level signpost headings should be bold, not plain body text. These
+are the short claim-like lines between paragraphs, such as "先把時間線封好" or
+"紅字要留下來". In Markdown, write them as `**先把時間線封好**`; in the rendered
+page, the reader should see only bold text, never the `**` markers.
 
 Use short paragraphs, usually 1-3 sentences each. One paragraph should carry
 one move: a scene, claim, example, warning, turn, or return to practice.
