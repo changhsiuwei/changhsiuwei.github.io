@@ -69,8 +69,8 @@ decode the metaphor, replace it with a plain Taiwan usage.
 Preferred replacements:
 
 - Use `提示詞`, not `prompt`, unless naming a code variable or UI label.
-- Use `檢查`, `查核`, `驗收`, or `確認`, not `巡邏`.
-- Use `查證過程`, `查核紀錄`, or `執行紀錄`, not `驗證線路`.
+- Use `逐項確認`, `檢查`, `查核`, `驗收`, or `確認`, not `手動巡邏` or `巡邏`.
+- Use `查證過程`, `檢查流程`, `查核紀錄`, or `執行紀錄`, not `驗證線路`.
 - Use `穩定流程`, `操作方式`, or `復原機制`, not vague metaphorical `路徑` when it
   does not mean a file path.
 - Use `復原`, `回到上一版`, or `回復機制`, not Mainland-style `回退`.
@@ -80,6 +80,11 @@ Preferred replacements:
 
 Keep correct technical terms when they are actually technical, such as `檔案路徑`
 or `圖片路徑`. Do not replace those mechanically.
+
+For reader-facing diagrams, use the same Taiwan wording rules as the article.
+Do not let translated engineering metaphors leak into TikZ labels. A diagram
+label should sound like a professor would say it in a Taiwan classroom: `人工逐項確認`,
+`把疑點變成規則`, `錯誤案例加入下次檢查`, `正式頁面確認完成`.
 
 ## Article structure
 
