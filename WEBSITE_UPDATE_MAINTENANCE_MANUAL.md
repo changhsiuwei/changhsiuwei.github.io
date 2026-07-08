@@ -3,7 +3,7 @@
 版本：1.0
 日期：2026-07-07
 適用資料夾：`C:\Users\f1240\Desktop\Quarto_Website_Editing_Kit`
-原始 Git 專案：`C:\Users\f1240\Desktop\Quarto_Website`
+GitHub repository：`https://github.com/changhsiuwei/changhsiuwei.github.io.git`
 
 本手冊說明如何維護這個 Quarto 靜態網站與 Shiny CMS 後台，包含日常更新、文章發布、學生專區密碼、預覽、部署、備份與故障排除。
 
@@ -48,6 +48,8 @@ flowchart LR
 | `lab/index.md` | AI 實驗室或專題頁 | 偶爾 |
 | `knowledge/index.md` | 知識站首頁與 listing 入口 | 偶爾 |
 | `knowledge/posts/` | 知識庫文章，每篇文章一個資料夾 | 經常 |
+| `post_ready/` | 本機待發文匣，放日期資料夾、文字、圖片、PDF、TeX | 經常 |
+| `publish_ready_posts.R` | 將 `post_ready/` 匯入知識站並可自動同步 | 經常 |
 | `students/index.qmd` | 學生專區內容 | 經常 |
 | `students/_password.html` | 學生專區前端密碼保護邏輯 | 很少 |
 | `students/password_hash.txt` | 學生專區密碼 SHA-256 hash | 改密碼時 |
@@ -341,6 +343,38 @@ post-YYYYMMDD-HHMMSS
 ```
 
 這樣可以避免同名文章互相覆蓋。不要手動把文章放在 `_site/knowledge/posts/`，那是產出結果。
+
+### 7.6 post_ready 待發文匣
+
+`post_ready/` 是本機暫存區，適合把還沒正式發布的素材先集中起來。建議一篇文章一個日期資料夾：
+
+```text
+post_ready/
+  2026-07-08/
+    metadata.yml
+    content.md
+    figure-1.png
+```
+
+當使用者對 Codex 說「幫我發文」時，Codex 會檢查 `post_ready/`，必要時從 PDF 或 TeX 擷取文字與圖片，或重繪說明圖，然後執行：
+
+```powershell
+Rscript publish_ready_posts.R --publish
+```
+
+成功後會產生：
+
+```text
+knowledge/posts/<slug>/index.md
+```
+
+原始素材會移到：
+
+```text
+post_ready/_published/
+```
+
+`post_ready/` 內的草稿素材已被 `.gitignore` 排除，不會直接上傳到 GitHub；只有 `post_ready/README.md`、`post_ready/_template/` 和流程工具會被版本控管。
 
 ## 8. 圖片管理
 
@@ -649,34 +683,20 @@ git push origin main
 
 ### 13.3 從整理包發布
 
-整理包目前集中內容與本機套件，但預設不含 `.git` 歷史。若要讓 CMS 的「一鍵發布」在整理包內可用，需要先把整理包變成 Git 工作副本。
+目前整理包已經是 Git 工作副本，remote 指向：
 
-做法一：重新 clone 後套用整理包內容。
-
-```powershell
-cd C:\Users\f1240\Desktop
-git clone https://github.com/changhsiuwei/changhsiuwei.github.io.git Quarto_Website_Working
+```text
+https://github.com/changhsiuwei/changhsiuwei.github.io.git
 ```
 
-再把整理包內的網站 source 複製到 `Quarto_Website_Working`。不要複製 `r-library/`、`_site/`、`.quarto/`。
-
-做法二：在整理包初始化 Git。
-
-```powershell
-cd C:\Users\f1240\Desktop\Quarto_Website_Editing_Kit
-git init
-git branch -M main
-git remote add origin https://github.com/changhsiuwei/changhsiuwei.github.io.git
-git fetch origin main
-```
-
-初始化後，第一次推送前請特別檢查：
+發布前請檢查：
 
 ```powershell
 git status --short
+git remote -v
 ```
 
-確認沒有把 `r-library/`、`_site/`、`.quarto/`、`students/.password_secret.txt` 加入 Git。
+確認沒有把 `r-library/`、`_site/`、`.quarto/`、`students/.password_secret.txt`、`post_ready/日期資料夾` 加入 Git。
 
 ### 13.4 CMS 一鍵發布實際做的事
 

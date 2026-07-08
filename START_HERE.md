@@ -4,6 +4,8 @@
 
 完整維護流程請先閱讀 `WEBSITE_UPDATE_MAINTENANCE_MANUAL.md`。
 
+若要批次準備知識站文章，請閱讀 `POST_READY_WORKFLOW.md`。
+
 ## 快速開始
 
 1. 開啟 `Quarto_Website.Rproj`。
@@ -40,6 +42,8 @@ quarto render
 - `_quarto.yml`：全站設定與導覽列。
 - `index.md`、`about/`、`activities/`、`publications/`、`lab/`：主要頁面。
 - `knowledge/`：知識站與貼文內容；請在 CMS 的「知識站管理」新增、編輯、公開或隱藏貼文。
+- `post_ready/`：本機待發文匣；把日期資料夾、文字檔、圖片、PDF 或 TeX 放入後，可請 Codex「幫我發文」。
+- `publish_ready_posts.R`：將 `post_ready/` 內容轉成正式知識站貼文，並可自動 render、commit、push。
 - `students/`：學生專區、密碼頁與密碼 hash。
 - `admin_app/`：Shiny CMS 後台。
 - `.obsidian/`、`.makemd/`、`.space/`：Obsidian 編輯設定。
@@ -49,7 +53,6 @@ quarto render
 ## 沒有放進來的東西
 
 - `_site/`：Quarto 產出的網站，可以用 `quarto render` 重建。
-- `.git/`：原始 Git 歷史留在原專案，整理包先保持乾淨。
 - `.quarto/`、`.Rproj.user/`：本機快取與 IDE 狀態，可自動重建。
 
 ## 注意
