@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Headless 工作流讓 Agent 不必猜畫面</title>
+  <desc id="desc">圖中顯示人類後台、API 命令層、Agent、內容引擎、追蹤紀錄與正式預覽之間的關係。</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .navy{fill:#152238}
+      .muted{fill:#647184}
+      .line{stroke:#d9dde5;stroke-width:2;fill:none}
+      .arrow{stroke:#152238;stroke-width:2.4;fill:none}
+      .card{fill:#fff;stroke:#d9dde5;stroke-width:2}
+      .human{fill:#eef3ff;stroke:#9ab6ff;stroke-width:2}
+      .agent{fill:#edf7f2;stroke:#2d7a55;stroke-width:2}
+      .engine{fill:#fff8e6;stroke:#d7aa43;stroke-width:2}
+      .trace{fill:#fff0ef;stroke:#e18880;stroke-width:2}
+      .text{font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif}
+      .h1{font-size:36px;font-weight:700;letter-spacing:0}
+      .h2{font-size:24px;font-weight:700;letter-spacing:0}
+      .body{font-size:20px;letter-spacing:0}
+      .small{font-size:16px;letter-spacing:0}
+      .mono{font-family:Consolas,"Noto Sans Mono CJK TC",monospace;font-size:16px}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#152238"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="720"/>
+  <text class="text h1 navy" x="600" y="82" text-anchor="middle">Headless 不是少一個畫面，而是多一條穩定路徑</text>
+  <text class="text body muted" x="600" y="122" text-anchor="middle">人留在判斷位置，Agent 走可重跑的命令入口</text>
+
+  <rect class="human" x="88" y="208" width="230" height="130" rx="18"/>
+  <text class="text h2 navy" x="203" y="258" text-anchor="middle">人類後台</text>
+  <text class="text small muted" x="203" y="292" text-anchor="middle">預覽、覆核、例外</text>
+
+  <rect class="agent" x="88" y="418" width="230" height="130" rx="18"/>
+  <text class="text h2 navy" x="203" y="468" text-anchor="middle">Agent</text>
+  <text class="text small muted" x="203" y="502" text-anchor="middle">呼叫命令，不猜 UI</text>
+
+  <rect class="engine" x="454" y="210" width="292" height="128" rx="18"/>
+  <text class="text h2 navy" x="600" y="258" text-anchor="middle">內容引擎</text>
+  <text class="text small muted" x="600" y="292" text-anchor="middle">文章、圖片、分類、狀態</text>
+
+  <rect class="card" x="432" y="404" width="336" height="166" rx="18"/>
+  <text class="text h2 navy" x="600" y="450" text-anchor="middle">API / CLI 命令層</text>
+  <text class="mono navy" x="486" y="494">save_draft()</text>
+  <text class="mono navy" x="486" y="526">render_site()</text>
+  <text class="mono navy" x="486" y="558">verify_live_page()</text>
+
+  <rect class="trace" x="900" y="210" width="230" height="130" rx="18"/>
+  <text class="text h2 navy" x="1015" y="258" text-anchor="middle">軌跡紀錄</text>
+  <text class="text small muted" x="1015" y="292" text-anchor="middle">輸入、輸出、錯誤</text>
+
+  <rect class="card" x="900" y="418" width="230" height="130" rx="18"/>
+  <text class="text h2 navy" x="1015" y="468" text-anchor="middle">正式預覽</text>
+  <text class="text small muted" x="1015" y="502" text-anchor="middle">同步後再驗證</text>
+
+  <path class="arrow" d="M318 273 H436" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M318 483 H414" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M600 398 V352" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M746 274 H882" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M768 486 H882" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M1015 348 V400" marker-end="url(#arrow)"/>
+
+  <line class="line" x1="88" y1="632" x2="1130" y2="632"/>
+  <text class="text body navy" x="600" y="674" text-anchor="middle">穩定的 Agent 不是比較會點，它是比較少需要猜</text>
+</svg>

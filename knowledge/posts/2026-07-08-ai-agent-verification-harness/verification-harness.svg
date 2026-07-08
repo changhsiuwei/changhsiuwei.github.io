@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">把手動測試改成驗證線路</title>
+  <desc id="desc">左側是重複的人工試跑，右側是可重跑的驗證線路，每一次失敗都會變成下一次自動執行的檢查。</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .navy{fill:#152238}
+      .muted{fill:#5f6b7a}
+      .gold{fill:#b38b2e}
+      .line{stroke:#d9dde5;stroke-width:2;fill:none}
+      .strong{stroke:#152238;stroke-width:2.4;fill:none}
+      .card{fill:#fff;stroke:#d9dde5;stroke-width:2}
+      .soft{fill:#f3f5f8;stroke:#d9dde5;stroke-width:2}
+      .warn{fill:#fff8e6;stroke:#d7aa43;stroke-width:2}
+      .ok{fill:#edf7f2;stroke:#2d7a55;stroke-width:2}
+      .text{font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif}
+      .h1{font-size:36px;font-weight:700;letter-spacing:0}
+      .h2{font-size:24px;font-weight:700;letter-spacing:0}
+      .body{font-size:20px;letter-spacing:0}
+      .small{font-size:16px;letter-spacing:0}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#152238"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="720"/>
+
+  <text class="text h1 navy" x="600" y="82" text-anchor="middle">90% 的時間，消失在重複確認裡</text>
+  <text class="text body muted" x="600" y="122" text-anchor="middle">Agent 能做事，不代表系統知道它有沒有做對</text>
+
+  <rect class="warn" x="72" y="184" width="310" height="380" rx="18"/>
+  <text class="text h2 navy" x="227" y="234" text-anchor="middle">人工試一次</text>
+  <text class="text small muted" x="227" y="266" text-anchor="middle">每次都靠人眼判斷</text>
+
+  <g class="text body navy">
+    <rect class="card" x="112" y="304" width="230" height="44" rx="10"/>
+    <text x="227" y="333" text-anchor="middle">開瀏覽器</text>
+    <rect class="card" x="112" y="364" width="230" height="44" rx="10"/>
+    <text x="227" y="393" text-anchor="middle">貼 prompt</text>
+    <rect class="card" x="112" y="424" width="230" height="44" rx="10"/>
+    <text x="227" y="453" text-anchor="middle">看結果</text>
+    <rect class="card" x="112" y="484" width="230" height="44" rx="10"/>
+    <text x="227" y="513" text-anchor="middle">猜哪裡壞</text>
+  </g>
+
+  <path class="strong" d="M410 374 C470 330, 500 330, 560 374" marker-end="url(#arrow)"/>
+  <text class="text small muted" x="486" y="324" text-anchor="middle">把懷疑寫成檢查</text>
+
+  <rect class="ok" x="586" y="184" width="540" height="380" rx="18"/>
+  <text class="text h2 navy" x="856" y="234" text-anchor="middle">驗證線路</text>
+  <text class="text small muted" x="856" y="266" text-anchor="middle">每次改動都能自動重跑</text>
+
+  <g>
+    <circle cx="668" cy="360" r="44" fill="#fff" stroke="#2d7a55" stroke-width="2"/>
+    <text class="text body navy" x="668" y="354" text-anchor="middle">輸入</text>
+    <text class="text small muted" x="668" y="379" text-anchor="middle">案例</text>
+    <path class="strong" d="M714 360 H774" marker-end="url(#arrow)"/>
+
+    <circle cx="824" cy="360" r="44" fill="#fff" stroke="#2d7a55" stroke-width="2"/>
+    <text class="text body navy" x="824" y="354" text-anchor="middle">執行</text>
+    <text class="text small muted" x="824" y="379" text-anchor="middle">Agent</text>
+    <path class="strong" d="M870 360 H930" marker-end="url(#arrow)"/>
+
+    <circle cx="980" cy="360" r="44" fill="#fff" stroke="#2d7a55" stroke-width="2"/>
+    <text class="text body navy" x="980" y="354" text-anchor="middle">檢查</text>
+    <text class="text small muted" x="980" y="379" text-anchor="middle">輸出</text>
+  </g>
+
+  <rect class="card" x="650" y="438" width="410" height="64" rx="14"/>
+  <text class="text body navy" x="855" y="478" text-anchor="middle">失敗案例進入回歸測試</text>
+
+  <path class="strong" d="M980 404 C980 534, 668 534, 668 410" marker-end="url(#arrow)"/>
+  <text class="text small muted" x="856" y="548" text-anchor="middle">下次不用靠記憶</text>
+
+  <line class="line" x1="72" y1="626" x2="1126" y2="626"/>
+  <text class="text body navy" x="600" y="668" text-anchor="middle">一次失敗如果沒有變成檢查，它就只是下一次加班的伏筆</text>
+</svg>

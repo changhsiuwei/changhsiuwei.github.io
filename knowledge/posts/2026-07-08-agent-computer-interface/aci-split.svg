@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">人類介面與 Agent 介面分開</title>
+  <desc id="desc">左側是給人使用的圖形介面，右側是給 Agent 使用的命令與狀態介面，中間標出兩種使用者的不同需求。</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .navy{fill:#152238}
+      .muted{fill:#647184}
+      .gold{fill:#b38b2e}
+      .line{stroke:#d9dde5;stroke-width:2;fill:none}
+      .strong{stroke:#152238;stroke-width:2.4;fill:none}
+      .card{fill:#fff;stroke:#d9dde5;stroke-width:2}
+      .human{fill:#eef3ff;stroke:#9ab6ff;stroke-width:2}
+      .agent{fill:#edf7f2;stroke:#2d7a55;stroke-width:2}
+      .text{font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif}
+      .h1{font-size:36px;font-weight:700;letter-spacing:0}
+      .h2{font-size:24px;font-weight:700;letter-spacing:0}
+      .body{font-size:20px;letter-spacing:0}
+      .small{font-size:16px;letter-spacing:0}
+      .mono{font-family:Consolas,"Noto Sans Mono CJK TC",monospace;font-size:17px}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="720"/>
+  <text class="text h1 navy" x="600" y="82" text-anchor="middle">同一個系統，兩種介面</text>
+  <text class="text body muted" x="600" y="122" text-anchor="middle">人需要可操作的畫面，Agent 需要可讀的命令與狀態</text>
+
+  <rect class="human" x="74" y="186" width="470" height="372" rx="18"/>
+  <text class="text h2 navy" x="309" y="236" text-anchor="middle">Human UI</text>
+  <text class="text small muted" x="309" y="268" text-anchor="middle">讓人看、點、判斷例外</text>
+
+  <rect class="card" x="132" y="306" width="354" height="198" rx="14"/>
+  <rect x="132" y="306" width="354" height="42" rx="14" fill="#f3f5f8"/>
+  <circle cx="158" cy="327" r="6" fill="#e18880"/>
+  <circle cx="180" cy="327" r="6" fill="#d7aa43"/>
+  <circle cx="202" cy="327" r="6" fill="#2d7a55"/>
+  <rect x="164" y="376" width="150" height="22" rx="6" fill="#dfe7ff"/>
+  <rect x="164" y="418" width="250" height="14" rx="5" fill="#d9dde5"/>
+  <rect x="164" y="448" width="210" height="14" rx="5" fill="#d9dde5"/>
+  <rect x="366" y="374" width="78" height="38" rx="9" fill="#152238"/>
+  <text class="text small" x="405" y="399" text-anchor="middle" fill="#fff">同步</text>
+
+  <rect class="agent" x="656" y="186" width="470" height="372" rx="18"/>
+  <text class="text h2 navy" x="891" y="236" text-anchor="middle">Agent Interface</text>
+  <text class="text small muted" x="891" y="268" text-anchor="middle">讓模型呼叫、檢查、回復</text>
+
+  <rect class="card" x="716" y="306" width="350" height="198" rx="14"/>
+  <text class="mono navy" x="750" y="352">load_post(id)</text>
+  <text class="mono navy" x="750" y="392">render_site()</text>
+  <text class="mono navy" x="750" y="432">verify_live_page(url)</text>
+  <text class="mono navy" x="750" y="472">{ status: "clean" }</text>
+  <circle cx="1028" cy="346" r="9" fill="#2d7a55"/>
+  <circle cx="1028" cy="386" r="9" fill="#2d7a55"/>
+  <circle cx="1028" cy="426" r="9" fill="#b38b2e"/>
+  <circle cx="1028" cy="466" r="9" fill="#2d7a55"/>
+
+  <line class="strong" x1="600" y1="204" x2="600" y2="558"/>
+  <text class="text body navy" x="600" y="612" text-anchor="middle">拆開之後，Agent 不必在畫面裡猜，人也不必替它收拾猜錯的結果</text>
+</svg>
