@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780" role="img" aria-labelledby="title desc">
+  <title id="title">AI 批改稽核軌跡</title>
+  <desc id="desc">從原卷影像、OCR文字、Rubric、AI初評、教師核分到申訴紀錄的可追問流程。</desc>
+  <rect width="1400" height="780" fill="#fafaf8"/>
+  <text x="700" y="76" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei, sans-serif" font-size="42" font-weight="700" fill="#172033">分數不是輸出，是一條可追問的軌跡</text>
+  <text x="700" y="120" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei, sans-serif" font-size="22" fill="#637083">少一層紀錄，學生申訴時就少一個能說清楚的理由。</text>
+
+  <line x1="280" y1="190" x2="280" y2="610" stroke="#b5c0cc" stroke-width="5" stroke-linecap="round"/>
+  <g font-family="Noto Sans TC, Microsoft JhengHei, sans-serif">
+    <g>
+      <circle cx="280" cy="205" r="18" fill="#1f4f7a"/>
+      <rect x="330" y="170" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="215" font-size="25" font-weight="700" fill="#172033">原卷影像：學生到底寫了什麼</text>
+    </g>
+    <g>
+      <circle cx="280" cy="285" r="18" fill="#1f4f7a"/>
+      <rect x="330" y="250" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="295" font-size="25" font-weight="700" fill="#172033">OCR 文字：辨識錯誤能不能回頭查</text>
+    </g>
+    <g>
+      <circle cx="280" cy="365" r="18" fill="#7a5c1f"/>
+      <rect x="330" y="330" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="375" font-size="25" font-weight="700" fill="#172033">Rubric 條件：標準不是藏在教師腦中</text>
+    </g>
+    <g>
+      <circle cx="280" cy="445" r="18" fill="#7a5c1f"/>
+      <rect x="330" y="410" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="455" font-size="25" font-weight="700" fill="#172033">AI 初評：只能提出理由，不能直接定案</text>
+    </g>
+    <g>
+      <circle cx="280" cy="525" r="18" fill="#1f6b55"/>
+      <rect x="330" y="490" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="535" font-size="25" font-weight="700" fill="#172033">教師核分：邊界答案與低信心答案回到人手上</text>
+    </g>
+    <g>
+      <circle cx="280" cy="605" r="18" fill="#1f6b55"/>
+      <rect x="330" y="570" width="760" height="70" rx="18" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+      <text x="370" y="615" font-size="25" font-weight="700" fill="#172033">申訴紀錄：學生看得見分數怎麼來</text>
+    </g>
+  </g>
+</svg>

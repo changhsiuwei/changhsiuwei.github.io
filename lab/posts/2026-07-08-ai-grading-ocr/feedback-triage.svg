@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">AI 回饋三句型</title>
+  <desc id="desc">把 AI 回饋限制為三種能讓學生行動的句型：少了什麼、混淆什麼、下一步改什麼。</desc>
+  <rect width="1400" height="760" fill="#fbfaf7"/>
+  <text x="700" y="74" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei, sans-serif" font-size="42" font-weight="700" fill="#172033">長回饋不等於好回饋</text>
+  <text x="700" y="118" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei, sans-serif" font-size="22" fill="#637083">學生需要的是下一步，不是一篇包裝漂亮的評語。</text>
+
+  <g font-family="Noto Sans TC, Microsoft JhengHei, sans-serif">
+    <rect x="115" y="220" width="350" height="270" rx="26" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+    <text x="290" y="286" text-anchor="middle" font-size="30" font-weight="700" fill="#1f4f7a">你少了什麼</text>
+    <line x1="175" y1="318" x2="405" y2="318" stroke="#dbe3eb" stroke-width="2"/>
+    <text x="290" y="370" text-anchor="middle" font-size="22" fill="#263447">指出缺漏條件</text>
+    <text x="290" y="415" text-anchor="middle" font-size="22" fill="#263447">不要只說不完整</text>
+
+    <rect x="525" y="220" width="350" height="270" rx="26" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+    <text x="700" y="286" text-anchor="middle" font-size="30" font-weight="700" fill="#7a5c1f">你混淆什麼</text>
+    <line x1="585" y1="318" x2="815" y2="318" stroke="#dbe3eb" stroke-width="2"/>
+    <text x="700" y="370" text-anchor="middle" font-size="22" fill="#263447">把錯誤帶回概念</text>
+    <text x="700" y="415" text-anchor="middle" font-size="22" fill="#263447">不要只貼標準答案</text>
+
+    <rect x="935" y="220" width="350" height="270" rx="26" fill="#ffffff" stroke="#cbd6e2" stroke-width="2"/>
+    <text x="1110" y="286" text-anchor="middle" font-size="30" font-weight="700" fill="#1f6b55">下一步先改什麼</text>
+    <line x1="995" y1="318" x2="1225" y2="318" stroke="#dbe3eb" stroke-width="2"/>
+    <text x="1110" y="370" text-anchor="middle" font-size="22" fill="#263447">讓學生能動手</text>
+    <text x="1110" y="415" text-anchor="middle" font-size="22" fill="#263447">不要用五句話繞圈</text>
+  </g>
+
+  <rect x="250" y="585" width="900" height="80" rx="22" fill="#172033"/>
+  <text x="700" y="635" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei, sans-serif" font-size="26" font-weight="700" fill="#ffffff">批改若不能讓學生下一次少錯一點，就只是分數管理。</text>
+</svg>
