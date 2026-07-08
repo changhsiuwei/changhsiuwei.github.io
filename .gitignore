@@ -17,5 +17,6 @@ knowledge/_trash/
 # Local staging area for future posts. Keep drafts and source files private.
 post_ready/*
 !post_ready/README.md
+!post_ready/WRITING_STYLE_GUIDE.md
 !post_ready/_template/
 !post_ready/_template/**
