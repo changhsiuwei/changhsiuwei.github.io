@@ -5,7 +5,7 @@ date: "2026-07-08"
 categories:
   - AI 知識站
   - AI協作
-  - Prompt工程
+  - 提示詞設計
   - 工作方法
 description: "與 AI 協作時，人要負責讀者、材料、限制、格式、驗收與最後剪輯；模型只是動手很快。"
 image: work-order.png
