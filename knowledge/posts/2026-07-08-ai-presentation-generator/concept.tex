@@ -1,0 +1,31 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+\definecolor{ink}{HTML}{172033}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{gold}{HTML}{C79A2B}
+\definecolor{green}{HTML}{16A34A}
+\tikzset{
+  card/.style={rounded corners=4pt, draw=ink!30, line width=.7pt, fill=white, minimum height=1.05cm, align=center, inner sep=6pt, text=ink},
+  smallcard/.style={rounded corners=4pt, draw=ink!30, line width=.65pt, fill=white, minimum width=2.35cm, minimum height=.95cm, align=center, inner sep=5pt, text=ink, font=\small},
+  goodarrow/.style={-Latex, draw=blue!75!black, line width=1.0pt},
+  badarrow/.style={-Latex, draw=red!70!black, line width=1.0pt},
+  soft/.style={draw=ink!35, line width=.8pt},
+}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily, >=Latex, line cap=round, line join=round]
+\node[font=\bfseries\Large,text=ink] at (0,4.4) {AI 簡報生產線：內容與版型分離};
+\node[card,fill=ink!4,minimum width=3.0cm] (source) at (-4.6,2.25) {資料來源\\文章\\課綱};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.0cm] (json) at (-1.55,2.25) {AI 生成\\結構化 JSON};
+\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.0cm] (template) at (1.55,2.25) {固定版型\\字型色彩版面};
+\node[card,fill=green!8,draw=green!45!black,minimum width=3.0cm] (ppt) at (4.6,2.25) {PPT 草稿};
+\foreach \a/\b in {source/json,json/template,template/ppt}{\draw[goodarrow] (\a) -- (\b);}
+\node[smallcard,minimum width=3.5cm] (check1) at (-2.4,-0.3) {內容審查\\主張與證據};
+\node[smallcard,minimum width=3.5cm] (check2) at (2.4,-0.3) {視覺審查\\一頁一重點};
+\draw[goodarrow] (ppt) |- (check2); \draw[goodarrow] (json) |- (check1);
+\node[card,fill=red!6,draw=red!35,minimum width=8.6cm] at (0,-2.55) {若讓 AI 同時決定內容與設計，品質最容易失控};
+\end{tikzpicture}
+\end{document}

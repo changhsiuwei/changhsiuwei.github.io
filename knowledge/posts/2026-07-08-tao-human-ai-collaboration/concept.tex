@@ -1,0 +1,33 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+\definecolor{ink}{HTML}{172033}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{gold}{HTML}{C79A2B}
+\definecolor{green}{HTML}{16A34A}
+\tikzset{
+  card/.style={rounded corners=4pt, draw=ink!30, line width=.7pt, fill=white, minimum height=1.05cm, align=center, inner sep=6pt, text=ink},
+  smallcard/.style={rounded corners=4pt, draw=ink!30, line width=.65pt, fill=white, minimum width=2.35cm, minimum height=.95cm, align=center, inner sep=5pt, text=ink, font=\small},
+  goodarrow/.style={-Latex, draw=blue!75!black, line width=1.0pt},
+  badarrow/.style={-Latex, draw=red!70!black, line width=1.0pt},
+  soft/.style={draw=ink!35, line width=.8pt},
+}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily, >=Latex, line cap=round, line join=round]
+\node[font=\bfseries\Large,text=ink] at (0,4.5) {高階使用者的人機協作接力};
+\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.0cm] (h1) at (-4.8,2.2) {人\\定義問題};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.0cm] (ai1) at (-1.6,2.2) {AI\\展開可能性};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.0cm] (ai2) at (1.6,2.2) {AI\\提出反例};
+\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.0cm] (h2) at (4.8,2.2) {人\\驗證與定稿};
+\foreach \a/\b in {h1/ai1,ai1/ai2,ai2/h2}{\draw[goodarrow] (\a) -- (\b);}
+\node[smallcard,minimum width=2.8cm] (c1) at (-4.8,0.4) {判準};
+\node[smallcard,minimum width=2.8cm] (c2) at (-1.6,0.4) {解法清單};
+\node[smallcard,minimum width=2.8cm] (c3) at (1.6,0.4) {盲點提醒};
+\node[smallcard,minimum width=2.8cm] (c4) at (4.8,0.4) {責任歸屬};
+\foreach \a/\b in {h1/c1,ai1/c2,ai2/c3,h2/c4}{\draw[soft] (\a) -- (\b);}
+\node[card,fill=green!8,draw=green!45!black,minimum width=8.8cm] at (0,-1.75) {AI 提高探索速度；人保留問題意識、價值判斷與最後責任};
+\end{tikzpicture}
+\end{document}

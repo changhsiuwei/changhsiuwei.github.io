@@ -1,0 +1,31 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+\definecolor{ink}{HTML}{172033}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{gold}{HTML}{C79A2B}
+\definecolor{green}{HTML}{16A34A}
+\tikzset{
+  card/.style={rounded corners=4pt, draw=ink!30, line width=.7pt, fill=white, minimum height=1.05cm, align=center, inner sep=6pt, text=ink},
+  smallcard/.style={rounded corners=4pt, draw=ink!30, line width=.65pt, fill=white, minimum width=2.35cm, minimum height=.95cm, align=center, inner sep=5pt, text=ink, font=\small},
+  goodarrow/.style={-Latex, draw=blue!75!black, line width=1.0pt},
+  badarrow/.style={-Latex, draw=red!70!black, line width=1.0pt},
+  soft/.style={draw=ink!35, line width=.8pt},
+}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily, >=Latex, line cap=round, line join=round]
+\node[font=\bfseries\Large,text=ink] at (0,4.4) {AI 超級助教的合理分工};
+\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.7cm,minimum height=1.5cm] (teacher) at (0,2.65) {教師\\設定目標、規準與界線};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.4cm] (m1) at (-4.8,0.75) {教材轉換\\講義到題目};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.4cm] (m2) at (-1.6,0.75) {回饋草稿\\rubric 到建議};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.4cm] (m3) at (1.6,0.75) {提問整理\\迷思到主題};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.4cm] (m4) at (4.8,0.75) {行政協助\\公告與摘要};
+\node[card,fill=green!8,draw=green!45!black,minimum width=8.7cm] (review) at (0,-1.35) {教師審查、修正、加入課堂脈絡};
+\node[card,fill=ink!4,draw=ink!25,minimum width=5.5cm] (students) at (0,-3.05) {學生得到更密集、更一致的學習支援};
+\foreach \x in {m1,m2,m3,m4}{\draw[goodarrow] (teacher) -- (\x); \draw[goodarrow] (\x) -- (review);}
+\draw[goodarrow] (review) -- (students);
+\end{tikzpicture}
+\end{document}

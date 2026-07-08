@@ -1,0 +1,31 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+\definecolor{ink}{HTML}{172033}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{gold}{HTML}{C79A2B}
+\definecolor{green}{HTML}{16A34A}
+\tikzset{
+  card/.style={rounded corners=4pt, draw=ink!30, line width=.7pt, fill=white, minimum height=1.05cm, align=center, inner sep=6pt, text=ink},
+  smallcard/.style={rounded corners=4pt, draw=ink!30, line width=.65pt, fill=white, minimum width=2.35cm, minimum height=.95cm, align=center, inner sep=5pt, text=ink, font=\small},
+  goodarrow/.style={-Latex, draw=blue!75!black, line width=1.0pt},
+  badarrow/.style={-Latex, draw=red!70!black, line width=1.0pt},
+  soft/.style={draw=ink!35, line width=.8pt},
+}
+\begin{document}
+\begin{tikzpicture}[font=\sffamily, >=Latex, line cap=round, line join=round]
+\node[font=\bfseries\Large,text=ink] at (0,4.45) {銷售預算教案：從資料到管理判斷};
+\node[card,fill=ink!4,minimum width=3.0cm] (d) at (-4.6,2.3) {歷史銷售\\價格\\促銷};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.0cm] (f) at (-1.55,2.3) {特徵工程\\季節性\\外部變數};
+\node[card,fill=blue!8,draw=blue!40,minimum width=3.0cm] (m) at (1.55,2.3) {模型比較\\平均法\\預測式 AI};
+\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.0cm] (j) at (4.6,2.3) {管理判斷\\預算決策};
+\foreach \a/\b in {d/f,f/m,m/j}{\draw[goodarrow] (\a) -- (\b);}
+\node[smallcard,fill=red!6,draw=red!35,minimum width=4.1cm] (leak) at (-2.6,-0.35) {檢查點\\預測當下是否已知？};
+\node[smallcard,fill=green!8,draw=green!45!black,minimum width=4.1cm] (scen) at (2.6,-0.35) {延伸活動\\情境分析與敏感度};
+\draw[soft] (f) -- (leak); \draw[soft] (m) -- (scen);
+\node[card,fill=white,draw=ink!25,minimum width=8.7cm] at (0,-2.55) {預測不是答案，而是讓管理者討論風險的共同語言};
+\end{tikzpicture}
+\end{document}
