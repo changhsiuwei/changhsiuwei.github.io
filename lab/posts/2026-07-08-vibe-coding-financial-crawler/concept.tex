@@ -1,38 +1,38 @@
-\documentclass[tikz,border=0pt]{standalone}
+﻿\documentclass[tikz,border=0pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
-\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
-\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{SimSun}}}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
 \usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
-\definecolor{paper}{HTML}{FAFAF7}
-\definecolor{ink}{HTML}{142033}
-\definecolor{muted}{HTML}{687386}
-\definecolor{line}{HTML}{D8DEE8}
-\definecolor{accent}{HTML}{0F766E}
-\definecolor{gold}{HTML}{B7791F}
-\definecolor{rose}{HTML}{B42318}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{line}{HTML}{CBD5E1}
+\definecolor{accent}{HTML}{00856A}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{rose}{HTML}{E11D48}
 \definecolor{blue}{HTML}{2563EB}
-\definecolor{softteal}{HTML}{E7F5F1}
-\definecolor{softgold}{HTML}{FFF6DD}
-\definecolor{softrose}{HTML}{FFF1F0}
-\definecolor{softblue}{HTML}{EFF5FF}
+\definecolor{softteal}{HTML}{DCFCE7}
+\definecolor{softgold}{HTML}{FEF3C7}
+\definecolor{softrose}{HTML}{FEE2E2}
+\definecolor{softblue}{HTML}{DBEAFE}
 \tikzset{
-  headline/.style={font=\sffamily\bfseries\Large, text=ink, align=left},
-  subline/.style={font=\sffamily\small, text=muted, align=left},
-  flow/.style={-{Latex[length=2.6mm,width=1.8mm]}, draw=accent, line width=1.1pt},
-  softflow/.style={-{Latex[length=2.2mm,width=1.5mm]}, draw=line!80!ink, line width=.8pt},
+  headline/.style={font=\sffamily\bfseries\LARGE, text=ink, align=left},
+  subline/.style={font=\sffamily\normalsize, text=muted, align=left},
+  flow/.style={-{Latex[length=2.6mm,width=1.8mm]}, draw=accent, line width=1.25pt},
+  softflow/.style={-{Latex[length=2.2mm,width=1.5mm]}, draw=line!80!ink, line width=1pt},
   nodecircle/.style={circle, fill=accent, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   goldcircle/.style={circle, fill=gold, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   rosecircle/.style={circle, fill=rose, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   label/.style={font=\sffamily\small, text=ink, align=center},
   fine/.style={font=\sffamily\footnotesize, text=muted, align=center},
-  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=.65pt, align=center, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
-  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=1pt, align=center, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
+  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
 }
 \newcommand{\Canvas}{\path[use as bounding box] (-6.4,-3.6) rectangle (6.4,3.6);\fill[paper] (-6.4,-3.6) rectangle (6.4,3.6);}
 \begin{document}
@@ -51,3 +51,4 @@
 \node[fine,text=accent] at (0,-2.85) {交付物不是程式碼本身，而是一段可被追問的判斷。};
 \end{tikzpicture}
 \end{document}
+

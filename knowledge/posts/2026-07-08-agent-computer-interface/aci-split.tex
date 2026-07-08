@@ -1,27 +1,28 @@
 ﻿\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setCJKmainfont{Noto Sans TC}}{\setCJKmainfont{Microsoft JhengHei}}
-\setmainfont{Arial}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
 \usetikzlibrary{arrows.meta}
-\definecolor{navy}{HTML}{152238}
-\definecolor{muted}{HTML}{647184}
-\definecolor{paper}{HTML}{FBFAF7}
-\definecolor{blue}{HTML}{9AB6FF}
-\definecolor{bluesoft}{HTML}{EEF3FF}
-\definecolor{green}{HTML}{2D7A55}
-\definecolor{greensoft}{HTML}{EDF7F2}
-\definecolor{line}{HTML}{D9DDE5}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluesoft}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greensoft}{HTML}{DCFCE7}
+\definecolor{line}{HTML}{CBD5E1}
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \path[fill=paper] (0,0) rectangle (16,9.6);
 \node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy] at (8,8.85) {同一個系統，兩種介面};
 \node[font=\fontsize{10.5}{13}\selectfont,text=muted] at (8,8.12) {人需要可操作的畫面，Agent 需要可讀的命令與狀態};
 
-\draw[rounded corners=10pt,fill=bluesoft,draw=blue,line width=.8pt] (.9,2.28) rectangle (7.1,7.12);
+\draw[rounded corners=10pt,fill=bluesoft,draw=blue,line width=1pt] (.9,2.28) rectangle (7.1,7.12);
 \node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (4,6.55) {Human UI};
 \node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (4,6.18) {讓人看、點、判斷例外};
-\draw[rounded corners=7pt,fill=white,draw=line,line width=.7pt] (2.0,3.05) rectangle (6.0,5.4);
+\draw[rounded corners=7pt,fill=white,draw=line,line width=.9pt] (2.0,3.05) rectangle (6.0,5.4);
 \draw[rounded corners=7pt,fill=gray!10,draw=gray!10] (2.0,4.9) rectangle (6.0,5.4);
 \fill[red!55] (2.25,5.15) circle (.06);
 \fill[yellow!60!black] (2.5,5.15) circle (.06);
@@ -33,10 +34,10 @@
 \node[font=\fontsize{7.5}{9}\selectfont,text=white] at (5.35,4.41) {同步};
 
 \draw[line width=.9pt,draw=navy] (8,2.28)--(8,7.12);
-\draw[rounded corners=10pt,fill=greensoft,draw=green,line width=.8pt] (8.9,2.28) rectangle (15.1,7.12);
+\draw[rounded corners=10pt,fill=greensoft,draw=green,line width=1pt] (8.9,2.28) rectangle (15.1,7.12);
 \node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (12,6.55) {Agent Interface};
 \node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (12,6.18) {讓模型呼叫、檢查、回復};
-\draw[rounded corners=7pt,fill=white,draw=line,line width=.7pt] (10.0,3.05) rectangle (14.0,5.4);
+\draw[rounded corners=7pt,fill=white,draw=line,line width=.9pt] (10.0,3.05) rectangle (14.0,5.4);
 \node[font=\ttfamily\fontsize{8.5}{10}\selectfont,text=navy,anchor=west] at (10.35,4.95) {load\_post(id)};
 \node[font=\ttfamily\fontsize{8.5}{10}\selectfont,text=navy,anchor=west] at (10.35,4.55) {render\_site()};
 \node[font=\ttfamily\fontsize{8.5}{10}\selectfont,text=navy,anchor=west] at (10.35,4.15) {verify\_live\_page(url)};
@@ -47,4 +48,6 @@
 \node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,1.18) {拆開之後，Agent 不必在畫面裡猜，人也不必替它收拾猜錯的結果};
 \end{tikzpicture}
 \end{document}
+
+
 

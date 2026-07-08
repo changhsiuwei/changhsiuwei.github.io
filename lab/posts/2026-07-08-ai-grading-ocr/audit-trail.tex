@@ -1,19 +1,20 @@
-\documentclass[tikz,border=8pt]{standalone}
+﻿\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setCJKmainfont{Noto Sans TC}}{\setCJKmainfont{Microsoft JhengHei}}
-\setmainfont{Arial}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
 \usetikzlibrary{arrows.meta,positioning}
-\definecolor{paper}{HTML}{FBFAF7}
-\definecolor{navy}{HTML}{152238}
-\definecolor{muted}{HTML}{647184}
-\definecolor{blue}{HTML}{9AB6FF}
-\definecolor{bluesoft}{HTML}{EEF3FF}
-\definecolor{green}{HTML}{2D7A55}
-\definecolor{greensoft}{HTML}{EDF7F2}
-\definecolor{gold}{HTML}{B38B2E}
-\definecolor{goldsoft}{HTML}{FFF8E6}
-\definecolor{line}{HTML}{D9DDE5}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluesoft}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greensoft}{HTML}{DCFCE7}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldsoft}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
 \path[fill=paper] (0,0) rectangle (16,9.6);
@@ -27,15 +28,17 @@
 9.15/AI 初評/分數與理由/greensoft/green,
 11.65/教師核分/調整與確認/white/line,
 14.15/申訴紀錄/學生可追問/bluesoft/blue}{
-  \draw[rounded corners=8pt,fill=\fc,draw=\drawc,line width=.8pt] (\x-1.05,4.45) rectangle (\x+1.05,5.95);
+  \draw[rounded corners=8pt,fill=\fc,draw=\drawc,line width=1pt] (\x-1.05,4.45) rectangle (\x+1.05,5.95);
   \node[font=\bfseries\fontsize{9.5}{12}\selectfont,text=navy] at (\x,5.38) {\title};
   \node[font=\fontsize{7.5}{9}\selectfont,text=muted] at (\x,4.97) {\body};
 }
 \foreach \x in {2.72,5.22,7.72,10.22,12.72}{\draw[->,line width=1pt,draw=navy] (\x,5.2)--(\x+.75,5.2);}
 
-\draw[rounded corners=8pt,fill=white,draw=line,line width=.8pt] (3.0,2.55) rectangle (13.0,3.65);
+\draw[rounded corners=8pt,fill=white,draw=line,line width=1pt] (3.0,2.55) rectangle (13.0,3.65);
 \node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (8,3.18) {每一次改分，都要能回到「原文、規準、理由、決定」};
-\draw[draw=line,line width=.7pt] (1.0,1.45)--(15.0,1.45);
+\draw[draw=line,line width=.9pt] (1.0,1.45)--(15.0,1.45);
 \node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,.92) {AI 可以先看，但不能讓責任從紀錄裡消失};
 \end{tikzpicture}
 \end{document}
+
+
