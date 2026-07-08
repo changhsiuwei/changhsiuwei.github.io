@@ -1,5 +1,15 @@
 project:
   type: website
+  render:
+    - index.md
+    - about/index.md
+    - activities/index.md
+    - publications/index.md
+    - lab/index.md
+    - knowledge/index.md
+    - knowledge/posts/**/*.md
+    - knowledge/posts/**/*.qmd
+    - students/index.qmd
 
 website:
   title: "張修瑋  H.W. Chang"

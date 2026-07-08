@@ -1,9 +1,15 @@
 /.quarto/
 **/*.quarto_ipynb
 .Rproj.user
+**/.RData
+**/.Rhistory
 
 .obsidian/
 .makemd/
 
-admin_app/
 .password_secret.txt
+students/.password_secret.txt
+_site/
+r-library/
+CONTENT_MANIFEST.csv
+knowledge/_trash/

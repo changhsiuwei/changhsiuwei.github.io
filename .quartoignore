@@ -1,0 +1,9 @@
+.git/
+.quarto/
+.Rproj.user/
+_site/
+r-library/
+START_HERE.md
+DEPENDENCIES.md
+WEBSITE_UPDATE_MAINTENANCE_MANUAL.md
+CONTENT_MANIFEST.csv
