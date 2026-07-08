@@ -77,6 +77,13 @@ Preferred replacements:
 - Use `品質`, not `質量`, unless discussing physics.
 - Use `介面`, not `接口`, except in a technical API context where `API` is clearer.
 - Use `人工判斷` or `人工核對`, not `人眼判斷`.
+- Use `不要把判斷全交給 LLM`, `不要只靠 LLM 判斷`, or `LLM 只能輔助評閱`,
+  not awkward phrases such as `唯一法官`.
+- Use `LLM 輔助評閱`, not `LLM supervisor`, unless discussing the literal name
+  of a software component.
+- Use `檢查結果`, `評分表`, or `檢核表`, not `Scorecard` in reader-facing diagrams.
+- Use `斷言規則`, `明確規則`, or `規則檢查`, not unexplained `assertion`.
+- Use `比對器` or `檢查表`, not unexplained `scoreboard`.
 
 Keep correct technical terms when they are actually technical, such as `檔案路徑`
 or `圖片路徑`. Do not replace those mechanically.
@@ -85,6 +92,11 @@ For reader-facing diagrams, use the same Taiwan wording rules as the article.
 Do not let translated engineering metaphors leak into TikZ labels. A diagram
 label should sound like a professor would say it in a Taiwan classroom: `人工逐項確認`,
 `把疑點變成規則`, `錯誤案例加入下次檢查`, `正式頁面確認完成`.
+
+English technical terms may remain when they are the object being discussed
+(`LLM`, `API`, `render`, `RTL`, `tape-out`), but do not use English as a
+shortcut for ordinary reader-facing labels. Translate the job the label performs
+for the reader.
 
 ## Article structure
 
@@ -261,6 +273,41 @@ frames, source-to-claim traces, rubric/checkpoint diagrams, or sparse classroom
 layouts. Use extracted images or screenshots when the reality of the artifact
 matters more than abstraction.
 
+## TikZ typography and spacing
+
+Reader-facing TikZ figures must be checked as images, not trusted from source
+code alone. Compile the `.tex`, export the PNG, and inspect the final image at
+the size it will appear on the website.
+
+Text must have air around it:
+
+- No label may touch, crowd, or cross a border, arrow, dot, icon, or another
+  label.
+- Box text should use a `text width` that is narrower than the box by a visible
+  margin. Do not fill the entire rectangle with text.
+- Prefer fewer words over smaller type. If the label needs more than two short
+  lines, rewrite the label or make the box larger.
+- Use comfortable CJK spacing. A useful starting point is
+  `CJKglue={\hskip 0.07em plus 0.018em minus 0.006em}` and
+  `CJKecglue={\hskip 0.1em plus 0.02em}`.
+- Use line heights that breathe. Avoid tight settings such as
+  `\fontsize{10}{10}` for Chinese text. Prefer something closer to
+  `\fontsize{10}{13}` or `\fontsize{11}{14}`.
+- Keep arrows and connectors away from text. If an arrow points into a crowded
+  card, move the card, shorten the label, or reroute the arrow.
+
+Color must support reading:
+
+- Light backgrounds need dark text.
+- Dark backgrounds need nearly white text.
+- Accent colors should mark structure, not compete with the text.
+- Avoid low-contrast gray-on-gray labels, especially in subtitles and small
+  captions.
+
+Do not mix languages casually inside diagrams. `LLM` may remain because it is
+the concept, but labels such as `supervisor`, `Scorecard`, `warning`, `fallback`,
+or `pipeline` should be translated when the figure is for Taiwan readers.
+
 ## Visual variety
 
 Do not give all articles the same figure structure. Vary the visual form by the
@@ -298,3 +345,7 @@ Before committing and pushing:
   report with one decoration.
 - Confirm category placement matches the article's central question.
 - Confirm the article does not sound like a neutral assistant report.
+- Confirm every TikZ figure has enough internal spacing: no text touches a box,
+  arrow, icon, or another label.
+- Confirm reader-facing diagram labels avoid awkward translated Chinese,
+  unexplained English labels, and phrases such as `唯一法官`.
