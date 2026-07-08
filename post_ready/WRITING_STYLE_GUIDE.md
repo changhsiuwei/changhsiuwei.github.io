@@ -153,6 +153,24 @@ teacher sees, keeps, rejects, checks, or refuses to automate.
 
 Before drawing anything, inspect the source PDF, PPTX, images, or TeX/TikZ.
 
+Do not default to one TikZ concept image at the top of every article. Decide
+the visual plan from the article's argument. Treat a long post like a small
+lecture: slides plus spoken narration. The text carries the voice; the figures
+appear when the reader needs to see a mechanism, contrast, example, failure, or
+checkpoint.
+
+Before drafting, create a visual storyboard:
+
+1. Opening tension: Does the article need a lead image, or is the opening scene
+   stronger without one?
+2. Mechanism: What process, model, relation, or decision path must be seen?
+3. Evidence or example: Is there a source slide, screenshot, table, or document
+   that should appear near the paragraph discussing it?
+4. Failure point: Is there a mistake, leakage, blind spot, bad prompt, broken
+   chart, or overconfident model output that deserves its own visual?
+5. Takeaway: Does the ending need a compact checklist, decision tree, or
+   summary exhibit, or should the final sentence stand alone?
+
 Use a source image when it does real work:
 
 - It shows the actual classroom workflow, tool interface, slide diagram,
@@ -174,9 +192,23 @@ Use source images mainly as inner context figures. For article concept images,
 prefer a cleaner editorial exhibit: one central idea, restrained color, ample
 white space, clear hierarchy, and only the minimum labels needed for the point.
 
+Place figures where they are needed, not automatically after the title. A figure
+can appear after the opening scene, between two argument turns, beside a
+classroom example, or near the end as a decision aid. If the best article needs
+three small figures and one source image, use that. If it needs one strong
+figure in the middle and none at the top, do that. If a source figure is better
+than TikZ, use the source figure. If the source figure is noisy but conceptually
+useful, redraw only the part that matters.
+
 If a TikZ figure cannot explain the point in five seconds, simplify the idea
 before drawing it. Correctness comes before ornament. Elegance comes from
 subtraction.
+
+TikZ should not become a house style. Use it when vector clarity helps:
+decision trees, timelines, feedback loops, responsibility maps, comparison
+frames, source-to-claim traces, rubric/checkpoint diagrams, or sparse classroom
+layouts. Use extracted images or screenshots when the reality of the artifact
+matters more than abstraction.
 
 ## Visual variety
 
@@ -188,8 +220,16 @@ idea:
 - Classroom article: show teacher-student-material relationship.
 - Data article: show source-to-claim traceability.
 - Warning article: show failure path, blind spot, or missing check.
+- Lecture-style article: use several small visual beats, each followed by
+  spoken-style explanation.
+- Case article: place the real source artifact near the paragraph that reads it.
+- Reflective article: use fewer visuals and let the prose carry the turn.
 
 Avoid repeated rows of boxes unless the article is truly about a sequence.
+
+The article should feel contingent: the number, placement, and style of figures
+must follow the material. Do not force every post into the same "concept image
+first, essay later" pattern.
 
 ## Publishing checklist
 
@@ -201,5 +241,9 @@ Before committing and pushing:
 - Confirm the article contains no "本文整理自..." source note.
 - Confirm every inserted image has a meaningful caption.
 - Confirm the image is placed near the paragraph it supports.
+- Confirm the article does not default to a single front-loaded TikZ image when
+  the source material calls for several visual beats.
+- Confirm the article reads like a guided talk with visual moments, not a static
+  report with one decoration.
 - Confirm category placement matches the article's central question.
 - Confirm the article does not sound like a neutral assistant report.
