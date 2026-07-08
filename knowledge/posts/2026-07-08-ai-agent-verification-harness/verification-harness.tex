@@ -4,12 +4,8 @@
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
-\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
-\IfFileExists{../../../FontAwesome.otf}{%
-  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
-}{%
-  \newfontfamily\FA{Segoe UI Symbol}%
-}
+\xeCJKsetup{CJKglue={\hskip 0.05em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
 \newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \definecolor{navy}{HTML}{0F172A}
@@ -19,40 +15,57 @@
 \definecolor{goldsoft}{HTML}{FEF3C7}
 \definecolor{green}{HTML}{00856A}
 \definecolor{greensoft}{HTML}{DCFCE7}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluesoft}{HTML}{DBEAFE}
 \definecolor{line}{HTML}{CBD5E1}
 \begin{document}
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
 \path[fill=paper] (0,0) rectangle (16,9.6);
-\node[font=\bfseries\fontsize{18}{23}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.82) {90\% 的時間，消失在重複確認裡};
-\node[font=\fontsize{10.3}{13.8}\selectfont,text=muted,align=center,text width=13.8cm] at (8,7.94) {Agent 能做事，不代表系統知道它有沒有做對};
 
-\draw[rounded corners=10pt,fill=goldsoft,draw=gold,line width=1pt] (.75,2.35) rectangle (5.15,7.15);
-\node[font=\bfseries\fontsize{11.5}{14.5}\selectfont,text=navy,align=center,text width=2.85cm] at (2.95,6.68) {人工試一次};
-\node[font=\fontsize{8.1}{10.3}\selectfont,text=muted,align=center,text width=2.7cm] at (2.95,6.14) {每次都靠人眼判斷};
-\foreach \y/\t in {5.35/開瀏覽器,4.68/貼 prompt,4.01/看結果,3.34/猜哪裡壞}{
-  \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (1.45,\y-.27) rectangle (4.45,\y+.27);
-  \node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=2.3cm] at (2.95,\y) {\t};
+\node[
+  font=\bfseries\fontsize{18}{23}\selectfont,
+  text=navy,
+  align=center,
+  text width=14.6cm
+] at (8,8.76) {90\% 的時間，消失在重複確認裡};
+\node[
+  font=\fontsize{10.2}{13.8}\selectfont,
+  text=muted,
+  align=center,
+  text width=13.8cm
+] at (8,7.92) {Agent 能做事，不代表系統知道它有沒有做對};
+
+\draw[rounded corners=12pt,fill=goldsoft,draw=gold,line width=1pt] (.75,2.2) rectangle (6.25,7.1);
+\node[font=\bfseries\fontsize{11.2}{14.4}\selectfont,text=navy,align=center,text width=4.8cm] at (3.5,6.55) {人工逐項確認};
+\node[font=\fontsize{7.9}{10.6}\selectfont,text=muted,align=center,text width=4.5cm] at (3.5,5.86) {每一步都靠人工確認\\錯誤只留在記憶裡};
+
+\foreach \y/\t in {4.8/開瀏覽器,4.12/貼提示詞,3.44/看結果,2.76/猜哪裡錯}{
+  \draw[rounded corners=7pt,fill=white,draw=line,line width=.9pt] (1.65,\y-.25) rectangle (5.35,\y+.25);
+  \node[font=\fontsize{9.2}{11.5}\selectfont,text=navy,align=center,text width=3.3cm] at (3.5,\y) {\t};
 }
 
-\draw[->,line width=1.25pt,draw=navy] (5.55,4.78) .. controls (6.22,5.35) and (6.62,5.35) .. (7.27,4.78);
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (6.42,5.62) {把懷疑寫成檢查};
+\draw[rounded corners=12pt,fill=greensoft,draw=green,line width=1pt] (9.75,2.2) rectangle (15.25,7.1);
+\node[font=\bfseries\fontsize{11.2}{14.4}\selectfont,text=navy,align=center,text width=4.8cm] at (12.5,6.55) {自動檢查流程};
+\node[font=\fontsize{7.9}{10.6}\selectfont,text=muted,align=center,text width=4.5cm] at (12.5,5.86) {每次改動都能重跑\\錯誤會被標出};
 
-\draw[rounded corners=10pt,fill=greensoft,draw=green,line width=1pt] (7.55,2.35) rectangle (15.25,7.15);
-\node[font=\bfseries\fontsize{11.5}{14.5}\selectfont,text=navy,align=center,text width=2.85cm] at (11.4,6.68) {驗證線路};
-\node[font=\fontsize{8.1}{10.3}\selectfont,text=muted,align=center,text width=2.7cm] at (11.4,6.14) {每次改動都能自動重跑};
-\foreach \x/\a/\b in {8.75/輸入/案例,11.4/執行/Agent,14.05/檢查/輸出}{
-  \draw[fill=white,draw=green,line width=1pt] (\x,4.55) circle (.58);
-  \node[font=\fontsize{9}{11}\selectfont,text=navy,align=center,text width=1.45cm] at (\x,4.66) {\a};
-  \node[font=\fontsize{7.5}{9}\selectfont,text=muted,align=center,text width=1.35cm] at (\x,4.36) {\b};
+\foreach \x/\a/\b in {10.95/輸入/案例,12.5/執行/Agent,14.05/檢查/輸出}{
+  \draw[fill=white,draw=green,line width=1pt] (\x,4.45) circle (.54);
+  \node[font=\fontsize{8.5}{10.5}\selectfont,text=navy,align=center,text width=1.18cm] at (\x,4.54) {\a};
+  \node[font=\fontsize{7.1}{8.6}\selectfont,text=muted,align=center,text width=1.18cm] at (\x,4.22) {\b};
 }
-\draw[->,line width=1pt,draw=navy] (9.35,4.55)--(10.72,4.55);
-\draw[->,line width=1pt,draw=navy] (12.00,4.55)--(13.37,4.55);
-\draw[rounded corners=7pt,fill=white,draw=line,line width=.9pt] (9.15,3.02) rectangle (13.65,3.68);
-\node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=2.3cm] at (11.4,3.35) {失敗案例進入回歸測試};
-\draw[->,line width=1pt,draw=navy] (14.05,3.96) .. controls (14.05,2.63) and (8.75,2.63) .. (8.75,3.92);
-\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.15cm] at (11.4,2.62) {下次不用靠記憶};
+\draw[->,line width=1pt,draw=navy] (11.52,4.45)--(11.92,4.45);
+\draw[->,line width=1pt,draw=navy] (13.08,4.45)--(13.48,4.45);
+
+\draw[rounded corners=8pt,fill=white,draw=line,line width=.9pt] (10.8,3.05) rectangle (14.2,3.65);
+\node[font=\fontsize{8.7}{10.9}\selectfont,text=navy,align=center,text width=3.05cm] at (12.5,3.35) {錯誤案例\\加入下次檢查};
+\draw[->,rounded corners=8pt,line width=1pt,draw=navy] (14.05,3.85) -- (14.55,3.33) -- (14.55,2.7) -- (10.45,2.7) -- (10.95,3.85);
+\node[font=\fontsize{7.8}{9.6}\selectfont,text=muted,align=center,text width=3.1cm] at (12.5,2.43) {下次不用憑記憶重查};
+
+\draw[->,line width=1.15pt,draw=navy] (6.55,4.65) -- (9.45,4.65);
+\draw[rounded corners=8pt,fill=white,draw=line,line width=.8pt] (6.9,5.05) rectangle (9.1,5.72);
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=1.8cm] at (8.0,5.385) {把疑點\\變成規則};
 
 \draw[draw=line,line width=.9pt] (.75,1.35)--(15.25,1.35);
-\node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {一次失敗如果沒有變成檢查，它就只是下一次加班的伏筆};
+\node[font=\fontsize{10.4}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {一次錯誤如果沒有留下檢查規則，就只是下一次加班的伏筆};
 \end{tikzpicture}
 \end{document}
