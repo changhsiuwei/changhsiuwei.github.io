@@ -23,13 +23,13 @@
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
 \path[fill=paper] (0,0) rectangle (16,9.6);
-\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.85) {90\% 的時間，消失在重複確認裡};
-\node[font=\fontsize{10.5}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {Agent 能做事，不代表系統知道它有沒有做對};
+\node[font=\bfseries\fontsize{18}{23}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.82) {90\% 的時間，消失在重複確認裡};
+\node[font=\fontsize{10.3}{13.8}\selectfont,text=muted,align=center,text width=13.8cm] at (8,7.94) {Agent 能做事，不代表系統知道它有沒有做對};
 
 \draw[rounded corners=10pt,fill=goldsoft,draw=gold,line width=1pt] (.75,2.35) rectangle (5.15,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=2.65cm] at (2.95,6.62) {人工試一次};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (2.95,6.25) {每次都靠人眼判斷};
-\foreach \y/\t in {5.55/開瀏覽器,4.85/貼 prompt,4.15/看結果,3.45/猜哪裡壞}{
+\node[font=\bfseries\fontsize{11.5}{14.5}\selectfont,text=navy,align=center,text width=2.85cm] at (2.95,6.68) {人工試一次};
+\node[font=\fontsize{8.1}{10.3}\selectfont,text=muted,align=center,text width=2.7cm] at (2.95,6.14) {每次都靠人眼判斷};
+\foreach \y/\t in {5.35/開瀏覽器,4.68/貼 prompt,4.01/看結果,3.34/猜哪裡壞}{
   \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (1.45,\y-.27) rectangle (4.45,\y+.27);
   \node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=2.3cm] at (2.95,\y) {\t};
 }
@@ -38,8 +38,8 @@
 \node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (6.42,5.62) {把懷疑寫成檢查};
 
 \draw[rounded corners=10pt,fill=greensoft,draw=green,line width=1pt] (7.55,2.35) rectangle (15.25,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=2.65cm] at (11.4,6.62) {驗證線路};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (11.4,6.25) {每次改動都能自動重跑};
+\node[font=\bfseries\fontsize{11.5}{14.5}\selectfont,text=navy,align=center,text width=2.85cm] at (11.4,6.68) {驗證線路};
+\node[font=\fontsize{8.1}{10.3}\selectfont,text=muted,align=center,text width=2.7cm] at (11.4,6.14) {每次改動都能自動重跑};
 \foreach \x/\a/\b in {8.75/輸入/案例,11.4/執行/Agent,14.05/檢查/輸出}{
   \draw[fill=white,draw=green,line width=1pt] (\x,4.55) circle (.58);
   \node[font=\fontsize{9}{11}\selectfont,text=navy,align=center,text width=1.45cm] at (\x,4.66) {\a};
