@@ -1,33 +1,51 @@
-\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=0pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Arial}{\setmainfont{Arial}}{\setmainfont{Latin Modern Sans}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{SimSun}}}
-\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
-\definecolor{ink}{HTML}{172033}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{SimSun}}}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\definecolor{paper}{HTML}{FAFAF7}
+\definecolor{ink}{HTML}{142033}
+\definecolor{muted}{HTML}{687386}
+\definecolor{line}{HTML}{D8DEE8}
+\definecolor{accent}{HTML}{0F766E}
+\definecolor{gold}{HTML}{B7791F}
+\definecolor{rose}{HTML}{B42318}
 \definecolor{blue}{HTML}{2563EB}
-\definecolor{gold}{HTML}{C79A2B}
-\definecolor{green}{HTML}{16A34A}
+\definecolor{softteal}{HTML}{E7F5F1}
+\definecolor{softgold}{HTML}{FFF6DD}
+\definecolor{softrose}{HTML}{FFF1F0}
+\definecolor{softblue}{HTML}{EFF5FF}
 \tikzset{
-  card/.style={rounded corners=4pt, draw=ink!30, line width=.7pt, fill=white, minimum height=1.05cm, align=center, inner sep=6pt, text=ink},
-  smallcard/.style={rounded corners=4pt, draw=ink!30, line width=.65pt, fill=white, minimum width=2.35cm, minimum height=.95cm, align=center, inner sep=5pt, text=ink, font=\small},
-  goodarrow/.style={-Latex, draw=blue!75!black, line width=1.0pt},
-  badarrow/.style={-Latex, draw=red!70!black, line width=1.0pt},
-  soft/.style={draw=ink!35, line width=.8pt},
+  headline/.style={font=\sffamily\bfseries\Large, text=ink, align=left},
+  subline/.style={font=\sffamily\small, text=muted, align=left},
+  flow/.style={-{Latex[length=2.6mm,width=1.8mm]}, draw=accent, line width=1.1pt},
+  softflow/.style={-{Latex[length=2.2mm,width=1.5mm]}, draw=line!80!ink, line width=.8pt},
+  nodecircle/.style={circle, fill=accent, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
+  goldcircle/.style={circle, fill=gold, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
+  rosecircle/.style={circle, fill=rose, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
+  label/.style={font=\sffamily\small, text=ink, align=center},
+  fine/.style={font=\sffamily\footnotesize, text=muted, align=center},
+  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=.65pt, align=center, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
+  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.75pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
 }
+\newcommand{\Canvas}{\path[use as bounding box] (-6.4,-3.6) rectangle (6.4,3.6);\fill[paper] (-6.4,-3.6) rectangle (6.4,3.6);}
 \begin{document}
-\begin{tikzpicture}[font=\sffamily, >=Latex, line cap=round, line join=round]
-\node[font=\bfseries\Large,text=ink] at (0,4.45) {LLM 大導演方法：謀、定、動};
-\node[card,fill=gold!18,draw=gold!70!black,minimum width=3.4cm,minimum height=1.5cm] (plan) at (-3.8,2.2) {謀\\目標、對象、限制};
-\node[card,fill=blue!8,draw=blue!40,minimum width=3.4cm,minimum height=1.5cm] (design) at (0,2.2) {定\\格式、資料、規準};
-\node[card,fill=green!8,draw=green!45!black,minimum width=3.4cm,minimum height=1.5cm] (act) at (3.8,2.2) {動\\生成、測試、修正};
-\draw[goodarrow] (plan) -- (design); \draw[goodarrow] (design) -- (act);
-\node[circle,draw=ink!35,fill=white,minimum size=1.45cm,align=center] (director) at (0,-0.35) {人\\導演};
-\node[smallcard] (qa1) at (-3.6,-2.05) {方向檢查};
-\node[smallcard] (qa2) at (0,-2.05) {品質檢查};
-\node[smallcard] (qa3) at (3.6,-2.05) {責任檢查};
-\foreach \x in {plan,design,act}{\draw[soft] (director) -- (\x);}
-\draw[goodarrow] (qa1) -- (director); \draw[goodarrow] (qa2) -- (director); \draw[goodarrow] (qa3) -- (director);
-\node[font=\small,text=ink!70] at (0,-3.55) {AI 可以執行許多任務，但方向與驗收仍由人負責};
+\begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
+\Canvas
+\node[headline,anchor=west] at (-5.8,3.0) {人要當導演，不要當旁觀者};
+\node[subline,anchor=west] at (-5.8,2.55) {LLM 會產出很多東西；方向、規準、剪輯權仍在人手上。};
+\node[goldcard,minimum width=2.7cm,minimum height=1.25cm] (mou) at (-3.6,.8) {謀目標與限制};
+\node[bluecard,minimum width=2.7cm,minimum height=1.25cm] (ding) at (0,.8) {定格式與規準};
+\node[tealcard,minimum width=2.7cm,minimum height=1.25cm] (dong) at (3.6,.8) {動生成與修正};
+\draw[flow] (mou) -- (ding); \draw[flow] (ding) -- (dong);
+\node[card,minimum width=3.1cm] (human) at (0,-1.35) {人決定可不可以交付};
+\foreach \x in {mou,ding,dong}{\draw[softflow] (\x) -- (human);}
+\node[fine] at (0,-2.85) {提示詞不是咒語；它是一張工作單。};
 \end{tikzpicture}
 \end{document}

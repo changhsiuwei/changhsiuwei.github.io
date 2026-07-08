@@ -3,6 +3,7 @@ title: "LLM 大導演時代：與 AI 協作的「謀、定、動」"
 author: "張修瑋"
 date: "2026-07-08"
 categories:
+  - AI 知識站
   - AI協作
   - Prompt工程
   - 工作方法

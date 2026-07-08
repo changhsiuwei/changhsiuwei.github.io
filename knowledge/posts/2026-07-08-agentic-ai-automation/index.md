@@ -1,12 +1,13 @@
 ---
-title: "從圖靈到 Agentic AI：辦公室知識工作的自動化 2.0"
+title: "Agentic AI 來了：辦公室自動化真正麻煩的地方"
 author: "張修瑋"
 date: "2026-07-08"
 categories:
+  - AI 知識站
   - Agentic AI
   - 自動化
   - AI教育
-description: "從圖靈測試、LLM、多模態、工具呼叫到 Agentic AI，整理知識工作自動化的新階段。"
+description: "整理 Agentic AI 如何把語言模型、工具呼叫、記憶與人工監督接成知識工作流程。"
 image: concept.png
 draft: false
 ---

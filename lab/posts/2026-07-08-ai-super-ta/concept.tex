@@ -38,15 +38,14 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {AI 可以當助教，但不能當老師};
+\node[subline,anchor=west] at (-5.8,2.55) {教師設定標準，AI 分擔重複工作。};
+\node[goldcard,minimum width=3.5cm,minimum height=1.2cm] (teacher) at (0,.75) {教師規準、診斷、最後判斷};
+\node[tealcard,minimum width=2.6cm] (a) at (-4.4,1.15) {題目草稿};
+\node[tealcard,minimum width=2.6cm] (b) at (4.4,1.15) {回饋草稿};
+\node[tealcard,minimum width=2.6cm] (c) at (-4.4,-1.15) {FAQ 整理};
+\node[tealcard,minimum width=2.6cm] (d) at (4.4,-1.15) {公告摘要};
+\foreach \x in {a,b,c,d}{\draw[softflow] (teacher) -- (\x);}
+\node[quietcard,minimum width=8.4cm] at (0,-2.85) {AI 做第一稿；教師決定哪些內容配得上進課堂。};
 \end{tikzpicture}
 \end{document}

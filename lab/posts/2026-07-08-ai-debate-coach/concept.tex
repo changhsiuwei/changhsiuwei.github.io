@@ -38,15 +38,13 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {把 AI 放到反方席};
+\node[subline,anchor=west] at (-5.8,2.55) {學生要學的不是口才，是被反駁後怎麼修正。};
+\node[goldcard,minimum width=2.5cm] (claim) at (0,1.55) {主張};
+\node[rosecard,minimum width=2.5cm] (attack) at (3.6,.15) {反駁};
+\node[card,minimum width=2.5cm] (source) at (0,-1.45) {查證};
+\node[tealcard,minimum width=2.5cm] (revise) at (-3.6,.15) {修正};
+\draw[flow] (claim) -- (attack); \draw[flow] (attack) -- (source); \draw[flow] (source) -- (revise); \draw[flow] (revise) -- (claim);
+\node[quietcard,minimum width=8.2cm] at (0,-2.85) {每一輪都要留下理由：哪一句被推翻？哪一個證據撐得住？};
 \end{tikzpicture}
 \end{document}

@@ -38,15 +38,17 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {備課先管理脈絡，再要求 AI 產出};
+\node[subline,anchor=west] at (-5.8,2.55) {Markdown 是中間層，不是最後目的。};
+\node[card,minimum width=2.7cm] (s1) at (-4.7,1.2) {課本論文};
+\node[card,minimum width=2.7cm] (s2) at (-4.7,-.8) {舊講義案例};
+\node[tealcard,minimum width=3.0cm,minimum height=1.35cm] (ctx) at (-1.2,.2) {脈絡庫來源可追};
+\node[goldcard,minimum width=2.7cm,minimum height=1.25cm] (md) at (2.0,.2) {Markdown結構草稿};
+\node[quietcard,minimum width=2.0cm] (o1) at (4.8,1.45) {講義};
+\node[quietcard,minimum width=2.0cm] (o2) at (4.8,.2) {投影片};
+\node[quietcard,minimum width=2.0cm] (o3) at (4.8,-1.05) {文章};
+\draw[flow] (s1) -- (ctx); \draw[flow] (s2) -- (ctx); \draw[flow] (ctx) -- (md);
+\foreach \x in {o1,o2,o3}{\draw[softflow] (md) -- (\x);}
+\node[quietcard,minimum width=8.6cm] at (0,-2.85) {來源沒有被保存，AI 草稿越流暢越危險。};
 \end{tikzpicture}
 \end{document}

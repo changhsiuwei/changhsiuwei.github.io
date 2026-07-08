@@ -38,15 +38,15 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {母語複習，是降低額外負荷};
+\node[subline,anchor=west] at (-5.8,2.55) {專業標準不變，語言門檻先降下來。};
+\draw[flow] (-5.0,.8) -- (5.0,.8);
+\foreach \x/\n/\t in {-5/1/課堂錄音,-2.5/2/逐字稿,0/3/重點整理,2.5/4/術語對照,5/5/母語複習}{
+  \node[nodecircle] at (\x,.8) {\n};
+  \node[label] at (\x,-.05) {\t};
+}
+\node[bluecard,minimum width=3.2cm] at (-2.5,-2.15) {聽不懂速度};
+\node[tealcard,minimum width=3.2cm] at (0,-2.15) {抓得到概念};
+\node[goldcard,minimum width=3.2cm] at (2.5,-2.15) {回到課堂討論};
 \end{tikzpicture}
 \end{document}

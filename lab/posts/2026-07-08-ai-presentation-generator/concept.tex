@@ -38,15 +38,16 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {先固定版型，再讓 AI 填內容};
+\node[subline,anchor=west] at (-5.8,2.55) {簡報失控，通常不是文字問題，是結構問題。};
+\node[card,minimum width=2.55cm] (idea) at (-4.7,.85) {主張證據};
+\node[tealcard,minimum width=2.55cm] (json) at (-1.65,.85) {JSON結構};
+\node[goldcard,minimum width=2.55cm] (tpl) at (1.4,.85) {固定模板};
+\node[card,minimum width=2.55cm] (deck) at (4.45,.85) {PPT草稿};
+\foreach \a/\b in {idea/json,json/tpl,tpl/deck}{\draw[flow] (\a) -- (\b);}
+\node[quietcard,minimum width=3.1cm] at (-2.25,-1.55) {先審內容};
+\node[quietcard,minimum width=3.1cm] at (2.25,-1.55) {再審畫面};
+\draw[softflow] (json) -- (-2.25,-1.1); \draw[softflow] (deck) -- (2.25,-1.1);
+\node[fine] at (0,-2.85) {AI 可以生草稿；故事線仍然要人決定。};
 \end{tikzpicture}
 \end{document}

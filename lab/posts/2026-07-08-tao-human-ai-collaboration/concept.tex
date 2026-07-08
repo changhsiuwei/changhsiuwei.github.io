@@ -38,15 +38,19 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily, line cap=round, line join=round]
 \Canvas
-\node[headline,anchor=west] at (-5.8,3.0) {Agentic AI 最難的是邊界};
-\node[subline,anchor=west] at (-5.8,2.55) {能自己行動的系統，也需要知道何時停下來等人。};
-\node[goldcard,minimum width=2.4cm] (goal) at (-3.7,1.15) {目標};
-\node[tealcard,minimum width=2.4cm] (plan) at (0,1.15) {計畫};
-\node[bluecard,minimum width=2.4cm] (tool) at (3.7,1.15) {工具};
-\node[card,minimum width=2.4cm] (check) at (3.7,-1.0) {檢查};
-\node[card,minimum width=2.4cm] (memory) at (0,-1.0) {記憶};
-\node[rosecard,minimum width=2.4cm] (human) at (-3.7,-1.0) {人工核准};
-\foreach \a/\b in {goal/plan,plan/tool,tool/check,check/memory,memory/human,human/goal}{\draw[flow] (\a) -- (\b);}
-\node[fine] at (0,-2.85) {好的 agent 不是一直做事，而是知道哪些門不能自己開。};
+\node[headline,anchor=west] at (-5.8,3.0) {高手使用 AI，不把答案交出去};
+\node[subline,anchor=west] at (-5.8,2.55) {人定義問題，AI 擴張可能，人再回來驗證。};
+\node[goldcircle] (h1) at (-4.4,.9) {人};
+\node[nodecircle] (a1) at (-1.45,.9) {AI};
+\node[nodecircle] (a2) at (1.45,.9) {AI};
+\node[goldcircle] (h2) at (4.4,.9) {人};
+\draw[flow] (h1) -- (a1); \draw[flow] (a1) -- (a2); \draw[flow] (a2) -- (h2);
+\node[label] at (-4.4,-.05) {問題與判準};
+\node[label] at (-1.45,-.05) {解法清單};
+\node[label] at (1.45,-.05) {反例與盲點};
+\node[label] at (4.4,-.05) {查證與定稿};
+\node[quietcard,minimum width=3.1cm] at (-2.9,-2.35) {AI 加快探索};
+\node[quietcard,minimum width=3.1cm] at (0,-2.35) {人保留標準};
+\node[quietcard,minimum width=3.1cm] at (2.9,-2.35) {結論回到證據};
 \end{tikzpicture}
 \end{document}

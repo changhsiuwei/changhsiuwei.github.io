@@ -6,6 +6,8 @@ project:
     - activities/index.md
     - publications/index.md
     - lab/index.md
+    - lab/posts/**/*.md
+    - lab/posts/**/*.qmd
     - knowledge/index.md
     - knowledge/posts/**/*.md
     - knowledge/posts/**/*.qmd
