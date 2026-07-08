@@ -103,6 +103,18 @@ The ending does not need a neat summary. It should feel like a door closing with
 one hard sentence, a live question, or a small image that keeps working after
 the article ends.
 
+## Image placement
+
+Do not let every article open with a diagram. Unless the image itself is the
+story, the first figure should appear only after the reader has entered the
+problem. A good figure should clarify a decision, tension, workflow, or teaching
+move that the surrounding paragraphs have already made meaningful.
+
+Avoid stacking figures. Each image needs text before it that creates the need
+for the image, and text after it that interprets what the reader should notice.
+Do not use images as decoration, section fillers, or proof that the article has
+visuals.
+
 ## Headings and reading rhythm
 
 Headings should sound like claims, not labels.
