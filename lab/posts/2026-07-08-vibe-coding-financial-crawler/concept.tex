@@ -18,21 +18,21 @@
 \definecolor{softrose}{HTML}{FEE2E2}
 \definecolor{softblue}{HTML}{DBEAFE}
 \tikzset{
-  headline/.style={font=\sffamily\bfseries\LARGE, text=ink, align=left},
-  subline/.style={font=\sffamily\normalsize, text=muted, align=left},
+  headline/.style={font=\sffamily\bfseries\LARGE, text=ink, align=left, text width=11.8cm},
+  subline/.style={font=\sffamily\normalsize, text=muted, align=left, text width=11.8cm},
   flow/.style={-{Latex[length=2.6mm,width=1.8mm]}, draw=accent, line width=1.25pt},
   softflow/.style={-{Latex[length=2.2mm,width=1.5mm]}, draw=line!80!ink, line width=1pt},
   nodecircle/.style={circle, fill=accent, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   goldcircle/.style={circle, fill=gold, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   rosecircle/.style={circle, fill=rose, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
-  label/.style={font=\sffamily\small, text=ink, align=center},
-  fine/.style={font=\sffamily\footnotesize, text=muted, align=center},
-  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=1pt, align=center, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
-  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
-  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.95pt, align=center, inner sep=7pt, text=ink, font=\sffamily\small},
+  label/.style={font=\sffamily\small, text=ink, align=center, text width=1.8cm},
+  fine/.style={font=\sffamily\footnotesize, text=muted, align=center, text width=10.8cm},
+  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
+  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=1pt, align=center, text width=2.35cm, minimum height=.72cm, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
+  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
+  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
+  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
+  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
 }
 \newcommand{\Canvas}{\path[use as bounding box] (-6.4,-3.6) rectangle (6.4,3.6);\fill[paper] (-6.4,-3.6) rectangle (6.4,3.6);}
 \begin{document}
@@ -45,10 +45,11 @@
   \node[nodecircle] at (\x,.9) {\n};
   \node[label] at (\x,.02) {\t};
 }
-\node[quietcard,minimum width=3.0cm] at (-3.45,-1.65) {交提示詞與修錯紀錄};
-\node[quietcard,minimum width=3.0cm] at (0,-1.65) {查資料來源與欄位定義};
-\node[quietcard,minimum width=3.0cm] at (3.45,-1.65) {回答會計問題而不是只畫圖};
+\node[quietcard,minimum width=3.0cm,text width=2.55cm] at (-3.45,-1.65) {交提示詞與修錯紀錄};
+\node[quietcard,minimum width=3.0cm,text width=2.55cm] at (0,-1.65) {查資料來源與欄位定義};
+\node[quietcard,minimum width=3.0cm,text width=2.55cm] at (3.45,-1.65) {回答會計問題而不是只畫圖};
 \node[fine,text=accent] at (0,-2.85) {交付物不是程式碼本身，而是一段可被追問的判斷。};
 \end{tikzpicture}
 \end{document}
+
 

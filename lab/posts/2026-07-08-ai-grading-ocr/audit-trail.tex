@@ -18,8 +18,8 @@
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
 \path[fill=paper] (0,0) rectangle (16,9.6);
-\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy] at (8,8.82) {AI 批改要留下稽核軌跡};
-\node[font=\fontsize{10.5}{13}\selectfont,text=muted] at (8,8.12) {分數不是結果，能追問才是系統};
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.82) {AI 批改要留下稽核軌跡};
+\node[font=\fontsize{10.5}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {分數不是結果，能追問才是系統};
 
 \foreach \x/\title/\body/\fc/\drawc in {
 1.65/原卷影像/學生原始作答/bluesoft/blue,
@@ -28,16 +28,16 @@
 9.15/AI 初評/分數與理由/greensoft/green,
 11.65/教師核分/調整與確認/white/line,
 14.15/申訴紀錄/學生可追問/bluesoft/blue}{
-  \draw[rounded corners=8pt,fill=\fc,draw=\drawc,line width=1pt] (\x-1.05,4.45) rectangle (\x+1.05,5.95);
-  \node[font=\bfseries\fontsize{9.5}{12}\selectfont,text=navy] at (\x,5.38) {\title};
-  \node[font=\fontsize{7.5}{9}\selectfont,text=muted] at (\x,4.97) {\body};
+  \draw[rounded corners=8pt,fill=\fc,draw=\drawc,line width=1pt] (\x-1.05,4.35) rectangle (\x+1.05,6.05);
+  \node[font=\bfseries\fontsize{9.2}{11}\selectfont,text=navy,align=center,text width=1.8cm] at (\x,5.58) {\title};
+  \node[font=\fontsize{7.2}{8.8}\selectfont,text=muted,align=center,text width=1.75cm] at (\x,5.02) {\body};
 }
 \foreach \x in {2.72,5.22,7.72,10.22,12.72}{\draw[->,line width=1pt,draw=navy] (\x,5.2)--(\x+.75,5.2);}
 
 \draw[rounded corners=8pt,fill=white,draw=line,line width=1pt] (3.0,2.55) rectangle (13.0,3.65);
-\node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (8,3.18) {每一次改分，都要能回到「原文、規準、理由、決定」};
+\node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=8.6cm] at (8,3.1) {每一次改分，都要能回到「原文、規準、理由、決定」};
 \draw[draw=line,line width=.9pt] (1.0,1.45)--(15.0,1.45);
-\node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,.92) {AI 可以先看，但不能讓責任從紀錄裡消失};
+\node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.92) {AI 可以先看，但不能讓責任從紀錄裡消失};
 \end{tikzpicture}
 \end{document}
 

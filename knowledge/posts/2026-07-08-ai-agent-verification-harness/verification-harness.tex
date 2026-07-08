@@ -16,37 +16,37 @@
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
 \path[fill=paper] (0,0) rectangle (16,9.6);
-\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy] at (8,8.85) {90\% 的時間，消失在重複確認裡};
-\node[font=\fontsize{10.5}{13}\selectfont,text=muted] at (8,8.12) {Agent 能做事，不代表系統知道它有沒有做對};
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.85) {90\% 的時間，消失在重複確認裡};
+\node[font=\fontsize{10.5}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {Agent 能做事，不代表系統知道它有沒有做對};
 
 \draw[rounded corners=10pt,fill=goldsoft,draw=gold,line width=1pt] (.75,2.35) rectangle (5.15,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (2.95,6.62) {人工試一次};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (2.95,6.25) {每次都靠人眼判斷};
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=2.65cm] at (2.95,6.62) {人工試一次};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (2.95,6.25) {每次都靠人眼判斷};
 \foreach \y/\t in {5.55/開瀏覽器,4.85/貼 prompt,4.15/看結果,3.45/猜哪裡壞}{
   \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (1.45,\y-.27) rectangle (4.45,\y+.27);
-  \node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (2.95,\y) {\t};
+  \node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=2.3cm] at (2.95,\y) {\t};
 }
 
 \draw[->,line width=1.25pt,draw=navy] (5.55,4.78) .. controls (6.22,5.35) and (6.62,5.35) .. (7.27,4.78);
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (6.42,5.62) {把懷疑寫成檢查};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (6.42,5.62) {把懷疑寫成檢查};
 
 \draw[rounded corners=10pt,fill=greensoft,draw=green,line width=1pt] (7.55,2.35) rectangle (15.25,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (11.4,6.62) {驗證線路};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (11.4,6.25) {每次改動都能自動重跑};
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=2.65cm] at (11.4,6.62) {驗證線路};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (11.4,6.25) {每次改動都能自動重跑};
 \foreach \x/\a/\b in {8.75/輸入/案例,11.4/執行/Agent,14.05/檢查/輸出}{
   \draw[fill=white,draw=green,line width=1pt] (\x,4.55) circle (.58);
-  \node[font=\fontsize{9}{11}\selectfont,text=navy] at (\x,4.66) {\a};
-  \node[font=\fontsize{7.5}{9}\selectfont,text=muted] at (\x,4.36) {\b};
+  \node[font=\fontsize{9}{11}\selectfont,text=navy,align=center,text width=1.45cm] at (\x,4.66) {\a};
+  \node[font=\fontsize{7.5}{9}\selectfont,text=muted,align=center,text width=1.35cm] at (\x,4.36) {\b};
 }
 \draw[->,line width=1pt,draw=navy] (9.35,4.55)--(10.72,4.55);
 \draw[->,line width=1pt,draw=navy] (12.00,4.55)--(13.37,4.55);
 \draw[rounded corners=7pt,fill=white,draw=line,line width=.9pt] (9.15,3.02) rectangle (13.65,3.68);
-\node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (11.4,3.35) {失敗案例進入回歸測試};
+\node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=2.3cm] at (11.4,3.35) {失敗案例進入回歸測試};
 \draw[->,line width=1pt,draw=navy] (14.05,3.96) .. controls (14.05,2.63) and (8.75,2.63) .. (8.75,3.92);
-\node[font=\fontsize{8}{10}\selectfont,text=muted] at (11.4,2.62) {下次不用靠記憶};
+\node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.15cm] at (11.4,2.62) {下次不用靠記憶};
 
 \draw[draw=line,line width=.9pt] (.75,1.35)--(15.25,1.35);
-\node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,.82) {一次失敗如果沒有變成檢查，它就只是下一次加班的伏筆};
+\node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {一次失敗如果沒有變成檢查，它就只是下一次加班的伏筆};
 \end{tikzpicture}
 \end{document}
 

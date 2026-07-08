@@ -18,34 +18,34 @@
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
 \path[fill=paper] (0,0) rectangle (16,9.6);
-\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy] at (8,8.85) {生成很快，判斷很慢};
-\node[font=\fontsize{10.5}{13}\selectfont,text=muted] at (8,8.12) {Agent 的速度如果沒有驗證配套，只會把人工查核放大};
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.85) {生成很快，判斷很慢};
+\node[font=\fontsize{10.5}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {Agent 的速度如果沒有驗證配套，只會把人工查核放大};
 
 \draw[rounded corners=10pt,fill=bluesoft,draw=blue,line width=1pt] (.75,2.35) rectangle (6.75,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (3.75,6.62) {產生答案};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (3.75,6.25) {速度快，成本低，候選很多};
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.6cm] at (3.75,6.62) {產生答案};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=4.4cm] at (3.75,6.25) {速度快，成本低，候選很多};
 \draw[line width=1pt,draw=navy] (2.05,3.6) .. controls (2.75,5.8) and (3.45,3.72) .. (4.1,5.72) .. controls (4.65,4.45) and (5.35,4.92) .. (5.9,3.92);
 \foreach \p in {(2.05,3.6),(2.75,5.8),(3.45,3.72),(4.1,5.72),(5.35,4.92),(5.9,3.92)}{
   \fill[gold] \p circle (.08);
 }
 \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (1.75,2.7) rectangle (5.75,3.25);
-\node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (3.75,2.98) {十個候選，看起來都能用};
+\node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=3.6cm] at (3.75,2.98) {十個候選，看起來都能用};
 
 \draw[->,line width=1.25pt,draw=navy] (7.05,4.75)--(8.95,4.75);
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (8,5.18) {真正的成本轉到右邊};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (8,5.18) {真正的成本轉到右邊};
 
 \draw[rounded corners=10pt,fill=redsoft,draw=red,line width=1pt] (9.25,2.35) rectangle (15.25,7.15);
-\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy] at (12.25,6.62) {驗證答案};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted] at (12.25,6.25) {要查來源、跑測試、看上下文};
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.6cm] at (12.25,6.62) {驗證答案};
+\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=4.4cm] at (12.25,6.25) {要查來源、跑測試、看上下文};
 \foreach \y/\t in {5.35/欄位是否正確,4.55/連結是否可用,3.75/正式頁面是否更新}{
   \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (10.2,\y-.28) rectangle (14.3,\y+.28);
-  \node[font=\fontsize{9.5}{12}\selectfont,text=navy] at (12.05,\y) {\t};
+  \node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=3.45cm] at (12.05,\y) {\t};
 }
 \fill[green] (14.0,5.35) circle (.09);
 \fill[green] (14.0,4.55) circle (.09);
 \fill[red] (14.0,3.75) circle (.09);
 \draw[draw=line,line width=.9pt] (.75,1.35)--(15.25,1.35);
-\node[font=\fontsize{10.5}{13}\selectfont,text=navy] at (8,.82) {任務能不能自動化，常常取決於它能不能被穩定檢查};
+\node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {任務能不能自動化，常常取決於它能不能被穩定檢查};
 \end{tikzpicture}
 \end{document}
 
