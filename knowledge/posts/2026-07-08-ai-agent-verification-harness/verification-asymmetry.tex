@@ -1,9 +1,16 @@
-﻿\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{%
+  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
+}{%
+  \newfontfamily\FA{Segoe UI Symbol}%
+}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,calc}
 \definecolor{navy}{HTML}{0F172A}
 \definecolor{muted}{HTML}{334155}
@@ -41,13 +48,10 @@
   \draw[rounded corners=5pt,fill=white,draw=line,line width=.9pt] (10.2,\y-.28) rectangle (14.3,\y+.28);
   \node[font=\fontsize{9.5}{12}\selectfont,text=navy,align=center,text width=3.45cm] at (12.05,\y) {\t};
 }
-\fill[green] (14.0,5.35) circle (.09);
-\fill[green] (14.0,4.55) circle (.09);
-\fill[red] (14.0,3.75) circle (.09);
+\node[font=\fontsize{7.5}{7.5}\selectfont,text=green] at (14.0,5.35) {\faIcon{"F00C}};
+\node[font=\fontsize{7.5}{7.5}\selectfont,text=green] at (14.0,4.55) {\faIcon{"F00C}};
+\node[font=\fontsize{7.5}{7.5}\selectfont,text=red] at (14.0,3.75) {\faIcon{"F00D}};
 \draw[draw=line,line width=.9pt] (.75,1.35)--(15.25,1.35);
 \node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {任務能不能自動化，常常取決於它能不能被穩定檢查};
 \end{tikzpicture}
 \end{document}
-
-
-

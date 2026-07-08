@@ -1,9 +1,16 @@
-﻿\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{%
+  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
+}{%
+  \newfontfamily\FA{Segoe UI Symbol}%
+}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,positioning}
 \definecolor{paper}{HTML}{FFFDF8}
 \definecolor{navy}{HTML}{0F172A}
@@ -42,5 +49,3 @@
 \node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,2.28) {資料卡讓學生把「有用」和「能用」分開};
 \end{tikzpicture}
 \end{document}
-
-

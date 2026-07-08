@@ -1,9 +1,16 @@
-﻿\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{%
+  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
+}{%
+  \newfontfamily\FA{Segoe UI Symbol}%
+}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,positioning}
 \definecolor{navy}{HTML}{0F172A}
 \definecolor{muted}{HTML}{334155}
@@ -53,6 +60,3 @@
 \draw[draw=line,line width=.9pt] (.85,1.35)--(15.15,1.35);
 \end{tikzpicture}
 \end{document}
-
-
-

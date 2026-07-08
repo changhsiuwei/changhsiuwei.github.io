@@ -1,9 +1,16 @@
-﻿\documentclass[tikz,border=0pt]{standalone}
+\documentclass[tikz,border=0pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{%
+  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
+}{%
+  \newfontfamily\FA{Segoe UI Symbol}%
+}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
 \definecolor{paper}{HTML}{FFFDF8}
 \definecolor{ink}{HTML}{0F172A}
@@ -27,12 +34,12 @@
   rosecircle/.style={circle, fill=rose, text=white, minimum size=8mm, inner sep=0pt, font=\sffamily\bfseries\small},
   label/.style={font=\sffamily\small, text=ink, align=center, text width=1.8cm},
   fine/.style={font=\sffamily\footnotesize, text=muted, align=center, text width=10.8cm},
-  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
-  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=1pt, align=center, text width=2.35cm, minimum height=.72cm, inner sep=6pt, text=muted, font=\sffamily\footnotesize},
-  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
-  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
-  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
-  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.95pt, align=center, text width=2.1cm, minimum height=.72cm, inner sep=6pt, text=ink, font=\sffamily\small},
+  card/.style={rounded corners=5pt, fill=white, draw=line, line width=.95pt, align=center, text width=2.1cm, minimum height=.82cm, inner sep=7pt, text=ink, font=\sffamily\small},
+  quietcard/.style={rounded corners=5pt, fill=paper, draw=line, line width=1pt, align=center, text width=2.35cm, minimum height=.82cm, inner sep=7pt, text=muted, font=\sffamily\footnotesize},
+  tealcard/.style={rounded corners=5pt, fill=softteal, draw=accent!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.82cm, inner sep=7pt, text=ink, font=\sffamily\small},
+  goldcard/.style={rounded corners=5pt, fill=softgold, draw=gold!55, line width=.95pt, align=center, text width=2.1cm, minimum height=.82cm, inner sep=7pt, text=ink, font=\sffamily\small},
+  rosecard/.style={rounded corners=5pt, fill=softrose, draw=rose!45, line width=.95pt, align=center, text width=2.1cm, minimum height=.82cm, inner sep=7pt, text=ink, font=\sffamily\small},
+  bluecard/.style={rounded corners=5pt, fill=softblue, draw=blue!40, line width=.95pt, align=center, text width=2.1cm, minimum height=.82cm, inner sep=7pt, text=ink, font=\sffamily\small},
 }
 \newcommand{\Canvas}{\path[use as bounding box] (-6.4,-3.6) rectangle (6.4,3.6);\fill[paper] (-6.4,-3.6) rectangle (6.4,3.6);}
 \begin{document}
@@ -52,5 +59,3 @@
 \draw[softflow] (-4.9,-1.7) -- (4.9,-1.7);
 \end{tikzpicture}
 \end{document}
-
-

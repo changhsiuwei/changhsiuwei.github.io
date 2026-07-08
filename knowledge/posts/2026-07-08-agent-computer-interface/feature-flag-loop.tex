@@ -1,9 +1,16 @@
-﻿\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=8pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
 \IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{%
+  \newfontfamily\FA[Path=../../../]{FontAwesome.otf}%
+}{%
+  \newfontfamily\FA{Segoe UI Symbol}%
+}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
 \usetikzlibrary{arrows.meta,calc}
 \definecolor{navy}{HTML}{0F172A}
 \definecolor{muted}{HTML}{334155}
@@ -23,21 +30,21 @@
 \node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.6cm] at (8,8.85) {新能力先進小圈，不直接碰正式流程};
 \node[font=\fontsize{10.5}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {Feature flag 讓實驗、比較、回退都有位置};
 
-\draw[rounded corners=9pt,fill=goldsoft,draw=gold,line width=1pt] (1.25,4.05) rectangle (4.0,5.45);
-\node[font=\bfseries\fontsize{11}{14}\selectfont,text=navy,align=center,text width=2.45cm] at (2.62,4.95) {Flag 開關};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (2.62,4.58) {限定文章與任務};
-\draw[rounded corners=9pt,fill=bluesoft,draw=blue,line width=1pt] (5.1,5.35) rectangle (8.0,6.75);
-\node[font=\bfseries\fontsize{11}{14}\selectfont,text=navy,align=center,text width=2.45cm] at (6.55,6.25) {回歸測試};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (6.55,5.88) {舊錯不准回來};
-\draw[rounded corners=9pt,fill=bluesoft,draw=blue,line width=1pt] (5.1,2.75) rectangle (8.0,4.15);
-\node[font=\bfseries\fontsize{11}{14}\selectfont,text=navy,align=center,text width=2.45cm] at (6.55,3.65) {品質檢查};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (6.55,3.28) {文字、圖、分類};
-\draw[rounded corners=9pt,fill=greensoft,draw=green,line width=1pt] (9.15,4.05) rectangle (12.1,5.45);
-\node[font=\bfseries\fontsize{11}{14}\selectfont,text=navy,align=center,text width=2.45cm] at (10.62,4.95) {正式流程};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (10.62,4.58) {通過才放大};
-\draw[rounded corners=9pt,fill=redsoft,draw=red,line width=1pt] (13.05,4.05) rectangle (15.0,5.45);
-\node[font=\bfseries\fontsize{11}{14}\selectfont,text=navy,align=center,text width=2.45cm] at (14.02,4.95) {回退};
-\node[font=\fontsize{8.5}{11}\selectfont,text=muted,align=center,text width=2.15cm] at (14.02,4.58) {留下原因};
+\draw[rounded corners=9pt,fill=goldsoft,draw=gold,line width=1pt] (1.25,3.96) rectangle (4.0,5.54);
+\node[font=\bfseries\fontsize{10.7}{13}\selectfont,text=navy,align=center,text width=2.45cm] at (2.62,5.08) {Flag 開關};
+\node[font=\fontsize{8.2}{10.5}\selectfont,text=muted,align=center,text width=2.2cm] at (2.62,4.42) {限定文章與任務};
+\draw[rounded corners=9pt,fill=bluesoft,draw=blue,line width=1pt] (5.1,5.27) rectangle (8.0,6.85);
+\node[font=\bfseries\fontsize{10.7}{13}\selectfont,text=navy,align=center,text width=2.45cm] at (6.55,6.39) {回歸測試};
+\node[font=\fontsize{8.2}{10.5}\selectfont,text=muted,align=center,text width=2.2cm] at (6.55,5.73) {舊錯不准回來};
+\draw[rounded corners=9pt,fill=bluesoft,draw=blue,line width=1pt] (5.1,2.65) rectangle (8.0,4.23);
+\node[font=\bfseries\fontsize{10.7}{13}\selectfont,text=navy,align=center,text width=2.45cm] at (6.55,3.77) {品質檢查};
+\node[font=\fontsize{8.2}{10.5}\selectfont,text=muted,align=center,text width=2.2cm] at (6.55,3.11) {文字、圖、分類};
+\draw[rounded corners=9pt,fill=greensoft,draw=green,line width=1pt] (9.15,3.96) rectangle (12.1,5.54);
+\node[font=\bfseries\fontsize{10.7}{13}\selectfont,text=navy,align=center,text width=2.45cm] at (10.62,5.08) {正式流程};
+\node[font=\fontsize{8.2}{10.5}\selectfont,text=muted,align=center,text width=2.2cm] at (10.62,4.42) {通過才放大};
+\draw[rounded corners=9pt,fill=redsoft,draw=red,line width=1pt] (13.05,3.96) rectangle (15.0,5.54);
+\node[font=\bfseries\fontsize{10.7}{13}\selectfont,text=navy,align=center,text width=1.8cm] at (14.02,5.08) {回退};
+\node[font=\fontsize{8.2}{10.5}\selectfont,text=muted,align=center,text width=1.8cm] at (14.02,4.42) {留下原因};
 
 \draw[->,line width=1pt,draw=navy] (4.03,4.92) .. controls (4.55,5.88) and (4.62,6.05) .. (4.92,6.05);
 \draw[->,line width=1pt,draw=navy] (4.03,4.58) .. controls (4.55,3.35) and (4.62,3.45) .. (4.92,3.45);
@@ -45,15 +52,9 @@
 \draw[->,line width=1pt,draw=navy] (8.08,3.45) .. controls (8.75,3.45) and (8.82,4.55) .. (8.95,4.68);
 \draw[->,line width=1pt,draw=navy] (12.12,4.75)--(12.88,4.75);
 \draw[->,line width=1pt,draw=navy] (14.02,4.0) .. controls (13.8,1.9) and (2.55,1.9) .. (2.62,3.85);
-\fill[green] (8.62,4.75) circle (.17);
-\draw[white,line width=1pt] (8.53,4.75)--(8.6,4.66)--(8.73,4.86);
-\fill[red] (12.62,4.75) circle (.17);
-\draw[white,line width=1pt] (12.52,4.65)--(12.72,4.85);
-\draw[white,line width=1pt] (12.72,4.65)--(12.52,4.85);
+\node[font=\fontsize{10}{10}\selectfont,text=green] at (8.62,4.75) {\faIcon{"F00C}};
+\node[font=\fontsize{10}{10}\selectfont,text=red] at (12.62,4.75) {\faIcon{"F00D}};
 \draw[draw=line,line width=.9pt] (1.25,1.35)--(15,1.35);
 \node[font=\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=13.4cm] at (8,.82) {Agent 新能力要能試、能比、能退，才不會把實驗變成事故};
 \end{tikzpicture}
 \end{document}
-
-
-
