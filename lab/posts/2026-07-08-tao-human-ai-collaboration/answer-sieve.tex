@@ -1,0 +1,42 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {篩掉答案，是高階協作的核心};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {初學者看見十個方向都像答案；我們要訓練的是刪除速度};
+\draw[rounded corners=10pt,fill=redbg,draw=red,line width=1pt] (1.25,4.1) rectangle (5.15,6.6);
+\node[font=\bfseries\fontsize{11}{13.5}\selectfont,text=navy,align=center,text width=3.2cm] at (3.2,6.08) {十個 AI 方向};
+\node[font=\fontsize{8.6}{10.8}\selectfont,text=muted,align=center,text width=3.2cm] at (3.2,5.2) {每個都流暢\\每個都像可用};
+\draw[->,draw=navy,line width=1.15pt] (5.35,5.35)--(6.95,5.35);
+\draw[rounded corners=10pt,fill=goldbg,draw=gold,line width=1pt] (7.15,3.55) rectangle (9.85,7.05);
+\node[font=\bfseries\fontsize{11}{13.5}\selectfont,text=navy,align=center,text width=2.25cm] at (8.5,6.45) {判準篩網};
+\foreach \y/\t in {5.75/偷換定義,5.12/資料不足,4.49/語氣太滿,3.86/無法驗證} {
+  \node[font=\fontsize{8}{10}\selectfont,text=muted,align=center,text width=2.2cm] at (8.5,\y) {\t};
+}
+\draw[->,draw=navy,line width=1.15pt] (10.05,5.35)--(11.65,5.35);
+\draw[rounded corners=10pt,fill=greenbg,draw=green,line width=1pt] (11.85,4.1) rectangle (14.75,6.6);
+\node[font=\bfseries\fontsize{11}{13.5}\selectfont,text=navy,align=center,text width=2.35cm] at (13.3,6.08) {留下三類};
+\node[font=\fontsize{8.6}{10.8}\selectfont,text=muted,align=center,text width=2.35cm] at (13.3,5.2) {可用\\可疑但值得查\\錯得有教育價值};
+\node[rounded corners=8pt,draw=line,fill=white,line width=.9pt,align=center,text width=9.5cm,minimum height=.82cm,font=\fontsize{9.2}{11.5}\selectfont,text=muted] at (8,2.25) {被刪掉的回答要留下來；它們會教學生錯誤長什麼樣子。};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {高階協作不是把 AI 變聰明，而是讓人變得不好騙。};
+\end{tikzpicture}
+\end{document}

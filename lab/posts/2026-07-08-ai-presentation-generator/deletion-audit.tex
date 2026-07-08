@@ -1,0 +1,44 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {刪除清單，比頁數更能看出能力};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {AI 生成內容不難；難的是我們敢不敢說：這頁不該存在};
+\tikzset{
+  row/.style={rounded corners=7pt,draw=line,line width=.9pt,fill=white,align=left,text width=9.4cm,minimum height=.62cm,inner sep=5pt,font=\fontsize{8.6}{10.8}\selectfont,text=navy}
+}
+\draw[rounded corners=10pt,fill=redbg,draw=red,line width=1pt] (1.4,2.25) rectangle (7.25,6.65);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.7cm] at (4.32,6.15) {先刪掉};
+\node[row,text width=4.6cm] at (4.32,5.35) {沒有主張的頁面};
+\node[row,text width=4.6cm] at (4.32,4.55) {只是在證明有資料};
+\node[row,text width=4.6cm] at (4.32,3.75) {一頁塞進兩個動作};
+\node[row,text width=4.6cm] at (4.32,2.95) {講者自己不會這樣說};
+\draw[rounded corners=10pt,fill=greenbg,draw=green,line width=1pt] (8.75,2.25) rectangle (14.6,6.65);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.7cm] at (11.68,6.15) {留下來};
+\node[row,text width=4.6cm] at (11.68,5.35) {一句能被說出口的主張};
+\node[row,text width=4.6cm] at (11.68,4.55) {支撐主張的圖表};
+\node[row,text width=4.6cm] at (11.68,3.75) {必要來源進備查頁};
+\node[row,text width=4.6cm] at (11.68,2.95) {停頓與轉折寫進講稿};
+\draw[->,draw=navy,line width=1.2pt] (7.45,4.45)--(8.55,4.45);
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.92) {簡報不是資料倉庫；能刪掉，通常才是真的知道自己要講什麼。};
+\end{tikzpicture}
+\end{document}

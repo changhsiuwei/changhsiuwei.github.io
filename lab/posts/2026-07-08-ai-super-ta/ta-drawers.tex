@@ -1,0 +1,37 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {AI 助教只開三個抽屜};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {能省時間的交給系統；會影響人的判斷，留在老師手上};
+\tikzset{
+  drawer/.style={rounded corners=10pt,line width=1pt,align=center,text width=3.65cm,minimum height=2.1cm,inner sep=8pt,font=\sffamily\fontsize{9.1}{11.5}\selectfont,text=navy}
+}
+\node[drawer,draw=blue,fill=bluebg] at (3.35,5.15) {\bfseries 教材轉換\\[5pt]概念改寫\\練習題\\例子與反例};
+\node[drawer,draw=green,fill=greenbg] at (8,5.15) {\bfseries 重複回覆\\[5pt]常見問題\\公告草稿\\格式提醒};
+\node[drawer,draw=gold,fill=goldbg] at (12.65,5.15) {\bfseries 初步批閱\\[5pt]依 rubric 抓缺漏\\只產生草稿};
+\node[rounded corners=9pt,draw=red,fill=redbg,line width=1pt,align=center,text width=10.8cm,minimum height=1.08cm,font=\bfseries\fontsize{10.2}{12.8}\selectfont,text=navy] at (8,2.68) {不進抽屜：成績、申訴、個別困難、最後評語};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {AI 可以切菜；要不要上桌、怎麼上桌，還是老師決定。};
+\end{tikzpicture}
+\end{document}

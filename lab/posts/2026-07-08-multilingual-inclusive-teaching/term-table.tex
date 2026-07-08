@@ -1,0 +1,50 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{green}{HTML}{00856A}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {術語表比整篇翻譯更要緊};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {專業課最容易出事的地方，常常不是句子，而是一個詞的邊界};
+\draw[rounded corners=10pt,fill=white,draw=line,line width=1pt] (1.2,3.75) rectangle (14.8,6.9);
+\fill[bluebg] (1.2,6.15) rectangle (14.8,6.9);
+\foreach \x in {3.9,6.8,10.15,12.55} {\draw[draw=line,line width=.75pt] (\x,3.75)--(\x,6.9);}
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.3cm] at (2.55,6.52) {中文};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.4cm] at (5.35,6.52) {英文};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=3.0cm] at (8.48,6.52) {課堂用法};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.1cm] at (11.35,6.52) {容易誤會};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.0cm] at (13.65,6.52) {教師確認};
+\foreach \y in {5.35,4.55,3.75} {\draw[draw=line,line width=.65pt] (1.2,\y)--(14.8,\y);}
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.3cm] at (2.55,5.75) {差異};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.4cm] at (5.35,5.75) {variance};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=muted,align=center,text width=3.0cm] at (8.48,5.75) {預算與實際的差};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=red,align=center,text width=2.1cm] at (11.35,5.75) {一般差別};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=green,align=center,text width=2.0cm] at (13.65,5.75) {\faIcon{"F00C}};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.3cm] at (2.55,4.95) {成本動因};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.4cm] at (5.35,4.95) {cost driver};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=muted,align=center,text width=3.0cm] at (8.48,4.95) {讓成本變動的因素};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=red,align=center,text width=2.1cm] at (11.35,4.95) {成本原因};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=green,align=center,text width=2.0cm] at (13.65,4.95) {\faIcon{"F00C}};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.3cm] at (2.55,4.15) {效率};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=navy,align=center,text width=2.4cm] at (5.35,4.15) {efficiency};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=muted,align=center,text width=3.0cm] at (8.48,4.15) {投入與產出的關係};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=red,align=center,text width=2.1cm] at (11.35,4.15) {速度快};
+\node[font=\fontsize{8.2}{10.3}\selectfont,text=green,align=center,text width=2.0cm] at (13.65,4.15) {\faIcon{"F00C}};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {AI 可以先做第一版；專業邊界，仍要由老師和學生一起校準。};
+\end{tikzpicture}
+\end{document}

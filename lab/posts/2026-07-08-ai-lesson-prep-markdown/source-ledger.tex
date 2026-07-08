@@ -1,0 +1,59 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {教材先進帳本，再進模型};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {AI 可以整理材料，但不能替我們記住來源、版本與課堂理由};
+\draw[rounded corners=10pt,fill=white,draw=line,line width=1pt] (1.2,2.15) rectangle (14.8,6.95);
+\foreach \x/\w in {1.2/2.4,3.6/2.7,6.3/3.0,9.3/2.5,11.8/3.0} {
+  \draw[draw=line,line width=.75pt] (\x,2.15)--(\x,6.95);
+}
+\fill[bluebg] (1.2,6.18) rectangle (14.8,6.95);
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.2cm] at (2.4,6.55) {來源};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.45cm] at (4.95,6.55) {用途};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.7cm] at (7.8,6.55) {可追溯欄位};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.25cm] at (10.55,6.55) {版本};
+\node[font=\bfseries\fontsize{8.6}{10.5}\selectfont,text=navy,align=center,text width=2.65cm] at (13.25,6.55) {AI 任務};
+\foreach \y in {5.35,4.42,3.49,2.56} {\draw[draw=line,line width=.65pt] (1.2,\y)--(14.8,\y);}
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (2.4,5.78) {課本段落};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.3cm] at (4.95,5.78) {定義與例題};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.7cm] at (7.8,5.78) {章節、頁碼、限制};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (10.55,5.78) {2026 課綱};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=green,align=center,text width=2.65cm] at (13.25,5.78) {整理，不改寫};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (2.4,4.86) {新聞案例};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.3cm] at (4.95,4.86) {討論開場};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.7cm] at (7.8,4.86) {日期、連結、背景};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (10.55,4.86) {當週};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=green,align=center,text width=2.65cm] at (13.25,4.86) {出問題清單};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (2.4,3.94) {學生提問};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.3cm] at (4.95,3.94) {下次修課};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.7cm] at (7.8,3.94) {班級、情境、錯因};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (10.55,3.94) {課後};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=green,align=center,text width=2.65cm] at (13.25,3.94) {歸類常錯點};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (2.4,3.02) {教師講法};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.3cm] at (4.95,3.02) {保留聲音};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.7cm] at (7.8,3.02) {原句、修改理由};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=muted,align=center,text width=2.1cm] at (10.55,3.02) {可搬家};
+\node[font=\fontsize{8.2}{10.2}\selectfont,text=green,align=center,text width=2.65cm] at (13.25,3.02) {只做整理};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.92) {資料沒有身分，AI 就會把它洗成一段順滑但無法查回去的話。};
+\end{tikzpicture}
+\end{document}

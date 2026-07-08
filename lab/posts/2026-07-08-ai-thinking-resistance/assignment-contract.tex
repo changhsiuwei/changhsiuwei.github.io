@@ -1,0 +1,39 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {題目要把人的位置寫進去};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {如果題目只要最後答案，它本來就像為機器準備的};
+\draw[rounded corners=10pt,fill=redbg,draw=red,line width=1pt] (1.35,2.6) rectangle (6.95,6.75);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.6cm] at (4.15,6.2) {容易被外包};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.4cm] at (4.15,5.35) {請說明某概念};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.4cm] at (4.15,4.55) {請整理文章重點};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.4cm] at (4.15,3.75) {請提出你的看法};
+\draw[rounded corners=10pt,fill=greenbg,draw=green,line width=1pt] (9.05,2.6) rectangle (14.65,6.75);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.6cm] at (11.85,6.2) {逼學生出場};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.5cm] at (11.85,5.35) {引用本週課堂提問};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.5cm] at (11.85,4.55) {說明原本哪裡想錯};
+\node[font=\fontsize{9}{11.2}\selectfont,text=navy,align=center,text width=4.5cm] at (11.85,3.75) {附上 AI 對話摘要};
+\node[rounded corners=9pt,draw=gold,fill=goldbg,line width=1pt,align=center,text width=7.2cm,minimum height=.9cm,font=\fontsize{9.2}{11.5}\selectfont,text=navy] at (8,1.78) {作業規則不是禁止工具，而是要求留下判斷。};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.86) {沒有原始判斷的漂亮答案，先打折。};
+\end{tikzpicture}
+\end{document}

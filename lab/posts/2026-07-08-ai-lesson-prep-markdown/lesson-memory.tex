@@ -1,0 +1,41 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {課後三句話，會變成下一年的課};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {真正珍貴的不是模板，而是教室剛發生過的細節};
+\tikzset{
+  card/.style={rounded corners=9pt,line width=1pt,align=left,text width=3.7cm,minimum height=1.28cm,inner sep=7pt,font=\sffamily\fontsize{8.8}{11}\selectfont,text=navy}
+}
+\node[card,draw=red,fill=redbg] (stuck) at (3.2,5.65) {\bfseries 哪裡卡\\學生在第三題把固定成本當成單位成本};
+\node[card,draw=gold,fill=goldbg] (laugh) at (8,5.65) {\bfseries 哪裡有反應\\便利商店庫存例子讓全班開始接話};
+\node[card,draw=blue,fill=bluebg] (cut) at (12.8,5.65) {\bfseries 哪裡要刪\\前十五分鐘公式推導太早，先放案例};
+\node[rounded corners=10pt,draw=green,fill=greenbg,line width=1pt,align=center,text width=5.1cm,minimum height=1.1cm,font=\bfseries\fontsize{10.5}{13}\selectfont,text=navy] (ai) at (8,3.42) {期末請 AI 整理：哪些地方反覆出問題};
+\draw[->,draw=navy,line width=1pt] (stuck) -- (ai);
+\draw[->,draw=navy,line width=1pt] (laugh) -- (ai);
+\draw[->,draw=navy,line width=1pt] (cut) -- (ai);
+\node[rounded corners=8pt,draw=line,fill=white,line width=.9pt,align=center,text width=9.5cm,minimum height=.82cm,font=\fontsize{9.2}{11.5}\selectfont,text=muted] at (8,2.02) {AI 不是評鑑老師，而是幫我們翻自己的課堂記憶。};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.88) {課剛上完時寫下來，才有現場；過兩週再回想，只剩大概。};
+\end{tikzpicture}
+\end{document}

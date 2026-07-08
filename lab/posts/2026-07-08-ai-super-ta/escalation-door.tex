@@ -1,0 +1,41 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {學生不能被困在自動回覆裡};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {AI 助教有用，前提是它知道哪裡必須停下來};
+\draw[rounded corners=10pt,fill=bluebg,draw=blue,line width=1pt] (1.35,3.0) rectangle (6.35,6.55);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.1cm] at (3.85,6.0) {AI 可以回答};
+\foreach \y/\t in {5.2/作業格式,4.55/概念解釋,3.9/練習題提示,3.25/課程資源位置} {
+  \node[font=\fontsize{8.8}{11}\selectfont,text=navy,align=left,text width=3.7cm] at (4.18,\y) {\faIcon{"F00C}\hspace{.22cm}\t};
+}
+\draw[->,draw=navy,line width=1.15pt] (6.55,4.78)--(9.35,4.78);
+\node[font=\bfseries\fontsize{10.5}{13}\selectfont,text=navy,align=center,text width=2.2cm] at (7.95,5.28) {碰到界線};
+\draw[rounded corners=10pt,fill=redbg,draw=red,line width=1pt] (9.65,3.0) rectangle (14.65,6.55);
+\node[font=\bfseries\fontsize{12}{15}\selectfont,text=navy,align=center,text width=4.1cm] at (12.15,6.0) {轉給真人};
+\foreach \y/\t in {5.2/成績爭議,4.55/正式申訴,3.9/個人困難,3.25/情緒與焦慮} {
+  \node[font=\fontsize{8.8}{11}\selectfont,text=navy,align=left,text width=3.7cm] at (12.48,\y) {\faIcon{"F00D}\hspace{.22cm}\t};
+}
+\node[rounded corners=8pt,draw=line,fill=white,line width=.9pt,align=center,text width=9.2cm,minimum height=.82cm,font=\fontsize{9.2}{11.5}\selectfont,text=muted] at (8,2.05) {技術可以先接一般問題，但教室裡一定要有一扇真人的門。};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {好的自動化不是把人移走，而是把人留給真正需要人的時刻。};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,38 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {先留下判斷，再打開 AI};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {我們要看的不是完美答案，而是答案如何被一個人改過};
+\tikzset{
+  stagebox/.style={rounded corners=8pt,line width=1pt,align=center,text width=2.65cm,minimum height=1.12cm,font=\sffamily\fontsize{8.8}{11}\selectfont,text=navy}
+}
+\node[stagebox,draw=blue,fill=bluebg] (raw) at (2.25,5.05) {\bfseries 原始判斷\\短、粗、可錯};
+\node[stagebox,draw=gold,fill=goldbg] (ai) at (5.7,5.05) {\bfseries AI 反駁\\找漏洞與替代解釋};
+\node[stagebox,draw=blue,fill=bluebg] (check) at (9.15,5.05) {\bfseries 查證路徑\\來源、數字、定義};
+\node[stagebox,draw=green,fill=greenbg] (rev) at (12.6,5.05) {\bfseries 修正說明\\接受、拒絕、保留};
+\foreach \a/\b in {raw/ai,ai/check,check/rev} {\draw[->,draw=navy,line width=1.1pt] (\a)--(\b);}
+\draw[rounded corners=9pt,draw=line,fill=white,line width=.9pt] (2.0,2.65) rectangle (14.0,3.55);
+\node[font=\fontsize{9.4}{11.8}\selectfont,text=muted,align=center,text width=11.3cm] at (8,3.1) {沒有第一版想法，AI 對話只剩輸出；有第一版想法，AI 才能變成碰撞。};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {學生可以錯，但不能空著手進入工具。};
+\end{tikzpicture}
+\end{document}

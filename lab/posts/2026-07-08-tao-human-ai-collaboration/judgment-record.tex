@@ -1,0 +1,48 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{DDFCEB}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.82) {交出的不是完美答案，而是判斷紀錄};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {高手案例的重點不是用了工具，而是知道工具吐出東西後該怎麼處理};
+\draw[rounded corners=10pt,fill=white,draw=line,line width=1pt] (1.35,2.3) rectangle (14.65,6.85);
+\fill[bluebg] (1.35,6.05) rectangle (14.65,6.85);
+\foreach \x in {4.65,7.95,11.25} {\draw[draw=line,line width=.75pt] (\x,2.3)--(\x,6.85);}
+\node[font=\bfseries\fontsize{8.7}{10.8}\selectfont,text=navy,align=center,text width=2.8cm] at (3.0,6.45) {學生原判斷};
+\node[font=\bfseries\fontsize{8.7}{10.8}\selectfont,text=navy,align=center,text width=2.8cm] at (6.3,6.45) {AI 提供};
+\node[font=\bfseries\fontsize{8.7}{10.8}\selectfont,text=navy,align=center,text width=2.8cm] at (9.6,6.45) {我們檢查};
+\node[font=\bfseries\fontsize{8.7}{10.8}\selectfont,text=navy,align=center,text width=2.8cm] at (12.95,6.45) {最後處理};
+\foreach \y in {5.18,4.28,3.38} {\draw[draw=line,line width=.65pt] (1.35,\y)--(14.65,\y);}
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (3,5.62) {先寫理由};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (6.3,5.62) {相反解釋};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (9.6,5.62) {資料是否支撐};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=green,align=center,text width=2.85cm] at (12.95,5.62) {保留或修正};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (3,4.72) {列出不確定};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (6.3,4.72) {可能反例};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (9.6,4.72) {定義有無偷換};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=green,align=center,text width=2.85cm] at (12.95,4.72) {標記風險};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (3,3.82) {說明判準};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (6.3,3.82) {三種方向};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=muted,align=center,text width=2.85cm] at (9.6,3.82) {哪一種可用};
+\node[font=\fontsize{8.4}{10.5}\selectfont,text=green,align=center,text width=2.85cm] at (12.95,3.82) {寫下取捨};
+\node[font=\fontsize{10.2}{12.8}\selectfont,text=navy,align=center,text width=13.6cm] at (8,.9) {AI 讓答案提早出現；學習發生在答案出現之後。};
+\end{tikzpicture}
+\end{document}

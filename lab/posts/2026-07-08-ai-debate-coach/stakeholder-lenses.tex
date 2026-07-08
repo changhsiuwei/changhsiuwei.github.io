@@ -1,0 +1,46 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKmainfont{Noto Sans CJK TC}}{\setCJKmainfont{Noto Sans TC}}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKsansfont{Microsoft JhengHei}}{\IfFontExistsTF{Noto Sans CJK TC}{\setCJKsansfont{Noto Sans CJK TC}}{\setCJKsansfont{Noto Sans TC}}}
+\xeCJKsetup{CJKglue={\hskip 0.045em plus 0.015em minus 0.005em}, CJKecglue={\hskip 0.08em plus 0.02em}}
+\IfFileExists{../../../FontAwesome.otf}{\newfontfamily\FA[Path=../../../]{FontAwesome.otf}}{\newfontfamily\FA{Segoe UI Symbol}}
+\newcommand{\faIcon}[1]{{\FA\symbol{#1}}}
+\usetikzlibrary{arrows.meta}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{green}{HTML}{00856A}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{soft}{HTML}{F8FAFC}
+\definecolor{line}{HTML}{CBD5E1}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[font=\bfseries\fontsize{18}{22}\selectfont,text=navy,align=center,text width=14.4cm] at (8,8.8) {換一個讀者，裂縫就換一種形狀};
+\node[font=\fontsize{10.4}{13}\selectfont,text=muted,align=center,text width=13.8cm] at (8,8.12) {商業分析不是寫給老師看；每個讀者都會拿不同問題推我們一下};
+
+\node[rounded corners=9pt,fill=navy,draw=navy,line width=1pt,text=white,align=center,text width=3.2cm,minimum height=1.35cm,font=\bfseries\fontsize{11}{13}\selectfont] (center) at (8,4.8) {同一個主張\\營收成長代表改善};
+\tikzset{
+  lens/.style={rounded corners=8pt,fill=soft,draw=line,line width=1pt,align=center,text width=2.65cm,minimum height=1.18cm,font=\sffamily\fontsize{8.7}{10.8}\selectfont,text=navy},
+  q/.style={font=\sffamily\fontsize{7.7}{9.6}\selectfont,text=muted,align=center,text width=2.8cm}
+}
+\node[lens,draw=blue] (investor) at (3.1,6.35) {\bfseries 投資人};
+\node[q] at (3.1,5.55) {現金流跟得上嗎？};
+\node[lens,draw=green] (audit) at (3.1,3.25) {\bfseries 審計人員};
+\node[q] at (3.1,2.45) {認列時點合理嗎？};
+\node[lens,draw=gold] (reg) at (12.9,6.35) {\bfseries 主管機關};
+\node[q] at (12.9,5.55) {揭露是否充分？};
+\node[lens,draw=red] (peer) at (12.9,3.25) {\bfseries 同業競爭者};
+\node[q] at (12.9,2.45) {產業一起成長嗎？};
+\draw[->,draw=navy,line width=1pt] (investor) -- (center);
+\draw[->,draw=navy,line width=1pt] (audit) -- (center);
+\draw[->,draw=navy,line width=1pt] (reg) -- (center);
+\draw[->,draw=navy,line width=1pt] (peer) -- (center);
+\draw[draw=line,line width=.9pt] (1.35,1.25)--(14.65,1.25);
+\node[font=\fontsize{10.2}{12.6}\selectfont,text=navy,align=center,text width=13.7cm] at (8,.72) {角色扮演不能停在表演；每一道問題最後都要回到資料。};
+\end{tikzpicture}
+\end{document}
