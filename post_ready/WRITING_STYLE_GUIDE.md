@@ -1,115 +1,199 @@
-# H.W. Chang writing style guide
+# H.W. Chang writing skill
 
-This guide is for future website posts generated from `post_ready/` sources.
-It is based on the public Substack article "Underdog" by Andy Chang, read as
-style calibration only. Do not copy its sentences, anecdotes, or phrasing.
+This guide controls how Codex should turn `post_ready/` sources into website
+articles. It is a writing skill, not a content template. Do not make every
+article follow the same rhythm, image style, opening, or conclusion.
 
-Source: https://andychang1025.substack.com/p/underdog
+The target voice is calibrated from the author's public Substack writing style
+as a reference for stance and rhythm only. Never copy sentences, anecdotes, or
+phrasing from the source.
+
+Reference: https://andychang1025.substack.com/p/underdog
 
 ## Core stance
 
-The article should not sound like a report explaining a topic from above.
-It should sound like a person standing inside a decision, trying to make the
-reader see why the decision matters.
+Write like a human editor with judgment, not like an assistant explaining a
+topic from above.
 
-Begin with a lived scene, a failure, a cost, a small embarrassment, a classroom
-moment, or a choice that has consequences. Let the concept enter later as a
-tool for naming what has already happened.
+The article should feel like a person standing inside a classroom, research
+problem, writing decision, tool failure, or professional dilemma. Let the idea
+enter through a scene, a cost, a mistake, a student's confusion, an ugly draft,
+or a moment where the teacher has to decide what cannot be delegated to AI.
 
-## What the voice does
+Do not begin with broad claims such as "AI is changing education" or "in the
+digital era." Start closer to the ground.
 
-- Uses first person when the article is close to teaching practice, career
-  choices, research habits, or learning history.
-- Gives concrete marks: year, age, amount of money, room, document, assignment,
-  class behavior, tool name, error message, or one sentence a student might say.
-- Lets emotion show, but does not ask readers for sympathy.
-- Moves from story to idea, then from idea back to action.
-- Uses short sentences after a longer paragraph when the point should land.
-- Allows a strong judgment when the writer has earned it through evidence or
-  personal risk.
-- Treats books, theories, tools, and AI systems as instruments, not idols.
+## Voice
+
+- Use first person when the article is close to teaching practice, research,
+  writing, learning, career decisions, or tool use.
+- Give concrete marks: year, room, class behavior, assignment, file, tool name,
+  error message, spreadsheet column, slide, sentence, price, time, or one
+  plausible sentence a student might say.
+- Let emotion show without asking for sympathy.
+- Move from story to idea, then from idea back to practice.
+- Use short sentences after a longer paragraph when the point needs to land.
+- Allow sharp judgment only after earning it through detail.
+- Treat books, theories, tools, models, and AI systems as instruments, not
+  idols.
+
+## Anti-AI-ese rules
+
+Avoid smooth, safe, overgeneralized language. Prefer concrete verbs and visible
+situations.
+
+Do not use these habits:
+
+- Do not inflate small points into grand transformation stories.
+- Do not use "not only X, but also Y" to lift an ordinary point.
+- Do not use "from X to Y" as decorative range-making.
+- Do not open paragraphs with "值得注意的是", "重要的是", or similar steering.
+- Do not use vague authorities such as "批評者認為" or "觀察家指出" unless a real
+  named source is provided.
+- Do not close with "總結來說", "總而言之", "展望未來", or a polite generic ending.
+- Do not add source notes such as "本文整理自..." in reader-facing text.
+- Do not use three decorative adjectives when one concrete detail would do.
+- Do not use bold text to rescue a weak sentence.
+
+Avoid the following vocabulary unless it appears inside a source title or exact
+technical name: 深入研究, 見證, 證明, 格局, 強調, 凸顯, 關鍵的, 錯綜複雜的, 細緻入微的,
+充滿活力的, 展示, 促進, 與...一致, 不可磨滅的印記.
 
 ## Article structure
 
-1. Start with a scene or wound.
+Use structure as thinking, not as a template.
+
+A strong article often does this:
+
+1. Start with a scene, wound, failure, hesitation, or practical problem.
 2. Name the false belief people usually carry.
 3. Break that belief with a sharper observation.
-4. Bring in the teaching, AI, accounting, or research concept.
-5. Show what the concept changes in practice.
-6. End on a line that forces the reader to choose, inspect, or act.
+4. Bring in the teaching, AI, accounting, writing, or research concept.
+5. Show what changes in practice.
+6. End on a line that forces the reader to inspect, choose, or act.
 
-The ending does not need a neat summary. It should feel like the door closes
-with one hard sentence.
+The ending does not need a neat summary. It should feel like a door closing with
+one hard sentence, a live question, or a small image that keeps working after
+the article ends.
 
-## Section headings
+## Headings and reading rhythm
 
-Use headings that sound like claims, not labels.
+Headings should sound like claims, not labels.
 
 Prefer:
 
-- "先把問題說成人話"
-- "太乾淨的作業最可疑"
-- "答案出現後才開始工作"
-- "平均數有時像禮貌的謊言"
+- 先把問題說成人話
+- 太乾淨的作業最可疑
+- 答案出現後才開始工作
+- 平均數有時像禮貌的謊言
+- 紅字要留下來
+- 資料卡比圖表更誠實
 
 Avoid:
 
-- "背景介紹"
-- "應用場景"
-- "未來展望"
-- "結論"
-- "重要啟示"
+- 背景介紹
+- 應用場景
+- 未來展望
+- 結論
+- 重要啟示
 
-## Reading rhythm
+For a 2,000+ Chinese-character article, use several reader-facing section or
+paragraph headings. Let the reader breathe after each heading. Do not place one
+dense wall of text under a heading.
 
-Use more than one layer of paragraph signposts when the article is long.
-For a 2,000+ Chinese-character post, aim for 5-7 main `##` headings and
-4-6 smaller `###` paragraph headings. The smaller headings should not be labels;
-they should sound like a judgment, a turn, or a sentence the writer is willing
-to stand behind.
+Use short paragraphs, usually 1-3 sentences each. One paragraph should carry
+one move: a scene, claim, example, warning, turn, or return to practice.
 
-After every heading, give the reader air. Do not put one dense wall of text
-under a heading. Use short paragraphs, usually 1-3 sentences each. A paragraph
-should carry one move: a scene, a claim, an example, a warning, or a turn back
-to practice.
+Source Markdown may use heading syntax when needed, but the rendered page must
+look clean. Readers must never see raw Markdown markers such as `#` or `*` in
+the article body. Before publishing, inspect rendered HTML or the live page, not
+only the Markdown source.
 
-The page should feel like a professional essay or Substack-style field note:
-readers should be able to skim the headings, stop at any paragraph, and still
-feel that a person is thinking in front of them.
+## Category judgment
 
-Before publishing, inspect the rendered HTML, not only the Markdown source.
-Readers must never see raw Markdown markers such as `#` or `*` in the article
-body. Headings and emphasis are acceptable only when Quarto renders them into
-clean visual text.
+Choose the destination before writing.
+
+Use `AI 教學與研究` when the article is about classroom design, teaching
+workload, grading, assignments, student misunderstanding, research workflow,
+course materials, teacher judgment, or university practice.
+
+Use `AI 知識站 (AI Knowledge)` when the article explains an AI concept, tool
+pattern, automation idea, workflow principle, or general knowledge that is not
+anchored mainly in one classroom practice.
+
+When a topic can fit both, decide by the central question:
+
+- If the central question is "How should a teacher teach, assess, or design a
+  class with this?", use `AI 教學與研究`.
+- If the central question is "What is this AI idea and how does it work?", use
+  `AI 知識站 (AI Knowledge)`.
 
 ## AI teaching article rules
 
-For AI teaching and research posts, every article needs at least one of these:
+Every AI teaching or research article needs at least one of these:
 
 - A classroom scene.
 - A grading or assignment problem.
 - A student's possible misunderstanding.
 - A teacher's real workload.
 - A tool failure, ugly draft, OCR mistake, broken chart, or bad prompt.
-- A decision point where the teacher must keep judgment instead of handing it to AI.
+- A decision point where the teacher must keep judgment instead of handing it
+  to AI.
 
-Never begin with "AI is changing education" or similar openers. That sentence
-is too smooth and too easy.
+Do not make AI the hero. The article's real subject is judgment: what the
+teacher sees, keeps, rejects, checks, or refuses to automate.
 
-## Visual style
+## Visual decision rules
 
-Concept images should feel like an editorial exhibit, not a process diagram
-filled with boxes. Use one central metaphor, restrained color, ample white
-space, clear hierarchy, and only the minimum labels needed for the idea.
+Before drawing anything, inspect the source PDF, PPTX, images, or TeX/TikZ.
+
+Use a source image when it does real work:
+
+- It shows the actual classroom workflow, tool interface, slide diagram,
+  dataset, chart, source document, or example being discussed.
+- It does not expose distracting raw Markdown symbols, broken formatting,
+  illegible text, or decorative clutter.
+- It supports a nearby paragraph, not just the article title.
+
+Redraw or create a new visual when:
+
+- The source image is too busy, repetitive, low-quality, or visually noisy.
+- The source image contains reader-facing `#`, `*`, draft syntax, or accidental
+  tool artifacts.
+- The source image is only a decorative slide and does not sharpen the article.
+- Several articles would otherwise all have the same blackboard/process-chart
+  look.
+
+Use source images mainly as inner context figures. For article concept images,
+prefer a cleaner editorial exhibit: one central idea, restrained color, ample
+white space, clear hierarchy, and only the minimum labels needed for the point.
 
 If a TikZ figure cannot explain the point in five seconds, simplify the idea
-before drawing it.
+before drawing it. Correctness comes before ornament. Elegance comes from
+subtraction.
 
-## Prohibited habits
+## Visual variety
 
-- Do not add source notes such as "this article is based on slides..."
-- Do not write like a neutral assistant.
-- Do not inflate small points into a grand transformation story.
-- Do not close with a polite generic summary.
-- Do not use three decorative adjectives when one concrete detail would do.
-- Do not use bold text to make weak sentences look strong.
+Do not give all articles the same figure structure. Vary the visual form by the
+idea:
+
+- Workflow article: show sequence, checkpoints, or responsibility handoff.
+- Concept article: show contrast, tension, or a mental model.
+- Classroom article: show teacher-student-material relationship.
+- Data article: show source-to-claim traceability.
+- Warning article: show failure path, blind spot, or missing check.
+
+Avoid repeated rows of boxes unless the article is truly about a sequence.
+
+## Publishing checklist
+
+Before committing and pushing:
+
+- Render the site with `quarto render`.
+- Open or inspect the rendered page.
+- Confirm reader-facing text does not show raw `#` or `*`.
+- Confirm the article contains no "本文整理自..." source note.
+- Confirm every inserted image has a meaningful caption.
+- Confirm the image is placed near the paragraph it supports.
+- Confirm category placement matches the article's central question.
+- Confirm the article does not sound like a neutral assistant report.
