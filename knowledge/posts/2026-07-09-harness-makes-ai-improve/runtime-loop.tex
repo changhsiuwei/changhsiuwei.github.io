@@ -1,0 +1,51 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
+\xeCJKsetup{CJKglue={\hskip 0.07em plus 0.02em}, CJKecglue={\hskip 0.10em plus 0.02em}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{line}{HTML}{CBD5E1}
+\definecolor{blue}{HTML}{1D4ED8}
+\definecolor{bluebg}{HTML}{DCEBFF}
+\definecolor{green}{HTML}{007A5A}
+\definecolor{greenbg}{HTML}{DCFCE7}
+\definecolor{gold}{HTML}{B85C00}
+\definecolor{goldbg}{HTML}{FFE8B5}
+\definecolor{red}{HTML}{BA1A1A}
+\definecolor{redbg}{HTML}{FFE1E1}
+\tikzset{
+  stepbox/.style={rounded corners=10pt, line width=1pt, align=center, inner xsep=12pt, inner ysep=8pt, font=\fontsize{9.8}{13.5}\selectfont, text=navy},
+  title/.style={font=\bfseries\fontsize{18}{24}\selectfont,text=navy,align=center},
+  note/.style={font=\fontsize{10.2}{14}\selectfont,text=muted,align=center}
+}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[title,text width=14.3cm] at (8,8.78) {agent 不是一次回答，而是一輪一輪修正};
+\node[note,text width=13.2cm] at (8,7.92) {每一輪都要看得到輸入、動作、產物、檢查結果與下一次修正。};
+
+\node[stepbox,fill=bluebg,draw=blue,text width=2.1cm] (goal) at (2.3,5.35) {收到目標};
+\node[stepbox,fill=bluebg,draw=blue,text width=2.1cm] (plan) at (5.1,5.35) {拆成步驟};
+\node[stepbox,fill=greenbg,draw=green,text width=2.1cm] (tools) at (7.9,5.35) {呼叫工具};
+\node[stepbox,fill=greenbg,draw=green,text width=2.1cm] (artifact) at (10.7,5.35) {留下產物};
+\node[stepbox,fill=redbg,draw=red,text width=2.1cm] (check) at (13.5,5.35) {檢查結果};
+
+\draw[->,draw=navy,line width=1pt] (goal)--(plan);
+\draw[->,draw=navy,line width=1pt] (plan)--(tools);
+\draw[->,draw=navy,line width=1pt] (tools)--(artifact);
+\draw[->,draw=navy,line width=1pt] (artifact)--(check);
+
+\node[stepbox,fill=goldbg,draw=gold,text width=3.25cm] (log) at (10.7,2.9) {寫入紀錄\\錯誤、差異、理由};
+\node[stepbox,fill=goldbg,draw=gold,text width=3.25cm] (improve) at (5.1,2.9) {修正下一輪\\不是重講一次};
+
+\draw[->,rounded corners=12pt,draw=navy,line width=1pt] (check.south) -- (13.5,2.9) -- (12.42,2.9);
+\draw[->,draw=navy,line width=1pt] (log)--(improve);
+\draw[->,rounded corners=12pt,draw=navy,line width=1pt] (improve.north) -- (5.1,4.58);
+
+\draw[rounded corners=12pt,draw=line,line width=.9pt,fill=white] (1.4,1.02) rectangle (14.6,1.9);
+\node[font=\fontsize{10.6}{14}\selectfont,text=navy,align=center,text width=12.4cm] at (8,1.46) {harness 的價值，是把「這次怎麼錯」變成「下次怎麼少錯」。};
+\end{tikzpicture}
+\end{document}

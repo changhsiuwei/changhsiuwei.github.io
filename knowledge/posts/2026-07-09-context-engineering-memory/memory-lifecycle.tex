@@ -1,0 +1,45 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
+\xeCJKsetup{CJKglue={\hskip 0.07em plus 0.02em}, CJKecglue={\hskip 0.10em plus 0.02em}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{line}{HTML}{CBD5E1}
+\definecolor{blue}{HTML}{1D4ED8}
+\definecolor{bluebg}{HTML}{DCEBFF}
+\definecolor{green}{HTML}{007A5A}
+\definecolor{greenbg}{HTML}{DCFCE7}
+\definecolor{gold}{HTML}{B85C00}
+\definecolor{goldbg}{HTML}{FFE8B5}
+\definecolor{red}{HTML}{BA1A1A}
+\definecolor{redbg}{HTML}{FFE1E1}
+\tikzset{
+  box/.style={rounded corners=10pt,line width=1pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.6}{13}\selectfont,text=navy},
+  title/.style={font=\bfseries\fontsize{18}{24}\selectfont,text=navy,align=center},
+  note/.style={font=\fontsize{10.2}{14}\selectfont,text=muted,align=center}
+}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[title,text width=14.4cm] at (8,8.82) {記憶要有生命週期，不能只會一直加};
+\node[note,text width=13.2cm] at (8,8.02) {能記住很方便，知道何時刪掉或降級，才比較成熟。};
+
+\node[box,fill=bluebg,draw=blue,text width=2.45cm] (event) at (2.2,5.15) {原始事件\\對話、工具、錯誤};
+\node[box,fill=greenbg,draw=green,text width=2.45cm] (select) at (5.55,5.15) {挑出線索\\保留必要部分};
+\node[box,fill=goldbg,draw=gold,text width=2.45cm] (rule) at (8.9,5.15) {形成規則\\下次可重用};
+\node[box,fill=white,draw=line,text width=2.45cm] (review) at (12.25,5.15) {定期檢查\\合併或刪除};
+
+\draw[->,draw=navy,line width=1pt] (event)--(select);
+\draw[->,draw=navy,line width=1pt] (select)--(rule);
+\draw[->,draw=navy,line width=1pt] (rule)--(review);
+
+\node[box,fill=redbg,draw=red,text width=3.0cm] (stop) at (12.25,2.75) {不帶入\\個資、過期假設、無關紀錄};
+\draw[->,draw=red,line width=1pt] (review)--(stop);
+
+\draw[rounded corners=12pt,draw=line,line width=.9pt,fill=white] (1.4,1.05) rectangle (14.6,1.9);
+\node[font=\fontsize{10.6}{14}\selectfont,text=navy,align=center,text width=12.5cm] at (8,1.48) {context engineering 的問題不是「要不要記」，而是「什麼值得留到下一次」。};
+\end{tikzpicture}
+\end{document}

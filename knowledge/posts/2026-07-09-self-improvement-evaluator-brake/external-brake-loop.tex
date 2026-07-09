@@ -1,0 +1,51 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
+\xeCJKsetup{CJKglue={\hskip 0.07em plus 0.02em}, CJKecglue={\hskip 0.10em plus 0.02em}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{paper}{HTML}{FFFDF8}
+\definecolor{navy}{HTML}{0F172A}
+\definecolor{muted}{HTML}{334155}
+\definecolor{line}{HTML}{CBD5E1}
+\definecolor{blue}{HTML}{1D4ED8}
+\definecolor{bluebg}{HTML}{DCEBFF}
+\definecolor{green}{HTML}{007A5A}
+\definecolor{greenbg}{HTML}{DCFCE7}
+\definecolor{gold}{HTML}{B85C00}
+\definecolor{goldbg}{HTML}{FFE8B5}
+\definecolor{red}{HTML}{BA1A1A}
+\definecolor{redbg}{HTML}{FFE1E1}
+\tikzset{
+  box/.style={rounded corners=10pt,line width=1pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.4}{12.8}\selectfont,text=navy},
+  title/.style={font=\bfseries\fontsize{18}{24}\selectfont,text=navy,align=center},
+  note/.style={font=\fontsize{10.2}{14}\selectfont,text=muted,align=center}
+}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\path[fill=paper] (0,0) rectangle (16,9.6);
+\node[title,text width=14.4cm] at (8,8.82) {評分器不能住在同一個改進迴圈裡};
+\node[note,text width=13.2cm] at (8,8.02) {如果 agent 可以改自己，也能改評分方式，那進步很快會變成鑽漏洞。};
+
+\draw[rounded corners=18pt,draw=blue,line width=1.1pt,fill=bluebg] (4.25,2.25) rectangle (11.75,6.45);
+\node[font=\bfseries\fontsize{12}{15.5}\selectfont,text=navy,align=center] at (8,5.95) {內圈：自我改進};
+\node[box,fill=white,draw=blue,text width=2.0cm] (run) at (5.85,4.35) {執行任務};
+\node[box,fill=white,draw=blue,text width=2.0cm] (fix) at (8,4.35) {提出修改};
+\node[box,fill=white,draw=blue,text width=2.0cm] (merge) at (10.15,4.35) {更新版本};
+\draw[->,draw=navy,line width=1pt] (run)--(fix);
+\draw[->,draw=navy,line width=1pt] (fix)--(merge);
+\draw[->,rounded corners=10pt,draw=navy,line width=1pt] (merge.south) -- (10.15,3.25) -- (5.85,3.25) -- (run.south);
+
+\node[box,fill=redbg,draw=red,text width=2.7cm] at (2.1,6.1) {保留測試\\不給訓練看};
+\node[box,fill=goldbg,draw=gold,text width=2.7cm] at (13.9,6.1) {軌跡查核\\看過程，不只看分數};
+\node[box,fill=greenbg,draw=green,text width=2.7cm] at (2.1,2.25) {權限限制\\不能自己放寬};
+\node[box,fill=white,draw=line,text width=2.7cm] at (13.9,2.25) {人工判斷\\在高風險點介入};
+
+\draw[->,draw=red,line width=1pt] (3.55,5.95)--(4.18,5.65);
+\draw[->,draw=gold,line width=1pt] (12.45,5.95)--(11.82,5.65);
+\draw[->,draw=green,line width=1pt] (3.55,2.35)--(4.18,2.75);
+\draw[->,draw=line,line width=1pt] (12.45,2.35)--(11.82,2.75);
+
+\node[note,text width=13cm] at (8,.82) {外圈不是妨礙自動化，而是讓自動化還能被人相信。};
+\end{tikzpicture}
+\end{document}
