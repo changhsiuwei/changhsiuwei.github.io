@@ -21,8 +21,9 @@
   title/.style={font=\fontsize{16.5}{22}\selectfont\bfseries,text=ink,align=center},
   sub/.style={font=\fontsize{9.8}{14}\selectfont,text=muted,align=center},
   panel/.style={rounded corners=22pt,line width=1.1pt},
-  card/.style={rounded corners=13pt,line width=.95pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.6}{13}\selectfont,text=ink},
-  check/.style={rounded corners=13pt,line width=.95pt,align=center,inner xsep=13pt,inner ysep=8pt,font=\fontsize{9.8}{13.5}\selectfont,text=ink},
+  card/.style={rounded corners=13pt,line width=.95pt,align=center,inner xsep=10pt,inner ysep=8pt,font=\fontsize{9.4}{12.8}\selectfont,text=ink},
+  check/.style={rounded corners=13pt,line width=.95pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.6}{13.2}\selectfont,text=ink},
+  badge/.style={rounded corners=9pt,line width=.9pt,align=center,inner xsep=7pt,inner ysep=5pt,font=\fontsize{9.2}{12}\selectfont\bfseries},
   tag/.style={font=\fontsize{9}{12}\selectfont\bfseries,text=ink,align=center},
   small/.style={font=\fontsize{8.8}{12}\selectfont,text=muted,align=center},
   arrow/.style={-{Stealth[length=3.2mm,width=2mm]},draw=ink,line width=1.05pt}
@@ -34,31 +35,31 @@
 \node[title,text width=13.8cm] at (8,8.85) {生成很快，真正的成本在驗收};
 \node[sub,text width=12.6cm] at (8,8.18) {候選多不是問題；沒有穩定檢查，候選越多，人越累。};
 
-\draw[panel,fill=bluebg,draw=blue] (0.95,2.0) rectangle (6.4,7.05);
-\node[font=\fontsize{12.2}{16}\selectfont\bfseries,text=ink,align=center] at (3.68,6.42) {生成端};
-\node[sub,text width=4.3cm] at (3.68,6.02) {快速產出很多候選};
-\node[card,fill=white,draw=blue,text width=1.7cm] at (2.45,5.08) {候選\\一};
-\node[card,fill=white,draw=blue,text width=1.7cm] at (4.9,5.08) {候選\\二};
-\node[card,fill=white,draw=blue,text width=1.7cm] at (2.45,3.88) {候選\\三};
-\node[card,fill=white,draw=blue,text width=1.7cm] at (4.9,3.88) {候選\\四};
-\node[card,fill=goldbg,draw=gold,text width=3.65cm] at (3.68,2.72) {看起來都能用\\但還不能交};
+\draw[panel,fill=bluebg,draw=blue] (0.85,1.48) rectangle (6.55,7.08);
+\node[font=\fontsize{12.2}{16}\selectfont\bfseries,text=ink,align=center] at (3.7,6.43) {生成端};
+\node[sub,text width=4.3cm] at (3.7,6.02) {快速產出很多候選};
+\node[card,fill=white,draw=blue,text width=1.35cm] at (2.35,5.05) {候選一};
+\node[card,fill=white,draw=blue,text width=1.35cm] at (5.05,5.05) {候選二};
+\node[card,fill=white,draw=blue,text width=1.35cm] at (2.35,3.75) {候選三};
+\node[card,fill=white,draw=blue,text width=1.35cm] at (5.05,3.75) {候選四};
+\node[card,fill=goldbg,draw=gold,text width=3.25cm] at (3.7,2.42) {看起來都能用\\但還不能交};
 
-\draw[arrow] (6.78,4.55)--(9.18,4.55);
+\draw[arrow] (6.9,4.55)--(9.1,4.55);
 \node[tag,text width=2.05cm] at (8,5.08) {成本轉移};
 \node[small,text width=2.25cm] at (8,4.02) {真正耗時的是\\逐項驗收};
 
-\draw[panel,fill=redbg,draw=red] (9.6,2.0) rectangle (15.05,7.05);
-\node[font=\fontsize{12.2}{16}\selectfont\bfseries,text=ink,align=center] at (12.32,6.42) {驗收端};
+\draw[panel,fill=redbg,draw=red] (9.45,1.48) rectangle (15.2,7.08);
+\node[font=\fontsize{12.2}{16}\selectfont\bfseries,text=ink,align=center] at (12.32,6.43) {驗收端};
 \node[sub,text width=4.35cm] at (12.32,6.02) {每個候選都要過關};
-\node[check,fill=white,draw=line,text width=3.35cm] at (12.32,5.15) {來源可查};
-\node[check,fill=white,draw=line,text width=3.35cm] at (12.32,4.35) {連結可開};
-\node[check,fill=white,draw=line,text width=3.35cm] at (12.32,3.55) {正式頁已更新};
-\node[check,fill=white,draw=line,text width=3.35cm] at (12.32,2.75) {格式乾淨};
+\node[check,fill=white,draw=line,text width=2.65cm] at (12.05,5.12) {來源可查};
+\node[check,fill=white,draw=line,text width=2.65cm] at (12.05,4.17) {連結可開};
+\node[check,fill=white,draw=line,text width=2.65cm] at (12.05,3.22) {正式頁已更新};
+\node[check,fill=white,draw=line,text width=2.65cm] at (12.05,2.27) {格式乾淨};
 
-\node[font=\fontsize{12}{14}\selectfont\bfseries,text=green,align=center] at (14.15,5.15) {過};
-\node[font=\fontsize{12}{14}\selectfont\bfseries,text=green,align=center] at (14.15,4.35) {過};
-\node[font=\fontsize{12}{14}\selectfont\bfseries,text=red,align=center] at (14.15,3.55) {擋};
-\node[font=\fontsize{12}{14}\selectfont\bfseries,text=green,align=center] at (14.15,2.75) {過};
+\node[badge,fill=greenbg,draw=green,text=green] at (14.18,5.12) {過};
+\node[badge,fill=greenbg,draw=green,text=green] at (14.18,4.17) {過};
+\node[badge,fill=redbg,draw=red,text=red] at (14.18,3.22) {擋};
+\node[badge,fill=greenbg,draw=green,text=green] at (14.18,2.27) {過};
 
 \draw[draw=line,line width=1pt] (1.1,1.23)--(14.9,1.23);
 \node[font=\fontsize{10.5}{14}\selectfont,text=ink,align=center,text width=12.8cm] at (8,.72) {任務能不能自動化，常常取決於它能不能被穩定檢查。};
