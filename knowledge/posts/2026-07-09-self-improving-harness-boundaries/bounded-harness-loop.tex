@@ -1,43 +1,52 @@
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass[tikz,border=12pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
-\usetikzlibrary{arrows.meta,positioning,calc}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\setCJKmainfont{Noto Sans CJK TC}}
+\xeCJKsetup{CJKglue={\hskip 0.09em plus 0.02em}, CJKecglue={\hskip 0.12em plus 0.02em}}
+\usetikzlibrary{arrows.meta,calc,positioning}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{111827}
-\definecolor{muted}{HTML}{4B5563}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{475569}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluebg}{HTML}{DBEAFE}
-\definecolor{green}{HTML}{047857}
-\definecolor{greenbg}{HTML}{D1FAE5}
-\definecolor{gold}{HTML}{B45309}
-\definecolor{goldbg}{HTML}{FEF3C7}
-\definecolor{red}{HTML}{B91C1C}
-\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{EAF2FF}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{E6FAF2}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FFF2C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FFE8E8}
 \tikzset{
-  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
-  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
-  card/.style={rounded corners=13pt,line width=1pt,align=center,inner xsep=14pt,inner ysep=11pt,font=\fontsize{10.3}{13.8}\selectfont,text=navy}
+  title/.style={font=\fontsize{16.5}{22}\selectfont\bfseries,text=ink,align=center},
+  sub/.style={font=\fontsize{9.8}{14}\selectfont,text=muted,align=center},
+  phase/.style={rounded corners=15pt,line width=1pt,align=center,inner xsep=15pt,inner ysep=10pt,font=\fontsize{10.4}{14}\selectfont,text=ink},
+  guard/.style={rounded corners=14pt,line width=1pt,align=center,inner xsep=14pt,inner ysep=9pt,font=\fontsize{9.6}{13}\selectfont,text=ink},
+  small/.style={font=\fontsize{8.8}{12}\selectfont,text=muted,align=center},
+  arrow/.style={-{Stealth[length=3mm,width=1.9mm]},draw=ink,line width=1.0pt}
 }
 \begin{document}
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
 \path[fill=paper] (0,0) rectangle (16,9);
 
-\node[title,text width=13cm] at (8,8.14) {可以修改，但只能小步修改};
-\node[note,text width=11.8cm] at (8,7.52) {self-improving harness 的安全感，來自範圍小、可檢查、能復原。};
+\node[title,text width=13.8cm] at (8,8.16) {自我修正需要手術刀};
+\node[sub,text width=12.3cm] at (8,7.5) {可以讓系統改流程，但每次只改一小塊，而且要能退回。};
 
-\node[card,fill=bluebg,draw=blue,text width=2.55cm] (fail) at (2.4,4.85) {整理失敗};
-\node[card,fill=goldbg,draw=gold,text width=2.55cm] (edit) at (5.95,4.85) {提出小改動};
-\node[card,fill=greenbg,draw=green,text width=2.55cm] (test) at (9.5,4.85) {回歸檢查};
-\node[card,fill=redbg,draw=red,text width=2.55cm] (human) at (13.05,4.85) {人看合併};
+\draw[rounded corners=20pt,draw=line,line width=1pt,fill=white] (1.0,3.2) rectangle (15.0,6.35);
+\node[small,text width=2.4cm] at (2.15,6.0) {可修改區};
 
-\draw[->,draw=navy,line width=1.05pt] (fail)--(edit);
-\draw[->,draw=navy,line width=1.05pt] (edit)--(test);
-\draw[->,draw=navy,line width=1.05pt] (test)--(human);
-\draw[->,rounded corners=14pt,draw=navy,line width=1.05pt] (human.south) -- (13.05,2.75) -- (2.4,2.75) -- (fail.south);
+\node[phase,fill=bluebg,draw=blue,text width=2.15cm] (fail) at (2.6,4.75) {整理\\失敗案例};
+\node[phase,fill=goldbg,draw=gold,text width=2.15cm] (patch) at (5.95,4.75) {提出\\小改動};
+\node[phase,fill=greenbg,draw=green,text width=2.15cm] (test) at (9.3,4.75) {回歸\\檢查};
+\node[phase,fill=redbg,draw=red,text width=2.15cm] (human) at (12.65,4.75) {人看\\合併};
+\draw[arrow] (fail)--(patch);
+\draw[arrow] (patch)--(test);
+\draw[arrow] (test)--(human);
+\draw[arrow,rounded corners=16pt] (human.south) -- (12.65,3.55) -- (2.6,3.55) -- (fail.south);
 
-\node[card,fill=white,draw=line,text width=8.8cm] at (8,1.68) {不碰：權限系統、評分標準、錯誤紀錄};
+\draw[rounded corners=18pt,draw=red,line width=1.05pt,fill=redbg] (2.0,1.35) rectangle (14.0,2.45);
+\node[guard,fill=white,draw=red,text width=10.2cm] at (8,1.9) {不能自改：權限系統／評分標準／保留測試／錯誤紀錄};
+
+\node[small,text width=11.6cm] at (8,.55) {上面可以試錯；下面不能讓同一個 agent 自己改。};
 \end{tikzpicture}
 \end{document}

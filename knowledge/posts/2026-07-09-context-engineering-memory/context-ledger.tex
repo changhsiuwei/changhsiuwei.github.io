@@ -1,49 +1,56 @@
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass[tikz,border=12pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
-\usetikzlibrary{arrows.meta,positioning,calc}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\setCJKmainfont{Noto Sans CJK TC}}
+\xeCJKsetup{CJKglue={\hskip 0.09em plus 0.02em}, CJKecglue={\hskip 0.12em plus 0.02em}}
+\usetikzlibrary{arrows.meta,calc,positioning}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{111827}
-\definecolor{muted}{HTML}{4B5563}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{475569}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{red}{HTML}{B91C1C}
-\definecolor{redbg}{HTML}{FEE2E2}
-\definecolor{green}{HTML}{047857}
-\definecolor{greenbg}{HTML}{D1FAE5}
-\definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluebg}{HTML}{DBEAFE}
-\definecolor{gold}{HTML}{B45309}
-\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{EAF2FF}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{E6FAF2}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FFF2C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FFE8E8}
 \tikzset{
-  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
-  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
-  card/.style={rounded corners=13pt,line width=1pt,align=center,inner xsep=13pt,inner ysep=10pt,font=\fontsize{10}{13.5}\selectfont,text=navy}
+  title/.style={font=\fontsize{16.5}{22}\selectfont\bfseries,text=ink,align=center},
+  sub/.style={font=\fontsize{9.8}{14}\selectfont,text=muted,align=center},
+  chip/.style={rounded corners=12pt,line width=.9pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.5}{13}\selectfont,text=ink},
+  row/.style={rounded corners=11pt,line width=.9pt,align=left,inner xsep=14pt,inner ysep=8pt,font=\fontsize{9.6}{13.2}\selectfont,text=ink},
+  label/.style={font=\fontsize{9}{12}\selectfont\bfseries,text=ink,align=center},
+  small/.style={font=\fontsize{8.8}{12}\selectfont,text=muted,align=center},
+  arrow/.style={-{Stealth[length=3mm,width=1.9mm]},draw=ink,line width=1.0pt}
 }
 \begin{document}
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
 \path[fill=paper] (0,0) rectangle (16,9);
 
-\node[title,text width=13cm] at (8,8.14) {長脈絡不是把所有東西倒回 prompt};
-\node[note,text width=11.8cm] at (8,7.52) {我們要留下能再次派上用場的東西，而不是保存一整片雜訊。};
+\node[title,text width=13.8cm] at (8,8.16) {不要把整張桌子掃進 prompt};
+\node[sub,text width=12.4cm] at (8,7.5) {長脈絡的問題不是容量，而是整理後能不能被下一輪使用。};
 
-\draw[rounded corners=18pt,draw=red,line width=1.05pt,fill=redbg] (1.15,2.0) rectangle (6.75,6.5);
-\node[font=\fontsize{12.5}{16}\selectfont,text=navy,align=center] at (3.95,5.8) {流水帳};
-\node[card,fill=white,draw=line,text width=3.5cm] at (3.95,4.55) {所有回應\\全部塞回};
-\node[card,fill=white,draw=line,text width=3.5cm] at (3.95,3.1) {看似完整\\其實難判斷};
+\draw[rounded corners=20pt,draw=red,line width=1.05pt,fill=redbg] (0.9,1.45) rectangle (5.75,6.55);
+\node[label] at (3.32,5.95) {雜訊抽屜};
+\node[chip,fill=white,draw=line,text width=2.8cm] at (3.32,4.92) {整段對話};
+\node[chip,fill=white,draw=line,text width=2.8cm] at (3.32,3.85) {所有錯誤};
+\node[chip,fill=white,draw=line,text width=2.8cm] at (3.32,2.78) {過期假設};
+\node[small,text width=3.6cm] at (3.32,1.93) {看似完整\\其實很難接手};
 
-\draw[rounded corners=18pt,draw=green,line width=1.05pt,fill=greenbg] (9.25,2.0) rectangle (14.85,6.5);
-\node[font=\fontsize{12.5}{16}\selectfont,text=navy,align=center] at (12.05,5.8) {脈絡帳本};
-\node[card,fill=bluebg,draw=blue,text width=1.85cm] at (10.8,4.55) {任務\\紀錄};
-\node[card,fill=goldbg,draw=gold,text width=1.85cm] at (13.3,4.55) {失敗\\紀錄};
-\node[card,fill=greenbg,draw=green,text width=1.85cm] at (10.8,3.1) {可重用\\規則};
-\node[card,fill=white,draw=line,text width=1.85cm] at (13.3,3.1) {待查\\問題};
+\draw[arrow] (6.05,4.05)--(7.25,4.05);
+\node[small,text width=1.25cm] at (6.65,4.55) {整理};
+\node[small,text width=1.25cm] at (6.65,3.55) {刪減};
 
-\draw[->,draw=navy,line width=1.15pt] (7.08,4.25)--(8.92,4.25);
-\node[note,text width=1.7cm] at (8,4.78) {整理};
-\node[note,text width=1.7cm] at (8,3.72) {刪減};
+\draw[rounded corners=20pt,draw=green,line width=1.05pt,fill=greenbg] (7.55,1.15) rectangle (15.1,6.85);
+\node[label] at (11.32,6.18) {脈絡帳本};
+\node[row,fill=bluebg,draw=blue,text width=5.65cm] at (11.32,5.18) {\textbf{任務狀態}：做到哪一步，誰接手};
+\node[row,fill=goldbg,draw=gold,text width=5.65cm] at (11.32,4.1) {\textbf{可重用規則}：下次直接檢查};
+\node[row,fill=white,draw=line,text width=5.65cm] at (11.32,3.02) {\textbf{待查疑點}：不能假裝已確認};
+\node[row,fill=redbg,draw=red,text width=5.65cm] at (11.32,1.94) {\textbf{不要帶入}：個資與過期例外};
 
-\node[note,text width=11.4cm] at (8,.95) {context engineering 的重點不是塞更多字，而是讓下一輪知道什麼值得相信。};
+\node[small,text width=11.6cm] at (8,.58) {context engineering 不是讓模型背更多，而是讓資訊各自有位置。};
 \end{tikzpicture}
 \end{document}

@@ -1,43 +1,55 @@
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass[tikz,border=12pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
-\usetikzlibrary{arrows.meta,positioning,calc}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\setCJKmainfont{Noto Sans CJK TC}}
+\xeCJKsetup{CJKglue={\hskip 0.09em plus 0.02em}, CJKecglue={\hskip 0.12em plus 0.02em}}
+\usetikzlibrary{arrows.meta,calc,positioning}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{111827}
-\definecolor{muted}{HTML}{4B5563}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{475569}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluebg}{HTML}{DBEAFE}
-\definecolor{gold}{HTML}{B45309}
-\definecolor{goldbg}{HTML}{FEF3C7}
-\definecolor{red}{HTML}{B91C1C}
-\definecolor{redbg}{HTML}{FEE2E2}
-\definecolor{green}{HTML}{047857}
-\definecolor{greenbg}{HTML}{D1FAE5}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{EAF2FF}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{E6FAF2}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FFF2C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FFE8E8}
 \tikzset{
-  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
-  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
-  card/.style={rounded corners=13pt,line width=1pt,align=center,inner xsep=14pt,inner ysep=10pt,font=\fontsize{10.2}{13.8}\selectfont,text=navy}
+  title/.style={font=\fontsize{16.5}{22}\selectfont\bfseries,text=ink,align=center},
+  sub/.style={font=\fontsize{9.8}{14}\selectfont,text=muted,align=center},
+  nodebox/.style={rounded corners=15pt,line width=1pt,align=center,inner xsep=15pt,inner ysep=10pt,font=\fontsize{10.2}{13.8}\selectfont,text=ink},
+  warn/.style={rounded corners=16pt,line width=1pt,align=center,inner xsep=15pt,inner ysep=11pt,font=\fontsize{10}{13.5}\selectfont,text=ink},
+  small/.style={font=\fontsize{8.8}{12}\selectfont,text=muted,align=center},
+  arrow/.style={-{Stealth[length=3mm,width=1.9mm]},draw=ink,line width=1pt}
 }
 \begin{document}
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
 \path[fill=paper] (0,0) rectangle (16,9);
 
-\node[title,text width=13cm] at (8,8.14) {分數變高，不一定代表事情變好};
-\node[note,text width=11.8cm] at (8,7.52) {系統會追逐我們給它的訊號；訊號太窄，捷徑就會像進步。};
+\node[title,text width=13.8cm] at (8,8.16) {分數上升，可能只是捷徑變熟};
+\node[sub,text width=12.2cm] at (8,7.5) {系統會優化我們給的訊號；訊號太窄，就會把代理當目的。};
 
-\node[card,fill=bluebg,draw=blue,text width=2.45cm] (signal) at (2.35,4.85) {獎勵訊號};
-\node[card,fill=goldbg,draw=gold,text width=2.45cm] (opt) at (5.95,4.85) {努力優化};
-\node[card,fill=redbg,draw=red,text width=2.45cm] (shortcut) at (9.55,4.85) {找到捷徑};
-\node[card,fill=greenbg,draw=green,text width=2.45cm] (audit) at (13.15,4.85) {外部查核};
+\node[nodebox,fill=bluebg,draw=blue,text width=2.45cm] (goal) at (2.25,4.45) {真正目的\\可靠工作};
 
-\draw[->,draw=navy,line width=1.05pt] (signal)--(opt);
-\draw[->,draw=navy,line width=1.05pt] (opt)--(shortcut);
-\draw[->,draw=navy,line width=1.05pt] (shortcut)--(audit);
+\node[nodebox,fill=goldbg,draw=gold,text width=2.45cm] (metric) at (6.2,5.55) {替代分數\\容易量化};
+\node[nodebox,fill=redbg,draw=red,text width=2.45cm] (shortcut) at (10.1,5.55) {學會捷徑\\分數變高};
+\node[warn,fill=redbg,draw=red,text width=2.7cm] (bad) at (13.75,5.55) {看起來\\進步};
 
-\node[card,fill=white,draw=line,text width=10.8cm] at (8,2.45) {只看測試、LLM 評分或 benchmark，都可能把目標縮得太窄。};
-\node[note,text width=11.5cm] at (8,.95) {分數是代理，不是目的；代理一旦失真，系統越努力，偏差越穩定。};
+\node[nodebox,fill=greenbg,draw=green,text width=2.45cm] (evidence) at (6.2,3.0) {外部證據\\人工判斷};
+\node[nodebox,fill=white,draw=line,text width=2.45cm] (audit) at (10.1,3.0) {檢查軌跡\\保留失敗};
+\node[warn,fill=greenbg,draw=green,text width=2.7cm] (good) at (13.75,3.0) {真的\\變可靠};
+
+\draw[arrow] (goal)--(metric);
+\draw[arrow] (metric)--(shortcut);
+\draw[arrow] (shortcut)--(bad);
+\draw[arrow,draw=green] (goal)--(evidence);
+\draw[arrow,draw=green] (evidence)--(audit);
+\draw[arrow,draw=green] (audit)--(good);
+
+\node[warn,fill=white,draw=red,text width=1.9cm,font=\fontsize{9}{12}\selectfont] at (8.05,4.28) {代理失真};
+\node[small,text width=11.6cm] at (8,.72) {reward hacking 不是壞孩子，而是壞考題被考得太認真。};
 \end{tikzpicture}
 \end{document}

@@ -1,44 +1,50 @@
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass[tikz,border=12pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
-\IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
-\usetikzlibrary{arrows.meta,positioning,calc}
+\IfFontExistsTF{Segoe UI}{\setmainfont{Segoe UI}}{\setmainfont{Arial}}
+\IfFontExistsTF{Microsoft JhengHei}{\setCJKmainfont{Microsoft JhengHei}}{\setCJKmainfont{Noto Sans CJK TC}}
+\xeCJKsetup{CJKglue={\hskip 0.09em plus 0.02em}, CJKecglue={\hskip 0.12em plus 0.02em}}
+\usetikzlibrary{arrows.meta,calc,positioning}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{111827}
-\definecolor{muted}{HTML}{4B5563}
+\definecolor{ink}{HTML}{0F172A}
+\definecolor{muted}{HTML}{475569}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluebg}{HTML}{DBEAFE}
-\definecolor{green}{HTML}{047857}
-\definecolor{greenbg}{HTML}{D1FAE5}
-\definecolor{gold}{HTML}{B45309}
-\definecolor{goldbg}{HTML}{FEF3C7}
-\definecolor{red}{HTML}{B91C1C}
-\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{blue}{HTML}{2563EB}
+\definecolor{bluebg}{HTML}{EAF2FF}
+\definecolor{green}{HTML}{00856A}
+\definecolor{greenbg}{HTML}{E6FAF2}
+\definecolor{gold}{HTML}{D97706}
+\definecolor{goldbg}{HTML}{FFF2C7}
+\definecolor{red}{HTML}{DC2626}
+\definecolor{redbg}{HTML}{FFE8E8}
 \tikzset{
-  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
-  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
-  stepbox/.style={rounded corners=12pt,line width=1pt,align=center,inner xsep=13pt,inner ysep=10pt,font=\fontsize{10.3}{13.8}\selectfont,text=navy}
+  title/.style={font=\fontsize{16.5}{22}\selectfont\bfseries,text=ink,align=center},
+  sub/.style={font=\fontsize{9.8}{14}\selectfont,text=muted,align=center},
+  station/.style={rounded corners=15pt,line width=1pt,align=center,inner xsep=15pt,inner ysep=11pt,font=\fontsize{10.6}{14.2}\selectfont,text=ink},
+  strip/.style={rounded corners=14pt,line width=1pt,align=center,inner xsep=16pt,inner ysep=10pt,font=\fontsize{9.8}{13.5}\selectfont,text=ink},
+  small/.style={font=\fontsize{8.9}{12.2}\selectfont,text=muted,align=center},
+  arrow/.style={-{Stealth[length=3.2mm,width=2mm]},draw=ink,line width=1.05pt}
 }
 \begin{document}
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\begin{tikzpicture}[x=1cm,y=1cm,line cap=round,line join=round]
 \path[fill=paper] (0,0) rectangle (16,9);
 
-\node[title,text width=13cm] at (8,8.14) {agent 的價值，在一輪一輪修正};
-\node[note,text width=11.6cm] at (8,7.52) {每一輪只要留下可查的證據，下一輪就不是重新猜。};
+\node[title,text width=13.7cm] at (8,8.16) {agent 的能力藏在行動軌跡裡};
+\node[sub,text width=12.2cm] at (8,7.5) {不是問一次、答一次；是每一輪都把證據留給下一輪。};
 
-\node[stepbox,fill=bluebg,draw=blue,text width=2.25cm] (goal) at (2.4,5.2) {收到目標};
-\node[stepbox,fill=greenbg,draw=green,text width=2.25cm] (act) at (5.95,5.2) {呼叫工具};
-\node[stepbox,fill=goldbg,draw=gold,text width=2.25cm] (record) at (9.5,5.2) {留下紀錄};
-\node[stepbox,fill=redbg,draw=red,text width=2.25cm] (check) at (13.05,5.2) {檢查結果};
+\node[station,fill=bluebg,draw=blue,text width=2.25cm] (read) at (2.15,5.05) {讀任務\\看現場};
+\node[station,fill=greenbg,draw=green,text width=2.25cm] (act) at (5.95,5.05) {改檔案\\叫工具};
+\node[station,fill=goldbg,draw=gold,text width=2.25cm] (check) at (9.75,5.05) {跑檢查\\看錯誤};
+\node[station,fill=redbg,draw=red,text width=2.25cm] (decide) at (13.55,5.05) {停下來\\或再修};
 
-\draw[->,draw=navy,line width=1.05pt] (goal)--(act);
-\draw[->,draw=navy,line width=1.05pt] (act)--(record);
-\draw[->,draw=navy,line width=1.05pt] (record)--(check);
-\draw[->,rounded corners=14pt,draw=navy,line width=1.05pt] (check.south) -- (13.05,3.05) -- (2.4,3.05) -- (goal.south);
+\draw[arrow] (read)--(act);
+\draw[arrow] (act)--(check);
+\draw[arrow] (check)--(decide);
+\draw[arrow,rounded corners=16pt] (decide.south) -- (13.55,2.85) -- (2.15,2.85) -- (read.south);
 
-\node[stepbox,fill=white,draw=line,text width=5.4cm] at (8,2.0) {錯誤、差異、理由\\變成下一次修正的材料};
-\node[note,text width=11.4cm] at (8,.78) {真正可靠的 agent，不是一次做對，而是錯了以後知道怎麼留下線索。};
+\draw[rounded corners=16pt,draw=line,line width=1pt,fill=white] (3.45,1.55) rectangle (12.55,2.5);
+\node[strip,draw=white,fill=white,text width=7.8cm] at (8,2.03) {每一輪留下：差異、錯誤、理由、下一步};
+
+\node[small,text width=11.6cm] at (8,.75) {如果沒有這條軌跡，agent 看起來很忙，實際上只是更快地忘記自己做過什麼。};
 \end{tikzpicture}
 \end{document}
