@@ -8,7 +8,7 @@ categories:
   - AI Agent
   - AI 工程
 description: "Self-improving harness 的力量在於讓系統修正自己的工作方式，但安全問題也出在同一個地方。"
-image: bounded-harness-loop.png
+image: bounded-harness-loop-v2.png
 draft: false
 ---
 
@@ -20,7 +20,7 @@ AI 改答案，和 AI 改產生答案的規則，是兩件完全不同的事。
 
 如果 agent 發現某類錯誤常發生，它可以提出修補。可是它不能順手改掉權限，不能改掉評分器，不能刪掉錯誤紀錄，更不能把讓自己失敗的測試拿掉。這些聽起來像常識，但自我改進系統最危險的地方，往往就是常識沒有被寫成邊界。
 
-![self-improving harness 應該把失敗整理、有限度修改、回歸檢查與人工判斷分開。](bounded-harness-loop.png)
+![self-improving harness 應該把失敗整理、有限度修改、回歸檢查與人工判斷分開。](bounded-harness-loop-v2.png)
 
 ## 讓它修，但只修一小塊
 
@@ -72,7 +72,7 @@ STOP，也就是 Self-Taught Optimizer，提出一個很有意思的問題：我
 
 我會把系統分成內層和外層。內層可以改提示詞、工具順序、錯誤處理、資料整理方式。這些是工作方法，可以被測試，可以逐步改善。外層不能由同一個 agent 自己改。外層包括權限、正式評分器、保留測試集、錯誤紀錄與人工核准點。
 
-![可修改範圍要小，權限、評分器、測試集與錯誤紀錄要留在外面。](editable-boundary.png)
+![可修改範圍要小，權限、評分器、測試集與錯誤紀錄要留在外面。](editable-boundary-v2.png)
 
 原因很簡單。若一個系統可以改自己的評分方式，它很可能把「真正變好」變成「看起來分數更好」。若它可以刪掉錯誤紀錄，就沒有歷史能反駁它。若它可以放寬權限，就會把本來需要人核准的事變成自動通過。
 
