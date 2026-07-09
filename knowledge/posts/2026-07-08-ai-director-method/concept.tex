@@ -47,12 +47,12 @@
 \Canvas
 \node[headline,anchor=west] at (-5.8,3.12) {人要當導演，不要當旁觀者};
 \node[subline,anchor=west] at (-5.8,2.32) {LLM 會產出很多東西；方向、規準、剪輯權仍在人手上。};
-\node[goldcard,minimum width=2.7cm,text width=2.25cm,minimum height=1.25cm] (mou) at (-3.6,.8) {謀目標與限制};
-\node[bluecard,minimum width=2.7cm,text width=2.25cm,minimum height=1.25cm] (ding) at (0,.8) {定格式與規準};
-\node[tealcard,minimum width=2.7cm,text width=2.25cm,minimum height=1.25cm] (dong) at (3.6,.8) {動生成與修正};
+\node[goldcard,minimum width=2.9cm,text width=2.45cm,minimum height=1.25cm] (mou) at (-3.6,.8) {說清目標與限制};
+\node[bluecard,minimum width=2.9cm,text width=2.45cm,minimum height=1.25cm] (ding) at (0,.8) {定好格式與標準};
+\node[tealcard,minimum width=2.9cm,text width=2.45cm,minimum height=1.25cm] (dong) at (3.6,.8) {再生成與修正};
 \draw[flow] (mou) -- (ding); \draw[flow] (ding) -- (dong);
-\node[card,minimum width=3.1cm,text width=2.65cm] (human) at (0,-1.35) {人決定可不可以交付};
+\node[card,minimum width=3.35cm,text width=2.9cm] (human) at (0,-1.35) {人決定\\能不能交付};
 \foreach \x in {mou,ding,dong}{\draw[softflow] (\x) -- (human);}
-\node[fine] at (0,-2.85) {提示詞不是咒語；它是一張工作單。};
+\node[fine] at (0,-2.85) {提示詞不是咒語；它要先把任務說清楚。};
 \end{tikzpicture}
 \end{document}
