@@ -1,53 +1,47 @@
-\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=10pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.07em plus 0.02em}, CJKecglue={\hskip 0.10em plus 0.02em}}
-\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
+\usetikzlibrary{arrows.meta,positioning,calc}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{0F172A}
-\definecolor{muted}{HTML}{334155}
+\definecolor{navy}{HTML}{111827}
+\definecolor{muted}{HTML}{4B5563}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{blue}{HTML}{2563EB}
+\definecolor{blue}{HTML}{1D4ED8}
 \definecolor{bluebg}{HTML}{DBEAFE}
-\definecolor{green}{HTML}{00856A}
-\definecolor{greenbg}{HTML}{D9FBE8}
-\definecolor{gold}{HTML}{C26A00}
-\definecolor{goldbg}{HTML}{FFE8B5}
-\definecolor{red}{HTML}{C92A2A}
-\definecolor{redbg}{HTML}{FFE1E1}
+\definecolor{green}{HTML}{047857}
+\definecolor{greenbg}{HTML}{D1FAE5}
+\definecolor{gold}{HTML}{B45309}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{red}{HTML}{B91C1C}
+\definecolor{redbg}{HTML}{FEE2E2}
 \tikzset{
-  box/.style={rounded corners=9pt, line width=1pt, align=center, inner xsep=12pt, inner ysep=9pt},
-  small/.style={font=\fontsize{9.6}{13.2}\selectfont, text=navy, align=center},
-  title/.style={font=\bfseries\fontsize{18}{24}\selectfont, text=navy, align=center},
-  note/.style={font=\fontsize{10.2}{14}\selectfont, text=muted, align=center}
+  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
+  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
+  chip/.style={rounded corners=12pt,line width=1pt,align=center,inner xsep=14pt,inner ysep=10pt,font=\fontsize{10.5}{14}\selectfont,text=navy},
+  core/.style={rounded corners=18pt,line width=1.2pt,align=center,inner xsep=18pt,inner ysep=16pt,font=\fontsize{14}{18}\selectfont,text=white}
 }
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
-\path[fill=paper] (0,0) rectangle (16,9.6);
-\node[title,text width=14.5cm] at (8,8.82) {模型本體之外，才是改進真正發生的地方};
-\node[note,text width=13.4cm] at (8,8.02) {harness 把目標、工具、檔案、測試、權限與紀錄接起來，模型才有機會在下一輪修正自己。};
+\path[fill=paper] (0,0) rectangle (16,9);
 
-\draw[rounded corners=18pt, draw=line, line width=1.1pt, fill=white] (1.05,1.25) rectangle (14.95,7.32);
-\node[box,fill=navy,draw=navy,text=white,text width=3.4cm,font=\bfseries\fontsize{14}{18}\selectfont] (model) at (8,4.32) {Base Model\\LLM};
-\node[small,text=muted,text width=3.5cm] at (8,3.42) {負責推理與產生下一步};
+\node[title,text width=13.5cm] at (8,8.18) {harness 不是外掛，是模型工作的環境};
+\node[note,text width=11.8cm] at (8,7.55) {模型負責推理；harness 負責讓推理能被執行、留下紀錄、接受檢查。};
 
-\node[box,fill=bluebg,draw=blue,text width=2.5cm,small] (goal) at (3.0,6.25) {目標\\限制};
-\node[box,fill=greenbg,draw=green,text width=2.5cm,small] (tools) at (6.35,6.25) {工具\\介面};
-\node[box,fill=goldbg,draw=gold,text width=2.5cm,small] (files) at (9.7,6.25) {檔案\\狀態};
-\node[box,fill=redbg,draw=red,text width=2.5cm,small] (tests) at (13.0,6.25) {測試\\回歸檢查};
-\node[box,fill=bluebg,draw=blue,text width=2.5cm,small] (perm) at (3.0,2.28) {權限\\停手點};
-\node[box,fill=greenbg,draw=green,text width=2.5cm,small] (logs) at (6.35,2.28) {紀錄\\錯誤案例};
-\node[box,fill=goldbg,draw=gold,text width=2.5cm,small] (ctx) at (9.7,2.28) {脈絡\\可重用規則};
-\node[box,fill=redbg,draw=red,text width=2.5cm,small] (human) at (13.0,2.28) {人工判斷\\核准};
+\node[core,fill=navy,draw=navy,text width=3.4cm] (model) at (8,4.65) {Base Model\\LLM};
 
-\foreach \n in {goal,tools,files,tests,perm,logs,ctx,human}{
-  \draw[->,draw=navy,line width=.9pt] (\n) -- (model);
-}
-\draw[->,rounded corners=8pt,draw=navy,line width=1.05pt] (model.east) -- (14.3,4.32) -- (14.3,6.0) -- (tests.south);
-\draw[->,rounded corners=8pt,draw=navy,line width=1.05pt] (model.west) -- (1.7,4.32) -- (1.7,2.28) -- (perm.west);
+\node[chip,fill=bluebg,draw=blue,text width=2.55cm] (task) at (2.65,6.0) {目標\\限制};
+\node[chip,fill=greenbg,draw=green,text width=2.55cm] (tools) at (5.4,2.65) {工具\\檔案};
+\node[chip,fill=goldbg,draw=gold,text width=2.55cm] (tests) at (10.6,2.65) {測試\\紀錄};
+\node[chip,fill=redbg,draw=red,text width=2.55cm] (human) at (13.35,6.0) {權限\\人工判斷};
 
-\draw[draw=line,line width=.9pt] (1.2,.82)--(14.8,.82);
-\node[note,text width=13.6cm] at (8,.42) {如果沒有這一層，模型只能回答；有了這一層，它才開始像一個會留下工作痕跡的系統。};
+\draw[->,draw=navy,line width=1.05pt] (task) -- (model);
+\draw[->,draw=navy,line width=1.05pt] (model) -- (tools);
+\draw[->,draw=navy,line width=1.05pt] (model) -- (tests);
+\draw[->,draw=navy,line width=1.05pt] (human) -- (model);
+
+\draw[rounded corners=18pt,draw=line,line width=1pt] (1.35,1.55) rectangle (14.65,6.85);
+\node[note,text width=11.6cm] at (8,1.05) {沒有這一層，模型只能回答；有這一層，它才有地方把錯誤變成下一輪的線索。};
 \end{tikzpicture}
 \end{document}

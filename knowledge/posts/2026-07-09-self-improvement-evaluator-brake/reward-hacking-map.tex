@@ -1,43 +1,43 @@
-\documentclass[tikz,border=8pt]{standalone}
+\documentclass[tikz,border=10pt]{standalone}
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \IfFontExistsTF{Noto Sans TC}{\setmainfont{Noto Sans TC}\setCJKmainfont{Noto Sans TC}}{\setmainfont{Microsoft JhengHei}\setCJKmainfont{Microsoft JhengHei}}
-\xeCJKsetup{CJKglue={\hskip 0.07em plus 0.02em}, CJKecglue={\hskip 0.10em plus 0.02em}}
+\xeCJKsetup{CJKglue={\hskip 0.08em plus 0.02em}, CJKecglue={\hskip 0.11em plus 0.02em}}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \definecolor{paper}{HTML}{FFFDF8}
-\definecolor{navy}{HTML}{0F172A}
-\definecolor{muted}{HTML}{334155}
+\definecolor{navy}{HTML}{111827}
+\definecolor{muted}{HTML}{4B5563}
 \definecolor{line}{HTML}{CBD5E1}
-\definecolor{red}{HTML}{BA1A1A}
-\definecolor{redbg}{HTML}{FFE1E1}
 \definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluebg}{HTML}{DCEBFF}
-\definecolor{gold}{HTML}{B85C00}
-\definecolor{goldbg}{HTML}{FFE8B5}
+\definecolor{bluebg}{HTML}{DBEAFE}
+\definecolor{gold}{HTML}{B45309}
+\definecolor{goldbg}{HTML}{FEF3C7}
+\definecolor{red}{HTML}{B91C1C}
+\definecolor{redbg}{HTML}{FEE2E2}
+\definecolor{green}{HTML}{047857}
+\definecolor{greenbg}{HTML}{D1FAE5}
 \tikzset{
-  box/.style={rounded corners=10pt,line width=1pt,align=center,inner xsep=12pt,inner ysep=8pt,font=\fontsize{9.4}{12.8}\selectfont,text=navy},
-  title/.style={font=\bfseries\fontsize{18}{24}\selectfont,text=navy,align=center},
-  note/.style={font=\fontsize{10.2}{14}\selectfont,text=muted,align=center}
+  title/.style={font=\fontsize{15}{20}\selectfont,text=navy,align=center},
+  note/.style={font=\fontsize{9.5}{13}\selectfont,text=muted,align=center},
+  card/.style={rounded corners=13pt,line width=1pt,align=center,inner xsep=14pt,inner ysep=10pt,font=\fontsize{10.2}{13.8}\selectfont,text=navy}
 }
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
-\path[fill=paper] (0,0) rectangle (16,9.6);
-\node[title,text width=14.4cm] at (8,8.78) {分數變高，不一定代表事情變好};
-\node[note,text width=13.2cm] at (8,7.92) {reward hacking 不是模型邪惡，而是評分方式太窄，讓捷徑看起來像進步。};
+\path[fill=paper] (0,0) rectangle (16,9);
 
-\node[box,fill=bluebg,draw=blue,text width=2.75cm] (signal) at (2.2,5.15) {獎勵訊號\\分數、測試、評閱};
-\node[box,fill=goldbg,draw=gold,text width=2.75cm] (opt) at (6.0,5.15) {系統優化\\找最高分路徑};
-\node[box,fill=redbg,draw=red,text width=2.75cm] (hack) at (9.8,5.15) {鑽漏洞\\看似進步};
-\node[box,fill=white,draw=line,text width=2.75cm] (audit) at (13.6,5.15) {外部查核\\重新看目的};
-\draw[->,draw=navy,line width=1pt] (signal)--(opt);
-\draw[->,draw=navy,line width=1pt] (opt)--(hack);
-\draw[->,draw=navy,line width=1pt] (hack)--(audit);
+\node[title,text width=13cm] at (8,8.14) {分數變高，不一定代表事情變好};
+\node[note,text width=11.8cm] at (8,7.52) {系統會追逐我們給它的訊號；訊號太窄，捷徑就會像進步。};
 
-\node[box,fill=white,draw=line,text width=3.25cm] at (3.8,2.78) {只看單元測試\\可能硬背測資};
-\node[box,fill=white,draw=line,text width=3.25cm] at (8.0,2.78) {只看 LLM 評分\\可能迎合評審口味};
-\node[box,fill=white,draw=line,text width=3.25cm] at (12.2,2.78) {只看 benchmark\\可能利用資料痕跡};
+\node[card,fill=bluebg,draw=blue,text width=2.45cm] (signal) at (2.35,4.85) {獎勵訊號};
+\node[card,fill=goldbg,draw=gold,text width=2.45cm] (opt) at (5.95,4.85) {努力優化};
+\node[card,fill=redbg,draw=red,text width=2.45cm] (shortcut) at (9.55,4.85) {找到捷徑};
+\node[card,fill=greenbg,draw=green,text width=2.45cm] (audit) at (13.15,4.85) {外部查核};
 
-\draw[draw=line,line width=.9pt] (1.25,1.35)--(14.75,1.35);
-\node[note,text width=13.2cm] at (8,.86) {當分數和目的分開時，系統越努力，偏差越穩定。};
+\draw[->,draw=navy,line width=1.05pt] (signal)--(opt);
+\draw[->,draw=navy,line width=1.05pt] (opt)--(shortcut);
+\draw[->,draw=navy,line width=1.05pt] (shortcut)--(audit);
+
+\node[card,fill=white,draw=line,text width=10.8cm] at (8,2.45) {只看測試、LLM 評分或 benchmark，都可能把目標縮得太窄。};
+\node[note,text width=11.5cm] at (8,.95) {分數是代理，不是目的；代理一旦失真，系統越努力，偏差越穩定。};
 \end{tikzpicture}
 \end{document}
