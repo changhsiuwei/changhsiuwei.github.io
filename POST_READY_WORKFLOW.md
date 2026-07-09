@@ -15,7 +15,7 @@ post_ready/
 1. 檢查 `post_ready/` 內尚未發布的日期資料夾。
 2. 讀取 `content.md`、`post.md`、`index.md`、`.txt` 或 `.tex`。
 3. 複製圖片到 `knowledge/posts/<slug>/`，並修正 Markdown 圖片路徑。
-4. 若資料夾只有 PDF，或 TeX 需要圖像重製，Codex 會先擷取圖片、整理文字，必要時用 TikZ 或產生圖檔補上說明圖。
+4. 若資料夾只有 PDF，或 TeX 需要圖像重製，Codex 會先擷取圖片、整理文字，必要時用 TikZ 或產生圖檔補上說明圖；TikZ 圖必須遵守 `post_ready/WRITING_STYLE_GUIDE.md` 的呼吸空間限制，不能出現框貼框、字貼框或標籤擠壓。
 5. 產生正式貼文 `knowledge/posts/<slug>/index.md`。
 6. 執行 `quarto render`、Git commit、push，並等待 GitHub Actions 完成。
 
