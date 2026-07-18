@@ -9,7 +9,7 @@ categories:
   - AI 工程
 description: "AI 自我改進近期比較像一套可執行、可檢查、可留下紀錄的工作環境，而不是模型直接改掉自己的腦袋。"
 image: harness-layer-v2.png
-draft: false
+draft: true
 ---
 
 我這次讀 [Lilian Weng 的 Harness Engineering for Self-Improvement](https://lilianweng.github.io/posts/2026-07-04-harness/) 時，最刺眼的不是 recursive self-improvement 這個詞，而是另一個比較樸素的東西：harness。

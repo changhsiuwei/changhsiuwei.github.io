@@ -9,7 +9,7 @@ categories:
   - OCR
 description: "紙本答案、OCR、AI 初評與教師核分必須留下同一條查核紀錄；學生提出疑問時，分數要能回到原卷與理由。"
 image: audit-trail.png
-draft: false
+draft: true
 ---
 
 ## 看不見錯在哪一步，分數就不該進場

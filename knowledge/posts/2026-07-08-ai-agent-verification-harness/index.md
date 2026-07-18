@@ -9,7 +9,7 @@ categories:
   - AI 工程
 description: "Agent 能改檔案、查資料、發布內容之後，最耗人的工作會轉向驗收清單、錯誤案例與可重跑的檢查流程。"
 image: verification-harness.png
-draft: false
+draft: true
 ---
 
 我們最不想承認的一件事是：做 AI Agent 這一年，很多時間根本不是在做 Agent。

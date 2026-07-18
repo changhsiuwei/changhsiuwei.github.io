@@ -8,7 +8,7 @@ categories:
   - 會計教育
 description: "這個知識站記錄 AI 進入會計課堂後，我們如何把工具變成思考阻力、檢查流程與教學證據。"
 image: teaching-contract.png
-draft: false
+draft: true
 ---
 
 這是我知識站的第一篇文章。

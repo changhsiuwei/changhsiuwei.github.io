@@ -9,7 +9,7 @@ categories:
   - AI 工程
 description: "長脈絡不是把所有訊息倒回模型，而是讓任務紀錄、錯誤、規則與待查問題各有位置。"
 image: context-ledger-v2.png
-draft: false
+draft: true
 ---
 
 我們很容易把 context engineering 誤會成一件事：把更多資料塞給模型。

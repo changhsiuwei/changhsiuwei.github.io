@@ -9,7 +9,7 @@ categories:
   - 工作流
 description: "AI Agent 需要的不是更會點按鈕，而是可讀命令、明確狀態、失敗回報與可追問的執行紀錄。"
 image: aci-split.png
-draft: false
+draft: true
 ---
 
 我們以前很自然地假設：如果一個網站人可以用，AI Agent 應該也能用。

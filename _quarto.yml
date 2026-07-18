@@ -15,6 +15,7 @@ project:
 
 website:
   title: "張修瑋  H.W. Chang"
+  draft-mode: gone
   favicon: profile.png
   navbar:
     left:

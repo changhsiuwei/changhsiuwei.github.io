@@ -9,7 +9,7 @@ categories:
   - 研究方法
 description: "陶哲軒案例提醒我們：工具給出方向後，學生更需要練習寫判準、刪除漂亮錯誤、保存被拒絕的答案。"
 image: judgment-record.png
-draft: false
+draft: true
 ---
 
 ## 不要把高手案例講成勵志故事

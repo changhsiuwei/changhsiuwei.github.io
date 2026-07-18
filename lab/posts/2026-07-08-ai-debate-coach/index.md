@@ -9,7 +9,7 @@ categories:
   - 商業分析
 description: "AI 反方適合在報告成形前施壓：主張被追問、被縮小、被資料重新約束，學生才看得見句子的責任。"
 image: claim-pressure.png
-draft: false
+draft: true
 ---
 
 ## 學生的意見需要被推一下

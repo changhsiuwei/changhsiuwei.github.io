@@ -9,7 +9,7 @@ categories:
   - 教師工作流
 description: "AI 助教適合接走教材轉換、常見問題與初步批閱；成績、申訴、個別困難與教師語氣仍要留在人身上。"
 image: ta-drawers.png
-draft: false
+draft: true
 ---
 
 ## 教師先被消耗掉的常常是體力

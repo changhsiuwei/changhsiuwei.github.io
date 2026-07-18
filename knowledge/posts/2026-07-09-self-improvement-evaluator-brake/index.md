@@ -9,7 +9,7 @@ categories:
   - AI 安全
 description: "自我改進系統最後會撞上評分問題：它會優化我們給它的訊號，但那個訊號不一定等於我們真正在乎的事。"
 image: external-brake-loop-v2.png
-draft: false
+draft: true
 ---
 
 自我改進最難的地方，不是讓系統多跑幾輪。

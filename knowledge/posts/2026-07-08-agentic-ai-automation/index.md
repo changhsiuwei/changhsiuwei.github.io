@@ -9,7 +9,7 @@ categories:
   - AI教育
 description: "Agentic AI 一旦能行動，權限、停頓、日誌與人工核准就變成系統能否被信任的底盤。"
 image: permission-ladder.png
-draft: false
+draft: true
 ---
 
 辦公室過去的自動化很笨，也因此讓人放心。

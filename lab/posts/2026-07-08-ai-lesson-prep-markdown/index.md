@@ -9,7 +9,7 @@ categories:
   - Markdown
 description: "AI 能整理教材，但沒有來源、版本、學生反應與課後三句話，再漂亮的大綱也只是失憶的課堂。"
 image: source-ledger.png
-draft: false
+draft: true
 ---
 
 ## 材料沒有身分，課就會失憶

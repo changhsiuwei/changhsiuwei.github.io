@@ -9,7 +9,7 @@ categories:
   - 教育平權
 description: "逐字稿、共同詞表與母語橋接能降低學生進入專業概念的成本，讓外籍與本地學生回到同一場討論。"
 image: bridge-loop.png
-draft: false
+draft: true
 ---
 
 有些學生坐在教室裡，很安靜，點頭也很準時。老師講到重點，他也低頭寫筆記。表面上，一切都正常。

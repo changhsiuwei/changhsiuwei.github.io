@@ -9,7 +9,7 @@ categories:
   - 自動化
 description: "簡報工作流要先寫分鏡、主張、證據與停頓；投影片越滿，越要追問哪一頁其實沒有存在理由。"
 image: deletion-audit.png
-draft: false
+draft: true
 ---
 
 ## AI 會把「看起來像簡報」做得太快

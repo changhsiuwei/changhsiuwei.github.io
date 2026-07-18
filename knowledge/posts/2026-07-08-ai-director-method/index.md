@@ -9,7 +9,7 @@ categories:
   - 工作方法
 description: "AI 寫作要先說清楚讀者、材料、限制、格式與拒收條款；任務說明先約束人，模型才不會把判斷磨平。"
 image: work-order.png
-draft: false
+draft: true
 ---
 
 很多人使用 LLM 的方式，像在許願。

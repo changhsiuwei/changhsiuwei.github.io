@@ -9,7 +9,7 @@ categories:
   - 成本會計
 description: "預測式 AI 放進成本會計課時，第一件事是守住資料時間線：哪些欄位當天可用，哪些其實偷看了未來。"
 image: time-fence.png
-draft: false
+draft: true
 ---
 
 銷售預算有時被教得太乾淨。

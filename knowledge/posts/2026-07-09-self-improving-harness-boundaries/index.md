@@ -9,7 +9,7 @@ categories:
   - AI 工程
 description: "Self-improving harness 的力量在於讓系統修正自己的工作方式，但安全問題也出在同一個地方。"
 image: bounded-harness-loop-v2.png
-draft: false
+draft: true
 ---
 
 AI 改答案，和 AI 改產生答案的規則，是兩件完全不同的事。

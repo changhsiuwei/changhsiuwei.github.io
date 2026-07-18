@@ -9,7 +9,7 @@ categories:
   - 資料分析
 description: "會計學生不必一開始就背語法，但必須學會把資料需求、例外處理與查核責任說清楚。"
 image: requirement-contract.png
-draft: false
+draft: true
 ---
 
 很多會計學生不是討厭程式。他們討厭的是一開始就被語法羞辱。

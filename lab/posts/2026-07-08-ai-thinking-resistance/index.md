@@ -9,7 +9,7 @@ categories:
   - 學習方法
 description: "AI 進入課堂後，作業要逼學生留下第一版判斷、被反駁後的修正、查證過程與最後願意負責的句子。"
 image: thinking-trace.png
-draft: false
+draft: true
 ---
 
 ## 答案太順時，我們要先停一下
