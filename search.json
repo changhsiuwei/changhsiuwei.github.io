@@ -1,0 +1,135 @@
+[
+  {
+    "objectID": "students/index.html",
+    "href": "students/index.html",
+    "title": "指導學生專區",
+    "section": "",
+    "text": "Note歡迎來到指導學生專區\n\n\n\n這裡放置了僅限本研究團隊成員（指導學生）查看的內部資訊。請同學務必詳閱以下指導原則與規範，這將對你的研究生涯有極大幫助。\n\n\n\n1. 碩士論文撰寫基本功\n\n尋找研究題目：請先閱讀頂級期刊（如 TAR, JAR, JAE 等）近三年的文獻，尋找你感興趣的缺口。\n文獻回顧：不要只是「條列式」翻譯文獻，要寫出文獻之間的對話與邏輯關聯。\n格式規範：請嚴格遵守 APA 格式，並參考本團隊提供的 論文寫作格式範本 (Word)。\n時間管理：碩一請盡快決定研究方向，碩二上學期完成 Proposal，碩二下全力衝刺實證與寫作。\n\n\n\n2. 量化工具的使用介紹\n會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具： - Stata / SAS：本團隊的主要實證工具。請先熟悉基本的資料清理 (Data Cleaning)、合併 (Merge)、迴歸分析 (Regression) 與固定效應模型。 - Python / R：推薦用於文字探勘 (Text Mining)、爬蟲 (Web Scraping) 及機器學習預測模型。 - WRDS 資料庫：請盡早申請帳號，熟悉 Compustat, CRSP, Audit Analytics 等常用資料庫的變數定義。\n\n\n3. 如何正確地使用 AI 工具\nAI 是強大的輔助工具，但「你」才是研究的主人。請遵守以下使用規範： - 輔助潤飾，絕不代寫：你可以使用 ChatGPT / Claude 來改善英文文法與語句流暢度，但嚴禁讓 AI 直接幫你生成整段論文內容。 - 批判性思考：AI 產生的文獻探討與程式碼經常帶有「幻覺 (Hallucination)」，請務必親自驗證每一篇引用的文獻是否真實存在，以及程式碼的邏輯是否正確。 - 資料安全：絕對禁止將未公開的機密資料、購買授權的資料集，或是研究團隊尚未發表的原始手稿，直接貼入公開的 AI 對話框中。\n\n\n\n📅 近期進度報告排程\n\n\n\n日期\n報告人\n論文研讀主題"
+  },
+  {
+    "objectID": "knowledge/index.html",
+    "href": "knowledge/index.html",
+    "title": "AI 知識站 (AI Knowledge)",
+    "section": "",
+    "text": "這裡放偏概念、方法與工作流的文章。它們不綁定某一堂課，而是回答更基本的問題：人要怎麼指揮 AI、怎麼設計可靠的工作流程、怎麼判斷一個工具是否真的幫上忙。\n課堂案例與教學實驗已移到 AI 教學與研究。\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "publications/index.html",
+    "href": "publications/index.html",
+    "title": "學術出版",
+    "section": "",
+    "text": "Note機器學習於銷售預算之應用：一項方法論比較與教學案例\n\n\n\n張修瑋 * (2025)\n會計審計論叢\n✅ Accepted (2026/04/15) | Forthcoming\n\n\n\n\n\n\n\n\nNoteEnvironmental Externalities and Optimal Commodity Taxation Under ECSR\n\n\n\nWu, T. C., Chang, H. W., & Chang, C. J. (2026)\nThe Manchester School, 1-23 | DOI: 10.1111/manc.70046\nSSCI IF 1.1 · 國科會經濟學門 B級\n\n\n\n\n\n\n\n\nNoteThe Choice of International Commodity Tax Principles Revisited\n\n\n\nWu, T. C., Chang, C. J.*, & Chang, H. W. (2025)\nScottish Journal of Political Economy\nSCI IF 1.2 · SSCI · 國科會經濟學門 B+級\n\n\n\n\n\n\n\n\nNoteMultinational upstream firm and commodity tax principle\n\n\n\nWu, T. C., Chang, C. J.*, & Chang, H. W. (2025)\nInternational Tax and Public Finance, 1-41\nSCI IF 1.0 · SSCI · 國科會經濟學門 B+級\n\n\n\n\n\n\n\n\nNoteWhen the Material Information Is Not “Material”\n\n\n\nChang, H. W.*, Wang, P. Y., & Yu, J. W. (2025)\nJournal of Accounting Review, 80(1), 164-241 | DOI: 10.6552/JOAR.202501_(80).0004\nTSSCI 會計類核心第一級\n\n\n\n\n\n\n\n\nNoteNetwork externalities, trade costs, and the choice of commodity taxation principle\n\n\n\nWu, T. C., Yen, C. T.*, & Chang, H. W. (2023)\nInternational Tax and Public Finance, 30(5), 1203-1224\nSCI IF 1.0 · SSCI · 國科會經濟學門 B+級"
+  },
+  {
+    "objectID": "publications/index.html#期刊論文-journal-publications",
+    "href": "publications/index.html#期刊論文-journal-publications",
+    "title": "學術出版",
+    "section": "",
+    "text": "Note機器學習於銷售預算之應用：一項方法論比較與教學案例\n\n\n\n張修瑋 * (2025)\n會計審計論叢\n✅ Accepted (2026/04/15) | Forthcoming\n\n\n\n\n\n\n\n\nNoteEnvironmental Externalities and Optimal Commodity Taxation Under ECSR\n\n\n\nWu, T. C., Chang, H. W., & Chang, C. J. (2026)\nThe Manchester School, 1-23 | DOI: 10.1111/manc.70046\nSSCI IF 1.1 · 國科會經濟學門 B級\n\n\n\n\n\n\n\n\nNoteThe Choice of International Commodity Tax Principles Revisited\n\n\n\nWu, T. C., Chang, C. J.*, & Chang, H. W. (2025)\nScottish Journal of Political Economy\nSCI IF 1.2 · SSCI · 國科會經濟學門 B+級\n\n\n\n\n\n\n\n\nNoteMultinational upstream firm and commodity tax principle\n\n\n\nWu, T. C., Chang, C. J.*, & Chang, H. W. (2025)\nInternational Tax and Public Finance, 1-41\nSCI IF 1.0 · SSCI · 國科會經濟學門 B+級\n\n\n\n\n\n\n\n\nNoteWhen the Material Information Is Not “Material”\n\n\n\nChang, H. W.*, Wang, P. Y., & Yu, J. W. (2025)\nJournal of Accounting Review, 80(1), 164-241 | DOI: 10.6552/JOAR.202501_(80).0004\nTSSCI 會計類核心第一級\n\n\n\n\n\n\n\n\nNoteNetwork externalities, trade costs, and the choice of commodity taxation principle\n\n\n\nWu, T. C., Yen, C. T.*, & Chang, H. W. (2023)\nInternational Tax and Public Finance, 30(5), 1203-1224\nSCI IF 1.0 · SSCI · 國科會經濟學門 B+級"
+  },
+  {
+    "objectID": "publications/index.html#工作論文-working-papers",
+    "href": "publications/index.html#工作論文-working-papers",
+    "title": "學術出版",
+    "section": "📝 工作論文 (Working Papers)",
+    "text": "📝 工作論文 (Working Papers)\n\n\n\n\n\n\nWarningThe Moderating Role of Corporate Governance under Tariff Shocks\n\n\n\nChang, H. W., Wang, T., & Liu, C. (2023)\nAvailable at SSRN 4464559\n\n\n\n\n\n\n\n\nWarningPricing the Blame: How Event Attribution Shapes Audit Fees in Corporate Groups\n\n\n\n余建緯、張修瑋 *\n會計審計論叢 — 第一審 (Under Review)\n🏆 2025 台灣會計學會年會 Best Academic Paper Award\n\n\n\n\n\n\n\n\nWarning名人執行長公開背書對供應鏈夥伴的影響\n\n\n\n吳元利、張修瑋 *、王泰昌\n中華會計學刊 — 第二審 (Under Review)\n🏆 2025 台灣會計學會年會 Best Academic Paper Award"
+  },
+  {
+    "objectID": "publications/index.html#研討會發表-conference-presentations",
+    "href": "publications/index.html#研討會發表-conference-presentations",
+    "title": "學術出版",
+    "section": "🎤 研討會發表 (Conference Presentations)",
+    "text": "🎤 研討會發表 (Conference Presentations)\n\n\n\n\n\n\n\n\n年份\n研討會\n論文\n\n\n\n\n2025\nTaiwan Accounting Association, Taipei\n名人執行長公開背書對供應鏈夥伴的影響 🏆\n\n\n2025\nTaiwan Accounting Association, Taipei\nPricing the Blame 🏆\n\n\n2023\nTaiwan Accounting Association, Taipei\nNavigating Supply Chain Crises\n\n\n2022\nTaiwan Accounting Association, Tainan\nThe Moderating Role of Accounting Quality\n\n\n2022\nAAA/Deloitte Doctoral Consortium, Texas\nThe Moderating Role of Accounting Quality\n\n\n2021\nTaiwan Economic Association, Taipei\nNetwork Externalities & Trade Costs"
+  },
+  {
+    "objectID": "about/index.html",
+    "href": "about/index.html",
+    "title": "個人資訊",
+    "section": "",
+    "text": "Note張修瑋 (H.W. Chang)\n\n\n\n國立臺北大學會計學系 助理教授 | Assistant Professor, Dept. of Accountancy, NTPU"
+  },
+  {
+    "objectID": "about/index.html#學歷-education",
+    "href": "about/index.html#學歷-education",
+    "title": "個人資訊",
+    "section": " 學歷 (Education)",
+    "text": "學歷 (Education)\n\n\nPh.D. in Accounting\n國立臺灣大學 (National Taiwan University)\nSep 2019 – June 2024\n📄 Dissertation\n\n\nVisiting Ph.D. Student (IVGS)\n多倫多大學 (University of Toronto)\nRotman School of Management\nMay 2023 – Dec 2023\n\n\nM.A. in Taxation and Finance Management\n國立臺中科技大學\n(National Taichung University of Science and Technology)\nJune 2015\n\n\nB.S. in Public Finance and Taxation\n國立臺中科技大學\n(National Taichung University of Science and Technology)\nJune 2013"
+  },
+  {
+    "objectID": "about/index.html#經歷-professional-experience",
+    "href": "about/index.html#經歷-professional-experience",
+    "title": "個人資訊",
+    "section": " 經歷 (Professional Experience)",
+    "text": "經歷 (Professional Experience)\n\n\n\n\n\n\n\n\n期間\n職位\n單位\n\n\n\n\n2025 – 迄今\nAssistant Professor\n國立臺北大學 會計學系\n\n\n2022 – 2022\nAnalyst\nKPMG Taiwan 安侯建業 稅務投資部\n\n\n2018 – 2019\nTax Executive (稅務員)\n財政部臺北國稅局 徵收科二股"
+  },
+  {
+    "objectID": "about/index.html#榮譽與獎項-honors-awards",
+    "href": "about/index.html#榮譽與獎項-honors-awards",
+    "title": "個人資訊",
+    "section": " 榮譽與獎項 (Honors & Awards)",
+    "text": "榮譽與獎項 (Honors & Awards)\n\nBest Academic Paper Award (x2) — 2025 台灣會計學會年會\nExcellence Award — the 17th TSC Thesis Award 2024\nNTU Presidential Award for Graduate Students — Academic Year 2023\nNSTC Ph.D. Students Study Abroad Program — 2023, Rotman School of Management, University of Toronto"
+  },
+  {
+    "objectID": "about/index.html#服務-service",
+    "href": "about/index.html#服務-service",
+    "title": "個人資訊",
+    "section": " 服務 (Service)",
+    "text": "服務 (Service)\n\n會計教育AI應用兼任研究員 — 中華會計學會 | Apr 2025 – June 2025"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "張修瑋 (H.W. Chang)",
+    "section": "",
+    "text": "Email\n  \n  \n    \n     CV (PDF)\n  \n\n  \n  \n\n\n我是張修瑋，目前任職於國立臺北大學會計學系。我的研究專注於人工智慧在會計與財務領域的應用，包括資本市場、投資者關注度與機器學習在會計的應用。我同時熱衷於將 AI 工具融入教學實務，致力於培養下一代具備數位素養的會計專業人才。\n“Honoring God and benefiting people! (榮神益人！)”"
+  },
+  {
+    "objectID": "index.html#關於我",
+    "href": "index.html#關於我",
+    "title": "張修瑋 (H.W. Chang)",
+    "section": "",
+    "text": "我是張修瑋，目前任職於國立臺北大學會計學系。我的研究專注於人工智慧在會計與財務領域的應用，包括資本市場、投資者關注度與機器學習在會計的應用。我同時熱衷於將 AI 工具融入教學實務，致力於培養下一代具備數位素養的會計專業人才。\n“Honoring God and benefiting people! (榮神益人！)”"
+  },
+  {
+    "objectID": "index.html#研究領域",
+    "href": "index.html#研究領域",
+    "title": "張修瑋 (H.W. Chang)",
+    "section": "研究領域",
+    "text": "研究領域\n\n\n\n\n\n\n人工智慧在財會的應用\nAI Applications in Accounting & Finance\n\n\n\n\n\n\n\n資本市場研究\nCapital Markets & Corporate Governance\n\n\n\n\n\n\n\n企業稅務\nInternational Tax & Public Finance"
+  },
+  {
+    "objectID": "index.html#最新動態",
+    "href": "index.html#最新動態",
+    "title": "張修瑋 (H.W. Chang)",
+    "section": "最新動態",
+    "text": "最新動態\n\n\n\n\n\n\n\n日期\n事件\n\n\n\n\n2026/07\n 受邀至國立台北市召會第四聚會所「駕馭 AI 的智慧少年」\n\n\n2026/04\n 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」\n\n\n2026/04\n 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表\n\n\n2026/03\n 長庚大學 AI 精煉班授課：AI 與財報深度洞察"
+  },
+  {
+    "objectID": "activities/index.html",
+    "href": "activities/index.html",
+    "title": "近期活動",
+    "section": "",
+    "text": "Tip🌟 最新動態\n\n\n\n以下為近期的學術與產業演講、工作坊活動紀錄。"
+  },
+  {
+    "objectID": "activities/index.html#section",
+    "href": "activities/index.html#section",
+    "title": "近期活動",
+    "section": "2026",
+    "text": "2026\n\n\nApr 17\n\n\n國立臺北商業大學 財政稅務系\nAI 代理人在財會自動化的應用\n\n\nMar 21\n\n\n長庚大學 AI 精煉班\nAI 與財報深度洞察：以 Amazon 為例\n\n\nMar 7\n\n\n長庚大學 AI 精煉班\nAI 工具工作坊 + 財報基礎觀念"
+  },
+  {
+    "objectID": "activities/index.html#section-1",
+    "href": "activities/index.html#section-1",
+    "title": "近期活動",
+    "section": "2025",
+    "text": "2025\n\n\nDec 6\n\n\n中華企業會計協會（正大聯合會計師事務所）\nAI 在公司內部的應用場景與展望\n\n\nNov 28\n\n\n中華會計教育學會年會 (NTU)\nAI 輔助教學：授課教師的應用場景與實踐\n\n\nSep 25\n\n\n馬偕醫院 急診科\nAI賦能急診醫師：從學習到研究的智慧化轉型\n\n\nSep 23\n\n\n華碩電腦 財務部 (ASUSTeK Computer Inc.)\n賦能財務新未來：AI 驅動的智慧自動化解決方案\n\n\nSep 9\n\n\n臺大會計研究所 (NTU Master Program in Accounting)\n情境提示詞工程在企業價值管理與數據分析之應用\n\n\nAug 27\n\n\n臺北大學會計學系 EMBA\n人工智慧的最新現況：從過去歷史獲得未來啟示\n\n\nAug 12\n\n\n長庚大學 EMBA\n機器學習在管理會計銷售預測中的應用：理論基礎與實務指南"
+  },
+  {
+    "objectID": "lab/index.html",
+    "href": "lab/index.html",
+    "title": "AI 教學與研究",
+    "section": "",
+    "text": "這裡放課堂現場用得到、也能回到研究方法檢查的文章。判準很簡單：如果一篇文章討論的是怎麼教、怎麼改作業、怎麼設計學習活動、怎麼讓學生與 AI 一起完成分析，它就放在這裡。\n有些文章看起來像工具教學，但真正的問題不是工具。教師要問的是：學生在這個流程中保留了什麼判斷？哪些工作交給 AI 後，反而讓人有更多時間處理難題？如果答案牽涉課堂設計與研究訓練，它就屬於這一區。\n\n\n\n\n\n\n\n\nNo matching items"
+  }
+]
