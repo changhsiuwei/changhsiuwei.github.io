@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - CNAME
   render:
     - index.md
     - about/index.md
@@ -15,6 +17,7 @@ project:
 
 website:
   title: "張修瑋  H.W. Chang"
+  site-url: "https://changhsiuwei.com"
   draft-mode: gone
   favicon: profile.png
   navbar:
