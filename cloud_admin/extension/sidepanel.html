@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>網站管理後台</title>
+  <link rel="stylesheet" href="vendor/toastui-editor.min.css">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <button id="brandHomeButton" class="brand" type="button" aria-label="回到首頁內容">
+        <span class="brand-mark">HW</span>
+        <span>
+          <strong>張修瑋</strong>
+          <small>網站管理後台</small>
+        </span>
+      </button>
+
+      <nav id="siteNav" class="site-nav" aria-label="網站主要頁面"></nav>
+
+      <div class="header-actions">
+        <span id="connectionBadge" class="status-badge neutral"><span class="status-dot"></span>尚未連線</span>
+        <button id="openPreviewButton" class="quiet-button" type="button">查看網站</button>
+        <button id="settingsButton" class="icon-button" type="button" aria-label="網站與連線設定" title="網站與連線設定">⚙</button>
+      </div>
+    </header>
+
+    <section id="connectionNotice" class="connection-notice">
+      <div>
+        <strong>先登入管理後台</strong>
+        <span>通過 Cloudflare 驗證後，就能像編輯文件一樣修改網站。</span>
+      </div>
+      <div class="notice-actions">
+        <button id="loginButton" class="secondary-button" type="button">登入</button>
+        <button id="connectButton" class="primary-button" type="button">連線並載入</button>
+      </div>
+    </section>
+
+    <main class="workspace">
+      <aside class="site-map" aria-label="網站結構">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">網站結構</p>
+            <h1>選擇要修改的頁面</h1>
+          </div>
+          <button id="refreshButton" class="icon-button" type="button" title="重新讀取網站">↻</button>
+        </div>
+
+        <label class="search-box" for="pageSearch">
+          <span>⌕</span>
+          <input id="pageSearch" type="search" placeholder="搜尋頁面或文章">
+        </label>
+
+        <nav id="pageTree" class="page-tree" aria-live="polite">
+          <p class="empty-hint">連線後會顯示網站的頁面與文章。</p>
+        </nav>
+
+        <button id="newPostButton" class="new-page-button" type="button" disabled>
+          <span>＋</span>
+          <span><strong>新增文章</strong><small>建立知識站或研究文章</small></span>
+        </button>
+      </aside>
+
+      <section class="editor-stage" aria-label="內容編輯區">
+        <div id="emptyState" class="empty-state">
+          <div class="empty-illustration">✦</div>
+          <p class="eyebrow">所見即所得</p>
+          <h2>從左側選一個頁面開始</h2>
+          <p>你會直接看到標題、文字、圖片與版面，不需要先學 Markdown 或 HTML。</p>
+        </div>
+
+        <div id="editorWorkspace" hidden>
+          <div class="document-header">
+            <div>
+              <p id="documentLocation" class="breadcrumb">網站內容</p>
+              <h2 id="documentHeading">尚未載入頁面</h2>
+            </div>
+            <div class="document-state">
+              <span id="draftStatus">內容已同步</span>
+              <span id="wordCount">0 字</span>
+            </div>
+          </div>
+
+          <section class="metadata-card">
+            <div class="field field-wide">
+              <label for="titleInput">頁面標題</label>
+              <input id="titleInput" type="text" placeholder="輸入頁面標題">
+            </div>
+            <div class="field field-wide">
+              <label for="descriptionInput">簡短說明</label>
+              <input id="descriptionInput" type="text" placeholder="選填，會用在搜尋摘要與分享資訊">
+            </div>
+            <div class="field">
+              <label for="dateInput">日期</label>
+              <input id="dateInput" type="date">
+            </div>
+            <div class="field field-grow">
+              <label for="categoriesInput">分類</label>
+              <input id="categoriesInput" type="text" placeholder="以逗號分隔，例如：AI, 教學">
+            </div>
+          </section>
+
+          <div class="editor-toolbar">
+            <div>
+              <strong>內文</strong>
+              <span>工具列可以直接設定標題、粗體、清單與連結</span>
+            </div>
+            <button id="addImageButton" class="secondary-button" type="button">上傳圖片</button>
+          </div>
+
+          <div id="visualEditor" class="visual-editor" aria-label="視覺化內容編輯器"></div>
+          <section id="structuredData" class="structured-data" hidden>
+            <div class="structured-heading">
+              <div>
+                <strong>頁面表格</strong>
+                <span>直接修改儲存格；欄位與原網站版面會自動保留</span>
+              </div>
+            </div>
+            <div id="tableEditors" class="table-editors"></div>
+          </section>
+          <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        </div>
+      </section>
+
+      <aside class="preview-pane" aria-label="即時預覽">
+        <div class="preview-heading">
+          <div>
+            <p class="eyebrow">即時預覽</p>
+            <h2>訪客看到的樣子</h2>
+          </div>
+          <span id="previewBadge" class="mini-badge">等待內容</span>
+        </div>
+        <iframe id="livePreview" title="網站頁面即時預覽" sandbox></iframe>
+
+        <section class="publish-card">
+          <p class="eyebrow">發布</p>
+          <h2>完成後一次同步</h2>
+          <label for="commitMessage">這次更新的說明</label>
+          <input id="commitMessage" type="text" maxlength="160" placeholder="例如：更新首頁研究領域">
+          <div id="uploadSummary" class="upload-summary">沒有待上傳的圖片</div>
+          <div class="publish-actions">
+            <button id="saveDraftButton" class="secondary-button" type="button" disabled>儲存草稿</button>
+            <button id="publishButton" class="primary-button" type="button" disabled>一鍵發布</button>
+          </div>
+          <ol id="activityLog" class="activity-log" aria-live="polite"></ol>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">設定</p>
+          <h2>網站與安全連線</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="關閉設定">×</button>
+      </div>
+      <label for="siteUrl">正式網站網址</label>
+      <input id="siteUrl" type="url" value="https://changhsiuwei.com/" placeholder="https://example.com/">
+      <label for="apiBase">受保護的管理 API</label>
+      <input id="apiBase" type="url" value="https://hw-chang-site-admin-api.hw-chang-site-admin-worker.workers.dev" placeholder="https://your-admin-api.workers.dev">
+      <p class="security-note">GitHub Token 只儲存在 Cloudflare Secret；這個擴充套件不會讀取或儲存 Token。</p>
+      <div class="dialog-actions">
+        <button id="saveSettingsButton" class="primary-button" value="default">儲存設定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="newPostDialog">
+    <form id="newPostForm" class="dialog-card">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">新增內容</p>
+          <h2>建立一篇新文章</h2>
+        </div>
+        <button id="cancelNewPostButton" class="icon-button" type="button" aria-label="取消新增">×</button>
+      </div>
+      <label for="newPostCollection">文章放在哪裡</label>
+      <select id="newPostCollection">
+        <option value="knowledge">AI 知識站</option>
+        <option value="lab">AI 教學與研究</option>
+      </select>
+      <label for="newPostTitle">文章標題</label>
+      <input id="newPostTitle" type="text" required placeholder="例如：如何讓 AI 協助備課">
+      <label for="newPostSlug">網址名稱</label>
+      <input id="newPostSlug" type="text" required pattern="[a-z0-9][a-z0-9-]{2,80}" placeholder="例如：ai-lesson-planning">
+      <p class="security-note">網址名稱只使用小寫英文、數字與連字號。</p>
+      <div class="dialog-actions">
+        <button id="createPostButton" class="primary-button" type="submit">建立草稿</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="vendor/toastui-editor-all.min.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

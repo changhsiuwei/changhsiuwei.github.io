@@ -14,6 +14,12 @@ r-library/
 CONTENT_MANIFEST.csv
 knowledge/_trash/
 
+# Cloud admin local dependencies and secrets
+cloud_admin/worker/node_modules/
+cloud_admin/worker/.wrangler/
+cloud_admin/worker/.dev.vars
+cloud_admin/worker/wrangler.jsonc
+
 # Local staging area for future posts. Keep drafts and source files private.
 post_ready/*
 !post_ready/README.md
