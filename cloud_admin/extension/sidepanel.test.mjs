@@ -172,7 +172,7 @@ test("home page cards and highlights parse and reconstruct exact Quarto page lay
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
   const model = sandbox.parseHomePage(body);
   assert.equal(model.researchAreas.length, 3);
-  assert.equal(model.highlights.length, 4);
+  assert.equal(model.highlights.length, 5);
   assert.ok(model.bio.includes("我是張修瑋"));
   assert.equal(model.motto, "Honoring God and benefiting people! (榮神益人！)");
 

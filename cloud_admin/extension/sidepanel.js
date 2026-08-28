@@ -423,6 +423,7 @@ function parseActivityGrid(source, year = "") {
 
     let slidesUrl = "";
     let handoutUrl = "";
+    let youtubeUrl = "";
     while (index < lines.length - 1 && !/^\s*:{3,}\s*$/.test(lines[index])) {
       const line = lines[index].trim();
       if (line) {
@@ -430,7 +431,9 @@ function parseActivityGrid(source, year = "") {
         for (const match of allLinks) {
           const label = match[1];
           const url = match[2];
-          if (/簡報|投影片|slide/i.test(label)) {
+          if (/youtube|youtu\.be|影片|video/i.test(label) || /youtube\.com|youtu\.be/.test(url)) {
+            youtubeUrl = url;
+          } else if (/簡報|投影片|slide/i.test(label)) {
             slidesUrl = url;
           } else if (/講義|handout/i.test(label)) {
             handoutUrl = url;
@@ -455,6 +458,7 @@ function parseActivityGrid(source, year = "") {
     const eventObj = { date, venue, topic };
     if (slidesUrl) eventObj.slidesUrl = slidesUrl;
     if (handoutUrl) eventObj.handoutUrl = handoutUrl;
+    if (youtubeUrl) eventObj.youtubeUrl = youtubeUrl;
     events.push(eventObj);
     skipBlanks();
   }
@@ -486,12 +490,16 @@ function serializeActivityGrid(model) {
     );
     const slides = cleanActivityField(event.slidesUrl);
     const handout = cleanActivityField(event.handoutUrl);
+    const youtube = cleanActivityField(event.youtubeUrl);
     const linkParts = [];
     if (slides) {
       linkParts.push(`[📊 簡報下載 ↗](${slides}){target="_blank" .activity-materials-link .activity-slides-link}`);
     }
     if (handout) {
       linkParts.push(`[📄 講義下載 ↗](${handout}){target="_blank" .activity-materials-link .activity-handout-link}`);
+    }
+    if (youtube) {
+      linkParts.push(`[▶ YouTube 影片 ↗](${youtube}){target="_blank" .activity-materials-link .activity-youtube-link}`);
     }
     if (linkParts.length) {
       lines.push("", linkParts.join(" "));
@@ -2508,7 +2516,7 @@ function renderActivityEditors() {
     add.type = "button";
     add.textContent = "＋ 新增活動";
     add.addEventListener("click", () => {
-      model.events.unshift({ date: "", venue: "", topic: "", slidesUrl: "", handoutUrl: "" });
+      model.events.unshift({ date: "", venue: "", topic: "", slidesUrl: "", handoutUrl: "", youtubeUrl: "" });
       markStructuredModelDirty(model);
       renderActivityEditors();
       queueMicrotask(() => elements.activityEditors.querySelector("input")?.focus());
@@ -2556,6 +2564,13 @@ function renderActivityEditors() {
           event.handoutUrl || "",
           (value) => { event.handoutUrl = value; markStructuredModelDirty(model); },
           "https://drive.google.com/... 或講義下載網址",
+          "url"
+        ),
+        createActivityField(
+          "▶ YouTube 影片連結",
+          event.youtubeUrl || "",
+          (value) => { event.youtubeUrl = value; markStructuredModelDirty(model); },
+          "https://www.youtube.com/watch?v=... 或 https://youtu.be/...",
           "url"
         )
       );
