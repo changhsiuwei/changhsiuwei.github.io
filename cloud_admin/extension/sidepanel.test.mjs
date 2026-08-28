@@ -22,10 +22,14 @@ vm.runInNewContext([
   productionFunction("cleanActivityField"),
   productionFunction("serializeActivityGrid"),
   productionFunction("protectLayoutSyntax"),
+  productionFunction("uniqueIndexOf"),
+  productionFunction("applyEditorDeltaToSource"),
+  productionFunction("applyEditorChangesToSource"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
-  "this.protectLayoutSyntax = protectLayoutSyntax;"
+  "this.protectLayoutSyntax = protectLayoutSyntax;",
+  "this.applyEditorChangesToSource = applyEditorChangesToSource;"
 ].join("\n"), sandbox);
 
 function activityGrids(markdown) {
@@ -62,7 +66,8 @@ test("activities render as structured cards without exposing Quarto layout", () 
   assert.equal(protectedContent.activityModels.size, 2);
   assert.equal(protectedContent.editorBody.includes("::: {.grid}"), false);
   assert.equal(protectedContent.editorBody.includes("July 18"), false);
-  assert.match(protectedContent.editorBody, /<!--HWCMS-LAYOUT-test-layout-/);
+  assert.equal(protectedContent.editorBody.includes("HWCMS-LAYOUT"), false);
+  assert.equal(protectedContent.editorBody.includes("<!--"), false);
 });
 
 test("activity field changes rebuild a valid Quarto grid", () => {
@@ -85,4 +90,18 @@ test("incomplete new activity remains recoverable as a local draft", () => {
   const reparsed = sandbox.parseActivityGrid(sandbox.serializeActivityGrid(model), model.year);
   assert.ok(reparsed);
   assert.deepEqual(JSON.parse(JSON.stringify(reparsed.events[0])), { date: "", venue: "", topic: "" });
+});
+
+test("marker-free visual text edits preserve the original Quarto layout", () => {
+  const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const projected = sandbox.protectLayoutSyntax(body).editorBody;
+  const originalSentence = "以下為近期的學術與產業演講、工作坊活動紀錄。";
+  const updatedSentence = "以下為近期演講、工作坊與教學活動紀錄。";
+  const edited = projected.replace(originalSentence, updatedSentence);
+  const mapped = sandbox.applyEditorChangesToSource(projected, edited, body);
+  assert.ok(mapped);
+  assert.equal(mapped.includes(updatedSentence), true);
+  assert.equal((mapped.match(/:::/g) || []).length, (body.match(/:::/g) || []).length);
+  assert.equal(mapped.replace(updatedSentence, originalSentence), body);
 });

@@ -20,7 +20,6 @@ const state = {
   currentPath: "",
   originalContent: "",
   originalBody: "",
-  editorBaselineBody: "",
   frontMatter: "",
   frontMatterPrefix: "",
   lineEnding: "\n",
@@ -382,9 +381,9 @@ function protectLayoutSyntax(body) {
   const sourceLineEnding = body.includes("\r\n") ? "\r\n" : "\n";
   const output = [];
   let currentYear = "";
-  const pushLock = (token) => {
+  const pushLock = () => {
     if (output.length && output.at(-1) !== "") output.push("");
-    output.push(`<!--${token}-->`, "");
+    if (!output.length || output.at(-1) !== "") output.push("");
   };
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
@@ -400,7 +399,7 @@ function protectLayoutSyntax(body) {
           const token = `${nonce}-${locks.size}`;
           locks.set(token, source);
           activityModels.set(token, activityModel);
-          pushLock(token);
+          pushLock();
           index = endIndex;
           continue;
         }
@@ -418,8 +417,10 @@ function protectLayoutSyntax(body) {
       const token = `${nonce}-${locks.size}`;
       const source = tableLines.join(sourceLineEnding);
       locks.set(token, source);
-      tableModels.set(token, parseTable(source));
-      pushLock(token);
+      const tableModel = parseTable(source);
+      tableModel.anchor = [...output].reverse().find((item) => item.trim()) || "";
+      tableModels.set(token, tableModel);
+      pushLock();
       continue;
     }
     if (!isProtectedLayoutLine(line)) {
@@ -433,22 +434,9 @@ function protectLayoutSyntax(body) {
     }
     const token = `${nonce}-${locks.size}`;
     locks.set(token, layoutLines.join(sourceLineEnding));
-    pushLock(token);
+    pushLock();
   }
   return { editorBody: output.join("\n"), locks, tableModels, activityModels };
-}
-
-function restoreLayoutSyntax(body) {
-  let restored = body;
-  for (const [token, line] of state.layoutLocks) {
-    const source = state.tableModels.has(token)
-      ? serializeTable(state.tableModels.get(token))
-      : state.activityModels.has(token)
-        ? serializeActivityGrid(state.activityModels.get(token))
-        : line;
-    restored = restored.replaceAll(`<!--${token}-->`, source);
-  }
-  return restored;
 }
 
 function uniqueIndexOf(source, value) {
@@ -1031,7 +1019,6 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   ensureEditor();
   state.loadingEditor = true;
   state.editor.setMarkdown(protectedLayout.editorBody || "");
-  state.editorBaselineBody = restoreLayoutSyntax(state.editor.getMarkdown()).trimEnd();
   state.lastEditorMarkdown = state.editor.getMarkdown();
   setTimeout(() => { state.loadingEditor = false; }, 0);
   renderStructuredTables();
@@ -1080,25 +1067,6 @@ function sanitizePreviewHtml(html) {
     .replace(/javascript:/gi, "");
 }
 
-function layoutLineToPreviewHtml(line) {
-  const trimmed = line.trim();
-  if (/^:{3,}\s*$/.test(trimmed)) return "</div>";
-  if (/^:{3,}/.test(trimmed)) {
-    if (/\.grid\b/.test(trimmed)) return '<div class="preview-grid">';
-    const column = trimmed.match(/\.g-col-md-(\d+)/);
-    if (column) return `<div class="preview-column" style="--preview-span:${column[1]}">`;
-    const callout = trimmed.match(/\.callout-(note|tip|warning|important|caution)\b/);
-    if (callout) return `<div class="preview-callout preview-callout-${callout[1]}">`;
-    return '<div class="preview-layout-section">';
-  }
-  if (/^<\/?[a-z]/i.test(trimmed)) return sanitizePreviewHtml(trimmed);
-  return "";
-}
-
-function layoutSourceToPreviewHtml(source) {
-  return source.split(/\r?\n/).map(layoutLineToPreviewHtml).join("");
-}
-
 function inlineMarkdownPreview(value) {
   return escapeHtml(value)
     .replace(/\\\*/g, "*")
@@ -1122,18 +1090,41 @@ function activityPreviewHtml(model) {
   return `<div class="preview-grid">${events}</div>`;
 }
 
+function previewAnchorText(value) {
+  return tableCellDisplay(String(value || "")
+    .replace(/^\s*#{1,6}\s+/, "")
+    .replace(/<[^>]+>/g, ""))
+    .trim();
+}
+
 function restorePreviewLayout(html) {
-  let restored = html;
-  for (const [token, line] of state.layoutLocks) {
-    const marker = `<div data-html-comment="true">&lt;!--${token}--&gt;</div>`;
-    const replacement = state.tableModels.has(token)
-      ? tablePreviewHtml(state.tableModels.get(token))
-      : state.activityModels.has(token)
-        ? activityPreviewHtml(state.activityModels.get(token))
-        : layoutSourceToPreviewHtml(line);
-    restored = restored.replaceAll(marker, replacement);
+  const previewDocument = new DOMParser().parseFromString(`<body>${html}</body>`, "text/html");
+  const anchorElements = Array.from(previewDocument.body.querySelectorAll("h1,h2,h3,h4,h5,h6,p"));
+  const findAnchor = (value, selector = "h1,h2,h3,h4,h5,h6,p") => {
+    const target = previewAnchorText(value);
+    return anchorElements.find((element) => element.matches(selector) && element.textContent.trim() === target);
+  };
+
+  for (const model of state.activityModels.values()) {
+    const yearHeading = findAnchor(model.year, "h2");
+    yearHeading?.insertAdjacentHTML("afterend", activityPreviewHtml(model));
   }
-  return restored;
+  for (const model of state.tableModels.values()) {
+    const anchor = findAnchor(model.anchor);
+    anchor?.insertAdjacentHTML("afterend", tablePreviewHtml(model));
+  }
+
+  if (state.currentPath === "activities/index.md") {
+    const latestHeading = findAnchor("🌟 最新動態", "h2");
+    const description = latestHeading?.nextElementSibling;
+    if (latestHeading && description?.tagName === "P") {
+      const callout = previewDocument.createElement("div");
+      callout.className = "preview-callout preview-callout-tip";
+      latestHeading.before(callout);
+      callout.append(latestHeading, description);
+    }
+  }
+  return previewDocument.body.innerHTML;
 }
 
 function previewPageBase() {
@@ -1279,7 +1270,6 @@ async function publish() {
     state.layoutLocks.set(token, model.originalSource);
     model.dirty = false;
   }
-  state.editorBaselineBody = restoreLayoutSyntax(state.editor.getMarkdown()).trimEnd();
   state.newDocument = false;
   state.bodyDirty = false;
   state.editorChanged = false;
@@ -1354,7 +1344,9 @@ $("openPreviewButton").addEventListener("click", async () => {
   try {
     state.siteUrl = normalizeSiteUrl(elements.siteUrl.value);
     await chrome.storage.local.set({ siteUrl: state.siteUrl });
-    window.open(state.siteUrl, "_blank", "noopener");
+    const publishedUrl = previewPageBase();
+    publishedUrl.searchParams.set("cms-refresh", String(Date.now()));
+    window.open(publishedUrl.toString(), "_blank", "noopener");
   } catch (error) { log(error.message, "error"); }
 });
 

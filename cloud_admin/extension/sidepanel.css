@@ -336,11 +336,6 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   .preview-pane { position: static; grid-column: 1 / -1; max-height: none; }
   #livePreview { min-height: 520px; }
 }
-.toastui-editor-contents div[data-html-comment="true"],
-.ProseMirror div[data-html-comment="true"] {
-  display: none !important;
-}
-
 .toastui-editor-contents h4 {
   margin: 22px 0 0 !important;
   padding: 15px 17px 7px;
