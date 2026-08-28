@@ -3290,7 +3290,20 @@ async function connect() {
   const granted = await chrome.permissions.request({ origins: [originPermission] });
   if (!granted) throw new Error("尚未授予管理 API 的連線權限");
   await chrome.storage.local.set({ apiBase: state.apiBase, siteUrl: state.siteUrl });
-  const session = await api("/api/session");
+  
+  let session;
+  try {
+    session = await api("/api/session");
+  } catch (error) {
+    if (error.message && (error.message.includes("Cloudflare") || error.message.includes("登入"))) {
+      try {
+        window.open(`${state.apiBase}/api/session`, "_blank", "noopener");
+      } catch {}
+      throw new Error("🔐 安全登入憑證已過期，已為您開啟登入視窗。登入成功後請回到此處點擊「連線」！");
+    }
+    throw error;
+  }
+
   state.connected = true;
   setBadge("已安全連線", "online");
   elements.connectionNotice.classList.add("connected");
