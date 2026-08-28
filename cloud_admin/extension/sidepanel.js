@@ -63,6 +63,12 @@ const state = {
   sectionHubModel: null,
   sectionHubDirty: false,
   postMetadataCache: {},
+  geminiApiKey: "",
+  geminiModel: "gemini-3.7-flash",
+  geminiThinkingLevel: "2048",
+  geminiTemperature: "0.7",
+  pendingAiGeneratedPost: null,
+  activeAiPolishResult: null,
   expandedFolders: new Set(["lab", "knowledge"])
 };
 
@@ -142,7 +148,31 @@ const elements = {
   newPostForm: $("newPostForm"),
   newPostCollection: $("newPostCollection"),
   newPostTitle: $("newPostTitle"),
-  newPostSlug: $("newPostSlug")
+  newPostSlug: $("newPostSlug"),
+  geminiApiKey: $("geminiApiKey"),
+  geminiModel: $("geminiModel"),
+  geminiThinkingLevel: $("geminiThinkingLevel"),
+  geminiTemperature: $("geminiTemperature"),
+  geminiTemperatureValue: $("geminiTemperatureValue"),
+  newPostAiNotes: $("newPostAiNotes"),
+  newPostTargetWords: $("newPostTargetWords"),
+  btnRunAiGenerateNewPost: $("btnRunAiGenerateNewPost"),
+  aiNewPostFeedback: $("aiNewPostFeedback"),
+  aiStatWordCount: $("aiStatWordCount"),
+  aiStatSubtitle: $("aiStatSubtitle"),
+  aiRecommendedTitles: $("aiRecommendedTitles"),
+  aiPolishEditorButton: $("aiPolishEditorButton"),
+  aiPolishDialog: $("aiPolishDialog"),
+  cancelAiPolishButton: $("cancelAiPolishButton"),
+  aiPolishOralNotes: $("aiPolishOralNotes"),
+  aiPolishTargetWords: $("aiPolishTargetWords"),
+  btnRunAiPolishActive: $("btnRunAiPolishActive"),
+  aiPolishResults: $("aiPolishResults"),
+  aiActiveWordCount: $("aiActiveWordCount"),
+  aiActiveSubtitle: $("aiActiveSubtitle"),
+  aiActiveRecommendedTitles: $("aiActiveRecommendedTitles"),
+  aiPolishedTextPreview: $("aiPolishedTextPreview"),
+  applyAiPolishButton: $("applyAiPolishButton")
 };
 
 function openDraftDatabase() {
@@ -3215,9 +3245,17 @@ function createNewPost(event) {
   const path = `${collection}/posts/${slug}/index.md`;
   if (state.files.includes(path)) throw new Error("這個網址名稱已經存在");
   const date = new Date().toISOString().slice(0, 10);
-  const content = `---\ntitle: ${JSON.stringify(title)}\ndate: ${JSON.stringify(date)}\ncategories: []\ndraft: false\n---\n\n從這裡開始撰寫文章。\n`;
+
+  const pendingAi = state.pendingAiGeneratedPost;
+  const descField = pendingAi?.recommended_subtitle ? `description: ${JSON.stringify(pendingAi.recommended_subtitle)}\n` : "";
+  const bodyText = pendingAi?.polished_content ? pendingAi.polished_content : "從這裡開始撰寫文章。\n";
+  const content = `---\ntitle: ${JSON.stringify(title)}\n${descField}date: ${JSON.stringify(date)}\ncategories: []\ndraft: false\n---\n\n${bodyText}\n`;
+  state.pendingAiGeneratedPost = null;
+
   elements.newPostDialog.close();
   elements.newPostForm.reset();
+  if (elements.aiNewPostFeedback) elements.aiNewPostFeedback.style.display = "none";
+
   if (!state.files.includes(path)) {
     state.files.push(path);
     renderTree();
@@ -3276,14 +3314,297 @@ elements.newPostForm.addEventListener("submit", (event) => {
   catch (error) { event.preventDefault(); log(error.message, "error"); }
 });
 
+const SUPPORTED_AI_MODELS = [
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-pro-preview",
+  "gemma-4-26b-a4b-it",
+  "gemma-4-31b-it"
+];
+
+const HUMAN_EDITOR_SYSTEM_PROMPT = `# Role: 資深人類編輯 (Human Writer & Editor)
+
+# Goal:
+生成或改寫內容，使其完全消除「AI 味（AI-ese）」，呈現具有「人味」、具體、有稜角且言之有物的文字。
+
+# Core Philosophy (核心哲學):
+1. **拒絕平庸與空洞：** AI 傾向於寫出統計上最安全的句子，導致內容「平滑化」。你要反其道而行，保留事實的「稜角」與「具體細節」。
+2. **拒絕宏大敘事：** 不要把小事寫成大事。如果只是一個小鎮商場，不要說它是「文化遺產的中心」；如果只是一次軟體更新，不要說它是「數位轉型的里程碑」。
+3. **拒絕說教：** 讀者不需要你在每段開頭或結尾告訴他們「這很重要」。
+
+# The "Kill List" (絕對禁止使用的詞彙與句型):
+根據維基百科《人工智慧寫作跡象》，你必須嚴格避開以下特徵：
+
+## 1. 禁止詞彙 (Forbidden Vocabulary):
+請勿使用以下詞彙（及其對應的英文概念），改用更樸實、口語或具體的描述：
+- **禁止：** 深入研究 (Delve)、見證/是...的證明 (Testament/is a testament to)、格局 (Landscape)、強調/凸顯 (Underscore/Highlight)、關鍵的 (Pivotal)、錯綜複雜的 (Intricate)、細緻入微的 (Nuanced)、充滿活力的 (Vibrant/Bustling)、展示 (Showcase)、促進 (Foster)、與...一致 (Align with)、不可磨滅的印記 (Indelible mark)。
+- **替代策略：** 直接描述該事物「做」了什麼，而不是用形容詞堆砌。
+
+## 2. 禁止句型 (Forbidden Structures):
+- **否定平行結構：** 禁止使用「不僅是 X，更是 Y (Not only... but also...)」來試圖昇華平凡事物。
+- **虛假範圍：** 禁止使用「從 X 到 Y (From X to Y)」這種跨度極大且邏輯斷裂的修辭（例如：「從宇宙大爆炸到今天的早餐」）。
+- **說教式免責/引導：** 禁止使用「值得注意的是 (It is important to note)」、「重要的是要記住」作為開頭。
+- **模糊歸因：** 禁止使用「批評者認為」、「觀察家指出」這種不具名的權威訴諸（Weasel words）。
+- **三段式排比：** 不要為了押韻或節奏刻意列舉三個形容詞（例如：「歷史的深度、文化的豐富性與現代的活力」）。
+
+## 3. 結構與格式禁令 (Structure & Formatting):
+- **禁止僵化結尾：** 絕對不要用「總結來說 (In conclusion)」、「總而言之 (Overall)」、「儘管面臨挑戰，但展望未來...」這種圓滿的廢話結尾。文章該結束就結束，或用一個有力的金句/提問收尾。
+- **格式整潔：** 
+    - 除非必要，不要使用 markdown 的 ## 標題格式。
+    - 嚴禁在正文中過度使用 **粗體** 來強調單詞。
+    - 嚴禁使用 Emoji (🚀🧠📘)。
+    - 標題不要全部首字母大寫。
+
+# Writing Guidelines (寫作指南):
+1. **Show, Don't Tell:** 用數據、案例、對話或具體動作來呈現，而不是用形容詞概括。
+2. **語氣自然：** 想像你是在跟朋友在咖啡廳聊天，或者是一位嚴謹的專欄作家在寫稿。可以使用短句、反問，甚至帶點主觀的觀點（如果適合話題）。
+3. **資訊密度：** 寧可短而精確，不要長而空洞。如果不知道某個具體來源，承認不知道，不要編造或使用模糊歸因。
+
+# Output Format:
+必須輸出嚴格合法的 JSON 物件（請勿輸出額外雜訊或未閉合格式）：
+{
+  "recommended_titles": ["首選標題（最具稜角、吸睛且言之有物）", "備選標題 1（直球對決風格）", "備選標題 2（反思設問風格）"],
+  "recommended_subtitle": "簡明有力的副標題或摘要（50-80字，去除空話，直切重點）",
+  "suggested_slug": "english-url-slug-with-hyphens",
+  "word_count": 實際文章正文字數數字,
+  "polished_content": "完整改寫/潤飾後的文章 Markdown 內容"
+}`;
+
+async function callGoogleAiStudio({ oralNotes = "", currentArticleText = "", targetWords = "1000-1200 字深度專欄" }) {
+  const apiKey = (state.geminiApiKey || "").trim();
+  if (!apiKey) {
+    elements.settingsDialog.showModal();
+    throw new Error("請先在設定中輸入 Google AI Studio API Key");
+  }
+
+  const model = state.geminiModel || "gemini-3.7-flash";
+  const temperature = parseFloat(state.geminiTemperature ?? 0.7);
+  const thinkingLevel = parseInt(state.geminiThinkingLevel ?? 2048, 10);
+
+  const promptParts = [];
+  if (oralNotes) {
+    promptParts.push(`【口述草稿 / 作者筆記】：\n${oralNotes}`);
+  }
+  if (currentArticleText) {
+    promptParts.push(`【目前文章內文】：\n${currentArticleText}`);
+  }
+  promptParts.push(`【篇幅長度目標】：${targetWords}`);
+  promptParts.push("請根據以上輸入內容與角色要求，徹底去除所有 AI 味，改寫出具有人味、具體細節的文章，並回傳嚴格符合 JSON 格式的推薦標題、副標題、slug、字數與改寫內文。");
+
+  const generationConfig = {
+    temperature: isNaN(temperature) ? 0.7 : temperature
+  };
+
+  if (thinkingLevel > 0) {
+    generationConfig.thinkingConfig = {
+      thinkingBudget: thinkingLevel
+    };
+  }
+
+  if (model.startsWith("gemini")) {
+    generationConfig.responseMimeType = "application/json";
+  }
+
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: promptParts.join("\n\n") }] }],
+      systemInstruction: { parts: [{ text: HUMAN_EDITOR_SYSTEM_PROMPT }] },
+      generationConfig
+    })
+  });
+
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    const errMsg = errData.error?.message || `Google AI Studio API 呼叫失敗 (${response.status})`;
+    throw new Error(errMsg);
+  }
+
+  const data = await response.json();
+  const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawText) throw new Error("Google AI Studio 未回傳有效內容");
+
+  try {
+    return JSON.parse(rawText);
+  } catch {
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) return JSON.parse(jsonMatch[0]);
+    throw new Error("無法解析 AI 回傳的 JSON 格式");
+  }
+}
+
+function renderTitleChips(container, titles, onSelect) {
+  if (!container) return;
+  container.replaceChildren();
+  titles.forEach((t, i) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = `ai-title-chip${i === 0 ? " active" : ""}`;
+    chip.textContent = t;
+    chip.onclick = (e) => {
+      e.preventDefault();
+      container.querySelectorAll(".ai-title-chip").forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      onSelect(t);
+    };
+    container.append(chip);
+  });
+}
+
+elements.geminiTemperature?.addEventListener("input", () => {
+  if (elements.geminiTemperatureValue) {
+    elements.geminiTemperatureValue.textContent = parseFloat(elements.geminiTemperature.value).toFixed(2);
+  }
+});
+
+elements.btnRunAiGenerateNewPost?.addEventListener("click", async () => {
+  const notes = elements.newPostAiNotes?.value.trim();
+  if (!notes) {
+    log("請先在口述草稿欄位填寫想法或筆記", "error");
+    elements.newPostAiNotes?.focus();
+    return;
+  }
+  const btn = elements.btnRunAiGenerateNewPost;
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "<span>⏳ 資深編輯提煉人味中...</span>";
+
+  try {
+    const targetWords = elements.newPostTargetWords?.value || "1000-1200 字深度專欄";
+    const result = await callGoogleAiStudio({ oralNotes: notes, targetWords });
+    state.pendingAiGeneratedPost = result;
+
+    if (result.recommended_titles && result.recommended_titles.length) {
+      elements.newPostTitle.value = result.recommended_titles[0];
+      renderTitleChips(elements.aiRecommendedTitles, result.recommended_titles, (selectedTitle) => {
+        elements.newPostTitle.value = selectedTitle;
+      });
+    }
+    if (result.suggested_slug) {
+      elements.newPostSlug.value = result.suggested_slug.toLowerCase().replace(/[^a-z0-9-]+/g, "-");
+    }
+
+    if (elements.aiStatWordCount) {
+      elements.aiStatWordCount.textContent = `📊 預估字數：約 ${result.word_count || result.polished_content?.length || 0} 字`;
+    }
+    if (elements.aiStatSubtitle) {
+      elements.aiStatSubtitle.textContent = `📄 推薦副標題：${result.recommended_subtitle || "無"}`;
+    }
+    if (elements.aiNewPostFeedback) {
+      elements.aiNewPostFeedback.style.display = "block";
+    }
+
+    log("AI 人味改寫完成！已推薦標題與副標題，點擊「建立草稿」即可帶入內文。", "success");
+  } catch (error) {
+    log(error.message || "AI 改寫失敗", "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
+
+elements.aiPolishEditorButton?.addEventListener("click", () => {
+  if (elements.aiPolishDialog) {
+    elements.aiPolishDialog.showModal();
+  }
+});
+
+elements.cancelAiPolishButton?.addEventListener("click", () => {
+  elements.aiPolishDialog?.close();
+});
+
+elements.btnRunAiPolishActive?.addEventListener("click", async () => {
+  const currentText = state.editor ? state.editor.getMarkdown() : state.originalBody;
+  const oralNotes = elements.aiPolishOralNotes?.value.trim() || "";
+  if (!currentText && !oralNotes) {
+    log("請先在編輯器輸入文章或在上方填寫口述補充想法", "error");
+    return;
+  }
+  const btn = elements.btnRunAiPolishActive;
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "<span>⏳ 人味潤飾改寫中...</span>";
+
+  try {
+    const targetWords = elements.aiPolishTargetWords?.value || "1000-1200 字深度專欄";
+    const result = await callGoogleAiStudio({ oralNotes, currentArticleText: currentText, targetWords });
+    state.activeAiPolishResult = result;
+
+    if (elements.aiActiveWordCount) {
+      elements.aiActiveWordCount.textContent = `📊 潤飾後字數：約 ${result.word_count || result.polished_content?.length || 0} 字`;
+    }
+    if (elements.aiActiveSubtitle) {
+      elements.aiActiveSubtitle.textContent = `📄 推薦副標題：${result.recommended_subtitle || "無"}`;
+    }
+    if (elements.aiPolishedTextPreview) {
+      elements.aiPolishedTextPreview.value = result.polished_content || "";
+    }
+    if (result.recommended_titles && result.recommended_titles.length) {
+      renderTitleChips(elements.aiActiveRecommendedTitles, result.recommended_titles, (selectedTitle) => {
+        state.activeAiPolishResult.selectedTitle = selectedTitle;
+      });
+      state.activeAiPolishResult.selectedTitle = result.recommended_titles[0];
+    }
+    if (elements.aiPolishResults) {
+      elements.aiPolishResults.style.display = "block";
+    }
+
+    log("文章潤飾完成！請檢視成果，確認無誤後點擊「套用到文章與標題」。", "success");
+  } catch (error) {
+    log(error.message || "文章潤飾失敗", "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
+
+elements.applyAiPolishButton?.addEventListener("click", () => {
+  if (!state.activeAiPolishResult) return;
+  const res = state.activeAiPolishResult;
+  if (res.polished_content) {
+    if (state.editor) {
+      state.editor.setMarkdown(res.polished_content);
+    }
+    state.workingBody = res.polished_content;
+    state.bodyDirty = true;
+  }
+  if (res.selectedTitle) {
+    elements.titleInput.value = res.selectedTitle;
+    state.metadataDirty = true;
+  }
+  if (res.recommended_subtitle) {
+    elements.descriptionInput.value = res.recommended_subtitle;
+    state.metadataDirty = true;
+  }
+  state.draftSaved = false;
+  scheduleDocumentUpdate();
+  elements.aiPolishDialog?.close();
+  log("已成功套用資深人類編輯潤飾成果至目前文章！", "success");
+});
+
 $("saveSettingsButton").addEventListener("click", async (event) => {
   event.preventDefault();
   try {
     state.apiBase = normalizeApiBase(elements.apiBase.value);
     state.siteUrl = normalizeSiteUrl(elements.siteUrl.value);
-    await chrome.storage.local.set({ apiBase: state.apiBase, siteUrl: state.siteUrl });
+    state.geminiApiKey = (elements.geminiApiKey?.value || "").trim();
+    state.geminiModel = elements.geminiModel?.value || "gemini-3.7-flash";
+    state.geminiThinkingLevel = elements.geminiThinkingLevel?.value || "2048";
+    state.geminiTemperature = elements.geminiTemperature?.value || "0.7";
+    await chrome.storage.local.set({
+      apiBase: state.apiBase,
+      siteUrl: state.siteUrl,
+      geminiApiKey: state.geminiApiKey,
+      geminiModel: state.geminiModel,
+      geminiThinkingLevel: state.geminiThinkingLevel,
+      geminiTemperature: state.geminiTemperature
+    });
     elements.settingsDialog.close();
-    log("設定已儲存", "success");
+    log("設定已儲存（含 Google AI Studio 模型與參數）", "success");
   } catch (error) { log(error.message, "error"); }
 });
 
@@ -3348,12 +3669,14 @@ elements.pageSearch.addEventListener("input", () => {
   });
 });
 
-chrome.storage.local.get(["apiBase", "siteUrl"]).then(async ({ apiBase, siteUrl }) => {
+chrome.storage.local.get(["apiBase", "siteUrl", "geminiApiKey"]).then(async ({ apiBase, siteUrl, geminiApiKey }) => {
   state.apiBase = apiBase || DEFAULT_API_BASE;
   state.siteUrl = !siteUrl || siteUrl === LEGACY_SITE_URL ? DEFAULT_SITE_URL : siteUrl;
+  state.geminiApiKey = geminiApiKey || "";
   elements.apiBase.value = state.apiBase;
   elements.siteUrl.value = state.siteUrl;
-  await chrome.storage.local.set({ apiBase: state.apiBase, siteUrl: state.siteUrl });
+  if (elements.geminiApiKey) elements.geminiApiKey.value = state.geminiApiKey;
+  await chrome.storage.local.set({ apiBase: state.apiBase, siteUrl: state.siteUrl, geminiApiKey: state.geminiApiKey });
   try {
     const hasPermission = await chrome.permissions.contains({ origins: [`${normalizeApiBase(state.apiBase)}/*`] });
     if (hasPermission) await connect();

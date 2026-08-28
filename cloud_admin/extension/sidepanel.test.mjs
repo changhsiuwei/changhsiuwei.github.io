@@ -239,3 +239,17 @@ test("slides and handout URLs (Google Drive) read and write cleanly in frontmatt
   assert.equal(sandbox.readYamlScalar(removedFm, "slides"), "");
   assert.equal(sandbox.readYamlScalar(removedFm, "handout"), "https://drive.google.com/file/d/456/view");
 });
+
+test("Google AI Studio configuration supports specified models, thinking level, temperature and Human Editor prompt", () => {
+  assert.ok(scriptSource.includes("gemini-3.7-flash"));
+  assert.ok(scriptSource.includes("gemini-3.6-flash"));
+  assert.ok(scriptSource.includes("gemini-3.5-flash-lite"));
+  assert.ok(scriptSource.includes("gemini-3.1-pro-preview"));
+  assert.ok(scriptSource.includes("gemma-4-26b-a4b-it"));
+  assert.ok(scriptSource.includes("gemma-4-31b-it"));
+  assert.ok(scriptSource.includes("thinkingBudget"));
+  assert.ok(scriptSource.includes("geminiThinkingLevel"));
+  assert.ok(scriptSource.includes("geminiTemperature"));
+  assert.ok(scriptSource.includes("Role: 資深人類編輯 (Human Writer & Editor)"));
+  assert.ok(scriptSource.includes("The \"Kill List\""));
+});

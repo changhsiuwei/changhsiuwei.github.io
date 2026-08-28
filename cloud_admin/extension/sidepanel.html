@@ -277,7 +277,10 @@
               <strong>內文</strong>
               <span>工具列可以直接設定標題、粗體、清單與連結</span>
             </div>
-            <button id="addImageButton" class="secondary-button" type="button">上傳圖片</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="aiPolishEditorButton" class="ai-action-btn mini-button" type="button">✨ AI 人味潤飾</button>
+              <button id="addImageButton" class="secondary-button" type="button">上傳圖片</button>
+            </div>
           </div>
 
           <div id="visualEditor" class="visual-editor" aria-label="視覺化內容編輯器"></div>
@@ -324,7 +327,48 @@
       <input id="siteUrl" type="url" value="https://changhsiuwei.com/" placeholder="https://example.com/">
       <label for="apiBase">受保護的管理 API</label>
       <input id="apiBase" type="url" value="https://hw-chang-site-admin-api.hw-chang-site-admin-worker.workers.dev" placeholder="https://your-admin-api.workers.dev">
-      <p class="security-note">GitHub Token 只儲存在 Cloudflare Secret；這個擴充套件不會讀取或儲存 Token。</p>
+      <div class="settings-ai-section" style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span>✨</span>
+          <strong style="color:var(--brand-dark);font-size:13px;">Google AI Studio 模型與參數設定</strong>
+        </div>
+        <label for="geminiApiKey">Google AI Studio API Key</label>
+        <input id="geminiApiKey" type="password" placeholder="AIzaSy...（用於口述草稿改寫與標題推薦）">
+        <p class="security-note" style="margin-bottom:10px;">金鑰僅儲存於本機；可於 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--brand-2);text-decoration:underline;">Google AI Studio 免費取得 API 金鑰 ↗</a></p>
+
+        <label for="geminiModel">選擇模型 (Model)</label>
+        <select id="geminiModel">
+          <option value="gemini-3.7-flash" selected>gemini-3.7-flash（推薦旗艦速度與品質兼具）</option>
+          <option value="gemini-3.6-flash">gemini-3.6-flash</option>
+          <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite（極速輕量）</option>
+          <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview（深度推理）</option>
+          <option value="gemma-4-26b-a4b-it">gemma-4-26b-a4b-it</option>
+          <option value="gemma-4-31b-it">gemma-4-31b-it</option>
+        </select>
+
+        <label for="geminiThinkingLevel" style="margin-top:10px;">思考層級 (Thinking Level / Budget)</label>
+        <select id="geminiThinkingLevel">
+          <option value="2048" selected>適中思考 (Medium · 2048 tokens - 推薦)</option>
+          <option value="1024">輕量思考 (Low · 1024 tokens)</option>
+          <option value="4096">深度思考 (High · 4096 tokens)</option>
+          <option value="8192">極限思考 (Max · 8192 tokens)</option>
+          <option value="0">關閉思考 (Off · 0 tokens)</option>
+        </select>
+
+        <div style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <label for="geminiTemperature" style="margin-bottom:0;">溫度設定 (Temperature)</label>
+            <span id="geminiTemperatureValue" style="font-size:12px;font-weight:700;color:var(--brand-2);">0.70</span>
+          </div>
+          <input id="geminiTemperature" type="range" min="0.0" max="2.0" step="0.05" value="0.7">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px;">
+            <span>0.0 (精準嚴謹)</span>
+            <span>0.7 (平衡生動)</span>
+            <span>2.0 (高度創意)</span>
+          </div>
+        </div>
+      </div>
+
       <div class="dialog-actions">
         <button id="saveSettingsButton" class="primary-button" value="default">儲存設定</button>
       </div>
@@ -345,6 +389,39 @@
         <option value="knowledge">AI 知識站</option>
         <option value="lab">AI 教學與研究</option>
       </select>
+
+      <div class="ai-assistant-card">
+        <div class="ai-assistant-header">
+          <span class="ai-icon">✨</span>
+          <strong>Google AI Studio 口述草稿人味改寫</strong>
+          <span class="ai-tag">Gemini 編輯</span>
+        </div>
+        <p class="ai-hint">貼上口述想法或粗略想法，資深人類編輯將徹底消除 AI 味，為您推薦具稜角的標題、副標題與具體文章：</p>
+        <textarea id="newPostAiNotes" rows="3" placeholder="例如：我想寫會計系學生用 AI 寫爬蟲時，最常卡在需求講不清楚，而不是語法錯誤..."></textarea>
+        <div class="ai-options-row">
+          <label for="newPostTargetWords">目標字數：</label>
+          <select id="newPostTargetWords">
+            <option value="600-800 字精簡短文">約 600 - 800 字（精簡俐落）</option>
+            <option value="1000-1200 字深度專欄" selected>約 1000 - 1200 字（深度專欄）</option>
+            <option value="1500 字以上詳盡教學">1500 字以上（詳盡教學）</option>
+            <option value="不限字數">不限字數（言簡意賅）</option>
+          </select>
+          <button id="btnRunAiGenerateNewPost" type="button" class="ai-action-btn">
+            <span>✨ 開始人味潤飾</span>
+          </button>
+        </div>
+        <div id="aiNewPostFeedback" class="ai-feedback-box" style="display:none;">
+          <div class="ai-feedback-stat">
+            <span id="aiStatWordCount">📊 預估字數：0 字</span>
+            <span id="aiStatSubtitle">📄 副標題：-</span>
+          </div>
+          <div class="ai-titles-list">
+            <span class="ai-titles-label">💡 推薦標題（點擊切換）：</span>
+            <div id="aiRecommendedTitles" class="ai-title-chips"></div>
+          </div>
+        </div>
+      </div>
+
       <label for="newPostTitle">文章標題</label>
       <input id="newPostTitle" type="text" required placeholder="例如：如何讓 AI 協助備課">
       <label for="newPostSlug">網址名稱</label>
@@ -352,6 +429,51 @@
       <p class="security-note">網址名稱只使用小寫英文、數字與連字號。</p>
       <div class="dialog-actions">
         <button id="createPostButton" class="primary-button" type="submit">建立草稿</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="aiPolishDialog">
+    <form method="dialog" class="dialog-card dialog-card-wide">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Google AI Studio</p>
+          <h2>資深人類編輯 · 文章人味潤飾</h2>
+        </div>
+        <button class="icon-button" value="cancel" type="button" id="cancelAiPolishButton" aria-label="關閉潤飾">×</button>
+      </div>
+      <p class="dialog-intro">徹底剔除「深入研究、格局、關鍵、見證、不只是更是」等 AI 廢話，回歸具體細節與稜角人味。</p>
+      
+      <label for="aiPolishOralNotes">口述想法補充 / 修改指引（選填）：</label>
+      <textarea id="aiPolishOralNotes" rows="2" placeholder="可在此補充口述想法，例如：把第三段重點放在學生與我真實對話的細節..."></textarea>
+      
+      <div class="ai-options-row" style="margin: 10px 0;">
+        <label for="aiPolishTargetWords">目標字數：</label>
+        <select id="aiPolishTargetWords">
+          <option value="600-800 字精簡短文">約 600 - 800 字（精簡短文）</option>
+          <option value="1000-1200 字深度專欄" selected>約 1000 - 1200 字（深度專欄）</option>
+          <option value="1500 字以上詳盡教學">1500 字以上（詳盡教學）</option>
+          <option value="維持原文字數">維持原文字數（精修字句）</option>
+        </select>
+        <button id="btnRunAiPolishActive" type="button" class="ai-action-btn">
+          <span>✨ 開始潤飾全篇</span>
+        </button>
+      </div>
+
+      <div id="aiPolishResults" class="ai-results-pane" style="display:none;">
+        <div class="ai-feedback-stat">
+          <span id="aiActiveWordCount">📊 潤飾後字數：0 字</span>
+          <span id="aiActiveSubtitle">📄 推薦副標題：-</span>
+        </div>
+        <div class="ai-titles-list">
+          <span class="ai-titles-label">💡 推薦標題（點擊切換）：</span>
+          <div id="aiActiveRecommendedTitles" class="ai-title-chips"></div>
+        </div>
+        <label for="aiPolishedTextPreview">潤飾成果預覽：</label>
+        <textarea id="aiPolishedTextPreview" rows="8" readonly></textarea>
+        <div class="dialog-actions">
+          <button id="applyAiPolishButton" class="primary-button" type="button">套用到文章與標題</button>
+        </div>
       </div>
     </form>
   </dialog>
