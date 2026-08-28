@@ -215,6 +215,27 @@
               </div>
             </div>
 
+            <!-- 專區文章管理層（AI 教學與研究 / AI 知識站 專屬 Hub） -->
+            <div id="sectionHubEditors" class="page-editor-group" hidden>
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div id="sectionHubBadge" class="section-badge">📚 專區首頁導言設定</div>
+                </div>
+                <div class="structured-field">
+                  <label for="sectionHubIntroInput">專區簡介與前言說明 (Intro Markdown)</label>
+                  <textarea id="sectionHubIntroInput" class="custom-textarea" rows="3" placeholder="輸入專區首頁的導言或說明..."></textarea>
+                </div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div id="sectionHubArticlesBadge" class="section-badge">📑 專區文章清單（一篇文章一個區塊）</div>
+                  <button id="sectionHubAddPostButton" class="primary-button mini-button" type="button">＋ 撰寫新文章</button>
+                </div>
+                <div id="sectionHubArticleList" class="card-item-list"></div>
+              </div>
+            </div>
+
             <!-- 近期活動專屬區塊 -->
             <div id="activityIntroSection" class="activity-intro-card" hidden>
               <label for="activityIntroInput">

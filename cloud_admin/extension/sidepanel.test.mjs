@@ -29,6 +29,7 @@ vm.runInNewContext([
   productionFunction("serializeAboutPage"),
   productionFunction("parsePublicationsPage"),
   productionFunction("serializePublicationsPage"),
+  productionFunction("serializeSectionHub"),
   productionFunction("protectLayoutSyntax"),
   productionFunction("uniqueIndexOf"),
   productionFunction("applyEditorDeltaToSource"),
@@ -44,6 +45,7 @@ vm.runInNewContext([
   "this.serializeAboutPage = serializeAboutPage;",
   "this.parsePublicationsPage = parsePublicationsPage;",
   "this.serializePublicationsPage = serializePublicationsPage;",
+  "this.serializeSectionHub = serializeSectionHub;",
   "this.protectLayoutSyntax = protectLayoutSyntax;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;"
 ].join("\n"), sandbox);
@@ -175,4 +177,17 @@ test("publications page cards, working papers, and conferences parse and reconst
   const reconstructed = sandbox.serializePublicationsPage(model);
   const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
   assert.equal(normalize(reconstructed), normalize(body));
+});
+
+test("section hub pages (knowledge and lab) reconstruct exact Quarto listing page layout", () => {
+  for (const pagePath of ["knowledge/index.md", "lab/index.md"]) {
+    const raw = readFileSync(new URL(`../../${pagePath}`, import.meta.url), "utf8");
+    const match = raw.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$/);
+    assert.ok(match);
+    const fm = match[1];
+    const body = match[2];
+    const reconstructed = sandbox.serializeSectionHub(fm, body);
+    const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+    assert.equal(normalize(reconstructed), normalize(raw));
+  }
 });

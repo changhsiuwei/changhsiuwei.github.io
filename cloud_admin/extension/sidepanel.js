@@ -12,6 +12,135 @@ const STATIC_PAGES = [
   { path: "knowledge/index.md", label: "AI 知識站", icon: "知" }
 ];
 
+const KNOWN_POST_METADATA = {
+  "knowledge/posts/welcome/index.md": {
+    title: "AI 走進會計課堂後，我們不能再把思考外包",
+    date: "2026-07-06",
+    categories: ["教學現場", "反思", "課堂設計"],
+    desc: "AI 進入課堂後，評量與思考方式必須跟著調整，不能只是依賴工具完成作業。"
+  },
+  "knowledge/posts/2026-07-08-agent-computer-interface/index.md": {
+    title: "讓 Agent 點 UI，是把工程問題推給模型猜",
+    date: "2026-07-08",
+    categories: ["Agentic AI", "ACI", "工作流設計"],
+    desc: "與其讓 AI 透過視覺猜測座標，不如給它乾淨、受限且定義清楚的 API。"
+  },
+  "knowledge/posts/2026-07-08-agentic-ai-automation/index.md": {
+    title: "讓 AI 往前走之前，先教它停下來",
+    date: "2026-07-08",
+    categories: ["自動化", "防呆機制", "Agentic AI"],
+    desc: "可靠的 Agent 不是狂奔不停，而是能在關鍵步驟停下來驗證成果。"
+  },
+  "knowledge/posts/2026-07-08-ai-agent-verification-harness/index.md": {
+    title: "做 Agent 的九成工夫，藏在檢查規則裡",
+    date: "2026-07-08",
+    categories: ["驗證測試", "Agent Harness", "品質控管"],
+    desc: "沒有嚴謹的測試與邊界檢查，自主代理人很快就會變成失控的腳本。"
+  },
+  "knowledge/posts/2026-07-08-ai-director-method/index.md": {
+    title: "先把任務說清楚，模型才知道邊界",
+    date: "2026-07-08",
+    categories: ["提示工程", "方法論", "協同合作"],
+    desc: "導演法核心在於定義角色、邊界與驗收準則，讓模型在軌道上發揮。"
+  },
+  "knowledge/posts/2026-07-09-context-engineering-memory/index.md": {
+    title: "不要把所有紀錄塞回 prompt：context engineering 在解決什麼",
+    date: "2026-07-09",
+    categories: ["Context Engineering", "記憶架構", "工作流設計"],
+    desc: "長對話衰退是真實存在的物理限制，必須靠層次記憶與上下文修剪來克服。"
+  },
+  "knowledge/posts/2026-07-09-harness-makes-ai-improve/index.md": {
+    title: "模型沒有自己變聰明，是 harness 讓它有地方變好",
+    date: "2026-07-09",
+    categories: ["自我演進", "架構設計", "Agent Harness"],
+    desc: "真正讓系統持續提升的，不是更大的參數量，而是包裹著它的外骨骼。"
+  },
+  "knowledge/posts/2026-07-09-self-improvement-evaluator-brake/index.md": {
+    title: "誰來評分，誰來踩煞車：自我改進最難的地方",
+    date: "2026-07-09",
+    categories: ["評估機制", "安全性", "防呆保護"],
+    desc: "自我進化的瓶頸永遠在於 evaluator 是否獨立、是否具備回滾機制。"
+  },
+  "knowledge/posts/2026-07-09-self-improving-harness-boundaries/index.md": {
+    title: "讓系統修改自己的規則，危險也在這裡",
+    date: "2026-07-09",
+    categories: ["安全邊界", "自我改進", "工程準則"],
+    desc: "系統規則的演進必須限定在沙盒內，核心不變量絕對不可被覆寫。"
+  },
+  "lab/posts/2026-07-08-ai-debate-coach/index.md": {
+    title: "把學生的句子放到反方席上",
+    date: "2026-07-08",
+    categories: ["教學案例", "思辨訓練", "會計教育"],
+    desc: "利用 AI 擔任反方辯友，挑戰學生論述的盲點與邏輯漏洞。"
+  },
+  "lab/posts/2026-07-08-ai-grading-ocr/index.md": {
+    title: "分數要能被打開，AI 批改才有資格進場",
+    date: "2026-07-08",
+    categories: ["評分標準", "教學實驗", "透明度"],
+    desc: "AI 批改若無法追溯評分依據，就無法真正幫助學生理解錯誤。"
+  },
+  "lab/posts/2026-07-08-ai-lesson-prep-markdown/index.md": {
+    title: "備課資料夾裡，要留下教室剛發生的事",
+    date: "2026-07-08",
+    categories: ["教學筆記", "Markdown", "教材迭代"],
+    desc: "用 Markdown 快速捕捉課堂互動，讓教案隨每學期現場持續演進。"
+  },
+  "lab/posts/2026-07-08-ai-presentation-generator/index.md": {
+    title: "AI 很會填滿投影片，講者要先學會刪掉",
+    date: "2026-07-08",
+    categories: ["簡報教學", "教學實驗", "認知負荷"],
+    desc: "簡報生成工具往往塞入過多廢話，教導學生去蕪存菁才是關鍵能力。"
+  },
+  "lab/posts/2026-07-08-ai-super-ta/index.md": {
+    title: "把重複勞動交出去，老師才回得來",
+    date: "2026-07-08",
+    categories: ["助教工作流", "自動化", "教學現場"],
+    desc: "將瑣碎行政與常見問題分流，教師才能投入高價值的引導與對話。"
+  },
+  "lab/posts/2026-07-08-ai-thinking-resistance/index.md": {
+    title: "太乾淨的答案，常常沒有主人",
+    date: "2026-07-08",
+    categories: ["思考阻力", "作業設計", "批判思維"],
+    desc: "設計具有思考阻力的作業，避免學生直接貼上未經消化的 AI 產出。"
+  },
+  "lab/posts/2026-07-08-multilingual-inclusive-teaching/index.md": {
+    title: "母語作為助跑，讓學生回到同一張桌子",
+    date: "2026-07-08",
+    categories: ["雙語教學", "多元共融", "課堂實驗"],
+    desc: "善用 AI 即時轉譯與雙語對照，降低國際生與非母語者的參與門檻。"
+  },
+  "lab/posts/2026-07-08-predictive-ai-sales-budget/index.md": {
+    title: "做預算的那一天，我們到底知道什麼",
+    date: "2026-07-08",
+    categories: ["管理會計", "機器學習", "預算編製"],
+    desc: "結合機器學習模型與管理會計直覺，重新審視傳統預算編製假設。"
+  },
+  "lab/posts/2026-07-08-tao-human-ai-collaboration/index.md": {
+    title: "高手用 AI 後，工作才剛開始",
+    date: "2026-07-08",
+    categories: ["人機協同", "專業判斷", "工作法"],
+    desc: "AI 快速產生初稿後，專家的經驗、批判與細節雕琢才是決勝點。"
+  },
+  "lab/posts/2026-07-08-vibe-coding-financial-crawler/index.md": {
+    title: "Vibe Coding 進會計課：會寫程式以前，我們先學會寫需求合約",
+    date: "2026-07-08",
+    categories: ["Vibe Coding", "財務爬蟲", "跨領域教學"],
+    desc: "引導會計系學生用自然語言定義精準需求，驅動 AI 撰寫爬蟲。"
+  }
+};
+
+function getPostMetadata(path) {
+  if (state.postMetadataCache && state.postMetadataCache[path]) {
+    return state.postMetadataCache[path];
+  }
+  if (KNOWN_POST_METADATA[path]) {
+    return KNOWN_POST_METADATA[path];
+  }
+  const slug = path.split("/").at(-2) || path;
+  const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+  return { title: label, date: "", categories: [], desc: "" };
+}
+
 const state = {
   apiBase: DEFAULT_API_BASE,
   siteUrl: DEFAULT_SITE_URL,
@@ -45,7 +174,11 @@ const state = {
   aboutModel: null,
   aboutDirty: false,
   pubModel: null,
-  pubDirty: false
+  pubDirty: false,
+  sectionHubModel: null,
+  sectionHubDirty: false,
+  postMetadataCache: {},
+  expandedFolders: new Set(["lab", "knowledge"])
 };
 
 const $ = (id) => document.getElementById(id);
@@ -93,6 +226,12 @@ const elements = {
   workingPaperList: $("workingPaperList"),
   addConferenceButton: $("addConferenceButton"),
   conferenceList: $("conferenceList"),
+  sectionHubEditors: $("sectionHubEditors"),
+  sectionHubBadge: $("sectionHubBadge"),
+  sectionHubIntroInput: $("sectionHubIntroInput"),
+  sectionHubArticlesBadge: $("sectionHubArticlesBadge"),
+  sectionHubAddPostButton: $("sectionHubAddPostButton"),
+  sectionHubArticleList: $("sectionHubArticleList"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
   titleInput: $("titleInput"),
@@ -184,7 +323,7 @@ async function removeNewDraftPath(path) {
 
 function hasUnsavedChanges() {
   return state.newDocument || state.bodyDirty || state.metadataDirty
-    || state.homeDirty || state.aboutDirty || state.pubDirty
+    || state.homeDirty || state.aboutDirty || state.pubDirty || state.sectionHubDirty
     || Array.from(state.tableModels.values()).some((model) => model.dirty)
     || Array.from(state.activityModels.values()).some((model) => model.dirty)
     || state.pendingUploads.size > 0;
@@ -1026,6 +1165,8 @@ function currentContent() {
     body = serializeAboutPage(state.aboutModel, state.lineEnding);
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
     body = serializePublicationsPage(state.pubModel, state.lineEnding);
+  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
+    body = elements.sectionHubIntroInput ? elements.sectionHubIntroInput.value.trim() : state.originalBody.trim();
   } else if (state.currentPath === "activities/index.md") {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
   } else {
@@ -1055,8 +1196,8 @@ function pageInfo(path) {
   const staticPage = STATIC_PAGES.find((item) => item.path === path);
   if (staticPage) return { label: staticPage.label, location: "固定頁面", icon: staticPage.icon };
   const collection = path.startsWith("knowledge/") ? "AI 知識站" : path.startsWith("lab/") ? "AI 教學與研究" : "網站內容";
-  const slug = path.split("/").at(-2) || path;
-  const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+  const meta = getPostMetadata(path);
+  const label = meta.title || path.split("/").at(-2) || path;
   return { label, location: `${collection} / 文章`, icon: collection === "AI 知識站" ? "知" : "研" };
 }
 
@@ -1182,21 +1323,96 @@ function createTreeItem(path) {
 function renderTree() {
   elements.pageTree.replaceChildren();
   const contentFiles = state.files.filter((path) => /\.(md|qmd)$/i.test(path));
-  const groups = [
-    { label: "主要頁面", files: STATIC_PAGES.map((item) => item.path).filter((path) => contentFiles.includes(path)) },
-    { label: "AI 知識站文章", files: contentFiles.filter((path) => /^knowledge\/posts\//.test(path)).sort().reverse() },
-    { label: "AI 教學與研究文章", files: contentFiles.filter((path) => /^lab\/posts\//.test(path)).sort().reverse() }
+
+  // 1. 主要核心頁面（首頁、個人資訊、近期活動、學術出版）
+  const coreStaticPages = STATIC_PAGES.filter((p) => !p.path.startsWith("knowledge/") && !p.path.startsWith("lab/"));
+  const coreFiles = coreStaticPages.map((p) => p.path).filter((path) => contentFiles.includes(path));
+
+  const mainSection = document.createElement("section");
+  mainSection.className = "tree-group";
+  const mainTitle = document.createElement("p");
+  mainTitle.className = "tree-group-title";
+  mainTitle.textContent = "主要頁面";
+  mainSection.append(mainTitle, ...coreFiles.map(createTreeItem));
+  elements.pageTree.append(mainSection);
+
+  // 2. 專區層次管理（AI 教學與研究 & AI 知識站）
+  const sectionGroups = [
+    {
+      id: "lab",
+      indexPath: "lab/index.md",
+      label: "AI 教學與研究",
+      icon: "研",
+      subtitle: "專區文章管理",
+      posts: contentFiles.filter((p) => /^lab\/posts\//.test(p)).sort().reverse()
+    },
+    {
+      id: "knowledge",
+      indexPath: "knowledge/index.md",
+      label: "AI 知識站",
+      icon: "知",
+      subtitle: "專區文章管理",
+      posts: contentFiles.filter((p) => /^knowledge\/posts\//.test(p)).sort().reverse()
+    }
   ];
-  for (const group of groups) {
-    if (!group.files.length) continue;
-    const section = document.createElement("section");
-    section.className = "tree-group";
-    const title = document.createElement("p");
-    title.className = "tree-group-title";
-    title.textContent = group.label;
-    section.append(title, ...group.files.map(createTreeItem));
-    elements.pageTree.append(section);
+
+  for (const group of sectionGroups) {
+    const folder = document.createElement("div");
+    const isOpen = state.expandedFolders.has(group.id) || (state.currentPath && state.currentPath.startsWith(group.id + "/"));
+    folder.className = `tree-folder${isOpen ? " open" : ""}`;
+    folder.dataset.folder = group.id;
+
+    const header = document.createElement("div");
+    header.className = `tree-folder-header${state.currentPath === group.indexPath ? " active" : ""}`;
+    header.dataset.path = group.indexPath;
+    header.dataset.search = `${group.label} ${group.indexPath}`.toLowerCase();
+
+    const icon = document.createElement("span");
+    icon.className = "tree-icon";
+    icon.textContent = group.icon;
+
+    const titleBox = document.createElement("div");
+    titleBox.className = "tree-folder-title";
+    titleBox.innerHTML = `<strong>${escapeHtml(group.label)}</strong><small>${escapeHtml(group.subtitle)}</small>`;
+    titleBox.onclick = (e) => {
+      e.stopPropagation();
+      loadFile(group.indexPath);
+    };
+    icon.onclick = (e) => {
+      e.stopPropagation();
+      loadFile(group.indexPath);
+    };
+
+    const badge = document.createElement("span");
+    badge.className = "tree-folder-badge";
+    badge.textContent = `${group.posts.length} 篇`;
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "tree-folder-toggle";
+    toggle.title = "展開/收合文章列表";
+    toggle.textContent = "▶";
+    toggle.onclick = (e) => {
+      e.stopPropagation();
+      if (state.expandedFolders.has(group.id)) {
+        state.expandedFolders.delete(group.id);
+        folder.classList.remove("open");
+      } else {
+        state.expandedFolders.add(group.id);
+        folder.classList.add("open");
+      }
+    };
+
+    header.append(icon, titleBox, badge, toggle);
+
+    const children = document.createElement("div");
+    children.className = "tree-folder-children";
+    children.append(...group.posts.map(createTreeItem));
+
+    folder.append(header, children);
+    elements.pageTree.append(folder);
   }
+
   if (!elements.pageTree.children.length) {
     const empty = document.createElement("p");
     empty.className = "empty-hint";
@@ -1999,6 +2215,118 @@ function renderPublicationsEditors() {
   };
 }
 
+function serializeSectionHub(frontMatter, intro, lineEnding = "\n") {
+  const normalizedFm = frontMatter ? frontMatter.replace(/\r\n/g, "\n").trim() : "";
+  const normalizedIntro = intro ? intro.replace(/\r\n/g, "\n").trim() : "";
+  if (normalizedFm) {
+    return `---${lineEnding}${normalizedFm}${lineEnding}---${lineEnding}${lineEnding}${normalizedIntro}${lineEnding}`;
+  }
+  return `${normalizedIntro}${lineEnding}`;
+}
+
+function renderSectionHub(path, body) {
+  const isKnowledge = path.startsWith("knowledge");
+  const sectionName = isKnowledge ? "AI 知識站" : "AI 教學與研究";
+  const icon = isKnowledge ? "知" : "研";
+  const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
+
+  if (elements.sectionHubBadge) {
+    elements.sectionHubBadge.textContent = `${icon} · ${sectionName} 專區導言設定`;
+  }
+  if (elements.sectionHubArticlesBadge) {
+    elements.sectionHubArticlesBadge.textContent = `📑 ${sectionName} 文章管理（一篇文章一個區塊）`;
+  }
+
+  if (elements.sectionHubIntroInput) {
+    elements.sectionHubIntroInput.value = body.trim();
+    elements.sectionHubIntroInput.oninput = () => {
+      state.sectionHubModel = { intro: elements.sectionHubIntroInput.value, path };
+      state.sectionHubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.sectionHubAddPostButton) {
+    elements.sectionHubAddPostButton.onclick = () => {
+      if (elements.newPostCollection) {
+        elements.newPostCollection.value = isKnowledge ? "knowledge" : "lab";
+      }
+      if (elements.newPostTitle) elements.newPostTitle.value = "";
+      if (elements.newPostSlug) elements.newPostSlug.value = "";
+      if (elements.newPostDialog) elements.newPostDialog.showModal();
+    };
+  }
+
+  if (elements.sectionHubArticleList) {
+    elements.sectionHubArticleList.replaceChildren();
+    const contentFiles = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
+
+    contentFiles.forEach((postPath) => {
+      const meta = getPostMetadata(postPath);
+      const card = document.createElement("div");
+      card.className = "article-hub-card";
+
+      const header = document.createElement("div");
+      header.className = "article-hub-header";
+
+      const title = document.createElement("h3");
+      title.className = "article-hub-title";
+      title.textContent = meta.title || postPath;
+
+      header.append(title);
+
+      const metaRow = document.createElement("div");
+      metaRow.className = "article-hub-meta";
+      if (meta.date) {
+        const dateBadge = document.createElement("span");
+        dateBadge.className = "date-badge";
+        dateBadge.textContent = `🗓️ ${meta.date}`;
+        metaRow.append(dateBadge);
+      }
+      if (Array.isArray(meta.categories) && meta.categories.length) {
+        meta.categories.forEach((cat) => {
+          const catTag = document.createElement("span");
+          catTag.className = "category-tag";
+          catTag.textContent = cat;
+          metaRow.append(catTag);
+        });
+      }
+
+      const desc = document.createElement("p");
+      desc.className = "article-hub-desc";
+      desc.textContent = meta.desc || "點選右下方「編輯文章」開始編輯內文或前設資料。";
+
+      const pathRow = document.createElement("div");
+      pathRow.className = "article-hub-path";
+      pathRow.textContent = postPath;
+
+      const actions = document.createElement("div");
+      actions.className = "article-hub-actions";
+
+      const previewBtn = document.createElement("button");
+      previewBtn.type = "button";
+      previewBtn.className = "btn-preview";
+      previewBtn.textContent = "🌐 預覽此篇";
+      previewBtn.onclick = () => {
+        loadFile(postPath);
+      };
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-edit";
+      editBtn.textContent = "✏️ 編輯文章";
+      editBtn.onclick = () => {
+        loadFile(postPath);
+      };
+
+      actions.append(previewBtn, editBtn);
+      card.append(header, metaRow, desc, pathRow, actions);
+      elements.sectionHubArticleList.append(card);
+    });
+  }
+}
+
 function renderActivityEditors() {
   elements.activityEditors.replaceChildren();
   for (const model of state.activityModels.values()) {
@@ -2249,11 +2577,15 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isAbout = path === "about/index.md";
   const isPub = path === "publications/index.md";
   const isActivities = path === "activities/index.md";
-  const isStructuredPage = isHome || isAbout || isPub || isActivities;
+  const isKnowledge = path === "knowledge/index.md";
+  const isLab = path === "lab/index.md";
+  const isSectionHub = isKnowledge || isLab;
+  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
 
   if (elements.homeEditors) elements.homeEditors.hidden = !isHome;
   if (elements.aboutEditors) elements.aboutEditors.hidden = !isAbout;
   if (elements.publicationEditors) elements.publicationEditors.hidden = !isPub;
+  if (elements.sectionHubEditors) elements.sectionHubEditors.hidden = !isSectionHub;
   if (elements.activityIntroSection) elements.activityIntroSection.hidden = !isActivities;
   if (elements.activityEditors) elements.activityEditors.hidden = !isActivities;
   if (elements.tableEditors) elements.tableEditors.hidden = isStructuredPage;
@@ -2277,6 +2609,10 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   } else if (isActivities) {
     if (elements.activityIntroInput) elements.activityIntroInput.value = parseActivityIntro(split.body);
     renderActivityEditors();
+  } else if (isSectionHub) {
+    state.sectionHubModel = { intro: split.body.trim(), path };
+    state.sectionHubDirty = false;
+    renderSectionHub(path, split.body);
   }
   ensureEditor();
   state.loadingEditor = true;
@@ -2314,6 +2650,11 @@ function updateDocumentState() {
     elements.wordCount.textContent = `${(state.aboutModel.education || []).length} 項學歷 · ${(state.aboutModel.experience || []).length} 項經歷 · ${(state.aboutModel.honors || []).length} 項榮譽`;
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
     elements.wordCount.textContent = `${(state.pubModel.journalPapers || []).length} 篇期刊 · ${(state.pubModel.workingPapers || []).length} 篇工作論文 · ${(state.pubModel.conferences || []).length} 場研討會`;
+  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
+    const isKnowledge = state.currentPath.startsWith("knowledge");
+    const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
+    const count = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).length;
+    elements.wordCount.textContent = `共 ${count} 篇文章`;
   } else if (state.currentPath === "activities/index.md") {
     let totalEvents = 0;
     for (const model of state.activityModels.values()) totalEvents += model.events.length;
@@ -2544,6 +2885,29 @@ function renderPreview() {
         </table>
       </div>
     `;
+  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
+    const isKnowledge = state.currentPath.startsWith("knowledge");
+    const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
+    const intro = escapeHtml(elements.sectionHubIntroInput?.value?.trim() || "");
+    const posts = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
+    const cardsHtml = posts.map((p) => {
+      const meta = getPostMetadata(p);
+      const tags = (meta.categories || []).map((c) => `<span style="display:inline-block;padding:1px 6px;margin-right:4px;border-radius:4px;background:#eef2ff;color:#4338ca;font-size:11px">${escapeHtml(c)}</span>`).join("");
+      return `
+        <div style="margin:14px 0;padding:16px;border:1px solid #e2e8f0;border-radius:10px;background:#ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.02)">
+          <div style="font-size:11px;color:#64748b;margin-bottom:6px">${escapeHtml(meta.date || "")} ${tags}</div>
+          <h3 style="margin:0 0 6px;color:#1e293b;font-size:16px">${escapeHtml(meta.title || p)}</h3>
+          <p style="margin:0;color:#475569;font-size:13px;line-height:1.5">${escapeHtml(meta.desc || "")}</p>
+        </div>
+      `;
+    }).join("");
+    body = `
+      <div style="padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid #e2e8f0">
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#334155">${intro.replace(/\n\n+/g, "</p><p>")}</p>
+      </div>
+      <h3 style="margin:0 0 14px;color:#403f6f">📑 最新文章 (共 ${posts.length} 篇)</h3>
+      <div>${cardsHtml}</div>
+    `;
   } else if (state.currentPath === "activities/index.md") {
     const intro = escapeHtml(elements.activityIntroInput?.value?.trim() || "以下為近期的學術與產業演講、工作坊活動紀錄。");
     let previewBody = `<div class="preview-callout preview-callout-tip"><h2>🌟 最新動態</h2><p>${intro}</p></div>`;
@@ -2680,6 +3044,7 @@ async function publish() {
   state.homeDirty = false;
   state.aboutDirty = false;
   state.pubDirty = false;
+  state.sectionHubDirty = false;
   state.editorChanged = false;
   state.editorMappingError = false;
   state.metadataDirty = false;
