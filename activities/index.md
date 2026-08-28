@@ -42,6 +42,7 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.g-col-12 .g-col-md-10}
 #### 長庚大學 AI EMBA
 *AI策略會計：基礎AI工具工作坊*
+[📁 上課教材參考](https://drive.google.com/file/d/1mnFxWXjD0NawPrTGI9aj3-INPXDjQ9Wn/view?usp=drive_link){target="_blank" .activity-materials-link}
 :::
 
 ::: {.g-col-12 .g-col-md-2}
