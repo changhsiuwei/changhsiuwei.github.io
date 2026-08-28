@@ -420,7 +420,7 @@
           <span class="ai-tag">Gemini 編輯</span>
         </div>
         <p class="ai-hint">貼上口述想法或粗略想法，資深人類編輯將徹底消除 AI 味，為您推薦具稜角的標題、副標題與具體文章：</p>
-        <textarea id="newPostAiNotes" rows="3" placeholder="例如：我想寫會計系學生用 AI 寫爬蟲時，最常卡在需求講不清楚，而不是語法錯誤..."></textarea>
+        <textarea id="newPostAiNotes" rows="5" placeholder="例如：我想寫會計系學生用 AI 寫爬蟲時，最常卡在需求講不清楚，而不是語法錯誤..."></textarea>
         <div class="ai-options-row">
           <label for="newPostTargetWords">目標字數：</label>
           <select id="newPostTargetWords">
@@ -465,12 +465,12 @@
         </div>
         <button class="icon-button" value="cancel" type="button" id="cancelAiPolishButton" aria-label="關閉潤飾">×</button>
       </div>
-      <p class="dialog-intro">徹底剔除「深入研究、格局、關鍵、見證、不只是更是」等 AI 廢話，回歸具體細節與稜角人味。</p>
+      <p class="dialog-intro" style="font-size:13px;line-height:1.6;margin-bottom:16px;">徹底剔除「深入研究、格局、關鍵、見證、不只是更是」等 AI 廢話，回歸具體細節與稜角人味。</p>
       
-      <label for="aiPolishOralNotes">口述想法補充 / 修改指引（選填）：</label>
-      <textarea id="aiPolishOralNotes" rows="2" placeholder="可在此補充口述想法，例如：把第三段重點放在學生與我真實對話的細節..."></textarea>
+      <label for="aiPolishOralNotes" style="font-size:13px;font-weight:700;margin-bottom:6px;display:block;">口述想法補充 / 修改指引（選填）：</label>
+      <textarea id="aiPolishOralNotes" rows="5" placeholder="可在此補充口述想法，例如：把第三段重點放在學生與我真實對話的細節、加入真實教學情境、語氣更加犀利明快..."></textarea>
       
-      <div class="ai-options-row" style="margin: 10px 0;">
+      <div class="ai-options-row">
         <label for="aiPolishTargetWords">目標字數：</label>
         <select id="aiPolishTargetWords">
           <option value="600-800 字精簡短文">約 600 - 800 字（精簡短文）</option>
@@ -492,8 +492,8 @@
           <span class="ai-titles-label">💡 推薦標題（點擊切換）：</span>
           <div id="aiActiveRecommendedTitles" class="ai-title-chips"></div>
         </div>
-        <label for="aiPolishedTextPreview">潤飾成果預覽：</label>
-        <textarea id="aiPolishedTextPreview" rows="8" readonly></textarea>
+        <label for="aiPolishedTextPreview" style="font-size:13px;font-weight:700;margin:12px 0 6px;display:block;">潤飾成果預覽：</label>
+        <textarea id="aiPolishedTextPreview" rows="12" readonly></textarea>
         <div class="dialog-actions">
           <button id="applyAiPolishButton" class="primary-button" type="button">套用到文章與標題</button>
         </div>
