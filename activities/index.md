@@ -13,6 +13,16 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
+**August  28**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 中華會計學會：Google Sheets × 生成式 AI 教學研討會
+*給會計初學者的 AI 工具坊*
+
+[📊 簡報下載 ↗](https://drive.google.com/file/d/1dGuLlSPHXYAlFUNLUEAoS9nWhpB9tmNP/view?usp=drive_link){target="_blank" .activity-materials-link .activity-slides-link} [📄 講義下載 ↗](https://drive.google.com/file/d/1aFg7vKx52R7ZicVVvXoCxD_SHabfDPDX/view?usp=drive_link){target="_blank" .activity-materials-link .activity-handout-link}
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **August  14**
 :::
 ::: {.g-col-12 .g-col-md-10}
