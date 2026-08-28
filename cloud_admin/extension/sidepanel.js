@@ -4259,22 +4259,22 @@ elements.btnUpdateStudentPassword?.addEventListener("click", async () => {
 
     const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(newPw));
     const hashHex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("");
-    const contentBase64 = textToBase64(`${hashHex}\n`);
 
-    const result = await api("/api/commit", {
+    const result = await api("/api/publish", {
       method: "POST",
       body: JSON.stringify({
+        baseCommitSha: state.head,
         message: "security(students): update student area password hash",
-        branch: "main",
         files: [{
           path: "students/password_hash.txt",
-          content: contentBase64
-        }],
-        ref: state.head
+          operation: "upsert",
+          encoding: "utf-8",
+          content: `${hashHex}\n`
+        }]
       })
     });
 
-    state.head = result.commit.sha;
+    state.head = result.commitSha;
     log(`已成功更新學生專區通行密碼為「${newPw}」！`, "success");
     if (elements.studentPasswordStatus) {
       elements.studentPasswordStatus.style.display = "block";
