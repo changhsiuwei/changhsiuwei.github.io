@@ -115,7 +115,7 @@ subtitle: "Invited Presentations & Latest News"
 #### 馬偕醫院 急診科
 *AI賦能急診醫師：從學習到研究的智慧化轉型*
 
-[📊 簡報下載 ↗](https://docs.google.com/presentation/d/1qzp4MyvEwpoFzAdyRGpce78VSzoPDJ-j/edit?usp=drive_link&ouid=106955272141857904017&rtpof=true&sd=true){target="_blank" .activity-materials-link .activity-slides-link}
+[📊 簡報下載 ↗](https://drive.google.com/file/d/1Pdfx6Ah44Gx-iIY8xCLlC2IVDcFBWezJ/view?usp=drive_link){target="_blank" .activity-materials-link .activity-slides-link}
 :::
 
 ::: {.g-col-12 .g-col-md-2}
