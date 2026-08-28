@@ -287,6 +287,7 @@ input:focus, select:focus { outline: 3px solid rgba(89, 104, 166, 0.15); border-
 .field { min-width: 0; }
 .field-wide { grid-column: 1 / -1; }
 .field-grow { min-width: 0; }
+.post-only-metadata { display: contents; }
 .resource-links-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -983,12 +984,28 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   font-weight: 700;
 }
 
-.activity-materials-field {
+.activity-resources-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   width: 100%;
 }
 
-.activity-materials-field label span {
+.activity-resources-row label,
+.activity-resources-row .field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-resources-row label span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
   color: #3730a3;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .activity-row input {
@@ -1001,7 +1018,7 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   box-sizing: border-box;
 }
 
-.activity-materials-field input {
+.activity-resources-row input {
   background: #f8faff;
   border-color: #c7d2fe;
 }

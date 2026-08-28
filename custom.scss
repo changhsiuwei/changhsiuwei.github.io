@@ -508,29 +508,52 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
 }
 
 /* ===================================================
-   ACTIVITY MATERIALS LINK
+   ACTIVITY MATERIALS LINKS (SLIDES & HANDOUT)
    =================================================== */
 .activity-materials-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
-  padding: 4px 12px;
+  margin-top: 10px;
+  margin-right: 8px;
+  padding: 5px 16px;
   font-size: 0.88rem;
-  font-weight: 600;
-  color: #3f4b6f !important;
-  background-color: #f0f4ff;
-  border: 1px solid #c8d5ff;
-  border-radius: 8px;
+  font-weight: 700;
+  border-radius: 9999px;
   text-decoration: none !important;
-  transition: all 0.2s ease-in-out;
-  
+  line-height: 1.4;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+
   &:hover {
-    background-color: #3f4b6f;
-    color: #ffffff !important;
-    border-color: #3f4b6f;
+    transform: translateY(-1.5px);
     text-decoration: none !important;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(63, 75, 111, 0.2);
+  }
+}
+
+/* Harvard Midnight Navy for Slides */
+.activity-slides-link {
+  color: #001F3F !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f4ff 100%);
+  border: 1.5px solid #001F3F;
+
+  &:hover {
+    background: #001F3F !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 31, 63, 0.25);
+  }
+}
+
+/* Academic Gold for Handout */
+.activity-handout-link {
+  color: #856404 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf0 100%);
+  border: 1.5px solid #C9A227;
+
+  &:hover {
+    background: #C9A227 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(201, 162, 39, 0.25);
   }
 }

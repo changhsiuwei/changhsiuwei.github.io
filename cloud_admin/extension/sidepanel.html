@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <section class="metadata-card">
+          <section id="metadataCard" class="metadata-card">
             <div class="field field-wide">
               <label for="titleInput">頁面標題</label>
               <input id="titleInput" type="text" placeholder="輸入頁面標題">
@@ -93,35 +93,38 @@
               <label for="descriptionInput">簡短說明</label>
               <input id="descriptionInput" type="text" placeholder="選填，會用在搜尋摘要與分享資訊">
             </div>
-            <div class="field">
-              <label for="dateInput">日期</label>
-              <input id="dateInput" type="date">
-            </div>
-            <div class="field">
-              <label for="draftInput">發布狀態</label>
-              <select id="draftInput">
-                <option value="false">🟢 公開發布 (Public)</option>
-                <option value="true">🟡 隱藏草稿 (Draft)</option>
-              </select>
-            </div>
-            <div class="field field-grow">
-              <label for="categoriesInput">分類</label>
-              <input id="categoriesInput" type="text" placeholder="以逗號分隔，例如：AI, 教學">
-            </div>
-            <div class="field field-wide">
-              <label for="featuredImageInput">封面圖片 (Cover Image)</label>
-              <div style="display:flex;gap:8px;align-items:center;">
-                <input id="featuredImageInput" type="text" placeholder="例如：cover.png 或 assets/uploads/...，或點右側上傳">
-                <button id="uploadCoverButton" class="secondary-button mini-button" type="button" style="white-space:nowrap;">選擇圖片</button>
-              </div>
-            <div class="field-wide resource-links-row">
+            <div id="postOnlyFields" class="post-only-metadata">
               <div class="field">
-                <label for="slidesUrlInput">📊 簡報連結 (Google Drive / 簡報網址)</label>
-                <input id="slidesUrlInput" type="url" placeholder="https://drive.google.com/... 或簡報下載網址">
+                <label for="dateInput">發布日期</label>
+                <input id="dateInput" type="date">
               </div>
               <div class="field">
-                <label for="handoutUrlInput">📄 講義連結 (Google Drive / 講義網址)</label>
-                <input id="handoutUrlInput" type="url" placeholder="https://drive.google.com/... 或講義下載網址">
+                <label for="draftInput">發布狀態</label>
+                <select id="draftInput">
+                  <option value="false">🟢 公開發布 (Public)</option>
+                  <option value="true">🟡 隱藏草稿 (Draft)</option>
+                </select>
+              </div>
+              <div class="field field-grow">
+                <label for="categoriesInput">文章分類</label>
+                <input id="categoriesInput" type="text" placeholder="以逗號分隔，例如：AI, 教學">
+              </div>
+              <div class="field field-wide">
+                <label for="featuredImageInput">封面圖片 (Cover Image)</label>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <input id="featuredImageInput" type="text" placeholder="例如：cover.png 或 assets/uploads/...，或點右側上傳">
+                  <button id="uploadCoverButton" class="secondary-button mini-button" type="button" style="white-space:nowrap;">選擇圖片</button>
+                </div>
+              </div>
+              <div class="field-wide resource-links-row">
+                <div class="field">
+                  <label for="slidesUrlInput">📊 簡報連結 (Google Drive / 簡報網址)</label>
+                  <input id="slidesUrlInput" type="url" placeholder="https://drive.google.com/... 或簡報下載網址">
+                </div>
+                <div class="field">
+                  <label for="handoutUrlInput">📄 講義連結 (Google Drive / 講義網址)</label>
+                  <input id="handoutUrlInput" type="url" placeholder="https://drive.google.com/... 或講義下載網址">
+                </div>
               </div>
             </div>
           </section>

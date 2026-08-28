@@ -115,17 +115,20 @@ test("activity field changes rebuild a valid Quarto grid", () => {
   assert.equal(reparsed.events.length, model.events.length);
 });
 
-test("activity materials URL reads, serializes, and reparses cleanly", () => {
+test("activity slides and handout URLs read, serialize, and reparse cleanly", () => {
   const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
   const model = activityGrids(markdown)[0];
-  model.events[0].materialsUrl = "https://drive.google.com/file/d/demo-activity-materials/view";
+  model.events[0].slidesUrl = "https://drive.google.com/file/d/demo-slides/view";
+  model.events[0].handoutUrl = "https://drive.google.com/file/d/demo-handout/view";
   model.dirty = true;
   const serialized = sandbox.serializeActivityGrid(model);
-  assert.ok(serialized.includes("[📁 上課教材參考](https://drive.google.com/file/d/demo-activity-materials/view){target=\"_blank\" .activity-materials-link}"));
+  assert.ok(serialized.includes("[📊 簡報下載 ↗](https://drive.google.com/file/d/demo-slides/view){target=\"_blank\" .activity-materials-link .activity-slides-link}"));
+  assert.ok(serialized.includes("[📄 講義下載 ↗](https://drive.google.com/file/d/demo-handout/view){target=\"_blank\" .activity-materials-link .activity-handout-link}"));
 
   const reparsed = sandbox.parseActivityGrid(serialized, model.year);
   assert.ok(reparsed);
-  assert.equal(reparsed.events[0].materialsUrl, "https://drive.google.com/file/d/demo-activity-materials/view");
+  assert.equal(reparsed.events[0].slidesUrl, "https://drive.google.com/file/d/demo-slides/view");
+  assert.equal(reparsed.events[0].handoutUrl, "https://drive.google.com/file/d/demo-handout/view");
 });
 
 test("incomplete new activity remains recoverable as a local draft", () => {

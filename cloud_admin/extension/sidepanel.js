@@ -149,6 +149,7 @@ const elements = {
   newPostCollection: $("newPostCollection"),
   newPostTitle: $("newPostTitle"),
   newPostSlug: $("newPostSlug"),
+  postOnlyFields: $("postOnlyFields"),
   geminiApiKey: $("geminiApiKey"),
   geminiModel: $("geminiModel"),
   geminiThinkingLevel: $("geminiThinkingLevel"),
@@ -420,16 +421,30 @@ function parseActivityGrid(source, year = "") {
     const topic = topicMatch[1].trim();
     index += 1;
 
-    let materialsUrl = "";
+    let slidesUrl = "";
+    let handoutUrl = "";
     while (index < lines.length - 1 && !/^\s*:{3,}\s*$/.test(lines[index])) {
       const line = lines[index].trim();
       if (line) {
-        const linkMatch = line.match(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/);
-        if (linkMatch) {
-          materialsUrl = linkMatch[2].trim();
-        } else {
+        const allLinks = Array.from(line.matchAll(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g));
+        for (const match of allLinks) {
+          const label = match[1];
+          const url = match[2];
+          if (/簡報|投影片|slide/i.test(label)) {
+            slidesUrl = url;
+          } else if (/講義|handout/i.test(label)) {
+            handoutUrl = url;
+          } else if (/教材|參考/i.test(label)) {
+            if (!slidesUrl) slidesUrl = url;
+            else if (!handoutUrl) handoutUrl = url;
+          } else {
+            if (!slidesUrl) slidesUrl = url;
+            else if (!handoutUrl) handoutUrl = url;
+          }
+        }
+        if (!allLinks.length) {
           const directMatch = line.match(/https?:\/\/[^\s)]+/);
-          if (directMatch) materialsUrl = directMatch[0].trim();
+          if (directMatch && !slidesUrl) slidesUrl = directMatch[0].trim();
         }
       }
       index += 1;
@@ -438,7 +453,8 @@ function parseActivityGrid(source, year = "") {
     if (!/^\s*:{3,}\s*$/.test(lines[index] || "")) return null;
     index += 1;
     const eventObj = { date, venue, topic };
-    if (materialsUrl) eventObj.materialsUrl = materialsUrl;
+    if (slidesUrl) eventObj.slidesUrl = slidesUrl;
+    if (handoutUrl) eventObj.handoutUrl = handoutUrl;
     events.push(eventObj);
     skipBlanks();
   }
@@ -468,9 +484,17 @@ function serializeActivityGrid(model) {
       `#### ${cleanActivityField(event.venue)}`,
       `*${cleanActivityField(event.topic)}*`
     );
-    const materials = cleanActivityField(event.materialsUrl);
-    if (materials) {
-      lines.push(`[📁 上課教材參考](${materials}){target="_blank" .activity-materials-link}`);
+    const slides = cleanActivityField(event.slidesUrl);
+    const handout = cleanActivityField(event.handoutUrl);
+    const linkParts = [];
+    if (slides) {
+      linkParts.push(`[📊 簡報下載 ↗](${slides}){target="_blank" .activity-materials-link .activity-slides-link}`);
+    }
+    if (handout) {
+      linkParts.push(`[📄 講義下載 ↗](${handout}){target="_blank" .activity-materials-link .activity-handout-link}`);
+    }
+    if (linkParts.length) {
+      lines.push("", linkParts.join(" "));
     }
     lines.push(":::", "");
   }
@@ -2484,7 +2508,7 @@ function renderActivityEditors() {
     add.type = "button";
     add.textContent = "＋ 新增活動";
     add.addEventListener("click", () => {
-      model.events.unshift({ date: "", venue: "", topic: "", materialsUrl: "" });
+      model.events.unshift({ date: "", venue: "", topic: "", slidesUrl: "", handoutUrl: "" });
       markStructuredModelDirty(model);
       renderActivityEditors();
       queueMicrotask(() => elements.activityEditors.querySelector("input")?.focus());
@@ -2517,16 +2541,26 @@ function renderActivityEditors() {
       });
       mainRow.append(remove);
 
-      const materialsField = createActivityField(
-        "上課教材參考網址",
-        event.materialsUrl || "",
-        (value) => { event.materialsUrl = value; markStructuredModelDirty(model); },
-        "例如：https://drive.google.com/... 或 簡報講義連結（選填）",
-        "url"
+      const resourcesRow = document.createElement("div");
+      resourcesRow.className = "activity-resources-row";
+      resourcesRow.append(
+        createActivityField(
+          "📊 簡報連結 (Google Drive / 簡報網址)",
+          event.slidesUrl || "",
+          (value) => { event.slidesUrl = value; markStructuredModelDirty(model); },
+          "https://drive.google.com/... 或簡報下載網址",
+          "url"
+        ),
+        createActivityField(
+          "📄 講義連結 (Google Drive / 講義網址)",
+          event.handoutUrl || "",
+          (value) => { event.handoutUrl = value; markStructuredModelDirty(model); },
+          "https://drive.google.com/... 或講義下載網址",
+          "url"
+        )
       );
-      materialsField.className = "activity-materials-field";
 
-      card.append(mainRow, materialsField);
+      card.append(mainRow, resourcesRow);
       list.append(card);
     });
     section.append(list);
@@ -2740,8 +2774,12 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isSectionHub = isKnowledge || isLab;
   const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
   const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
+  const isPost = isDeletable;
   if (elements.deleteDocumentButton) {
     elements.deleteDocumentButton.style.display = isDeletable ? "inline-flex" : "none";
+  }
+  if (elements.postOnlyFields) {
+    elements.postOnlyFields.hidden = !isPost;
   }
 
   if (elements.homeEditors) elements.homeEditors.hidden = !isHome;
