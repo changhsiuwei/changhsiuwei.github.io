@@ -26,6 +26,7 @@ const state = {
   lineEnding: "\n",
   layoutLocks: new Map(),
   tableModels: new Map(),
+  activityModels: new Map(),
   editor: null,
   connected: false,
   newDocument: false,
@@ -55,6 +56,9 @@ const elements = {
   editorWorkspace: $("editorWorkspace"),
   visualEditor: $("visualEditor"),
   structuredData: $("structuredData"),
+  structuredDataTitle: $("structuredDataTitle"),
+  structuredDataHint: $("structuredDataHint"),
+  activityEditors: $("activityEditors"),
   tableEditors: $("tableEditors"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
@@ -146,7 +150,10 @@ async function removeNewDraftPath(path) {
 }
 
 function hasUnsavedChanges() {
-  return state.newDocument || state.bodyDirty || state.metadataDirty || Array.from(state.tableModels.values()).some((model) => model.dirty) || state.pendingUploads.size > 0;
+  return state.newDocument || state.bodyDirty || state.metadataDirty
+    || Array.from(state.tableModels.values()).some((model) => model.dirty)
+    || Array.from(state.activityModels.values()).some((model) => model.dirty)
+    || state.pendingUploads.size > 0;
 }
 
 function log(message, type = "") {
@@ -280,13 +287,101 @@ function updateTableCellSource(source, displayValue) {
   return `${icon}${value}`;
 }
 
+function findFencedDivEnd(lines, startIndex) {
+  let depth = 0;
+  for (let index = startIndex; index < lines.length; index += 1) {
+    if (/^\s*:{3,}\s*\{/.test(lines[index])) depth += 1;
+    else if (/^\s*:{3,}\s*$/.test(lines[index])) {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  return -1;
+}
+
+function parseActivityGrid(source, year = "") {
+  const lines = source.split(/\r?\n/);
+  if (!/^\s*:{3,}\s*\{[^}]*\.grid\b[^}]*\}\s*$/.test(lines[0] || "")) return null;
+  const events = [];
+  let index = 1;
+  const skipBlanks = () => { while (index < lines.length - 1 && !lines[index].trim()) index += 1; };
+  skipBlanks();
+  while (index < lines.length - 1) {
+    if (!/^\s*:{3,}\s*\{[^}]*\.g-col-md-2\b[^}]*\}\s*$/.test(lines[index])) return null;
+    index += 1;
+    const dateMatch = (lines[index] || "").match(/^\s*\*\*(.*?)\*\*\s*$/);
+    if (!dateMatch) return null;
+    const date = dateMatch[1].trim();
+    index += 1;
+    if (!/^\s*:{3,}\s*$/.test(lines[index] || "")) return null;
+    index += 1;
+    if (!/^\s*:{3,}\s*\{[^}]*\.g-col-md-10\b[^}]*\}\s*$/.test(lines[index] || "")) return null;
+    index += 1;
+    const venueMatch = (lines[index] || "").match(/^\s*#{4}\s*(.*?)\s*$/);
+    if (!venueMatch) return null;
+    const venue = venueMatch[1].trim();
+    index += 1;
+    const topicMatch = (lines[index] || "").match(/^\s*\*(.*?)\*\s*$/);
+    if (!topicMatch) return null;
+    const topic = topicMatch[1].trim();
+    index += 1;
+    if (!/^\s*:{3,}\s*$/.test(lines[index] || "")) return null;
+    index += 1;
+    events.push({ date, venue, topic });
+    skipBlanks();
+  }
+  if (!/^\s*:{3,}\s*$/.test(lines.at(-1) || "") || (!events.length && !year)) return null;
+  return {
+    year,
+    events,
+    originalSource: source,
+    lineEnding: source.includes("\r\n") ? "\r\n" : "\n",
+    dirty: false
+  };
+}
+
+function cleanActivityField(value) {
+  return String(value || "").replace(/[\r\n]+/g, " ").trim();
+}
+
+function serializeActivityGrid(model) {
+  if (!model.dirty) return model.originalSource;
+  const lines = ["::: {.grid}", ""];
+  for (const event of model.events) {
+    lines.push(
+      "::: {.g-col-12 .g-col-md-2}",
+      `**${cleanActivityField(event.date)}**`,
+      ":::",
+      "::: {.g-col-12 .g-col-md-10}",
+      `#### ${cleanActivityField(event.venue)}`,
+      `*${cleanActivityField(event.topic)}*`,
+      ":::",
+      ""
+    );
+  }
+  lines.push(":::");
+  return lines.join(model.lineEnding);
+}
+
+function validateActivitiesForPublish() {
+  for (const model of state.activityModels.values()) {
+    for (const [index, event] of model.events.entries()) {
+      if (!cleanActivityField(event.date) || !cleanActivityField(event.venue) || !cleanActivityField(event.topic)) {
+        throw new Error(`${model.year || "活動"}的第 ${index + 1} 筆資料尚未填完整`);
+      }
+    }
+  }
+}
+
 function protectLayoutSyntax(body) {
   const nonce = `HWCMS-LAYOUT-${crypto.randomUUID()}`;
   const locks = new Map();
   const tableModels = new Map();
+  const activityModels = new Map();
   const lines = body.split(/\r?\n/);
   const sourceLineEnding = body.includes("\r\n") ? "\r\n" : "\n";
   const output = [];
+  let currentYear = "";
   const pushLock = (token) => {
     if (output.length && output.at(-1) !== "") output.push("");
     output.push(`<!--${token}-->`, "");
@@ -294,6 +389,23 @@ function protectLayoutSyntax(body) {
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
     const next = lines[index + 1] || "";
+    const yearHeading = line.match(/^\s*##\s+(\d{4})\s*$/);
+    if (yearHeading) currentYear = yearHeading[1];
+    if (/^\s*:{3,}\s*\{[^}]*\.grid\b[^}]*\}\s*$/.test(line)) {
+      const endIndex = findFencedDivEnd(lines, index);
+      if (endIndex > index) {
+        const source = lines.slice(index, endIndex + 1).join(sourceLineEnding);
+        const activityModel = parseActivityGrid(source, currentYear);
+        if (activityModel) {
+          const token = `${nonce}-${locks.size}`;
+          locks.set(token, source);
+          activityModels.set(token, activityModel);
+          pushLock(token);
+          index = endIndex;
+          continue;
+        }
+      }
+    }
     const isTable = /^\s*\|.*\|\s*$/.test(line) && /^\s*\|(?:\s*:?-{3,}:?\s*\|)+\s*$/.test(next);
     if (isTable) {
       const tableLines = [line, next];
@@ -323,13 +435,17 @@ function protectLayoutSyntax(body) {
     locks.set(token, layoutLines.join(sourceLineEnding));
     pushLock(token);
   }
-  return { editorBody: output.join("\n"), locks, tableModels };
+  return { editorBody: output.join("\n"), locks, tableModels, activityModels };
 }
 
 function restoreLayoutSyntax(body) {
   let restored = body;
   for (const [token, line] of state.layoutLocks) {
-    const source = state.tableModels.has(token) ? serializeTable(state.tableModels.get(token)) : line;
+    const source = state.tableModels.has(token)
+      ? serializeTable(state.tableModels.get(token))
+      : state.activityModels.has(token)
+        ? serializeActivityGrid(state.activityModels.get(token))
+        : line;
     restored = restored.replaceAll(`<!--${token}-->`, source);
   }
   return restored;
@@ -473,6 +589,9 @@ function currentContent() {
   }
   for (const [token, model] of state.tableModels) {
     if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeTable(model));
+  }
+  for (const [token, model] of state.activityModels) {
+    if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeActivityGrid(model));
   }
   const frontMatter = currentFrontMatter();
   if (!state.metadataDirty && state.frontMatterPrefix) return `${state.frontMatterPrefix}${body}${state.lineEnding}`;
@@ -645,9 +764,83 @@ function createTableInput(value, onChange) {
   return input;
 }
 
+function markStructuredModelDirty(model) {
+  model.dirty = true;
+  state.draftSaved = false;
+  scheduleDocumentUpdate();
+}
+
+function createActivityField(labelText, value, onChange) {
+  const label = document.createElement("label");
+  const caption = document.createElement("span");
+  caption.textContent = labelText;
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = value || "";
+  input.addEventListener("input", () => onChange(input.value));
+  label.append(caption, input);
+  return label;
+}
+
+function renderActivityEditors() {
+  elements.activityEditors.replaceChildren();
+  for (const model of state.activityModels.values()) {
+    const section = document.createElement("section");
+    section.className = "activity-editor-card";
+    const heading = document.createElement("div");
+    heading.className = "activity-editor-heading";
+    const title = document.createElement("h3");
+    title.textContent = model.year ? `${model.year} 年活動` : "活動紀錄";
+    const add = document.createElement("button");
+    add.type = "button";
+    add.textContent = "＋ 新增活動";
+    add.addEventListener("click", () => {
+      model.events.unshift({ date: "", venue: "", topic: "" });
+      markStructuredModelDirty(model);
+      renderActivityEditors();
+      queueMicrotask(() => elements.activityEditors.querySelector("input")?.focus());
+    });
+    heading.append(title, add);
+    section.append(heading);
+
+    const list = document.createElement("div");
+    list.className = "activity-card-list";
+    model.events.forEach((event, eventIndex) => {
+      const card = document.createElement("article");
+      card.className = "activity-row";
+      card.append(
+        createActivityField("日期", event.date, (value) => { event.date = value; markStructuredModelDirty(model); }),
+        createActivityField("單位／場合", event.venue, (value) => { event.venue = value; markStructuredModelDirty(model); }),
+        createActivityField("主題", event.topic, (value) => { event.topic = value; markStructuredModelDirty(model); })
+      );
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "remove-activity";
+      remove.textContent = "刪除";
+      remove.setAttribute("aria-label", `刪除 ${event.date || `第 ${eventIndex + 1} 筆`}活動`);
+      remove.addEventListener("click", () => {
+        model.events.splice(eventIndex, 1);
+        markStructuredModelDirty(model);
+        renderActivityEditors();
+      });
+      card.append(remove);
+      list.append(card);
+    });
+    section.append(list);
+    elements.activityEditors.append(section);
+  }
+}
+
 function renderStructuredTables() {
   elements.tableEditors.replaceChildren();
-  elements.structuredData.hidden = state.tableModels.size === 0;
+  renderActivityEditors();
+  const hasActivities = state.activityModels.size > 0;
+  const hasTables = state.tableModels.size > 0;
+  elements.structuredData.hidden = !hasActivities && !hasTables;
+  elements.structuredDataTitle.textContent = hasActivities && hasTables ? "活動與表格" : hasActivities ? "活動管理" : "頁面表格";
+  elements.structuredDataHint.textContent = hasActivities
+    ? "直接新增、修改或刪除活動；日期、單位、主題與原網站雙欄版面會自動保留"
+    : "直接修改儲存格；欄位與原網站版面會自動保留";
   let tableNumber = 0;
   for (const model of state.tableModels.values()) {
     tableNumber += 1;
@@ -824,6 +1017,7 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   state.lineEnding = content.includes("\r\n") ? "\r\n" : "\n";
   state.layoutLocks = protectedLayout.locks;
   state.tableModels = protectedLayout.tableModels;
+  state.activityModels = protectedLayout.activityModels;
   state.newDocument = isNew;
   state.bodyDirty = isNew || content !== sourceContent;
   state.editorChanged = false;
@@ -869,7 +1063,7 @@ function updateDocumentState() {
   const latin = markdown.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)?/g) || [];
   const cjk = markdown.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || [];
   elements.wordCount.textContent = `${latin.length + cjk.length} 字`;
-  const changed = state.newDocument || state.bodyDirty || state.metadataDirty || Array.from(state.tableModels.values()).some((model) => model.dirty) || state.pendingUploads.size > 0;
+  const changed = hasUnsavedChanges();
   elements.draftStatus.textContent = changed ? "有尚未發布的變更" : "內容已同步";
   elements.documentHeading.textContent = elements.titleInput.value.trim() || pageInfo(state.currentPath).label;
   renderPreview();
@@ -921,11 +1115,22 @@ function tablePreviewHtml(model) {
   return `<div class="preview-table-wrap"><table><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
+function activityPreviewHtml(model) {
+  const events = model.events.map((event) => `
+    <div class="preview-column" style="--preview-span:2"><strong>${escapeHtml(event.date)}</strong></div>
+    <div class="preview-column" style="--preview-span:10"><h4>${escapeHtml(event.venue)}</h4><p><em>${escapeHtml(event.topic)}</em></p></div>`).join("");
+  return `<div class="preview-grid">${events}</div>`;
+}
+
 function restorePreviewLayout(html) {
   let restored = html;
   for (const [token, line] of state.layoutLocks) {
     const marker = `<div data-html-comment="true">&lt;!--${token}--&gt;</div>`;
-    const replacement = state.tableModels.has(token) ? tablePreviewHtml(state.tableModels.get(token)) : layoutSourceToPreviewHtml(line);
+    const replacement = state.tableModels.has(token)
+      ? tablePreviewHtml(state.tableModels.get(token))
+      : state.activityModels.has(token)
+        ? activityPreviewHtml(state.activityModels.get(token))
+        : layoutSourceToPreviewHtml(line);
     restored = restored.replaceAll(marker, replacement);
   }
   return restored;
@@ -1040,6 +1245,7 @@ async function saveDraft(quiet = false) {
 
 async function publish() {
   if (!state.currentPath) throw new Error("尚未開啟頁面");
+  validateActivitiesForPublish();
   const content = currentContent();
   const wasNewDocument = state.newDocument;
   if (!state.newDocument && content === state.originalContent && !state.pendingUploads.size) throw new Error("目前沒有需要發布的變更");
@@ -1061,10 +1267,16 @@ async function publish() {
   state.workingBody = state.originalBody;
   state.frontMatterPrefix = publishedSplit.prefix;
   state.lineEnding = content.includes("\r\n") ? "\r\n" : "\n";
-  for (const model of state.tableModels.values()) {
+  for (const [token, model] of state.tableModels) {
     model.originalSource = serializeTable(model);
+    state.layoutLocks.set(token, model.originalSource);
     model.originalWidth = model.headers.length;
     model.originalSeparator = model.originalSource.split(/\r?\n/)[1] || "";
+    model.dirty = false;
+  }
+  for (const [token, model] of state.activityModels) {
+    model.originalSource = serializeActivityGrid(model);
+    state.layoutLocks.set(token, model.originalSource);
     model.dirty = false;
   }
   state.editorBaselineBody = restoreLayoutSyntax(state.editor.getMarkdown()).trimEnd();

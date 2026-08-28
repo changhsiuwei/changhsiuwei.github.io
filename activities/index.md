@@ -13,6 +13,22 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
+**July 18**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 長庚大學 AI EMBA
+*AI策略會計：用AI做銷售預算*
+:::
+
+::: {.g-col-12 .g-col-md-2}
+**June 13**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 長庚大學 AI EMBA
+*AI策略會計：基礎AI工具工作坊*
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **Apr 17**
 :::
 ::: {.g-col-12 .g-col-md-10}

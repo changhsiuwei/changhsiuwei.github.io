@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "H.W. Chang Website Admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "以視覺化介面安全管理並發布 Quarto 個人網站。",
   "minimum_chrome_version": "114",
   "permissions": ["storage"],

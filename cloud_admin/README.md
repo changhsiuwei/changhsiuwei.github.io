@@ -1,4 +1,4 @@
-# Visual Website Admin 1.0
+# Visual Website Admin 1.0.1
 
 這個目錄是 `https://changhsiuwei.com` 的視覺化管理後台。公開網站仍由 GitHub Pages 發布；Cloudflare Worker 只負責身分驗證、保管 GitHub 憑證，以及代替管理介面安全地讀取和提交網站內容。
 
@@ -7,7 +7,7 @@
 1. 在 Brave 的擴充功能頁面載入 `cloud_admin/extension`。程式更新後，請在同一頁按一次「重新載入」。
 2. 點擴充套件圖示，管理介面會在獨立分頁開啟。
 3. 登入 Cloudflare Access，從左側網站結構選擇頁面。
-4. 在中央的所見即所得編輯器直接修改文字、標題與圖片；右側會同步顯示網站預覽。表格會以可直接輸入的儲存格呈現。
+4. 在中央的所見即所得編輯器直接修改文字、標題與圖片；右側會同步顯示網站預覽。活動與表格會以專用的直覺欄位呈現。
 5. 填寫更新說明並按「發布更新」。Worker 會建立一個完整的 Git 提交，GitHub Actions 渲染成功後才更新正式網站。
 
 主要功能包括：
@@ -15,6 +15,7 @@
 - 依照網站導覽排列的頁面清單與搜尋
 - 不需接觸 Markdown 或 HTML 的繁體中文視覺化編輯
 - 鎖定 Quarto 卡片、欄位與版面標記，修改文字時不會破壞原始結構
+- 近期活動以日期、單位與主題三個欄位管理，可直接新增或刪除，不會顯示欄位版面語法
 - 逐段對應原始來源；未修改的內容、連結屬性與換行會原樣保留
 - 即時網站風格預覽
 - 正確載入既有圖片，並在發布前預覽新上傳圖片
@@ -58,6 +59,8 @@ Worker 只允許固定的公開頁面、`knowledge/posts`、`lab/posts` 與 `ass
    npm test
    npm run deploy
    ```
+
+管理介面的內容模型可在專案根目錄執行 `node --test cloud_admin/extension/sidepanel.test.mjs` 驗證。
 
 Cloudflare Access 應只允許網站管理者，Worker 也會再次核對 Access 簽章、應用程式與帳號。實際的 `wrangler.jsonc`、本機開發 Secret 和套件依賴都不會提交到 Git。
 
