@@ -12,8 +12,12 @@ function productionFunction(name) {
   return scriptSource.slice(start, next < 0 ? scriptSource.length : next);
 }
 
-const sandbox = { crypto: { randomUUID: () => "test-layout" } };
+const sandbox = {
+  crypto: { randomUUID: () => "test-layout" },
+  state: { currentPath: "", pendingUploads: new Map() }
+};
 vm.runInNewContext([
+  "const state = this.state;",
   productionFunction("isProtectedLayoutLine"),
   productionFunction("splitTableRow"),
   productionFunction("parseTable"),
@@ -30,6 +34,11 @@ vm.runInNewContext([
   productionFunction("parsePublicationsPage"),
   productionFunction("serializePublicationsPage"),
   productionFunction("serializeSectionHub"),
+  productionFunction("previewAssetUrl"),
+  productionFunction("unquoteYaml"),
+  productionFunction("readYamlScalar"),
+  productionFunction("setYamlScalar"),
+  productionFunction("removeYamlField"),
   productionFunction("protectLayoutSyntax"),
   productionFunction("uniqueIndexOf"),
   productionFunction("applyEditorDeltaToSource"),
@@ -46,6 +55,10 @@ vm.runInNewContext([
   "this.parsePublicationsPage = parsePublicationsPage;",
   "this.serializePublicationsPage = serializePublicationsPage;",
   "this.serializeSectionHub = serializeSectionHub;",
+  "this.previewAssetUrl = previewAssetUrl;",
+  "this.readYamlScalar = readYamlScalar;",
+  "this.setYamlScalar = setYamlScalar;",
+  "this.removeYamlField = removeYamlField;",
   "this.protectLayoutSyntax = protectLayoutSyntax;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;"
 ].join("\n"), sandbox);
@@ -190,4 +203,26 @@ test("section hub pages (knowledge and lab) reconstruct exact Quarto listing pag
     const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
     assert.equal(normalize(reconstructed), normalize(raw));
   }
+});
+
+test("previewAssetUrl resolves relative images to GitHub Raw and honors local pending uploads", () => {
+  sandbox.state.currentPath = "knowledge/posts/2026-07-08-agent-computer-interface/index.md";
+  const resolved = sandbox.previewAssetUrl("aci-split.png");
+  assert.equal(resolved, "https://raw.githubusercontent.com/changhsiuwei/changhsiuwei.github.io/main/knowledge/posts/2026-07-08-agent-computer-interface/aci-split.png");
+
+  sandbox.state.pendingUploads.set("assets/uploads/test.png", { path: "assets/uploads/test.png", dataUrl: "data:image/png;base64,mock" });
+  const pendingResolved = sandbox.previewAssetUrl("assets/uploads/test.png");
+  assert.equal(pendingResolved, "data:image/png;base64,mock");
+  sandbox.state.pendingUploads.clear();
+});
+
+test("draft status toggles correctly between hidden draft and public in frontmatter", () => {
+  const initialFm = "title: Test Post\ndraft: true";
+  assert.equal(sandbox.readYamlScalar(initialFm, "draft"), "true");
+
+  const publishedFm = sandbox.removeYamlField(initialFm, "draft");
+  assert.equal(sandbox.readYamlScalar(publishedFm, "draft"), "");
+
+  const hiddenFm = sandbox.setYamlScalar(publishedFm, "draft", "true");
+  assert.equal(sandbox.readYamlScalar(hiddenFm, "draft"), "true");
 });

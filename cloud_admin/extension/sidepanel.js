@@ -17,115 +17,153 @@ const KNOWN_POST_METADATA = {
     title: "AI 走進會計課堂後，我們不能再把思考外包",
     date: "2026-07-06",
     categories: ["教學現場", "反思", "課堂設計"],
-    desc: "AI 進入課堂後，評量與思考方式必須跟著調整，不能只是依賴工具完成作業。"
+    desc: "AI 進入課堂後，評量與思考方式必須跟著調整，不能只是依賴工具完成作業。",
+    draft: true,
+    image: ""
   },
   "knowledge/posts/2026-07-08-agent-computer-interface/index.md": {
     title: "讓 Agent 點 UI，是把工程問題推給模型猜",
     date: "2026-07-08",
     categories: ["Agentic AI", "ACI", "工作流設計"],
-    desc: "與其讓 AI 透過視覺猜測座標，不如給它乾淨、受限且定義清楚的 API。"
+    desc: "與其讓 AI 透過視覺猜測座標，不如給它乾淨、受限且定義清楚的 API。",
+    draft: true,
+    image: "aci-split.png"
   },
   "knowledge/posts/2026-07-08-agentic-ai-automation/index.md": {
     title: "讓 AI 往前走之前，先教它停下來",
     date: "2026-07-08",
     categories: ["自動化", "防呆機制", "Agentic AI"],
-    desc: "可靠的 Agent 不是狂奔不停，而是能在關鍵步驟停下來驗證成果。"
+    desc: "可靠的 Agent 不是狂奔不停，而是能在關鍵步驟停下來驗證成果。",
+    draft: true,
+    image: "concept.png"
   },
   "knowledge/posts/2026-07-08-ai-agent-verification-harness/index.md": {
     title: "做 Agent 的九成工夫，藏在檢查規則裡",
     date: "2026-07-08",
     categories: ["驗證測試", "Agent Harness", "品質控管"],
-    desc: "沒有嚴謹的測試與邊界檢查，自主代理人很快就會變成失控的腳本。"
+    desc: "沒有嚴謹的測試與邊界檢查，自主代理人很快就會變成失控的腳本。",
+    draft: true,
+    image: "verification-harness.png"
   },
   "knowledge/posts/2026-07-08-ai-director-method/index.md": {
     title: "先把任務說清楚，模型才知道邊界",
     date: "2026-07-08",
     categories: ["提示工程", "方法論", "協同合作"],
-    desc: "導演法核心在於定義角色、邊界與驗收準則，讓模型在軌道上發揮。"
+    desc: "導演法核心在於定義角色、邊界與驗收準則，讓模型在軌道上發揮。",
+    draft: true,
+    image: "concept.png"
   },
   "knowledge/posts/2026-07-09-context-engineering-memory/index.md": {
     title: "不要把所有紀錄塞回 prompt：context engineering 在解決什麼",
     date: "2026-07-09",
     categories: ["Context Engineering", "記憶架構", "工作流設計"],
-    desc: "長對話衰退是真實存在的物理限制，必須靠層次記憶與上下文修剪來克服。"
+    desc: "長對話衰退是真實存在的物理限制，必須靠層次記憶與上下文修剪來克服。",
+    draft: true,
+    image: "context-ledger-v2.png"
   },
   "knowledge/posts/2026-07-09-harness-makes-ai-improve/index.md": {
     title: "模型沒有自己變聰明，是 harness 讓它有地方變好",
     date: "2026-07-09",
     categories: ["自我演進", "架構設計", "Agent Harness"],
-    desc: "真正讓系統持續提升的，不是更大的參數量，而是包裹著它的外骨骼。"
+    desc: "真正讓系統持續提升的，不是更大的參數量，而是包裹著它的外骨骼。",
+    draft: true,
+    image: "harness-layer-v2.png"
   },
   "knowledge/posts/2026-07-09-self-improvement-evaluator-brake/index.md": {
     title: "誰來評分，誰來踩煞車：自我改進最難的地方",
     date: "2026-07-09",
     categories: ["評估機制", "安全性", "防呆保護"],
-    desc: "自我進化的瓶頸永遠在於 evaluator 是否獨立、是否具備回滾機制。"
+    desc: "自我進化的瓶頸永遠在於 evaluator 是否獨立、是否具備回滾機制。",
+    draft: true,
+    image: ""
   },
   "knowledge/posts/2026-07-09-self-improving-harness-boundaries/index.md": {
     title: "讓系統修改自己的規則，危險也在這裡",
     date: "2026-07-09",
     categories: ["安全邊界", "自我改進", "工程準則"],
-    desc: "系統規則的演進必須限定在沙盒內，核心不變量絕對不可被覆寫。"
+    desc: "系統規則的演進必須限定在沙盒內，核心不變量絕對不可被覆寫。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-ai-debate-coach/index.md": {
     title: "把學生的句子放到反方席上",
     date: "2026-07-08",
     categories: ["教學案例", "思辨訓練", "會計教育"],
-    desc: "利用 AI 擔任反方辯友，挑戰學生論述的盲點與邏輯漏洞。"
+    desc: "利用 AI 擔任反方辯友，挑戰學生論述的盲點與邏輯漏洞。",
+    draft: true,
+    image: "concept.png"
   },
   "lab/posts/2026-07-08-ai-grading-ocr/index.md": {
     title: "分數要能被打開，AI 批改才有資格進場",
     date: "2026-07-08",
     categories: ["評分標準", "教學實驗", "透明度"],
-    desc: "AI 批改若無法追溯評分依據，就無法真正幫助學生理解錯誤。"
+    desc: "AI 批改若無法追溯評分依據，就無法真正幫助學生理解錯誤。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-ai-lesson-prep-markdown/index.md": {
     title: "備課資料夾裡，要留下教室剛發生的事",
     date: "2026-07-08",
     categories: ["教學筆記", "Markdown", "教材迭代"],
-    desc: "用 Markdown 快速捕捉課堂互動，讓教案隨每學期現場持續演進。"
+    desc: "用 Markdown 快速捕捉課堂互動，讓教案隨每學期現場持續演進。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-ai-presentation-generator/index.md": {
     title: "AI 很會填滿投影片，講者要先學會刪掉",
     date: "2026-07-08",
     categories: ["簡報教學", "教學實驗", "認知負荷"],
-    desc: "簡報生成工具往往塞入過多廢話，教導學生去蕪存菁才是關鍵能力。"
+    desc: "簡報生成工具往往塞入過多廢話，教導學生去蕪存菁才是關鍵能力。",
+    draft: true,
+    image: "concept.png"
   },
   "lab/posts/2026-07-08-ai-super-ta/index.md": {
     title: "把重複勞動交出去，老師才回得來",
     date: "2026-07-08",
     categories: ["助教工作流", "自動化", "教學現場"],
-    desc: "將瑣碎行政與常見問題分流，教師才能投入高價值的引導與對話。"
+    desc: "將瑣碎行政與常見問題分流，教師才能投入高價值的引導與對話。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-ai-thinking-resistance/index.md": {
     title: "太乾淨的答案，常常沒有主人",
     date: "2026-07-08",
     categories: ["思考阻力", "作業設計", "批判思維"],
-    desc: "設計具有思考阻力的作業，避免學生直接貼上未經消化的 AI 產出。"
+    desc: "設計具有思考阻力的作業，避免學生直接貼上未經消化的 AI 產出。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-multilingual-inclusive-teaching/index.md": {
     title: "母語作為助跑，讓學生回到同一張桌子",
     date: "2026-07-08",
     categories: ["雙語教學", "多元共融", "課堂實驗"],
-    desc: "善用 AI 即時轉譯與雙語對照，降低國際生與非母語者的參與門檻。"
+    desc: "善用 AI 即時轉譯與雙語對照，降低國際生與非母語者的參與門檻。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-predictive-ai-sales-budget/index.md": {
     title: "做預算的那一天，我們到底知道什麼",
     date: "2026-07-08",
     categories: ["管理會計", "機器學習", "預算編製"],
-    desc: "結合機器學習模型與管理會計直覺，重新審視傳統預算編製假設。"
+    desc: "結合機器學習模型與管理會計直覺，重新審視傳統預算編製假設。",
+    draft: true,
+    image: ""
   },
   "lab/posts/2026-07-08-tao-human-ai-collaboration/index.md": {
     title: "高手用 AI 後，工作才剛開始",
     date: "2026-07-08",
     categories: ["人機協同", "專業判斷", "工作法"],
-    desc: "AI 快速產生初稿後，專家的經驗、批判與細節雕琢才是決勝點。"
+    desc: "AI 快速產生初稿後，專家的經驗、批判與細節雕琢才是決勝點。",
+    draft: true,
+    image: "concept.png"
   },
   "lab/posts/2026-07-08-vibe-coding-financial-crawler/index.md": {
     title: "Vibe Coding 進會計課：會寫程式以前，我們先學會寫需求合約",
     date: "2026-07-08",
     categories: ["Vibe Coding", "財務爬蟲", "跨領域教學"],
-    desc: "引導會計系學生用自然語言定義精準需求，驅動 AI 撰寫爬蟲。"
+    desc: "引導會計系學生用自然語言定義精準需求，驅動 AI 撰寫爬蟲。",
+    draft: true,
+    image: ""
   }
 };
 
@@ -138,7 +176,7 @@ function getPostMetadata(path) {
   }
   const slug = path.split("/").at(-2) || path;
   const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  return { title: label, date: "", categories: [], desc: "" };
+  return { title: label, date: "", categories: [], desc: "", draft: false, image: "" };
 }
 
 const state = {
@@ -237,7 +275,10 @@ const elements = {
   titleInput: $("titleInput"),
   descriptionInput: $("descriptionInput"),
   dateInput: $("dateInput"),
+  draftInput: $("draftInput"),
   categoriesInput: $("categoriesInput"),
+  featuredImageInput: $("featuredImageInput"),
+  uploadCoverButton: $("uploadCoverButton"),
   commitMessage: $("commitMessage"),
   wordCount: $("wordCount"),
   draftStatus: $("draftStatus"),
@@ -1153,6 +1194,14 @@ function currentFrontMatter() {
   frontMatter = setYamlScalar(frontMatter, "description", elements.descriptionInput.value);
   frontMatter = setYamlScalar(frontMatter, "date", elements.dateInput.value);
   frontMatter = setYamlCategories(frontMatter, elements.categoriesInput.value);
+  if (elements.draftInput) {
+    const isDraft = elements.draftInput.value === "true";
+    frontMatter = isDraft ? setYamlScalar(frontMatter, "draft", "true") : removeYamlField(frontMatter, "draft");
+  }
+  if (elements.featuredImageInput) {
+    const img = elements.featuredImageInput.value.trim();
+    frontMatter = img ? setYamlScalar(frontMatter, "image", img) : removeYamlField(frontMatter, "image");
+  }
   return frontMatter;
 }
 
@@ -1262,8 +1311,31 @@ function ensureEditor() {
           log(error.message || "圖片加入失敗", "error");
         }
       }
+    },
+    customHTMLRenderer: {
+      image(node) {
+        const rawSrc = node.destination;
+        const resolved = previewAssetUrl(rawSrc);
+        return {
+          type: "openTag",
+          tagName: "img",
+          attributes: {
+            src: resolved,
+            alt: node.description || ""
+          }
+        };
+      }
     }
   });
+  elements.visualEditor.addEventListener("error", (event) => {
+    if (event.target && event.target.tagName === "IMG") {
+      const originalSrc = event.target.getAttribute("src");
+      const resolved = previewAssetUrl(originalSrc);
+      if (resolved && event.target.src !== resolved) {
+        event.target.src = resolved;
+      }
+    }
+  }, true);
   state.editor.on("change", () => {
     if (!state.loadingEditor) {
       state.bodyDirty = true;
@@ -1280,6 +1352,22 @@ function setMetadata(frontMatter, fallbackTitle = "") {
   const date = readYamlScalar(frontMatter, "date");
   elements.dateInput.value = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : "";
   elements.categoriesInput.value = readYamlCategories(frontMatter);
+  const draftVal = readYamlScalar(frontMatter, "draft");
+  const isDraft = draftVal === "true" || draftVal === true;
+  if (elements.draftInput) elements.draftInput.value = isDraft ? "true" : "false";
+  const imageVal = readYamlScalar(frontMatter, "image") || "";
+  if (elements.featuredImageInput) elements.featuredImageInput.value = imageVal;
+
+  if (state.currentPath) {
+    state.postMetadataCache[state.currentPath] = {
+      title: elements.titleInput.value,
+      date: elements.dateInput.value,
+      categories: elements.categoriesInput.value.split(",").map((c) => c.trim()).filter(Boolean),
+      desc: elements.descriptionInput.value,
+      draft: isDraft,
+      image: imageVal
+    };
+  }
 }
 
 function setActivePath(path) {
@@ -1307,15 +1395,18 @@ function renderTopNav() {
 
 function createTreeItem(path) {
   const info = pageInfo(path);
+  const meta = getPostMetadata(path);
+  const isDraft = meta.draft === true || meta.draft === "true";
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "tree-item";
+  button.className = `tree-item${isDraft ? " is-draft-item" : ""}`;
   button.dataset.path = path;
   button.dataset.search = `${info.label} ${path}`.toLowerCase();
   button.innerHTML = `<span class="tree-icon"></span><span class="tree-label"><strong></strong><small></small></span>`;
   button.querySelector(".tree-icon").textContent = info.icon;
   button.querySelector("strong").textContent = info.label;
-  button.querySelector("small").textContent = info.location;
+  const small = button.querySelector("small");
+  small.textContent = isDraft ? `${info.location} · 🟡 草稿` : info.location;
   button.addEventListener("click", () => loadFile(path));
   return button;
 }
@@ -2264,8 +2355,9 @@ function renderSectionHub(path, body) {
 
     contentFiles.forEach((postPath) => {
       const meta = getPostMetadata(postPath);
+      const isDraft = meta.draft === true || meta.draft === "true";
       const card = document.createElement("div");
-      card.className = "article-hub-card";
+      card.className = `article-hub-card${isDraft ? " is-draft" : ""}`;
 
       const header = document.createElement("div");
       header.className = "article-hub-header";
@@ -2278,6 +2370,12 @@ function renderSectionHub(path, body) {
 
       const metaRow = document.createElement("div");
       metaRow.className = "article-hub-meta";
+
+      const statusPill = document.createElement("span");
+      statusPill.className = `status-pill ${isDraft ? "status-draft" : "status-published"}`;
+      statusPill.textContent = isDraft ? "🟡 隱藏草稿" : "🟢 已發布";
+      metaRow.append(statusPill);
+
       if (meta.date) {
         const dateBadge = document.createElement("span");
         dateBadge.className = "date-badge";
@@ -2304,6 +2402,27 @@ function renderSectionHub(path, body) {
       const actions = document.createElement("div");
       actions.className = "article-hub-actions";
 
+      const toggleDraftBtn = document.createElement("button");
+      toggleDraftBtn.type = "button";
+      toggleDraftBtn.className = "btn-toggle-draft";
+      toggleDraftBtn.textContent = isDraft ? "🚀 設為發布" : "🔒 設為隱藏";
+      toggleDraftBtn.title = isDraft ? "將此文章狀態切換為公開發布" : "將此文章設為隱藏草稿";
+      toggleDraftBtn.onclick = async (e) => {
+        e.stopPropagation();
+        meta.draft = !isDraft;
+        state.postMetadataCache[postPath] = { ...meta, draft: !isDraft };
+        renderSectionHub(path, body);
+        renderTree();
+        log(`${meta.title || postPath} 已切換為：${meta.draft ? "隱藏草稿" : "公開發布"}`, "info");
+        await loadFile(postPath);
+        if (elements.draftInput) {
+          elements.draftInput.value = meta.draft ? "true" : "false";
+          state.metadataDirty = true;
+          state.draftSaved = false;
+          scheduleDocumentUpdate();
+        }
+      };
+
       const previewBtn = document.createElement("button");
       previewBtn.type = "button";
       previewBtn.className = "btn-preview";
@@ -2320,8 +2439,18 @@ function renderSectionHub(path, body) {
         loadFile(postPath);
       };
 
-      actions.append(previewBtn, editBtn);
-      card.append(header, metaRow, desc, pathRow, actions);
+      actions.append(toggleDraftBtn, previewBtn, editBtn);
+      card.append(header, metaRow);
+      if (meta.image) {
+        const thumb = document.createElement("img");
+        thumb.className = "article-hub-thumb";
+        thumb.loading = "lazy";
+        thumb.src = previewAssetUrl(meta.image, postPath);
+        thumb.alt = meta.title || "封面縮圖";
+        thumb.onerror = () => { thumb.style.display = "none"; };
+        card.append(thumb);
+      }
+      card.append(desc, pathRow, actions);
       elements.sectionHubArticleList.append(card);
     });
   }
@@ -2758,17 +2887,40 @@ function previewPageBase() {
   return new URL(directory, state.siteUrl);
 }
 
-function previewAssetUrl(source) {
+function previewAssetUrl(source, customDocPath = state.currentPath) {
   const value = String(source || "").trim();
-  if (!value || /^(?:data:|blob:|https?:)/i.test(value)) return value;
-  if (value.startsWith("/")) return new URL(value.slice(1), state.siteUrl).toString();
-  return new URL(value, previewPageBase()).toString();
+  if (!value || /^(?:data:|blob:)/i.test(value)) return value;
+
+  // 1. Check local pending uploads first
+  for (const upload of state.pendingUploads.values()) {
+    if (value === upload.path || value === `/${upload.path}` || value.endsWith(upload.path)) {
+      return upload.dataUrl;
+    }
+  }
+  if (/^https?:/i.test(value)) return value;
+
+  // 2. Resolve relative repo path
+  const sourcePath = customDocPath || "index.md";
+  const directory = sourcePath.endsWith("/index.md") || sourcePath.endsWith("/index.qmd")
+    ? sourcePath.replace(/index\.(?:md|qmd)$/i, "")
+    : sourcePath.replace(/[^/]+$/, "");
+
+  let repoFilePath;
+  if (value.startsWith("/")) {
+    repoFilePath = value.slice(1);
+  } else {
+    repoFilePath = `${directory}${value}`.replace(/\/+/g, "/");
+  }
+
+  // GitHub Raw returns HTTP 200 for all committed images regardless of draft status
+  return `https://raw.githubusercontent.com/changhsiuwei/changhsiuwei.github.io/main/${repoFilePath}`;
 }
 
 function rewritePreviewImages(html) {
   const documentFragment = new DOMParser().parseFromString(`<body>${html}</body>`, "text/html");
   for (const image of documentFragment.body.querySelectorAll("img[src]")) {
     image.setAttribute("src", previewAssetUrl(image.getAttribute("src")));
+    image.setAttribute("loading", "lazy");
   }
   return documentFragment.body.innerHTML;
 }
@@ -2927,10 +3079,11 @@ function renderPreview() {
     body = rewritePreviewImages(body);
   }
   const title = escapeHtml(elements.titleInput.value || pageInfo(state.currentPath).label);
-  const description = escapeHtml(elements.descriptionInput.value);
-  const featuredImage = readYamlScalar(currentFrontMatter(), "image");
+  const featuredImage = (elements.featuredImageInput && !elements.featuredImageInput.closest("section").hidden)
+    ? elements.featuredImageInput.value.trim()
+    : readYamlScalar(currentFrontMatter(), "image");
   const featuredImageHtml = featuredImage
-    ? `<img class="featured-image" src="${escapeHtml(previewAssetUrl(featuredImage))}" alt="${title}">`
+    ? `<img class="featured-image" src="${escapeHtml(previewAssetUrl(featuredImage))}" alt="${title}" onerror="this.style.display='none'">`
     : "";
   const navigation = STATIC_PAGES.map((page) => `<span>${escapeHtml(page.label)}</span>`).join("");
   elements.livePreview.srcdoc = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>
@@ -3146,17 +3299,43 @@ $("saveSettingsButton").addEventListener("click", async (event) => {
   } catch (error) { log(error.message, "error"); }
 });
 
-$("addImageButton").addEventListener("click", () => elements.imageInput.click());
+let isCoverUpload = false;
+elements.uploadCoverButton?.addEventListener("click", () => {
+  isCoverUpload = true;
+  elements.imageInput.click();
+});
+$("addImageButton").addEventListener("click", () => {
+  isCoverUpload = false;
+  elements.imageInput.click();
+});
 elements.imageInput.addEventListener("change", async () => {
   const [file] = elements.imageInput.files;
   elements.imageInput.value = "";
   if (!file) return;
-  try { await addSelectedImage(file); }
-  catch (error) { log(error.message || "圖片加入失敗", "error"); }
+  try {
+    if (isCoverUpload) {
+      isCoverUpload = false;
+      const queued = await queueImage(file);
+      if (elements.featuredImageInput) elements.featuredImageInput.value = queued.path;
+      state.metadataDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+      log(`封面圖片已更新：${queued.path}`, "success");
+    } else {
+      await addSelectedImage(file);
+    }
+  } catch (error) {
+    log(error.message || "圖片加入失敗", "error");
+  }
 });
 
-for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.categoriesInput]) {
+for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput].filter(Boolean)) {
   input.addEventListener("input", () => {
+    state.metadataDirty = true;
+    state.draftSaved = false;
+    scheduleDocumentUpdate();
+  });
+  input.addEventListener("change", () => {
     state.metadataDirty = true;
     state.draftSaved = false;
     scheduleDocumentUpdate();
