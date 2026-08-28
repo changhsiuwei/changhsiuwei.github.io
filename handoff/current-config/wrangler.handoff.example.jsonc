@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hw-chang-site-admin-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-27",
+  "vars": {
+    "GITHUB_OWNER": "changhsiuwei",
+    "GITHUB_REPO": "changhsiuwei.github.io",
+    "GITHUB_BRANCH": "main",
+    "CF_ACCESS_TEAM_DOMAIN": "jolly-mode-64a2.cloudflareaccess.com",
+    "CF_ACCESS_AUD": "d9f59d1ea11deb1c6d52825f1e8e9208cb37b0bb951e90fbf1fe83e60a4bfa3b",
+    "ALLOWED_EMAIL": "d08722002@ntu.edu.tw",
+    "ALLOWED_ORIGINS": "chrome-extension://REPLACE_WITH_THE_ID_FROM_THIS_INSTALLATION"
+  }
+}
+
+// 這是交接參考。請把本檔複製成 cloud_admin/worker/wrangler.jsonc，
+// 再將 ALLOWED_ORIGINS 換成本次安裝實際顯示的 extension ID。
+// 不得在任何 JSON 設定檔加入 GITHUB_TOKEN；請用 Wrangler Secret。
