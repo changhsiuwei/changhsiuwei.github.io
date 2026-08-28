@@ -9,7 +9,8 @@ const STATIC_PAGES = [
   { path: "activities/index.md", label: "近期活動", icon: "曆" },
   { path: "publications/index.md", label: "學術出版", icon: "文" },
   { path: "lab/index.md", label: "AI 教學與研究", icon: "研" },
-  { path: "knowledge/index.md", label: "AI 知識站", icon: "知" }
+  { path: "knowledge/index.md", label: "AI 知識站", icon: "知" },
+  { path: "students/index.qmd", label: "學生專區", icon: "學" }
 ];
 
 const KNOWN_POST_METADATA = {};
@@ -123,6 +124,10 @@ const elements = {
   sectionHubArticlesBadge: $("sectionHubArticlesBadge"),
   sectionHubAddPostButton: $("sectionHubAddPostButton"),
   sectionHubArticleList: $("sectionHubArticleList"),
+  studentsEditors: $("studentsEditors"),
+  studentPasswordInput: $("studentPasswordInput"),
+  btnUpdateStudentPassword: $("btnUpdateStudentPassword"),
+  studentPasswordStatus: $("studentPasswordStatus"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
   deleteDocumentButton: $("deleteDocumentButton"),
@@ -1332,12 +1337,6 @@ function renderTopNav() {
     button.addEventListener("click", () => state.connected ? loadFile(page.path) : log("請先登入並連線", "error"));
     elements.siteNav.append(button);
   }
-  const studentsButton = document.createElement("button");
-  studentsButton.type = "button";
-  studentsButton.className = "nav-item";
-  studentsButton.textContent = "學生專區";
-  studentsButton.addEventListener("click", () => window.open(new URL("students/", state.siteUrl).toString(), "_blank", "noopener"));
-  elements.siteNav.append(studentsButton);
 }
 
 function createTreeItem(path) {
@@ -2786,6 +2785,7 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isActivities = path === "activities/index.md";
   const isKnowledge = path === "knowledge/index.md";
   const isLab = path === "lab/index.md";
+  const isStudents = path === "students/index.qmd";
   const isSectionHub = isKnowledge || isLab;
   const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
   const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
@@ -2801,10 +2801,17 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   if (elements.aboutEditors) elements.aboutEditors.hidden = !isAbout;
   if (elements.publicationEditors) elements.publicationEditors.hidden = !isPub;
   if (elements.sectionHubEditors) elements.sectionHubEditors.hidden = !isSectionHub;
+  if (elements.studentsEditors) elements.studentsEditors.hidden = !isStudents;
   if (elements.activityIntroSection) elements.activityIntroSection.hidden = !isActivities;
   if (elements.activityEditors) elements.activityEditors.hidden = !isActivities;
   if (elements.tableEditors) elements.tableEditors.hidden = isStructuredPage;
-  if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && state.activityModels.size === 0 && state.tableModels.size === 0;
+  if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && !isStudents && state.activityModels.size === 0 && state.tableModels.size === 0;
+
+  if (isStudents) {
+    if (elements.structuredData) elements.structuredData.hidden = false;
+    if (elements.structuredDataTitle) elements.structuredDataTitle.textContent = "學生專區設定與排程表格";
+    if (elements.structuredDataHint) elements.structuredDataHint.textContent = "管理通行密碼與報告排程表格；下方可直接編修指引內文";
+  }
 
   if (elements.editorToolbar) elements.editorToolbar.hidden = isStructuredPage;
   if (elements.visualEditor) elements.visualEditor.hidden = isStructuredPage;
@@ -3748,6 +3755,51 @@ elements.activityIntroInput?.addEventListener("input", () => {
   state.bodyDirty = true;
   state.draftSaved = false;
   scheduleDocumentUpdate();
+});
+
+elements.btnUpdateStudentPassword?.addEventListener("click", async () => {
+  const newPw = (elements.studentPasswordInput?.value || "").trim();
+  if (!newPw) {
+    alert("請輸入要設定的新通行密碼！");
+    elements.studentPasswordInput?.focus();
+    return;
+  }
+  try {
+    elements.btnUpdateStudentPassword.disabled = true;
+    elements.btnUpdateStudentPassword.textContent = "⏳ 更新中...";
+
+    const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(newPw));
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    const contentBase64 = textToBase64(`${hashHex}\n`);
+
+    const result = await api("/api/commit", {
+      method: "POST",
+      body: JSON.stringify({
+        message: "security(students): update student area password hash",
+        branch: "main",
+        files: [{
+          path: "students/password_hash.txt",
+          content: contentBase64
+        }],
+        ref: state.head
+      })
+    });
+
+    state.head = result.commit.sha;
+    log(`已成功更新學生專區通行密碼為「${newPw}」！`, "success");
+    if (elements.studentPasswordStatus) {
+      elements.studentPasswordStatus.style.display = "block";
+      elements.studentPasswordStatus.textContent = `✅ 密碼已成功更新為「${newPw}」並已發布至 GitHub！`;
+      setTimeout(() => { if (elements.studentPasswordStatus) elements.studentPasswordStatus.style.display = "none"; }, 8000);
+    }
+    elements.studentPasswordInput.value = "";
+  } catch (error) {
+    log(`更新密碼失敗：${error.message}`, "error");
+    alert(`更新密碼失敗：${error.message}`);
+  } finally {
+    elements.btnUpdateStudentPassword.disabled = false;
+    elements.btnUpdateStudentPassword.textContent = "💾 更新通行密碼";
+  }
 });
 
 elements.pageSearch.addEventListener("input", () => {

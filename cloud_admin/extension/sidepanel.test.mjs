@@ -269,3 +269,15 @@ test("Google AI Studio configuration supports specified models, thinking level, 
   assert.ok(scriptSource.includes("Role: 資深人類編輯 (Human Writer & Editor)"));
   assert.ok(scriptSource.includes("The \"Kill List\""));
 });
+
+test("students area is configured as a static page with password reset capability", () => {
+  assert.ok(scriptSource.includes('path: "students/index.qmd"'));
+  assert.ok(scriptSource.includes("btnUpdateStudentPassword"));
+  assert.ok(scriptSource.includes("students/password_hash.txt"));
+
+  const markdown = readFileSync(new URL("../../students/index.qmd", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const protectedContent = sandbox.protectLayoutSyntax(body);
+  assert.ok(protectedContent.editorBody.includes("碩士論文撰寫基本功"));
+  assert.ok(protectedContent.editorBody.includes("如何正確地使用 AI 工具"));
+});
