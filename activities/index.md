@@ -13,6 +13,22 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
+**August  14**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 莎美娜實業股份有限公司
+*【企業AI內訓】：AI in Excel 實戰*
+:::
+
+::: {.g-col-12 .g-col-md-2}
+**August  12**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 莎美娜實業股份有限公司
+*【企業AI內訓】：企業 Agentic AI 的設計與實務*
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **July 18**
 :::
 ::: {.g-col-12 .g-col-md-10}
