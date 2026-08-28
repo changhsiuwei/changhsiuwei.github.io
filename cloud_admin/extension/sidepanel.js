@@ -419,9 +419,27 @@ function parseActivityGrid(source, year = "") {
     if (!topicMatch) return null;
     const topic = topicMatch[1].trim();
     index += 1;
+
+    let materialsUrl = "";
+    while (index < lines.length - 1 && !/^\s*:{3,}\s*$/.test(lines[index])) {
+      const line = lines[index].trim();
+      if (line) {
+        const linkMatch = line.match(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/);
+        if (linkMatch) {
+          materialsUrl = linkMatch[2].trim();
+        } else {
+          const directMatch = line.match(/https?:\/\/[^\s)]+/);
+          if (directMatch) materialsUrl = directMatch[0].trim();
+        }
+      }
+      index += 1;
+    }
+
     if (!/^\s*:{3,}\s*$/.test(lines[index] || "")) return null;
     index += 1;
-    events.push({ date, venue, topic });
+    const eventObj = { date, venue, topic };
+    if (materialsUrl) eventObj.materialsUrl = materialsUrl;
+    events.push(eventObj);
     skipBlanks();
   }
   if (!/^\s*:{3,}\s*$/.test(lines.at(-1) || "") || (!events.length && !year)) return null;
@@ -448,10 +466,13 @@ function serializeActivityGrid(model) {
       ":::",
       "::: {.g-col-12 .g-col-md-10}",
       `#### ${cleanActivityField(event.venue)}`,
-      `*${cleanActivityField(event.topic)}*`,
-      ":::",
-      ""
+      `*${cleanActivityField(event.topic)}*`
     );
+    const materials = cleanActivityField(event.materialsUrl);
+    if (materials) {
+      lines.push(`[📁 上課教材參考](${materials}){target="_blank" .activity-materials-link}`);
+    }
+    lines.push(":::", "");
   }
   lines.push(":::");
   return lines.join(model.lineEnding);
@@ -1421,13 +1442,14 @@ function markStructuredModelDirty(model) {
   scheduleDocumentUpdate();
 }
 
-function createActivityField(labelText, value, onChange) {
+function createActivityField(labelText, value, onChange, placeholder = "", inputType = "text") {
   const label = document.createElement("label");
   const caption = document.createElement("span");
   caption.textContent = labelText;
   const input = document.createElement("input");
-  input.type = "text";
+  input.type = inputType;
   input.value = value || "";
+  if (placeholder) input.placeholder = placeholder;
   input.addEventListener("input", () => onChange(input.value));
   label.append(caption, input);
   return label;
@@ -2462,7 +2484,7 @@ function renderActivityEditors() {
     add.type = "button";
     add.textContent = "＋ 新增活動";
     add.addEventListener("click", () => {
-      model.events.unshift({ date: "", venue: "", topic: "" });
+      model.events.unshift({ date: "", venue: "", topic: "", materialsUrl: "" });
       markStructuredModelDirty(model);
       renderActivityEditors();
       queueMicrotask(() => elements.activityEditors.querySelector("input")?.focus());
@@ -2475,7 +2497,10 @@ function renderActivityEditors() {
     model.events.forEach((event, eventIndex) => {
       const card = document.createElement("article");
       card.className = "activity-row";
-      card.append(
+
+      const mainRow = document.createElement("div");
+      mainRow.className = "activity-main-row";
+      mainRow.append(
         createActivityField("日期", event.date, (value) => { event.date = value; markStructuredModelDirty(model); }),
         createActivityField("單位／場合", event.venue, (value) => { event.venue = value; markStructuredModelDirty(model); }),
         createActivityField("主題", event.topic, (value) => { event.topic = value; markStructuredModelDirty(model); })
@@ -2490,7 +2515,18 @@ function renderActivityEditors() {
         markStructuredModelDirty(model);
         renderActivityEditors();
       });
-      card.append(remove);
+      mainRow.append(remove);
+
+      const materialsField = createActivityField(
+        "上課教材參考網址",
+        event.materialsUrl || "",
+        (value) => { event.materialsUrl = value; markStructuredModelDirty(model); },
+        "例如：https://drive.google.com/... 或 簡報講義連結（選填）",
+        "url"
+      );
+      materialsField.className = "activity-materials-field";
+
+      card.append(mainRow, materialsField);
       list.append(card);
     });
     section.append(list);

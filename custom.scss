@@ -506,3 +506,31 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
 .text-primary {
   color: #403F6F !important;
 }
+
+/* ===================================================
+   ACTIVITY MATERIALS LINK
+   =================================================== */
+.activity-materials-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #3f4b6f !important;
+  background-color: #f0f4ff;
+  border: 1px solid #c8d5ff;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    background-color: #3f4b6f;
+    color: #ffffff !important;
+    border-color: #3f4b6f;
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(63, 75, 111, 0.2);
+  }
+}

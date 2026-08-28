@@ -115,6 +115,19 @@ test("activity field changes rebuild a valid Quarto grid", () => {
   assert.equal(reparsed.events.length, model.events.length);
 });
 
+test("activity materials URL reads, serializes, and reparses cleanly", () => {
+  const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
+  const model = activityGrids(markdown)[0];
+  model.events[0].materialsUrl = "https://drive.google.com/file/d/demo-activity-materials/view";
+  model.dirty = true;
+  const serialized = sandbox.serializeActivityGrid(model);
+  assert.ok(serialized.includes("[📁 上課教材參考](https://drive.google.com/file/d/demo-activity-materials/view){target=\"_blank\" .activity-materials-link}"));
+
+  const reparsed = sandbox.parseActivityGrid(serialized, model.year);
+  assert.ok(reparsed);
+  assert.equal(reparsed.events[0].materialsUrl, "https://drive.google.com/file/d/demo-activity-materials/view");
+});
+
 test("incomplete new activity remains recoverable as a local draft", () => {
   const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
   const model = activityGrids(markdown)[0];
