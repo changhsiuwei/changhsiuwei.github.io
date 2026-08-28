@@ -27,7 +27,7 @@ type PublishRequest = {
 
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const MAX_BATCH_BYTES = 8 * 1024 * 1024;
-const CONTENT_EXTENSIONS = new Set(["md", "qmd", "png", "jpg", "jpeg", "webp"]);
+const CONTENT_EXTENSIONS = new Set(["md", "qmd", "txt", "png", "jpg", "jpeg", "webp"]);
 const IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "webp"]);
 const EXACT_EDITABLE = new Set([
   "index.md",
@@ -35,7 +35,9 @@ const EXACT_EDITABLE = new Set([
   "activities/index.md",
   "publications/index.md",
   "knowledge/index.md",
-  "lab/index.md"
+  "lab/index.md",
+  "students/index.qmd",
+  "students/password_hash.txt"
 ]);
 
 function json(data: unknown, status = 200, headers: HeadersInit = {}): Response {

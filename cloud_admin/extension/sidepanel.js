@@ -2989,34 +2989,39 @@ async function refreshTree() {
 }
 
 async function loadFile(path) {
-  if (!state.connected) throw new Error("請先登入並連線");
-  if (!path) return;
-  if (state.currentPath && state.currentPath !== path && hasUnsavedChanges() && !state.draftSaved) {
-    const proceed = window.confirm("目前修改尚未保存。確定要離開這個頁面嗎？");
-    if (!proceed) return;
-  }
-  const draft = await chrome.storage.local.get(`draft:${path}`);
-  const newDraftPaths = await readNewDraftPaths();
-  if (newDraftPaths.includes(path) && draft[`draft:${path}`]) {
+  try {
+    if (!state.connected) throw new Error("請先登入並連線");
+    if (!path) return;
+    if (state.currentPath && state.currentPath !== path && hasUnsavedChanges() && !state.draftSaved) {
+      const proceed = window.confirm("目前修改尚未保存。確定要離開這個頁面嗎？");
+      if (!proceed) return;
+    }
+    const draft = await chrome.storage.local.get(`draft:${path}`);
+    const newDraftPaths = await readNewDraftPaths();
+    if (newDraftPaths.includes(path) && draft[`draft:${path}`]) {
+      let draftUploads = [];
+      try { draftUploads = await readDraftUploads(path); }
+      catch { log("文字草稿已恢復，但圖片草稿讀取失敗", "error"); }
+      openDocument(path, draft[`draft:${path}`], true, "", draftUploads);
+      log(`已開啟「${pageInfo(path).label}」草稿`, "success");
+      return;
+    }
+    const result = await api(`/api/file?path=${encodeURIComponent(path)}&ref=${encodeURIComponent(state.head)}`);
+    const remoteContent = base64ToText(result.content);
+    let content = remoteContent;
     let draftUploads = [];
-    try { draftUploads = await readDraftUploads(path); }
-    catch { log("文字草稿已恢復，但圖片草稿讀取失敗", "error"); }
-    openDocument(path, draft[`draft:${path}`], true, "", draftUploads);
-    log(`已開啟「${pageInfo(path).label}」草稿`, "success");
-    return;
+    if (draft[`draft:${path}`] && draft[`draft:${path}`] !== content) {
+      content = draft[`draft:${path}`];
+      try { draftUploads = await readDraftUploads(path); }
+      catch { log("文字草稿已恢復，但圖片草稿讀取失敗", "error"); }
+      log("已恢復這個頁面的本機草稿");
+    }
+    openDocument(path, content, false, remoteContent, draftUploads);
+    log(`已開啟「${pageInfo(path).label}」`, "success");
+  } catch (error) {
+    log(`開啟頁面失敗（${path}）：${error.message}`, "error");
+    alert(`開啟頁面失敗：${error.message}`);
   }
-  const result = await api(`/api/file?path=${encodeURIComponent(path)}&ref=${encodeURIComponent(state.head)}`);
-  const remoteContent = base64ToText(result.content);
-  let content = remoteContent;
-  let draftUploads = [];
-  if (draft[`draft:${path}`] && draft[`draft:${path}`] !== content) {
-    content = draft[`draft:${path}`];
-    try { draftUploads = await readDraftUploads(path); }
-    catch { log("文字草稿已恢復，但圖片草稿讀取失敗", "error"); }
-    log("已恢復這個頁面的本機草稿");
-  }
-  openDocument(path, content, false, remoteContent, draftUploads);
-  log(`已開啟「${pageInfo(path).label}」`, "success");
 }
 
 function openDocument(path, content, isNew, sourceContent = content, draftUploads = []) {
