@@ -8,7 +8,7 @@ const STATIC_PAGES = [
   { path: "about/index.md", label: "個人資訊", icon: "人" },
   { path: "activities/index.md", label: "近期活動", icon: "曆" },
   { path: "publications/index.md", label: "學術出版", icon: "文" },
-  { path: "lab/index.md", label: "AI 教學與研究", icon: "研" },
+  { path: "lab/index.md", label: "教學與研究", icon: "研" },
   { path: "knowledge/index.md", label: "AI 知識站", icon: "知" },
   { path: "students/index.qmd", label: "學生專區", icon: "學" }
 ];
@@ -1348,7 +1348,7 @@ function currentContent() {
 function pageInfo(path) {
   const staticPage = STATIC_PAGES.find((item) => item.path === path);
   if (staticPage) return { label: staticPage.label, location: "固定頁面", icon: staticPage.icon };
-  const collection = path.startsWith("knowledge/") ? "AI 知識站" : path.startsWith("lab/") ? "AI 教學與研究" : "網站內容";
+  const collection = path.startsWith("knowledge/") ? "AI 知識站" : path.startsWith("lab/") ? "教學與研究" : "網站內容";
   const meta = getPostMetadata(path);
   const label = meta.title || path.split("/").at(-2) || path;
   return { label, location: `${collection} / 文章`, icon: collection === "AI 知識站" ? "知" : "研" };
@@ -1534,12 +1534,12 @@ function renderTree() {
   mainSection.append(mainTitle, ...coreFiles.map(createTreeItem));
   elements.pageTree.append(mainSection);
 
-  // 2. 專區層次管理（AI 教學與研究 & AI 知識站）
+  // 2. 專區層次管理（教學與研究 & AI 知識站）
   const sectionGroups = [
     {
       id: "lab",
       indexPath: "lab/index.md",
-      label: "AI 教學與研究",
+      label: "教學與研究",
       icon: "研",
       subtitle: "專區文章管理",
       posts: contentFiles.filter((p) => /^lab\/posts\//.test(p)).sort().reverse()
@@ -2498,7 +2498,7 @@ async function deletePost(postPath) {
 
 function renderSectionHub(path, body) {
   const isKnowledge = path.startsWith("knowledge");
-  const sectionName = isKnowledge ? "AI 知識站" : "AI 教學與研究";
+  const sectionName = isKnowledge ? "AI 知識站" : "教學與研究";
   const icon = isKnowledge ? "知" : "研";
   const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
 
@@ -3930,7 +3930,7 @@ function startNewPost(collection = "lab") {
   const timeStr = Date.now().toString().slice(-4);
   const slug = `${date}-post-${timeStr}`;
   const path = `${collection}/posts/${slug}/index.md`;
-  const defaultTitle = collection === "knowledge" ? "新 AI 知識站專欄" : "新 AI 教學與研究文章";
+  const defaultTitle = collection === "knowledge" ? "新 AI 知識站專欄" : "新教學與研究文章";
   const content = `---\ntitle: ${JSON.stringify(defaultTitle)}\ndescription: ""\ndate: ${JSON.stringify(date)}\ncategories: ["AI"]\nslides: ""\nhandout: ""\nyoutube: ""\ndraft: false\n---\n\n從這裡開始撰寫您的文章內容...\n`;
   if (!state.files.includes(path)) {
     state.files.push(path);
