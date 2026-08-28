@@ -3130,7 +3130,7 @@ function renderStructuredTables() {
   renderActivityEditors();
   const hasActivities = state.activityModels.size > 0;
   const hasTables = state.tableModels.size > 0;
-  const isStructured = ["index.md", "about/index.md", "publications/index.md", "knowledge/index.md", "lab/index.md", "activities/index.md"].includes(state.currentPath);
+  const isStructured = ["index.md", "about/index.md", "publications/index.md", "activities/index.md"].includes(state.currentPath);
   elements.structuredData.hidden = !hasActivities && !hasTables && !isStructured;
   if (!isStructured) {
     elements.structuredDataTitle.textContent = hasActivities && hasTables ? "活動與表格" : hasActivities ? "活動管理" : "頁面表格";
@@ -3338,7 +3338,7 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isLab = path === "lab/index.md";
   const isStudents = path === "students/index.qmd";
   const isSectionHub = isKnowledge || isLab;
-  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
+  const isStructuredPage = isHome || isAbout || isPub || isActivities;
   const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
   const isPost = isDeletable;
   if (elements.deleteDocumentButton) {
@@ -3681,7 +3681,7 @@ function renderPreview() {
   } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
     const isKnowledge = state.currentPath.startsWith("knowledge");
     const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
-    const intro = escapeHtml(elements.sectionHubIntroInput?.value?.trim() || "");
+    const introHtml = state.editor ? sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML())) : "";
     const posts = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
     const cardsHtml = posts.map((p) => {
       const meta = getPostMetadata(p);
@@ -3696,7 +3696,7 @@ function renderPreview() {
     }).join("");
     body = `
       <div style="padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid #e2e8f0">
-        <p style="margin:0;font-size:15px;line-height:1.7;color:#334155">${intro.replace(/\n\n+/g, "</p><p>")}</p>
+        ${introHtml}
       </div>
       <h3 style="margin:0 0 14px;color:#403f6f">📑 最新文章 (共 ${posts.length} 篇)</h3>
       <div>${cardsHtml}</div>

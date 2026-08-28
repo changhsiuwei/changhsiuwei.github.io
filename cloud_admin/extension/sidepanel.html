@@ -243,23 +243,13 @@
             </div>
 
             <!-- 專區文章管理層（AI 教學與研究 / AI 知識站 專屬 Hub） -->
-            <div id="sectionHubEditors" class="page-editor-group" hidden>
-              <div class="card-section">
+            <div id="sectionHubEditors" class="page-editor-group" style="margin-bottom:14px;" hidden>
+              <div class="card-section" style="background:#fcfdff;border:1.5px solid #dbe4f0;border-radius:12px;padding:14px;">
                 <div class="section-badge-header">
-                  <div id="sectionHubBadge" class="section-badge">📚 專區首頁導言設定</div>
+                  <div id="sectionHubArticlesBadge" class="section-badge" style="background:#001F3F;color:#ffffff;">📑 專區文章管理</div>
+                  <button id="sectionHubAddPostButton" class="primary-button mini-button" type="button" style="white-space:nowrap;padding:6px 14px;font-size:12px;background:#001F3F;border-color:#001F3F;">＋ 撰寫新文章</button>
                 </div>
-                <div class="structured-field">
-                  <label for="sectionHubIntroInput">專區簡介與前言說明 (Intro Markdown)</label>
-                  <textarea id="sectionHubIntroInput" class="custom-textarea" rows="3" placeholder="輸入專區首頁的導言或說明..."></textarea>
-                </div>
-              </div>
-
-              <div class="card-section">
-                <div class="section-badge-header">
-                  <div id="sectionHubArticlesBadge" class="section-badge">📑 專區文章清單（一篇文章一個區塊）</div>
-                  <button id="sectionHubAddPostButton" class="primary-button mini-button" type="button">＋ 撰寫新文章</button>
-                </div>
-                <div id="sectionHubArticleList" class="card-item-list"></div>
+                <div id="sectionHubArticleList" class="card-item-list" style="margin-top:10px;"></div>
               </div>
             </div>
 
