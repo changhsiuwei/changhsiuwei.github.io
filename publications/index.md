@@ -54,20 +54,20 @@ International Tax and Public Finance, 30(5), 1203-1224 | DOI: [10.1007/s10797-02
 ::: {.callout-warning icon=false}
 #### The Moderating Role of Corporate Governance under Tariff Shocks
 **Chang, H. W.**, Wang, T., & Liu, C. (2023)  
-*Available at SSRN 4464559*
+Available at SSRN 4464559
 :::
 
 ::: {.callout-warning icon=false}
 #### Pricing the Blame: How Event Attribution Shapes Audit Fees in Corporate Groups
-余建緯、**張修瑋 \***  
-*會計審計論叢* — 第一審 (Under Review)  
+余建緯、**張修瑋 **  
+會計審計論叢 — 第二審 (Under Review)  
 `🏆 2025 台灣會計學會年會 Best Academic Paper Award`
 :::
 
 ::: {.callout-warning icon=false}
 #### 名人執行長公開背書對供應鏈夥伴的影響
-吳元利、**張修瑋 \***、王泰昌  
-*中華會計學刊* — 第二審 (Under Review)  
+吳元利、**張修瑋 **、王泰昌  
+中華會計學刊 — 第二審 (Under Review)  
 `🏆 2025 台灣會計學會年會 Best Academic Paper Award`
 :::
 
