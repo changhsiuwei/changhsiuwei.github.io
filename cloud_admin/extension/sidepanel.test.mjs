@@ -87,8 +87,8 @@ test("activities render as structured cards without exposing Quarto layout", () 
   assert.equal(grids.length, 2);
   assert.equal(grids[0].year, "2026");
   assert.deepEqual(JSON.parse(JSON.stringify(grids[0].events.slice(0, 2))), [
-    { date: "July 18", venue: "長庚大學 AI EMBA", topic: "AI策略會計：用AI做銷售預算" },
-    { date: "June 13", venue: "長庚大學 AI EMBA", topic: "AI策略會計：基礎AI工具工作坊" }
+    { date: "August  14", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：AI in Excel 實戰" },
+    { date: "August  12", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：企業 Agentic AI 的設計與實務" }
   ]);
   assert.equal(sandbox.serializeActivityGrid(grids[0]), grids[0].originalSource);
 

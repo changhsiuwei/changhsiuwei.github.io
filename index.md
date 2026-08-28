@@ -1,5 +1,5 @@
 ---
-title: "張修瑋 (H.W. Chang)"
+title: "張修瑋<br>(H.W. Chang)"
 subtitle: "國立臺北大學會計學系 助理教授 <br> Assistant Professor, <br> Dept. of Accountancy, NTPU"
 image: profile.png
 about:
