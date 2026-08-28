@@ -149,6 +149,7 @@ const elements = {
   uploadCoverButton: $("uploadCoverButton"),
   slidesUrlInput: $("slidesUrlInput"),
   handoutUrlInput: $("handoutUrlInput"),
+  youtubeUrlInput: $("youtubeUrlInput"),
   commitMessage: $("commitMessage"),
   wordCount: $("wordCount"),
   draftStatus: $("draftStatus"),
@@ -1303,6 +1304,10 @@ function currentFrontMatter() {
     const handout = elements.handoutUrlInput.value.trim();
     frontMatter = handout ? setYamlScalar(frontMatter, "handout", handout) : removeYamlField(frontMatter, "handout");
   }
+  if (elements.youtubeUrlInput) {
+    const yt = elements.youtubeUrlInput.value.trim();
+    frontMatter = yt ? setYamlScalar(frontMatter, "youtube", yt) : removeYamlField(frontMatter, "youtube");
+  }
   return frontMatter;
 }
 
@@ -1315,8 +1320,6 @@ function currentContent() {
     body = serializeAboutPage(state.aboutModel, state.lineEnding);
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
     body = serializePublicationsPage(state.pubModel, state.lineEnding);
-  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
-    body = elements.sectionHubIntroInput ? elements.sectionHubIntroInput.value.trim() : state.originalBody.trim();
   } else if (state.currentPath === "activities/index.md") {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
   } else {
@@ -1462,6 +1465,8 @@ function setMetadata(frontMatter, fallbackTitle = "") {
   if (elements.slidesUrlInput) elements.slidesUrlInput.value = slidesVal;
   const handoutVal = readYamlScalar(frontMatter, "handout") || readYamlScalar(frontMatter, "handout_url") || "";
   if (elements.handoutUrlInput) elements.handoutUrlInput.value = handoutVal;
+  const youtubeVal = readYamlScalar(frontMatter, "youtube") || readYamlScalar(frontMatter, "youtube_url") || "";
+  if (elements.youtubeUrlInput) elements.youtubeUrlInput.value = youtubeVal;
 
   if (state.currentPath) {
     state.postMetadataCache[state.currentPath] = {
@@ -1472,7 +1477,8 @@ function setMetadata(frontMatter, fallbackTitle = "") {
       draft: isDraft,
       image: imageVal,
       slides: slidesVal,
-      handout: handoutVal
+      handout: handoutVal,
+      youtube: youtubeVal
     };
   }
 }
@@ -2522,6 +2528,28 @@ function renderSectionHub(path, body) {
     elements.sectionHubArticleList.replaceChildren();
     const contentFiles = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
 
+    if (contentFiles.length === 0) {
+      const emptyCard = document.createElement("div");
+      emptyCard.className = "empty-hub-card";
+      emptyCard.style.cssText = "padding:24px 16px;text-align:center;background:#ffffff;border:1.5px dashed #cbd5e1;border-radius:10px;margin:8px 0;";
+      emptyCard.innerHTML = `
+        <div style="font-size:24px;margin-bottom:6px;">📑</div>
+        <div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px;">目前尚無個別文章</div>
+        <div style="font-size:12px;color:#64748b;margin-bottom:14px;">點擊下方按鈕即可建立此專區的第一篇文章，並使用 Notion / Obsidian 模式撰寫！</div>
+        <button class="primary-button mini-button" type="button" style="padding:8px 20px;font-size:13px;background:#001F3F;border-color:#001F3F;cursor:pointer;">＋ 立即撰寫第一篇文章</button>
+      `;
+      emptyCard.querySelector("button").onclick = () => {
+        if (elements.newPostCollection) {
+          elements.newPostCollection.value = isKnowledge ? "knowledge" : "lab";
+        }
+        if (elements.newPostTitle) elements.newPostTitle.value = "";
+        if (elements.newPostSlug) elements.newPostSlug.value = "";
+        if (elements.newPostDialog) elements.newPostDialog.showModal();
+      };
+      elements.sectionHubArticleList.append(emptyCard);
+      return;
+    }
+
     contentFiles.forEach((postPath) => {
       const meta = getPostMetadata(postPath);
       const isDraft = meta.draft === true || meta.draft === "true";
@@ -2580,6 +2608,18 @@ function renderSectionHub(path, body) {
         handoutBadge.title = "點擊開啟 Google Drive 講義";
         handoutBadge.onclick = (e) => e.stopPropagation();
         metaRow.append(handoutBadge);
+      }
+      if (meta.youtube) {
+        const ytBadge = document.createElement("a");
+        ytBadge.href = meta.youtube;
+        ytBadge.target = "_blank";
+        ytBadge.rel = "noopener noreferrer";
+        ytBadge.className = "resource-pill youtube-pill";
+        ytBadge.style.cssText = "background:#dc2626;color:#ffffff;text-decoration:none;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;";
+        ytBadge.textContent = "▶ 影片";
+        ytBadge.title = "點擊開啟 YouTube 影片";
+        ytBadge.onclick = (e) => e.stopPropagation();
+        metaRow.append(ytBadge);
       }
 
       const desc = document.createElement("p");
@@ -3734,15 +3774,21 @@ function renderPreview() {
   const handout = (elements.handoutUrlInput && !elements.handoutUrlInput.closest("section").hidden)
     ? elements.handoutUrlInput.value.trim()
     : readYamlScalar(currentFrontMatter(), "handout") || readYamlScalar(currentFrontMatter(), "handout_url");
+  const youtube = (elements.youtubeUrlInput && !elements.youtubeUrlInput.closest("section").hidden)
+    ? elements.youtubeUrlInput.value.trim()
+    : readYamlScalar(currentFrontMatter(), "youtube") || readYamlScalar(currentFrontMatter(), "youtube_url");
 
   let resourceLinksHtml = "";
-  if (slides || handout) {
+  if (slides || handout || youtube) {
     const links = [];
     if (slides) {
       links.push(`<a href="${escapeHtml(slides)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:#001F3F;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(0,31,63,0.15)">📊 簡報下載 (Google Drive) ↗</a>`);
     }
     if (handout) {
       links.push(`<a href="${escapeHtml(handout)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:#C9A227;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(201,162,39,0.2)">📄 講義下載 (Google Drive) ↗</a>`);
+    }
+    if (youtube) {
+      links.push(`<a href="${escapeHtml(youtube)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:#dc2626;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(220,38,38,0.2)">▶ YouTube 影片 (線上收看) ↗</a>`);
     }
     resourceLinksHtml = `<div class="resource-links-bar" style="display:flex;gap:12px;margin:18px 0 24px;flex-wrap:wrap;">${links.join("")}</div>`;
   }
@@ -4282,7 +4328,7 @@ elements.imageInput.addEventListener("change", async () => {
   }
 });
 
-for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput].filter(Boolean)) {
+for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput, elements.youtubeUrlInput].filter(Boolean)) {
   input.addEventListener("input", () => {
     state.metadataDirty = true;
     state.draftSaved = false;

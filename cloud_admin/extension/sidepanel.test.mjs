@@ -247,16 +247,17 @@ test("draft status toggles correctly between hidden draft and public in frontmat
   assert.equal(sandbox.readYamlScalar(hiddenFm, "draft"), "true");
 });
 
-test("slides and handout URLs (Google Drive) read and write cleanly in frontmatter", () => {
-  const initialFm = "title: AI 知識站講義\nslides: https://drive.google.com/file/d/123/view\nhandout: https://drive.google.com/file/d/456/view";
+test("slides, handout, and youtube URLs read and write cleanly in frontmatter", () => {
+  const initialFm = "title: AI 知識站講義\nslides: https://drive.google.com/file/d/123/view\nhandout: https://drive.google.com/file/d/456/view\nyoutube: https://youtu.be/xyz123";
   assert.equal(sandbox.readYamlScalar(initialFm, "slides"), "https://drive.google.com/file/d/123/view");
   assert.equal(sandbox.readYamlScalar(initialFm, "handout"), "https://drive.google.com/file/d/456/view");
+  assert.equal(sandbox.readYamlScalar(initialFm, "youtube"), "https://youtu.be/xyz123");
 
-  const updatedFm = sandbox.setYamlScalar(initialFm, "slides", "https://drive.google.com/file/d/789/view");
-  assert.equal(sandbox.readYamlScalar(updatedFm, "slides"), "https://drive.google.com/file/d/789/view");
+  const updatedFm = sandbox.setYamlScalar(initialFm, "youtube", "https://youtube.com/watch?v=new");
+  assert.equal(sandbox.readYamlScalar(updatedFm, "youtube"), "https://youtube.com/watch?v=new");
 
-  const removedFm = sandbox.removeYamlField(updatedFm, "slides");
-  assert.equal(sandbox.readYamlScalar(removedFm, "slides"), "");
+  const removedFm = sandbox.removeYamlField(updatedFm, "youtube");
+  assert.equal(sandbox.readYamlScalar(removedFm, "youtube"), "");
   assert.equal(sandbox.readYamlScalar(removedFm, "handout"), "https://drive.google.com/file/d/456/view");
 });
 

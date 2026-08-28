@@ -116,14 +116,18 @@
                   <button id="uploadCoverButton" class="secondary-button mini-button" type="button" style="white-space:nowrap;">選擇圖片</button>
                 </div>
               </div>
-              <div class="field-wide resource-links-row">
+              <div class="field-wide resource-links-row" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:8px;">
                 <div class="field">
-                  <label for="slidesUrlInput">📊 簡報連結 (Google Drive / 簡報網址)</label>
-                  <input id="slidesUrlInput" type="url" placeholder="https://drive.google.com/... 或簡報下載網址">
+                  <label for="slidesUrlInput">📊 簡報下載 (Slides URL)</label>
+                  <input id="slidesUrlInput" type="url" placeholder="https://drive.google.com/... 簡報網址">
                 </div>
                 <div class="field">
-                  <label for="handoutUrlInput">📄 講義連結 (Google Drive / 講義網址)</label>
-                  <input id="handoutUrlInput" type="url" placeholder="https://drive.google.com/... 或講義下載網址">
+                  <label for="handoutUrlInput">📄 講義下載 (Handout URL)</label>
+                  <input id="handoutUrlInput" type="url" placeholder="https://drive.google.com/... 講義網址">
+                </div>
+                <div class="field">
+                  <label for="youtubeUrlInput">▶ YouTube 影片 (Video URL)</label>
+                  <input id="youtubeUrlInput" type="url" placeholder="https://youtu.be/... 影片網址">
                 </div>
               </div>
             </div>
