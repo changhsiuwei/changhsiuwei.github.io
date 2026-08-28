@@ -46,6 +46,12 @@ Capital Markets & Corporate Governance
 International Tax & Public Finance
 :::
 
+::: {.g-col-12 .g-col-md-4}
+<div class="premium-icon-box"><i class="bi bi-eye"></i></div>
+### 投資者關注度與重大訊息揭露
+Investor Attention & Material Disclosure
+:::
+
 :::
 
 ## 最新動態
