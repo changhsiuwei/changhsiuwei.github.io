@@ -9,7 +9,8 @@ listing:
   filter-ui: false
 page-layout: full
 title-block-banner: true
-description: "這裡放偏概念、方法與工作流的文章。"
+subtitle: "A Hub for Sharing Practical and State-of-the-Art AI Insights."
+description: "本區聚焦於 AI 核心概念、實作方法與工作流程。"
 ---
 
 
