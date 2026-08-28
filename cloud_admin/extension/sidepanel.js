@@ -141,6 +141,7 @@ const elements = {
   documentLocation: $("documentLocation"),
   deleteDocumentButton: $("deleteDocumentButton"),
   titleInput: $("titleInput"),
+  subtitleInput: $("subtitleInput"),
   descriptionInput: $("descriptionInput"),
   dateInput: $("dateInput"),
   draftInput: $("draftInput"),
@@ -1285,6 +1286,11 @@ function setYamlCategories(frontMatter, value) {
 function currentFrontMatter() {
   let frontMatter = state.frontMatter;
   frontMatter = setYamlScalar(frontMatter, "title", elements.titleInput.value);
+  if (elements.subtitleInput && elements.subtitleInput.value.trim()) {
+    frontMatter = setYamlScalar(frontMatter, "subtitle", elements.subtitleInput.value.trim());
+  } else {
+    frontMatter = removeYamlField(frontMatter, "subtitle");
+  }
   frontMatter = setYamlScalar(frontMatter, "description", elements.descriptionInput.value);
   frontMatter = setYamlScalar(frontMatter, "date", elements.dateInput.value);
   frontMatter = setYamlCategories(frontMatter, elements.categoriesInput.value);
@@ -1452,6 +1458,7 @@ function ensureEditor() {
 
 function setMetadata(frontMatter, fallbackTitle = "") {
   elements.titleInput.value = readYamlScalar(frontMatter, "title") || fallbackTitle;
+  if (elements.subtitleInput) elements.subtitleInput.value = readYamlScalar(frontMatter, "subtitle") || "";
   elements.descriptionInput.value = readYamlScalar(frontMatter, "description");
   const date = readYamlScalar(frontMatter, "date");
   elements.dateInput.value = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : "";
@@ -3773,6 +3780,7 @@ function renderPreview() {
     body = rewritePreviewImages(body);
   }
   const title = escapeHtml(elements.titleInput.value || pageInfo(state.currentPath).label);
+  const subtitle = escapeHtml(elements.subtitleInput ? elements.subtitleInput.value.trim() : "");
   const description = escapeHtml(elements.descriptionInput.value);
   const featuredImage = (elements.featuredImageInput && !elements.featuredImageInput.closest("section").hidden)
     ? elements.featuredImageInput.value.trim()
@@ -3815,7 +3823,7 @@ function renderPreview() {
     .description{margin:0 0 30px;color:#667085;font:16px/1.7 Inter,'Noto Sans TC',sans-serif}.featured-image{display:block;max-width:min(100%,680px);max-height:420px;margin:0 auto 30px;object-fit:contain;border-radius:16px}.content img{max-width:100%;height:auto;border-radius:12px}.content a{color:#403f6f}.content blockquote{margin-left:0;padding:8px 18px;border-left:4px solid #c8d5ff;background:#f6f7ff}.preview-table-wrap{overflow:auto;margin:18px 0}.content table{width:100%;border-collapse:collapse}.content th,.content td{border:1px solid #dfe4ef;padding:7px}
     .preview-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin:18px 0}.preview-column{grid-column:span var(--preview-span,12);min-width:0}.preview-callout{margin:18px 0;padding:14px 18px;border:1px solid #dfe4ef;border-left:5px solid #6b6aa8;border-radius:10px;background:#f8f9ff}.preview-callout-tip{border-left-color:#3b8d76;background:#f4fbf8}.preview-callout-warning,.preview-callout-caution{border-left-color:#d49a36;background:#fffaf0}.preview-callout-important{border-left-color:#b84b61;background:#fff6f7}.preview-layout-section{margin:12px 0}.premium-icon-box{display:grid;place-items:center;width:44px;height:44px;margin-bottom:10px;border-radius:12px;background:#eef1ff;color:#403f6f}
     @media(max-width:700px){.nav{display:none}main{padding:34px 22px}h1{font-size:30px}.preview-column{grid-column:1/-1}}
-  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}<article class="content">${body}</article></main></body></html>`;
+  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${subtitle ? `<p style="font-size:18px;color:#5968a6;margin:-4px 0 16px;font-style:italic;">${subtitle}</p>` : ""}${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}<article class="content">${body}</article></main></body></html>`;
   elements.previewBadge.textContent = "即時更新";
   elements.previewBadge.className = "mini-badge ready";
 }
@@ -4369,7 +4377,7 @@ elements.imageInput.addEventListener("change", async () => {
   }
 });
 
-for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput, elements.youtubeUrlInput].filter(Boolean)) {
+for (const input of [elements.titleInput, elements.subtitleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput, elements.youtubeUrlInput].filter(Boolean)) {
   input.addEventListener("input", () => {
     state.metadataDirty = true;
     state.draftSaved = false;
