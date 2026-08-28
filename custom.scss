@@ -557,3 +557,34 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
     box-shadow: 0 4px 12px rgba(201, 162, 39, 0.25);
   }
 }
+
+/* ===================================================
+   ACTIVITIES TIMELINE ALIGNMENT (DATE & TITLE HORIZONTAL ALIGNMENT)
+   =================================================== */
+.g-col-md-2 {
+  > p:first-child {
+    margin-top: 0 !important;
+    margin-bottom: 0.25rem;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: #2C344E;
+    line-height: 1.35;
+  }
+}
+
+.g-col-md-10,
+section.level4.g-col-md-10 {
+  > h4:first-child,
+  > section > h4:first-child {
+    margin-top: 0 !important;
+    margin-bottom: 0.35rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #403F6F;
+    line-height: 1.35;
+  }
+
+  > p {
+    margin-bottom: 0.35rem;
+  }
+}
