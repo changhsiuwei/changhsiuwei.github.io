@@ -52,6 +52,7 @@ International Tax & Public Finance
 
 | 日期 | 事件 |
 |------|------|
+| 2026/08 | <i class="bi bi-lightbulb"></i> 受邀至莎美娜實業股份有限公司進行企業 AI 內訓 |
 | 2026/07 | <i class="bi bi-lightbulb"></i> 受邀至國立台北市召會第四聚會所「駕馭 AI 的智慧少年」 |
 | 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
 | 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
