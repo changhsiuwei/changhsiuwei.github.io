@@ -2515,12 +2515,7 @@ function renderSectionHub(path, body) {
 
   if (elements.sectionHubAddPostButton) {
     elements.sectionHubAddPostButton.onclick = () => {
-      if (elements.newPostCollection) {
-        elements.newPostCollection.value = isKnowledge ? "knowledge" : "lab";
-      }
-      if (elements.newPostTitle) elements.newPostTitle.value = "";
-      if (elements.newPostSlug) elements.newPostSlug.value = "";
-      if (elements.newPostDialog) elements.newPostDialog.showModal();
+      startNewPost(isKnowledge ? "knowledge" : "lab");
     };
   }
 
@@ -2535,16 +2530,11 @@ function renderSectionHub(path, body) {
       emptyCard.innerHTML = `
         <div style="font-size:24px;margin-bottom:6px;">📑</div>
         <div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px;">目前尚無個別文章</div>
-        <div style="font-size:12px;color:#64748b;margin-bottom:14px;">點擊下方按鈕即可建立此專區的第一篇文章，並使用 Notion / Obsidian 模式撰寫！</div>
-        <button class="primary-button mini-button" type="button" style="padding:8px 20px;font-size:13px;background:#001F3F;border-color:#001F3F;cursor:pointer;">＋ 立即撰寫第一篇文章</button>
+        <div style="font-size:12px;color:#64748b;margin-bottom:14px;">點擊下方按鈕即可一鍵建立新文章，直接開啟 Notion / Obsidian 自由撰寫大畫布！</div>
+        <button class="primary-button mini-button" type="button" style="padding:8px 20px;font-size:13px;background:#001F3F;border-color:#001F3F;cursor:pointer;">＋ 立即開啟大畫布撰寫新文章</button>
       `;
       emptyCard.querySelector("button").onclick = () => {
-        if (elements.newPostCollection) {
-          elements.newPostCollection.value = isKnowledge ? "knowledge" : "lab";
-        }
-        if (elements.newPostTitle) elements.newPostTitle.value = "";
-        if (elements.newPostSlug) elements.newPostSlug.value = "";
-        if (elements.newPostDialog) elements.newPostDialog.showModal();
+        startNewPost(isKnowledge ? "knowledge" : "lab");
       };
       elements.sectionHubArticleList.append(emptyCard);
       return;
@@ -3925,13 +3915,41 @@ async function publish() {
   await refreshTree();
 }
 
+function startNewPost(collection = "lab") {
+  const date = new Date().toISOString().slice(0, 10);
+  const timeStr = Date.now().toString().slice(-4);
+  const slug = `${date}-post-${timeStr}`;
+  const path = `${collection}/posts/${slug}/index.md`;
+  const defaultTitle = collection === "knowledge" ? "新 AI 知識站專欄" : "新 AI 教學與研究文章";
+  const content = `---\ntitle: ${JSON.stringify(defaultTitle)}\ndescription: ""\ndate: ${JSON.stringify(date)}\ncategories: ["AI"]\nslides: ""\nhandout: ""\nyoutube: ""\ndraft: false\n---\n\n從這裡開始撰寫您的文章內容...\n`;
+  if (!state.files.includes(path)) {
+    state.files.push(path);
+    renderTree();
+  }
+  openDocument(path, content, true);
+  log("新文章已建立，立即進入 Notion 大畫布撰寫！", "success");
+  setTimeout(() => {
+    if (elements.titleInput) {
+      elements.titleInput.focus();
+      elements.titleInput.select();
+    }
+  }, 120);
+}
+
 function createNewPost(event) {
   event.preventDefault();
   const collection = elements.newPostCollection.value;
   const title = elements.newPostTitle.value.trim();
-  const slug = elements.newPostSlug.value.trim().toLowerCase();
+  let slug = elements.newPostSlug.value.trim().toLowerCase();
   if (!title) throw new Error("請填寫文章標題");
-  if (!/^[a-z0-9][a-z0-9-]{2,80}$/.test(slug)) throw new Error("網址名稱格式不正確");
+  if (!slug) {
+    const timeStr = Date.now().toString().slice(-4);
+    slug = `${new Date().toISOString().slice(0, 10)}-post-${timeStr}`;
+  }
+  if (!/^[a-z0-9][a-z0-9-]{2,80}$/.test(slug)) {
+    const timeStr = Date.now().toString().slice(-4);
+    slug = `${new Date().toISOString().slice(0, 10)}-post-${timeStr}`;
+  }
   const path = `${collection}/posts/${slug}/index.md`;
   if (state.files.includes(path)) throw new Error("這個網址名稱已經存在");
   const date = new Date().toISOString().slice(0, 10);
