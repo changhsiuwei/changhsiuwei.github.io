@@ -102,7 +102,132 @@
             </div>
           </section>
 
-          <div class="editor-toolbar">
+          <section id="structuredData" class="structured-data" hidden>
+            <div class="structured-heading">
+              <div>
+                <strong id="structuredDataTitle">結構化內容</strong>
+                <span id="structuredDataHint">直接修改欄位；原網站版面會自動保留</span>
+              </div>
+            </div>
+
+            <!-- 首頁專屬區塊 -->
+            <div id="homeEditors" class="page-editor-group" hidden>
+              <div class="card-section">
+                <div class="section-badge">關於我自述與座右銘</div>
+                <div class="field field-wide">
+                  <label for="homeBioInput">簡介自述 (Bio)</label>
+                  <textarea id="homeBioInput" rows="4" class="custom-textarea" placeholder="我是張修瑋，目前任職於國立臺北大學會計學系..."></textarea>
+                </div>
+                <div class="field field-wide">
+                  <label for="homeMottoInput">座右銘 / 引言 (Motto)</label>
+                  <input id="homeMottoInput" type="text" placeholder='例如：Honoring God and benefiting people! (榮神益人！)'>
+                </div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">研究領域 (Research Areas)</div>
+                  <button id="addResearchAreaButton" class="secondary-button mini-button" type="button">＋ 新增領域</button>
+                </div>
+                <div id="researchAreaList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">首頁最新動態 (Latest Highlights)</div>
+                  <button id="addHighlightButton" class="secondary-button mini-button" type="button">＋ 新增動態</button>
+                </div>
+                <div id="highlightList" class="card-item-list"></div>
+              </div>
+            </div>
+
+            <!-- 個人資訊專屬區塊 -->
+            <div id="aboutEditors" class="page-editor-group" hidden>
+              <div class="card-section">
+                <div class="section-badge">名牌與頭銜</div>
+                <div class="field field-wide">
+                  <label for="aboutNameInput">姓名 (Name)</label>
+                  <input id="aboutNameInput" type="text">
+                </div>
+                <div class="field field-wide">
+                  <label for="aboutTitleInput">任職職稱與單位 (Title & Affiliation)</label>
+                  <input id="aboutTitleInput" type="text">
+                </div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">🎓 學歷 (Education)</div>
+                  <button id="addEducationButton" class="secondary-button mini-button" type="button">＋ 新增學歷</button>
+                </div>
+                <div id="educationList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">💼 經歷 (Professional Experience)</div>
+                  <button id="addExperienceButton" class="secondary-button mini-button" type="button">＋ 新增經歷</button>
+                </div>
+                <div id="experienceList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">🏆 榮譽與獎項 (Honors & Awards)</div>
+                  <button id="addHonorButton" class="secondary-button mini-button" type="button">＋ 新增獎項</button>
+                </div>
+                <div id="honorsList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">👥 服務 (Service)</div>
+                  <button id="addServiceButton" class="secondary-button mini-button" type="button">＋ 新增服務</button>
+                </div>
+                <div id="servicesList" class="card-item-list"></div>
+              </div>
+            </div>
+
+            <!-- 學術發表專屬區塊 -->
+            <div id="publicationEditors" class="page-editor-group" hidden>
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">📄 期刊論文 (Journal Publications)</div>
+                  <button id="addJournalPaperButton" class="secondary-button mini-button" type="button">＋ 新增期刊論文</button>
+                </div>
+                <div id="journalPaperList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">📝 工作論文 (Working Papers)</div>
+                  <button id="addWorkingPaperButton" class="secondary-button mini-button" type="button">＋ 新增工作論文</button>
+                </div>
+                <div id="workingPaperList" class="card-item-list"></div>
+              </div>
+
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">🎤 研討會發表 (Conference Presentations)</div>
+                  <button id="addConferenceButton" class="secondary-button mini-button" type="button">＋ 新增研討會發表</button>
+                </div>
+                <div id="conferenceList" class="card-item-list"></div>
+              </div>
+            </div>
+
+            <!-- 近期活動專屬區塊 -->
+            <div id="activityIntroSection" class="activity-intro-card" hidden>
+              <label for="activityIntroInput">
+                <span>🌟</span>
+                <strong>最新動態（頁面頂部導言提示）</strong>
+              </label>
+              <input id="activityIntroInput" type="text" placeholder="例如：以下為近期的學術與產業演講、工作坊活動紀錄。">
+            </div>
+            <div id="activityEditors" class="activity-editors"></div>
+            <div id="tableEditors" class="table-editors"></div>
+          </section>
+
+          <div id="editorToolbar" class="editor-toolbar">
             <div>
               <strong>內文</strong>
               <span>工具列可以直接設定標題、粗體、清單與連結</span>
@@ -111,16 +236,6 @@
           </div>
 
           <div id="visualEditor" class="visual-editor" aria-label="視覺化內容編輯器"></div>
-          <section id="structuredData" class="structured-data" hidden>
-            <div class="structured-heading">
-              <div>
-                <strong id="structuredDataTitle">結構化內容</strong>
-                <span id="structuredDataHint">直接修改欄位；原網站版面會自動保留</span>
-              </div>
-            </div>
-            <div id="activityEditors" class="activity-editors"></div>
-            <div id="tableEditors" class="table-editors"></div>
-          </section>
           <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
         </div>
       </section>

@@ -39,7 +39,13 @@ const state = {
   lastEditorMarkdown: "",
   editorMappingError: false,
   draftTimer: null,
-  draftSaved: false
+  draftSaved: false,
+  homeModel: null,
+  homeDirty: false,
+  aboutModel: null,
+  aboutDirty: false,
+  pubModel: null,
+  pubDirty: false
 };
 
 const $ = (id) => document.getElementById(id);
@@ -54,11 +60,39 @@ const elements = {
   emptyState: $("emptyState"),
   editorWorkspace: $("editorWorkspace"),
   visualEditor: $("visualEditor"),
+  editorToolbar: $("editorToolbar"),
   structuredData: $("structuredData"),
   structuredDataTitle: $("structuredDataTitle"),
   structuredDataHint: $("structuredDataHint"),
+  activityIntroSection: $("activityIntroSection"),
+  activityIntroInput: $("activityIntroInput"),
   activityEditors: $("activityEditors"),
   tableEditors: $("tableEditors"),
+  homeEditors: $("homeEditors"),
+  homeBioInput: $("homeBioInput"),
+  homeMottoInput: $("homeMottoInput"),
+  addResearchAreaButton: $("addResearchAreaButton"),
+  researchAreaList: $("researchAreaList"),
+  addHighlightButton: $("addHighlightButton"),
+  highlightList: $("highlightList"),
+  aboutEditors: $("aboutEditors"),
+  aboutNameInput: $("aboutNameInput"),
+  aboutTitleInput: $("aboutTitleInput"),
+  addEducationButton: $("addEducationButton"),
+  educationList: $("educationList"),
+  addExperienceButton: $("addExperienceButton"),
+  experienceList: $("experienceList"),
+  addHonorButton: $("addHonorButton"),
+  honorsList: $("honorsList"),
+  addServiceButton: $("addServiceButton"),
+  servicesList: $("servicesList"),
+  publicationEditors: $("publicationEditors"),
+  addJournalPaperButton: $("addJournalPaperButton"),
+  journalPaperList: $("journalPaperList"),
+  addWorkingPaperButton: $("addWorkingPaperButton"),
+  workingPaperList: $("workingPaperList"),
+  addConferenceButton: $("addConferenceButton"),
+  conferenceList: $("conferenceList"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
   titleInput: $("titleInput"),
@@ -150,6 +184,7 @@ async function removeNewDraftPath(path) {
 
 function hasUnsavedChanges() {
   return state.newDocument || state.bodyDirty || state.metadataDirty
+    || state.homeDirty || state.aboutDirty || state.pubDirty
     || Array.from(state.tableModels.values()).some((model) => model.dirty)
     || Array.from(state.activityModels.values()).some((model) => model.dirty)
     || state.pendingUploads.size > 0;
@@ -362,6 +397,407 @@ function serializeActivityGrid(model) {
   return lines.join(model.lineEnding);
 }
 
+function parseActivityIntro(body) {
+  const match = body.match(/:::\s*\{[^}]*\.callout-tip[^}]*\}\s*\r?\n##\s*🌟\s*最新動態\s*\r?\n([\s\S]*?)\r?\n:::/);
+  return match ? match[1].trim() : "以下為近期的學術與產業演講、工作坊活動紀錄。";
+}
+
+function serializeActivitiesBody(introText, activityModels, lineEnding = "\n") {
+  const intro = String(introText || "").trim() || "以下為近期的學術與產業演講、工作坊活動紀錄。";
+  const yearSections = [];
+  for (const model of activityModels.values()) {
+    yearSections.push(`## ${model.year}${lineEnding}${lineEnding}${serializeActivityGrid(model)}`);
+  }
+  return `::: {.callout-tip appearance="minimal"}${lineEnding}## 🌟 最新動態${lineEnding}${intro}${lineEnding}:::${lineEnding}${lineEnding}${yearSections.join(`${lineEnding}${lineEnding}---${lineEnding}${lineEnding}`)}`;
+}
+
+function parseHomePage(body) {
+  const lines = body.split(/\r?\n/);
+  let bio = "";
+  let motto = "";
+  const researchAreas = [];
+  const highlights = [];
+  let section = "";
+  let curArea = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed === "## 關於我") {
+      section = "about";
+      continue;
+    } else if (trimmed === "## 研究領域") {
+      section = "research";
+      continue;
+    } else if (trimmed === "## 最新動態") {
+      section = "highlights";
+      continue;
+    }
+
+    if (section === "about") {
+      if (trimmed === ":::") {
+        section = "";
+        continue;
+      }
+      if (trimmed.startsWith(":::")) continue;
+      const mottoMatch = trimmed.match(/\*"(.*?)"\*/);
+      if (mottoMatch) {
+        motto = mottoMatch[1].trim();
+      } else if (trimmed) {
+        bio = bio ? `${bio}\n\n${trimmed}` : trimmed;
+      }
+    } else if (section === "research") {
+      if (trimmed.startsWith("::: {.g-col-12")) {
+        curArea = { icon: "bi bi-cpu", title: "", desc: "" };
+        researchAreas.push(curArea);
+        continue;
+      }
+      if (curArea) {
+        if (trimmed === ":::") {
+          curArea = null;
+          continue;
+        }
+        const iconMatch = trimmed.match(/<i class="([^"]*)"><\/i>/);
+        if (iconMatch) {
+          curArea.icon = iconMatch[1].trim();
+        } else if (trimmed.startsWith("### ")) {
+          curArea.title = trimmed.replace(/^###\s+/, "").trim();
+        } else if (trimmed) {
+          curArea.desc = curArea.desc ? `${curArea.desc} ${trimmed}` : trimmed;
+        }
+      }
+    } else if (section === "highlights") {
+      if (trimmed.startsWith("|") && !trimmed.includes("---") && !trimmed.includes("日期")) {
+        const parts = line.split("|").map((p) => p.trim()).filter(Boolean);
+        if (parts.length >= 2) {
+          highlights.push({ date: parts[0], event: parts.slice(1).join("|") });
+        }
+      }
+    }
+  }
+
+  return { bio, motto, researchAreas, highlights };
+}
+
+function serializeHomePage(model, lineEnding = "\n") {
+  const bio = (model.bio || "").trim();
+  const motto = (model.motto || "").trim();
+  const mottoLine = motto ? `${lineEnding}${lineEnding}*"${motto}"*` : "";
+
+  const areaBlocks = (model.researchAreas || []).map((area) => {
+    return [
+      "::: {.g-col-12 .g-col-md-4}",
+      `<div class="premium-icon-box"><i class="${area.icon || "bi bi-cpu"}"></i></div>`,
+      `### ${area.title || ""}`,
+      area.desc || "",
+      ":::"
+    ].join(lineEnding);
+  });
+
+  const highlightRows = [
+    "| 日期 | 事件 |",
+    "|------|------|",
+    ...(model.highlights || []).map((h) => `| ${h.date || ""} | ${h.event || ""} |`)
+  ].join(lineEnding);
+
+  return [
+    `:::{#hero-heading}`,
+    `## 關於我`,
+    ``,
+    `${bio}${mottoLine}`,
+    `:::`,
+    ``,
+    `## 研究領域`,
+    ``,
+    `::: {.grid}`,
+    ``,
+    areaBlocks.join(`${lineEnding}${lineEnding}`),
+    ``,
+    `:::`,
+    ``,
+    `## 最新動態`,
+    ``,
+    highlightRows,
+    ``,
+    `: {tbl-colwidths="[15, 85]"}`
+  ].join(lineEnding);
+}
+
+function parseAboutPage(body) {
+  const calloutMatch = body.match(/:::\s*\{\.callout-note\s+appearance="minimal"\}\s*\r?\n##\s*(.*?)\r?\n([\s\S]*?)\r?\n:::/);
+  const calloutTitle = calloutMatch ? calloutMatch[1].trim() : "張修瑋 (H.W. Chang)";
+  const calloutSubtitle = calloutMatch ? calloutMatch[2].trim() : "**國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU";
+
+  const education = [];
+  const eduMatch = body.match(/##\s*<i class="[^"]*"><\/i>\s*學歷\s*\(Education\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (eduMatch) {
+    const colRegex = /::: \{\.g-col-12[^\}]*\}\s*\r?\n####\s*(.*?)\r?\n([\s\S]*?)\r?\n:::/g;
+    let match;
+    while ((match = colRegex.exec(eduMatch[1])) !== null) {
+      const degree = match[1].trim();
+      const content = match[2].trim();
+      const lines = content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      let school = "";
+      let detail = "";
+      let period = "";
+      let linkText = "";
+      let linkUrl = "";
+
+      for (let idx = 0; idx < lines.length; idx++) {
+        const line = lines[idx];
+        if (line.startsWith("[📄") || (line.startsWith("[") && line.includes("]("))) {
+          const lMatch = line.match(/\[(.*?)\]\((.*?)\)/);
+          if (lMatch) {
+            linkText = lMatch[1];
+            linkUrl = lMatch[2].replace(/\{target="_blank"\}/, "");
+          }
+        } else if (/^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d{4})/.test(line)) {
+          period = line;
+        } else if (!school) {
+          school = line.trim();
+        } else if (line.startsWith("(") && line.endsWith(")")) {
+          school += " " + line;
+        } else {
+          detail = detail ? `${detail}, ${line}` : line;
+        }
+      }
+      education.push({ degree, school, detail, period, linkText, linkUrl });
+    }
+  }
+
+  const experience = [];
+  const expMatch = body.match(/##\s*<i class="[^"]*"><\/i>\s*經歷\s*\(Professional Experience\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (expMatch) {
+    const lines = expMatch[1].split(/\r?\n/).filter((l) => l.trim().startsWith("|") && !l.includes("---") && !l.includes("期間"));
+    for (const line of lines) {
+      const parts = line.split("|").map((p) => p.trim()).filter(Boolean);
+      if (parts.length >= 3) {
+        experience.push({
+          period: parts[0],
+          title: parts[1],
+          institution: parts[2]
+        });
+      }
+    }
+  }
+
+  const honors = [];
+  const honorsMatch = body.match(/##\s*<i class="[^"]*"><\/i>\s*榮譽與獎項\s*\(Honors & Awards\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (honorsMatch) {
+    const lines = honorsMatch[1].split(/\r?\n/).filter((l) => l.trim().startsWith("-"));
+    for (const line of lines) {
+      honors.push(line.replace(/^-\s*/, "").trim());
+    }
+  }
+
+  const services = [];
+  const servicesMatch = body.match(/##\s*<i class="[^"]*"><\/i>\s*服務\s*\(Service\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (servicesMatch) {
+    const lines = servicesMatch[1].split(/\r?\n/).filter((l) => l.trim().startsWith("-"));
+    for (const line of lines) {
+      services.push(line.replace(/^-\s*/, "").trim());
+    }
+  }
+
+  return { calloutTitle, calloutSubtitle, education, experience, honors, services };
+}
+
+function serializeAboutPage(model, lineEnding = "\n") {
+  const eduBlocks = (model.education || []).map((e) => {
+    const lines = ["::: {.g-col-12 .g-col-md-6}", `#### ${e.degree || ""}`];
+    if (e.school) lines.push(`${e.school}  `);
+    if (e.detail) lines.push(`${e.detail}  `);
+    if (e.period) lines.push(e.linkUrl ? `${e.period}  ` : e.period);
+    if (e.linkUrl) lines.push(`[${e.linkText || "📄 Dissertation"}](${e.linkUrl}){target="_blank"}`);
+    lines.push(":::");
+    return lines.join(lineEnding);
+  });
+
+  const expRows = [
+    "| 期間 | 職位 | 單位 |",
+    "|------|------|------|",
+    ...(model.experience || []).map((exp) => `| ${exp.period || ""} | ${exp.title || ""} | ${exp.institution || ""} |`)
+  ].join(lineEnding);
+
+  const honorLines = (model.honors || []).map((h) => `- ${h}`).join(lineEnding);
+  const serviceLines = (model.services || []).map((s) => `- ${s}`).join(lineEnding);
+
+  return [
+    `::: {.callout-note appearance="minimal"}`,
+    `## ${model.calloutTitle || "張修瑋 (H.W. Chang)"}`,
+    `${model.calloutSubtitle || "**國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU"}`,
+    `:::`,
+    ``,
+    `## <i class="bi bi-mortarboard"></i> 學歷 (Education)`,
+    ``,
+    `::: {.grid}`,
+    ``,
+    eduBlocks.join(`${lineEnding}${lineEnding}`),
+    ``,
+    `:::`,
+    ``,
+    `---`,
+    ``,
+    `## <i class="bi bi-briefcase"></i> 經歷 (Professional Experience)`,
+    ``,
+    expRows,
+    ``,
+    `---`,
+    ``,
+    `## <i class="bi bi-trophy"></i> 榮譽與獎項 (Honors & Awards)`,
+    ``,
+    honorLines,
+    ``,
+    `---`,
+    ``,
+    `## <i class="bi bi-people"></i> 服務 (Service)`,
+    ``,
+    serviceLines
+  ].join(lineEnding);
+}
+
+function parsePublicationsPage(body) {
+  const journalPapers = [];
+  const workingPapers = [];
+  const conferences = [];
+
+  const journalSection = body.match(/##\s*📄\s*期刊論文\s*\(Journal Publications\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (journalSection) {
+    const calloutRegex = /:::\s*\{\.callout-note\s+icon=false\}\s*\r?\n####\s*(.*?)\r?\n([\s\S]*?)\r?\n:::/g;
+    let match;
+    while ((match = calloutRegex.exec(journalSection[1])) !== null) {
+      const title = match[1].trim();
+      const content = match[2].trim();
+      const lines = content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      let authors = "";
+      let journal = "";
+      let badge = "";
+      let doi = "";
+      for (const line of lines) {
+        if (line.startsWith("`") && line.endsWith("`")) {
+          badge = line.replace(/^`|`$/g, "");
+        } else if (line.includes("DOI:")) {
+          const doiIndex = line.indexOf("| DOI:");
+          if (doiIndex >= 0) {
+            journal = line.slice(0, doiIndex).trim();
+            const doiSection = line.slice(doiIndex + 6).trim();
+            const doiMatch = doiSection.match(/\]\((.*?)\)(?:\{target="_blank"\})?$/) || doiSection.match(/\]\((.*?)\)/);
+            if (doiMatch) doi = doiMatch[1];
+          } else {
+            journal = line;
+          }
+        } else if (!authors) {
+          authors = line.replace(/\s{2,}$/, "");
+        } else {
+          journal = line.replace(/\s{2,}$/, "");
+        }
+      }
+      journalPapers.push({ title, authors, journal, badge, doi });
+    }
+  }
+
+  const workingSection = body.match(/##\s*📝\s*工作論文\s*\(Working Papers\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (workingSection) {
+    const calloutRegex = /:::\s*\{\.callout-warning\s+icon=false\}\s*\r?\n####\s*(.*?)\r?\n([\s\S]*?)\r?\n:::/g;
+    let match;
+    while ((match = calloutRegex.exec(workingSection[1])) !== null) {
+      const title = match[1].trim();
+      const content = match[2].trim();
+      const lines = content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      let authors = "";
+      let status = "";
+      let badge = "";
+      for (const line of lines) {
+        if (line.startsWith("`") && line.endsWith("`")) {
+          badge = line.replace(/^`|`$/g, "");
+        } else if (!authors) {
+          authors = line.replace(/\s{2,}$/, "");
+        } else {
+          status = line.replace(/\s{2,}$/, "");
+        }
+      }
+      workingPapers.push({ title, authors, status, badge });
+    }
+  }
+
+  const confSection = body.match(/##\s*🎤\s*研討會發表\s*\(Conference Presentations\)\s*\r?\n([\s\S]*?)$/);
+  if (confSection) {
+    const lines = confSection[1].split(/\r?\n/).filter((l) => l.trim().startsWith("|") && !l.includes("---") && !l.includes("年份"));
+    for (const line of lines) {
+      const parts = line.split("|").map((p) => p.trim()).filter(Boolean);
+      if (parts.length >= 3) {
+        conferences.push({ year: parts[0], conference: parts[1], paper: parts[2] });
+      }
+    }
+  }
+
+  return { journalPapers, workingPapers, conferences };
+}
+
+function serializePublicationsPage(model, lineEnding = "\n") {
+  const journalBlocks = (model.journalPapers || []).map((p) => {
+    const lines = [
+      "::: {.callout-note icon=false}",
+      `#### ${p.title || ""}`,
+      `${p.authors || ""}  `
+    ];
+    let journalLine = p.journal || "";
+    if (p.doi) {
+      const doiText = p.doi.replace(/^https?:\/\/(?:dx\.)?doi\.org\//, "");
+      journalLine = `${journalLine} | DOI: [${doiText}](${p.doi}){target="_blank"}`;
+    }
+    if (journalLine) {
+      lines.push(`${journalLine}  `);
+    }
+    if (p.badge) {
+      lines.push(`\`${p.badge}\``);
+    }
+    lines.push(":::");
+    return lines.join(lineEnding);
+  });
+
+  const workingBlocks = (model.workingPapers || []).map((p) => {
+    const lines = [
+      "::: {.callout-warning icon=false}",
+      `#### ${p.title || ""}`,
+      `${p.authors || ""}  `
+    ];
+    if (p.status) {
+      lines.push(p.badge ? `${p.status}  ` : p.status);
+    }
+    if (p.badge) {
+      lines.push(`\`${p.badge}\``);
+    }
+    lines.push(":::");
+    return lines.join(lineEnding);
+  });
+
+  const confRows = [
+    "| 年份 | 研討會 | 論文 |",
+    "|------|--------|------|",
+    ...(model.conferences || []).map((c) => `| ${c.year || ""} | ${c.conference || ""} | ${c.paper || ""} |`)
+  ].join(lineEnding);
+
+  return [
+    `## 📄 期刊論文 (Journal Publications)`,
+    ``,
+    journalBlocks.join(`${lineEnding}${lineEnding}`),
+    ``,
+    `---`,
+    ``,
+    `## 📝 工作論文 (Working Papers)`,
+    ``,
+    workingBlocks.join(`${lineEnding}${lineEnding}`),
+    ``,
+    `---`,
+    ``,
+    `## 🎤 研討會發表 (Conference Presentations)`,
+    ``,
+    confRows
+  ].join(lineEnding);
+}
+
 function validateActivitiesForPublish() {
   for (const model of state.activityModels.values()) {
     for (const [index, event] of model.events.entries()) {
@@ -389,7 +825,23 @@ function protectLayoutSyntax(body) {
     const line = lines[index];
     const next = lines[index + 1] || "";
     const yearHeading = line.match(/^\s*##\s+(\d{4})\s*$/);
-    if (yearHeading) currentYear = yearHeading[1];
+    if (yearHeading) {
+      currentYear = yearHeading[1];
+      let look = index + 1;
+      while (look < lines.length && !lines[look].trim()) look += 1;
+      if (look < lines.length && /^\s*:{3,}\s*\{[^}]*\.grid\b/.test(lines[look])) {
+        const token = `${nonce}-${locks.size}`;
+        locks.set(token, line);
+        pushLock();
+        continue;
+      }
+    }
+    if (currentYear && /^\s*---\s*$/.test(line)) {
+      const token = `${nonce}-${locks.size}`;
+      locks.set(token, line);
+      pushLock();
+      continue;
+    }
     if (/^\s*:{3,}\s*\{[^}]*\.grid\b[^}]*\}\s*$/.test(line)) {
       const endIndex = findFencedDivEnd(lines, index);
       if (endIndex > index) {
@@ -568,18 +1020,28 @@ function currentFrontMatter() {
 function currentContent() {
   if (!state.editor) return state.originalContent;
   let body;
-  if (state.editorChanged) {
-    const mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
-    if (mappedBody === null) throw new Error("這次修改無法安全對應原版面，請分段修改或重新讀取後再試一次");
-    body = mappedBody.trimEnd();
+  if (state.currentPath === "index.md" && state.homeModel) {
+    body = serializeHomePage(state.homeModel, state.lineEnding);
+  } else if (state.currentPath === "about/index.md" && state.aboutModel) {
+    body = serializeAboutPage(state.aboutModel, state.lineEnding);
+  } else if (state.currentPath === "publications/index.md" && state.pubModel) {
+    body = serializePublicationsPage(state.pubModel, state.lineEnding);
+  } else if (state.currentPath === "activities/index.md") {
+    body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
   } else {
-    body = state.originalBody.trimEnd();
-  }
-  for (const [token, model] of state.tableModels) {
-    if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeTable(model));
-  }
-  for (const [token, model] of state.activityModels) {
-    if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeActivityGrid(model));
+    if (state.editorChanged) {
+      const mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
+      if (mappedBody === null) throw new Error("這次修改無法安全對應原版面，請分段修改或重新讀取後再試一次");
+      body = mappedBody.trimEnd();
+    } else {
+      body = state.originalBody.trimEnd();
+    }
+    for (const [token, model] of state.tableModels) {
+      if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeTable(model));
+    }
+    for (const [token, model] of state.activityModels) {
+      if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeActivityGrid(model));
+    }
   }
   const frontMatter = currentFrontMatter();
   if (!state.metadataDirty && state.frontMatterPrefix) return `${state.frontMatterPrefix}${body}${state.lineEnding}`;
@@ -768,6 +1230,773 @@ function createActivityField(labelText, value, onChange) {
   input.addEventListener("input", () => onChange(input.value));
   label.append(caption, input);
   return label;
+}
+
+function renderHomeEditors() {
+  if (!state.homeModel) return;
+  elements.homeBioInput.value = state.homeModel.bio || "";
+  elements.homeMottoInput.value = state.homeModel.motto || "";
+
+  elements.homeBioInput.oninput = () => {
+    state.homeModel.bio = elements.homeBioInput.value;
+    state.homeDirty = true;
+    state.draftSaved = false;
+    scheduleDocumentUpdate();
+  };
+
+  elements.homeMottoInput.oninput = () => {
+    state.homeModel.motto = elements.homeMottoInput.value;
+    state.homeDirty = true;
+    state.draftSaved = false;
+    scheduleDocumentUpdate();
+  };
+
+  elements.researchAreaList.replaceChildren();
+  (state.homeModel.researchAreas || []).forEach((area, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `領域 ${index + 1}：${area.title || "未命名"}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.homeModel.researchAreas.splice(index, 1);
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid cols-3";
+
+    const iconField = document.createElement("div");
+    iconField.className = "structured-field";
+    iconField.innerHTML = `<label>圖示 (Bootstrap Icon)</label>`;
+    const iconInput = document.createElement("input");
+    iconInput.type = "text";
+    iconInput.value = area.icon || "bi bi-cpu";
+    iconInput.oninput = () => {
+      area.icon = iconInput.value;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    iconField.append(iconInput);
+
+    const titleField = document.createElement("div");
+    titleField.className = "structured-field";
+    titleField.innerHTML = `<label>領域名稱 (Title)</label>`;
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.value = area.title || "";
+    titleInput.oninput = () => {
+      area.title = titleInput.value;
+      title.textContent = `領域 ${index + 1}：${area.title || "未命名"}`;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    titleField.append(titleInput);
+
+    const descField = document.createElement("div");
+    descField.className = "structured-field";
+    descField.innerHTML = `<label>英文說明 (Description)</label>`;
+    const descInput = document.createElement("input");
+    descInput.type = "text";
+    descInput.value = area.desc || "";
+    descInput.oninput = () => {
+      area.desc = descInput.value;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    descField.append(descInput);
+
+    grid.append(iconField, titleField, descField);
+    card.append(top, grid);
+    elements.researchAreaList.append(card);
+  });
+
+  elements.addResearchAreaButton.onclick = () => {
+    state.homeModel.researchAreas.push({ icon: "bi bi-cpu", title: "新領域", desc: "Description" });
+    state.homeDirty = true;
+    state.draftSaved = false;
+    renderHomeEditors();
+    scheduleDocumentUpdate();
+  };
+
+  elements.highlightList.replaceChildren();
+  (state.homeModel.highlights || []).forEach((h, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `動態 ${index + 1}：${h.date || ""}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.homeModel.highlights.splice(index, 1);
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid";
+    grid.style.gridTemplateColumns = "160px 1fr";
+
+    const dateField = document.createElement("div");
+    dateField.className = "structured-field";
+    dateField.innerHTML = `<label>日期 (例如 2026/07)</label>`;
+    const dateInput = document.createElement("input");
+    dateInput.type = "text";
+    dateInput.value = h.date || "";
+    dateInput.oninput = () => {
+      h.date = dateInput.value;
+      title.textContent = `動態 ${index + 1}：${h.date || ""}`;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    dateField.append(dateInput);
+
+    const eventField = document.createElement("div");
+    eventField.className = "structured-field";
+    eventField.innerHTML = `<label>事件說明 (支援 HTML 與圖示)</label>`;
+    const eventInput = document.createElement("input");
+    eventInput.type = "text";
+    eventInput.value = h.event || "";
+    eventInput.oninput = () => {
+      h.event = eventInput.value;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    eventField.append(eventInput);
+
+    grid.append(dateField, eventField);
+    card.append(top, grid);
+    elements.highlightList.append(card);
+  });
+
+  elements.addHighlightButton.onclick = () => {
+    state.homeModel.highlights.unshift({ date: new Date().toISOString().slice(0, 7).replace("-", "/"), event: "最新動態內容" });
+    state.homeDirty = true;
+    state.draftSaved = false;
+    renderHomeEditors();
+    scheduleDocumentUpdate();
+  };
+}
+
+function renderAboutEditors() {
+  if (!state.aboutModel) return;
+  elements.aboutNameInput.value = state.aboutModel.calloutTitle || "";
+  elements.aboutTitleInput.value = state.aboutModel.calloutSubtitle || "";
+
+  elements.aboutNameInput.oninput = () => {
+    state.aboutModel.calloutTitle = elements.aboutNameInput.value;
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    scheduleDocumentUpdate();
+  };
+
+  elements.aboutTitleInput.oninput = () => {
+    state.aboutModel.calloutSubtitle = elements.aboutTitleInput.value;
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    scheduleDocumentUpdate();
+  };
+
+  // Education list
+  elements.educationList.replaceChildren();
+  (state.aboutModel.education || []).forEach((edu, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `學歷 ${index + 1}：${edu.degree || "未命名"}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.aboutModel.education.splice(index, 1);
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      renderAboutEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid";
+
+    const degreeField = document.createElement("div");
+    degreeField.className = "structured-field";
+    degreeField.innerHTML = `<label>學位 (例如 Ph.D. in Accounting)</label>`;
+    const degreeInput = document.createElement("input");
+    degreeInput.type = "text";
+    degreeInput.value = edu.degree || "";
+    degreeInput.oninput = () => {
+      edu.degree = degreeInput.value;
+      title.textContent = `學歷 ${index + 1}：${edu.degree || "未命名"}`;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    degreeField.append(degreeInput);
+
+    const schoolField = document.createElement("div");
+    schoolField.className = "structured-field";
+    schoolField.innerHTML = `<label>學校單位 (例如 國立臺灣大學)</label>`;
+    const schoolInput = document.createElement("input");
+    schoolInput.type = "text";
+    schoolInput.value = edu.school || "";
+    schoolInput.oninput = () => {
+      edu.school = schoolInput.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    schoolField.append(schoolInput);
+
+    const detailField = document.createElement("div");
+    detailField.className = "structured-field";
+    detailField.innerHTML = `<label>學院／備註 (選填)</label>`;
+    const detailInput = document.createElement("input");
+    detailInput.type = "text";
+    detailInput.value = edu.detail || "";
+    detailInput.oninput = () => {
+      edu.detail = detailInput.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    detailField.append(detailInput);
+
+    const periodField = document.createElement("div");
+    periodField.className = "structured-field";
+    periodField.innerHTML = `<label>期間 (例如 Sep 2019 – June 2024)</label>`;
+    const periodInput = document.createElement("input");
+    periodInput.type = "text";
+    periodInput.value = edu.period || "";
+    periodInput.oninput = () => {
+      edu.period = periodInput.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    periodField.append(periodInput);
+
+    const urlField = document.createElement("div");
+    urlField.className = "structured-field";
+    urlField.style.gridColumn = "1 / -1";
+    urlField.innerHTML = `<label>論文連結網址 (選填，例如 Dissertation URL)</label>`;
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.value = edu.linkUrl || "";
+    urlInput.placeholder = "https://...";
+    urlInput.oninput = () => {
+      edu.linkUrl = urlInput.value;
+      edu.linkText = edu.linkUrl ? (edu.linkText || "📄 Dissertation") : "";
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    urlField.append(urlInput);
+
+    grid.append(degreeField, schoolField, detailField, periodField, urlField);
+    card.append(top, grid);
+    elements.educationList.append(card);
+  });
+
+  elements.addEducationButton.onclick = () => {
+    state.aboutModel.education.push({ degree: "新學位", school: "學校名稱", detail: "", period: "年份", linkText: "📄 Dissertation", linkUrl: "" });
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    renderAboutEditors();
+    scheduleDocumentUpdate();
+  };
+
+  // Experience list
+  elements.experienceList.replaceChildren();
+  (state.aboutModel.experience || []).forEach((exp, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `經歷 ${index + 1}：${exp.title || ""}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.aboutModel.experience.splice(index, 1);
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      renderAboutEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid cols-3";
+
+    const periodField = document.createElement("div");
+    periodField.className = "structured-field";
+    periodField.innerHTML = `<label>期間</label>`;
+    const periodInput = document.createElement("input");
+    periodInput.type = "text";
+    periodInput.value = exp.period || "";
+    periodInput.oninput = () => {
+      exp.period = periodInput.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    periodField.append(periodInput);
+
+    const titleField = document.createElement("div");
+    titleField.className = "structured-field";
+    titleField.innerHTML = `<label>職稱</label>`;
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.value = exp.title || "";
+    titleInput.oninput = () => {
+      exp.title = titleInput.value;
+      title.textContent = `經歷 ${index + 1}：${exp.title || ""}`;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    titleField.append(titleInput);
+
+    const instField = document.createElement("div");
+    instField.className = "structured-field";
+    instField.innerHTML = `<label>服務機構／單位</label>`;
+    const instInput = document.createElement("input");
+    instInput.type = "text";
+    instInput.value = exp.institution || "";
+    instInput.oninput = () => {
+      exp.institution = instInput.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    instField.append(instInput);
+
+    grid.append(periodField, titleField, instField);
+    card.append(top, grid);
+    elements.experienceList.append(card);
+  });
+
+  elements.addExperienceButton.onclick = () => {
+    state.aboutModel.experience.unshift({ period: "2026 – 迄今", title: "新職稱", institution: "新單位" });
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    renderAboutEditors();
+    scheduleDocumentUpdate();
+  };
+
+  // Honors list
+  elements.honorsList.replaceChildren();
+  (state.aboutModel.honors || []).forEach((h, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+    card.style.gridTemplateColumns = "1fr auto";
+    card.style.alignItems = "center";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = h;
+    input.className = "custom-textarea";
+    input.style.minHeight = "36px";
+    input.oninput = () => {
+      state.aboutModel.honors[index] = input.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.aboutModel.honors.splice(index, 1);
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      renderAboutEditors();
+      scheduleDocumentUpdate();
+    };
+
+    card.append(input, removeBtn);
+    elements.honorsList.append(card);
+  });
+
+  elements.addHonorButton.onclick = () => {
+    state.aboutModel.honors.unshift("**新榮譽獎項** — 說明");
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    renderAboutEditors();
+    scheduleDocumentUpdate();
+  };
+
+  // Services list
+  elements.servicesList.replaceChildren();
+  (state.aboutModel.services || []).forEach((s, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+    card.style.gridTemplateColumns = "1fr auto";
+    card.style.alignItems = "center";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = s;
+    input.className = "custom-textarea";
+    input.style.minHeight = "36px";
+    input.oninput = () => {
+      state.aboutModel.services[index] = input.value;
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.aboutModel.services.splice(index, 1);
+      state.aboutDirty = true;
+      state.draftSaved = false;
+      renderAboutEditors();
+      scheduleDocumentUpdate();
+    };
+
+    card.append(input, removeBtn);
+    elements.servicesList.append(card);
+  });
+
+  elements.addServiceButton.onclick = () => {
+    state.aboutModel.services.unshift("**新服務項目** — 說明");
+    state.aboutDirty = true;
+    state.draftSaved = false;
+    renderAboutEditors();
+    scheduleDocumentUpdate();
+  };
+}
+
+function renderPublicationsEditors() {
+  if (!state.pubModel) return;
+
+  // Journal papers
+  elements.journalPaperList.replaceChildren();
+  (state.pubModel.journalPapers || []).forEach((p, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `期刊論文 ${index + 1}：${p.title || "未命名"}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.pubModel.journalPapers.splice(index, 1);
+      state.pubDirty = true;
+      state.draftSaved = false;
+      renderPublicationsEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid";
+
+    const titleField = document.createElement("div");
+    titleField.className = "structured-field";
+    titleField.style.gridColumn = "1 / -1";
+    titleField.innerHTML = `<label>論文篇名 (Title)</label>`;
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.value = p.title || "";
+    titleInput.oninput = () => {
+      p.title = titleInput.value;
+      title.textContent = `期刊論文 ${index + 1}：${p.title || "未命名"}`;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    titleField.append(titleInput);
+
+    const authField = document.createElement("div");
+    authField.className = "structured-field";
+    authField.innerHTML = `<label>作者群與年份 (Authors & Year)</label>`;
+    const authInput = document.createElement("input");
+    authInput.type = "text";
+    authInput.value = p.authors || "";
+    authInput.oninput = () => {
+      p.authors = authInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    authField.append(authInput);
+
+    const journalField = document.createElement("div");
+    journalField.className = "structured-field";
+    journalField.innerHTML = `<label>期刊名稱、卷期與頁碼 (Journal & Volume)</label>`;
+    const journalInput = document.createElement("input");
+    journalInput.type = "text";
+    journalInput.value = p.journal || "";
+    journalInput.oninput = () => {
+      p.journal = journalInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    journalField.append(journalInput);
+
+    const badgeField = document.createElement("div");
+    badgeField.className = "structured-field";
+    badgeField.innerHTML = `<label>評級／指標 (例如 SSCI IF 1.1 · 國科會 B級)</label>`;
+    const badgeInput = document.createElement("input");
+    badgeInput.type = "text";
+    badgeInput.value = p.badge || "";
+    badgeInput.oninput = () => {
+      p.badge = badgeInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    badgeField.append(badgeInput);
+
+    const doiField = document.createElement("div");
+    doiField.className = "structured-field";
+    doiField.innerHTML = `<label>DOI 網址 (選填，例如 http://dx.doi.org/...)</label>`;
+    const doiInput = document.createElement("input");
+    doiInput.type = "text";
+    doiInput.value = p.doi || "";
+    doiInput.oninput = () => {
+      p.doi = doiInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    doiField.append(doiInput);
+
+    grid.append(titleField, authField, journalField, badgeField, doiField);
+    card.append(top, grid);
+    elements.journalPaperList.append(card);
+  });
+
+  elements.addJournalPaperButton.onclick = () => {
+    state.pubModel.journalPapers.unshift({ title: "新論文篇名", authors: "張修瑋 * (2026)", journal: "期刊名稱", badge: "Accepted | Forthcoming", doi: "" });
+    state.pubDirty = true;
+    state.draftSaved = false;
+    renderPublicationsEditors();
+    scheduleDocumentUpdate();
+  };
+
+  // Working papers
+  elements.workingPaperList.replaceChildren();
+  (state.pubModel.workingPapers || []).forEach((wp, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `工作論文 ${index + 1}：${wp.title || "未命名"}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.pubModel.workingPapers.splice(index, 1);
+      state.pubDirty = true;
+      state.draftSaved = false;
+      renderPublicationsEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid";
+
+    const titleField = document.createElement("div");
+    titleField.className = "structured-field";
+    titleField.style.gridColumn = "1 / -1";
+    titleField.innerHTML = `<label>論文篇名 (Title)</label>`;
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.value = wp.title || "";
+    titleInput.oninput = () => {
+      wp.title = titleInput.value;
+      title.textContent = `工作論文 ${index + 1}：${wp.title || "未命名"}`;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    titleField.append(titleInput);
+
+    const authField = document.createElement("div");
+    authField.className = "structured-field";
+    authField.innerHTML = `<label>作者群與年份 (Authors)</label>`;
+    const authInput = document.createElement("input");
+    authInput.type = "text";
+    authInput.value = wp.authors || "";
+    authInput.oninput = () => {
+      wp.authors = authInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    authField.append(authInput);
+
+    const statusField = document.createElement("div");
+    statusField.className = "structured-field";
+    statusField.innerHTML = `<label>審查狀態／出處 (Status)</label>`;
+    const statusInput = document.createElement("input");
+    statusInput.type = "text";
+    statusInput.value = wp.status || "";
+    statusInput.oninput = () => {
+      wp.status = statusInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    statusField.append(statusInput);
+
+    const badgeField = document.createElement("div");
+    badgeField.className = "structured-field";
+    badgeField.style.gridColumn = "1 / -1";
+    badgeField.innerHTML = `<label>獲獎紀錄 (選填，例如 🏆 2025 年會最佳論文獎)</label>`;
+    const badgeInput = document.createElement("input");
+    badgeInput.type = "text";
+    badgeInput.value = wp.badge || "";
+    badgeInput.oninput = () => {
+      wp.badge = badgeInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    badgeField.append(badgeInput);
+
+    grid.append(titleField, authField, statusField, badgeField);
+    card.append(top, grid);
+    elements.workingPaperList.append(card);
+  });
+
+  elements.addWorkingPaperButton.onclick = () => {
+    state.pubModel.workingPapers.unshift({ title: "新工作論文篇名", authors: "張修瑋 *", status: "Under Review", badge: "" });
+    state.pubDirty = true;
+    state.draftSaved = false;
+    renderPublicationsEditors();
+    scheduleDocumentUpdate();
+  };
+
+  // Conferences
+  elements.conferenceList.replaceChildren();
+  (state.pubModel.conferences || []).forEach((c, index) => {
+    const card = document.createElement("div");
+    card.className = "structured-row-card";
+
+    const top = document.createElement("div");
+    top.className = "structured-card-top";
+    const title = document.createElement("strong");
+    title.textContent = `研討會 ${index + 1}：${c.year || ""}`;
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "刪除";
+    removeBtn.onclick = () => {
+      state.pubModel.conferences.splice(index, 1);
+      state.pubDirty = true;
+      state.draftSaved = false;
+      renderPublicationsEditors();
+      scheduleDocumentUpdate();
+    };
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "structured-card-grid cols-3";
+
+    const yearField = document.createElement("div");
+    yearField.className = "structured-field";
+    yearField.innerHTML = `<label>年份</label>`;
+    const yearInput = document.createElement("input");
+    yearInput.type = "text";
+    yearInput.value = c.year || "";
+    yearInput.oninput = () => {
+      c.year = yearInput.value;
+      title.textContent = `研討會 ${index + 1}：${c.year || ""}`;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    yearField.append(yearInput);
+
+    const confField = document.createElement("div");
+    confField.className = "structured-field";
+    confField.innerHTML = `<label>研討會名稱</label>`;
+    const confInput = document.createElement("input");
+    confInput.type = "text";
+    confInput.value = c.conference || "";
+    confInput.oninput = () => {
+      c.conference = confInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    confField.append(confInput);
+
+    const paperField = document.createElement("div");
+    paperField.className = "structured-field";
+    paperField.innerHTML = `<label>發表論文篇名</label>`;
+    const paperInput = document.createElement("input");
+    paperInput.type = "text";
+    paperInput.value = c.paper || "";
+    paperInput.oninput = () => {
+      c.paper = paperInput.value;
+      state.pubDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+    paperField.append(paperInput);
+
+    grid.append(yearField, confField, paperField);
+    card.append(top, grid);
+    elements.conferenceList.append(card);
+  });
+
+  elements.addConferenceButton.onclick = () => {
+    state.pubModel.conferences.unshift({ year: String(new Date().getFullYear()), conference: "研討會名稱", paper: "論文篇名" });
+    state.pubDirty = true;
+    state.draftSaved = false;
+    renderPublicationsEditors();
+    scheduleDocumentUpdate();
+  };
 }
 
 function renderActivityEditors() {
@@ -1016,6 +2245,39 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   state.draftSaved = content !== sourceContent || draftUploads.length > 0;
   elements.emptyState.hidden = true;
   elements.editorWorkspace.hidden = false;
+  const isHome = path === "index.md";
+  const isAbout = path === "about/index.md";
+  const isPub = path === "publications/index.md";
+  const isActivities = path === "activities/index.md";
+  const isStructuredPage = isHome || isAbout || isPub || isActivities;
+
+  if (elements.homeEditors) elements.homeEditors.hidden = !isHome;
+  if (elements.aboutEditors) elements.aboutEditors.hidden = !isAbout;
+  if (elements.publicationEditors) elements.publicationEditors.hidden = !isPub;
+  if (elements.activityIntroSection) elements.activityIntroSection.hidden = !isActivities;
+  if (elements.activityEditors) elements.activityEditors.hidden = !isActivities;
+  if (elements.tableEditors) elements.tableEditors.hidden = isStructuredPage;
+  if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && state.activityModels.size === 0 && state.tableModels.size === 0;
+
+  if (elements.editorToolbar) elements.editorToolbar.hidden = isStructuredPage;
+  if (elements.visualEditor) elements.visualEditor.hidden = isStructuredPage;
+
+  if (isHome) {
+    state.homeModel = parseHomePage(split.body);
+    state.homeDirty = false;
+    renderHomeEditors();
+  } else if (isAbout) {
+    state.aboutModel = parseAboutPage(split.body);
+    state.aboutDirty = false;
+    renderAboutEditors();
+  } else if (isPub) {
+    state.pubModel = parsePublicationsPage(split.body);
+    state.pubDirty = false;
+    renderPublicationsEditors();
+  } else if (isActivities) {
+    if (elements.activityIntroInput) elements.activityIntroInput.value = parseActivityIntro(split.body);
+    renderActivityEditors();
+  }
   ensureEditor();
   state.loadingEditor = true;
   state.editor.setMarkdown(protectedLayout.editorBody || "");
@@ -1045,11 +2307,23 @@ function scheduleDocumentUpdate() {
 }
 
 function updateDocumentState() {
-  if (!state.editor || !state.currentPath) return;
-  const markdown = state.editor.getMarkdown();
-  const latin = markdown.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)?/g) || [];
-  const cjk = markdown.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || [];
-  elements.wordCount.textContent = `${latin.length + cjk.length} 字`;
+  if (!state.currentPath) return;
+  if (state.currentPath === "index.md" && state.homeModel) {
+    elements.wordCount.textContent = `${(state.homeModel.researchAreas || []).length} 個領域 · ${(state.homeModel.highlights || []).length} 筆動態`;
+  } else if (state.currentPath === "about/index.md" && state.aboutModel) {
+    elements.wordCount.textContent = `${(state.aboutModel.education || []).length} 項學歷 · ${(state.aboutModel.experience || []).length} 項經歷 · ${(state.aboutModel.honors || []).length} 項榮譽`;
+  } else if (state.currentPath === "publications/index.md" && state.pubModel) {
+    elements.wordCount.textContent = `${(state.pubModel.journalPapers || []).length} 篇期刊 · ${(state.pubModel.workingPapers || []).length} 篇工作論文 · ${(state.pubModel.conferences || []).length} 場研討會`;
+  } else if (state.currentPath === "activities/index.md") {
+    let totalEvents = 0;
+    for (const model of state.activityModels.values()) totalEvents += model.events.length;
+    elements.wordCount.textContent = `${totalEvents} 場活動`;
+  } else if (state.editor) {
+    const markdown = state.editor.getMarkdown();
+    const latin = markdown.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)?/g) || [];
+    const cjk = markdown.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || [];
+    elements.wordCount.textContent = `${latin.length + cjk.length} 字`;
+  }
   const changed = hasUnsavedChanges();
   elements.draftStatus.textContent = changed ? "有尚未發布的變更" : "內容已同步";
   elements.documentHeading.textContent = elements.titleInput.value.trim() || pageInfo(state.currentPath).label;
@@ -1105,9 +2379,17 @@ function restorePreviewLayout(html) {
     return anchorElements.find((element) => element.matches(selector) && element.textContent.trim() === target);
   };
 
+  let activityIndex = 0;
   for (const model of state.activityModels.values()) {
     const yearHeading = findAnchor(model.year, "h2");
-    yearHeading?.insertAdjacentHTML("afterend", activityPreviewHtml(model));
+    if (yearHeading) {
+      yearHeading.insertAdjacentHTML("afterend", activityPreviewHtml(model));
+    } else {
+      const divider = activityIndex > 0 ? "<hr>" : "";
+      const sectionHtml = `${divider}<h2>${escapeHtml(model.year)}</h2>${activityPreviewHtml(model)}`;
+      previewDocument.body.insertAdjacentHTML("beforeend", sectionHtml);
+    }
+    activityIndex += 1;
   }
   for (const model of state.tableModels.values()) {
     const anchor = findAnchor(model.anchor);
@@ -1151,12 +2433,135 @@ function rewritePreviewImages(html) {
 }
 
 function renderPreview() {
-  if (!state.editor) return;
-  let body = sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML()));
-  for (const upload of state.pendingUploads.values()) {
-    body = body.replaceAll(`src="/${upload.path}"`, `src="${upload.dataUrl}"`);
+  let body;
+  if (state.currentPath === "index.md" && state.homeModel) {
+    const bio = escapeHtml(state.homeModel.bio || "");
+    const motto = escapeHtml(state.homeModel.motto || "");
+    const areasHtml = (state.homeModel.researchAreas || []).map((a) => `
+      <div class="preview-column" style="--preview-span:4">
+        <div class="premium-icon-box"><i class="${escapeHtml(a.icon)}"></i></div>
+        <h3 style="margin:0 0 6px">${escapeHtml(a.title)}</h3>
+        <p style="margin:0;color:#667085;font-size:13px">${escapeHtml(a.desc)}</p>
+      </div>
+    `).join("");
+    const highlightsHtml = (state.homeModel.highlights || []).map((h) => `
+      <tr>
+        <td style="font-weight:700;white-space:nowrap;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(h.date)}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef">${inlineMarkdownPreview(h.event)}</td>
+      </tr>
+    `).join("");
+    body = `
+      <h2>關於我</h2>
+      <p>${bio.replace(/\n\n+/g, "</p><p>")}</p>
+      ${motto ? `<blockquote><em>"${motto}"</em></blockquote>` : ""}
+      <h2>研究領域</h2>
+      <div class="preview-grid">${areasHtml}</div>
+      <h2>最新動態</h2>
+      <div class="preview-table-wrap">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f4f6fb"><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">日期</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">事件</th></tr></thead>
+          <tbody>${highlightsHtml}</tbody>
+        </table>
+      </div>
+    `;
+  } else if (state.currentPath === "about/index.md" && state.aboutModel) {
+    const eduHtml = (state.aboutModel.education || []).map((e) => `
+      <div class="preview-column" style="--preview-span:6;padding:12px;border:1px solid #e2e7f2;border-radius:10px;background:#fbfcfe">
+        <h4 style="margin:0 0 4px;color:#403f6f">${escapeHtml(e.degree)}</h4>
+        <strong style="display:block;color:#2c344e">${escapeHtml(e.school)}</strong>
+        ${e.detail ? `<span style="display:block;color:#667085;font-size:12px">${escapeHtml(e.detail)}</span>` : ""}
+        <span style="display:block;color:#667085;font-size:12px;margin-top:4px">${escapeHtml(e.period)}</span>
+        ${e.linkUrl ? `<a href="${escapeHtml(e.linkUrl)}" target="_blank" style="display:inline-block;margin-top:6px;font-size:12px">${escapeHtml(e.linkText || "📄 Dissertation")}</a>` : ""}
+      </div>
+    `).join("");
+    const expHtml = (state.aboutModel.experience || []).map((exp) => `
+      <tr>
+        <td style="font-weight:700;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.period)}</td>
+        <td style="font-weight:700;color:#403f6f;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.title)}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.institution)}</td>
+      </tr>
+    `).join("");
+    const honorsHtml = (state.aboutModel.honors || []).map((h) => `<li>${inlineMarkdownPreview(h)}</li>`).join("");
+    const servicesHtml = (state.aboutModel.services || []).map((s) => `<li>${inlineMarkdownPreview(s)}</li>`).join("");
+    body = `
+      <div class="preview-callout preview-callout-note">
+        <h2 style="margin:0 0 6px">${escapeHtml(state.aboutModel.calloutTitle)}</h2>
+        <p style="margin:0;font-weight:700">${escapeHtml(state.aboutModel.calloutSubtitle)}</p>
+      </div>
+      <h2>學歷 (Education)</h2>
+      <div class="preview-grid">${eduHtml}</div>
+      <hr>
+      <h2>經歷 (Professional Experience)</h2>
+      <div class="preview-table-wrap">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f4f6fb"><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">期間</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">職位</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">單位</th></tr></thead>
+          <tbody>${expHtml}</tbody>
+        </table>
+      </div>
+      <hr>
+      <h2>榮譽與獎項 (Honors & Awards)</h2>
+      <ul>${honorsHtml}</ul>
+      <hr>
+      <h2>服務 (Service)</h2>
+      <ul>${servicesHtml}</ul>
+    `;
+  } else if (state.currentPath === "publications/index.md" && state.pubModel) {
+    const journalHtml = (state.pubModel.journalPapers || []).map((p) => `
+      <div class="preview-callout preview-callout-note" style="margin:14px 0">
+        <h4 style="margin:0 0 6px;color:#403f6f">${escapeHtml(p.title)}</h4>
+        <p style="margin:0 0 4px;font-weight:700">${escapeHtml(p.authors)}</p>
+        <p style="margin:0;font-style:italic;color:#3f4b6f">${escapeHtml(p.journal)}${p.doi ? ` | <a href="${escapeHtml(p.doi)}" target="_blank">DOI</a>` : ""}</p>
+        ${p.badge ? `<code style="display:inline-block;margin-top:6px;padding:2px 6px;background:#eef2ff;border-radius:4px;font-size:11px">${escapeHtml(p.badge)}</code>` : ""}
+      </div>
+    `).join("");
+    const workingHtml = (state.pubModel.workingPapers || []).map((p) => `
+      <div class="preview-callout preview-callout-warning" style="margin:14px 0">
+        <h4 style="margin:0 0 6px;color:#854d0e">${escapeHtml(p.title)}</h4>
+        <p style="margin:0 0 4px;font-weight:700">${escapeHtml(p.authors)}</p>
+        ${p.status ? `<p style="margin:0;font-style:italic">${escapeHtml(p.status)}</p>` : ""}
+        ${p.badge ? `<code style="display:inline-block;margin-top:6px;padding:2px 6px;background:#fef3c7;border-radius:4px;font-size:11px">${escapeHtml(p.badge)}</code>` : ""}
+      </div>
+    `).join("");
+    const confHtml = (state.pubModel.conferences || []).map((c) => `
+      <tr>
+        <td style="font-weight:700;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(c.year)}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(c.conference)}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef">${inlineMarkdownPreview(c.paper)}</td>
+      </tr>
+    `).join("");
+    body = `
+      <h2>📄 期刊論文 (Journal Publications)</h2>
+      ${journalHtml}
+      <hr>
+      <h2>📝 工作論文 (Working Papers)</h2>
+      ${workingHtml}
+      <hr>
+      <h2>🎤 研討會發表 (Conference Presentations)</h2>
+      <div class="preview-table-wrap">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f4f6fb"><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">年份</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">研討會</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">論文</th></tr></thead>
+          <tbody>${confHtml}</tbody>
+        </table>
+      </div>
+    `;
+  } else if (state.currentPath === "activities/index.md") {
+    const intro = escapeHtml(elements.activityIntroInput?.value?.trim() || "以下為近期的學術與產業演講、工作坊活動紀錄。");
+    let previewBody = `<div class="preview-callout preview-callout-tip"><h2>🌟 最新動態</h2><p>${intro}</p></div>`;
+    let first = true;
+    for (const model of state.activityModels.values()) {
+      if (!first) previewBody += "<hr>";
+      previewBody += `<h2>${escapeHtml(model.year)}</h2>${activityPreviewHtml(model)}`;
+      first = false;
+    }
+    body = previewBody;
+  } else {
+    if (!state.editor) return;
+    body = sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML()));
+    for (const upload of state.pendingUploads.values()) {
+      body = body.replaceAll(`src="/${upload.path}"`, `src="${upload.dataUrl}"`);
+    }
+    body = rewritePreviewImages(body);
   }
-  body = rewritePreviewImages(body);
   const title = escapeHtml(elements.titleInput.value || pageInfo(state.currentPath).label);
   const description = escapeHtml(elements.descriptionInput.value);
   const featuredImage = readYamlScalar(currentFrontMatter(), "image");
@@ -1272,6 +2677,9 @@ async function publish() {
   }
   state.newDocument = false;
   state.bodyDirty = false;
+  state.homeDirty = false;
+  state.aboutDirty = false;
+  state.pubDirty = false;
   state.editorChanged = false;
   state.editorMappingError = false;
   state.metadataDirty = false;
@@ -1389,6 +2797,12 @@ for (const input of [elements.titleInput, elements.descriptionInput, elements.da
     scheduleDocumentUpdate();
   });
 }
+
+elements.activityIntroInput?.addEventListener("input", () => {
+  state.bodyDirty = true;
+  state.draftSaved = false;
+  scheduleDocumentUpdate();
+});
 
 elements.pageSearch.addEventListener("input", () => {
   const query = elements.pageSearch.value.trim().toLowerCase();

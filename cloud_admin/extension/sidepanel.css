@@ -263,13 +263,21 @@ input:focus, select:focus { outline: 3px solid rgba(89, 104, 166, 0.15); border-
 .new-page-button strong, .new-page-button small { display: block; }
 .new-page-button small { color: var(--muted); font-size: 10px; font-weight: 600; }
 
-.editor-stage { min-height: calc(100vh - 104px); overflow: hidden; }
+.editor-stage { min-height: calc(100vh - 104px); max-height: calc(100vh - 104px); overflow: hidden; }
 .empty-state { display: grid; height: 100%; min-height: 620px; place-content: center; padding: 40px; text-align: center; }
 .empty-state h2 { margin-bottom: 8px; font: 700 28px/1.2 Georgia, "Noto Serif TC", serif; color: var(--brand-dark); }
 .empty-state > p:last-child { max-width: 430px; color: var(--muted); }
 .empty-illustration { margin: 0 auto 16px; color: var(--brand-2); font-size: 52px; }
 
-#editorWorkspace { display: flex; flex-direction: column; height: calc(100vh - 104px); min-height: 690px; }
+#editorWorkspace {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 104px);
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 24px;
+}
 .document-header { padding: 18px 20px 12px; border-bottom: 1px solid var(--line); }
 .breadcrumb { margin-bottom: 3px; color: var(--muted); font-size: 11px; }
 .document-state { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 11px; }
@@ -287,7 +295,7 @@ input:focus, select:focus { outline: 3px solid rgba(89, 104, 166, 0.15); border-
 .editor-toolbar span { color: var(--muted); font-size: 10px; }
 .editor-toolbar .secondary-button { min-height: 34px; }
 
-.visual-editor { flex: 1; min-height: 400px; padding: 0 14px 14px; }
+.visual-editor { flex: 1 0 auto; min-height: 280px; padding: 0 14px 14px; }
 .toastui-editor-defaultUI { height: 100% !important; border-color: var(--line) !important; border-radius: 12px !important; overflow: hidden; }
 .toastui-editor-toolbar { background: #f7f8fc !important; }
 .toastui-editor-mode-switch { display: none !important; }
@@ -385,6 +393,183 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   margin-top: 3px;
   color: #667085;
   font-size: 12px;
+}
+
+.activity-intro-card {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1.5px solid #d4e0ff;
+  border-left: 5px solid #403f6f;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.activity-intro-card label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: #343760;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.activity-intro-card input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #d8deeb;
+  border-radius: 8px;
+  background: #fff;
+  color: #2c344e;
+  font-size: 14px;
+}
+
+.activity-intro-card input:focus {
+  outline: 3px solid rgba(64, 63, 111, 0.15);
+  border-color: #403f6f;
+}
+
+.page-editor-group {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.card-section {
+  padding: 16px 18px;
+  border: 1px solid #e4e7ef;
+  border-radius: 14px;
+  background: #fbfcfe;
+}
+
+.section-badge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #eef2ff;
+  color: #343760;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.section-badge-header .section-badge {
+  margin-bottom: 0;
+}
+
+.mini-button {
+  min-height: 28px !important;
+  padding: 4px 10px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+.custom-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8deeb;
+  border-radius: 8px;
+  background: #fff;
+  color: #2c344e;
+  font: 14px/1.7 "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+  resize: vertical;
+}
+
+.custom-textarea:focus {
+  outline: 3px solid rgba(64, 63, 111, 0.15);
+  border-color: #403f6f;
+}
+
+.card-item-list {
+  display: grid;
+  gap: 12px;
+}
+
+.structured-row-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #e2e7f2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(44, 52, 78, 0.03);
+}
+
+.structured-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #e8edf5;
+}
+
+.structured-card-top strong {
+  color: #403f6f;
+  font-size: 13px;
+}
+
+.structured-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.structured-card-grid.cols-3 {
+  grid-template-columns: 1fr 1.5fr 2fr;
+}
+
+.structured-field label {
+  display: block;
+  margin-bottom: 4px;
+  color: #667085;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.structured-field input,
+.structured-field select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d8deeb;
+  border-radius: 8px;
+  background: #fff;
+  color: #2c344e;
+  font-size: 13px;
+}
+
+.structured-field input:focus,
+.structured-field select:focus {
+  outline: 3px solid rgba(64, 63, 111, 0.15);
+  border-color: #403f6f;
+}
+
+.remove-btn {
+  padding: 4px 8px;
+  border: 1px solid #fed7d7;
+  border-radius: 6px;
+  background: #fff5f5;
+  color: #c53030;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #fed7d7;
 }
 
 .table-editors {

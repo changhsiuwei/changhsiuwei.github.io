@@ -21,6 +21,14 @@ vm.runInNewContext([
   productionFunction("parseActivityGrid"),
   productionFunction("cleanActivityField"),
   productionFunction("serializeActivityGrid"),
+  productionFunction("parseActivityIntro"),
+  productionFunction("serializeActivitiesBody"),
+  productionFunction("parseHomePage"),
+  productionFunction("serializeHomePage"),
+  productionFunction("parseAboutPage"),
+  productionFunction("serializeAboutPage"),
+  productionFunction("parsePublicationsPage"),
+  productionFunction("serializePublicationsPage"),
   productionFunction("protectLayoutSyntax"),
   productionFunction("uniqueIndexOf"),
   productionFunction("applyEditorDeltaToSource"),
@@ -28,6 +36,14 @@ vm.runInNewContext([
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
+  "this.parseActivityIntro = parseActivityIntro;",
+  "this.serializeActivitiesBody = serializeActivitiesBody;",
+  "this.parseHomePage = parseHomePage;",
+  "this.serializeHomePage = serializeHomePage;",
+  "this.parseAboutPage = parseAboutPage;",
+  "this.serializeAboutPage = serializeAboutPage;",
+  "this.parsePublicationsPage = parsePublicationsPage;",
+  "this.serializePublicationsPage = serializePublicationsPage;",
   "this.protectLayoutSyntax = protectLayoutSyntax;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;"
 ].join("\n"), sandbox);
@@ -66,6 +82,8 @@ test("activities render as structured cards without exposing Quarto layout", () 
   assert.equal(protectedContent.activityModels.size, 2);
   assert.equal(protectedContent.editorBody.includes("::: {.grid}"), false);
   assert.equal(protectedContent.editorBody.includes("July 18"), false);
+  assert.equal(protectedContent.editorBody.includes("2026"), false);
+  assert.equal(protectedContent.editorBody.includes("2025"), false);
   assert.equal(protectedContent.editorBody.includes("HWCMS-LAYOUT"), false);
   assert.equal(protectedContent.editorBody.includes("<!--"), false);
 });
@@ -104,4 +122,57 @@ test("marker-free visual text edits preserve the original Quarto layout", () => 
   assert.equal(mapped.includes(updatedSentence), true);
   assert.equal((mapped.match(/:::/g) || []).length, (body.match(/:::/g) || []).length);
   assert.equal(mapped.replace(updatedSentence, originalSentence), body);
+});
+
+test("activity intro field and cards reconstruct the exact Quarto page layout", () => {
+  const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const intro = sandbox.parseActivityIntro(body);
+  assert.equal(intro, "以下為近期的學術與產業演講、工作坊活動紀錄。");
+
+  const protectedContent = sandbox.protectLayoutSyntax(body);
+  const reconstructed = sandbox.serializeActivitiesBody(intro, protectedContent.activityModels);
+  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+  assert.equal(normalize(reconstructed), normalize(body));
+});
+
+test("home page cards and highlights parse and reconstruct exact Quarto page layout", () => {
+  const markdown = readFileSync(new URL("../../index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const model = sandbox.parseHomePage(body);
+  assert.equal(model.researchAreas.length, 3);
+  assert.equal(model.highlights.length, 4);
+  assert.ok(model.bio.includes("我是張修瑋"));
+  assert.equal(model.motto, "Honoring God and benefiting people! (榮神益人！)");
+
+  const reconstructed = sandbox.serializeHomePage(model);
+  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+  assert.equal(normalize(reconstructed), normalize(body));
+});
+
+test("about page cards, education, and experience parse and reconstruct exact Quarto page layout", () => {
+  const markdown = readFileSync(new URL("../../about/index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const model = sandbox.parseAboutPage(body);
+  assert.equal(model.education.length, 4);
+  assert.equal(model.experience.length, 3);
+  assert.equal(model.honors.length, 4);
+  assert.equal(model.services.length, 1);
+
+  const reconstructed = sandbox.serializeAboutPage(model);
+  const reparsed = sandbox.parseAboutPage(reconstructed);
+  assert.deepEqual(reparsed, model);
+});
+
+test("publications page cards, working papers, and conferences parse and reconstruct exact Quarto page layout", () => {
+  const markdown = readFileSync(new URL("../../publications/index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const model = sandbox.parsePublicationsPage(body);
+  assert.equal(model.journalPapers.length, 6);
+  assert.equal(model.workingPapers.length, 3);
+  assert.equal(model.conferences.length, 6);
+
+  const reconstructed = sandbox.serializePublicationsPage(model);
+  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+  assert.equal(normalize(reconstructed), normalize(body));
 });
