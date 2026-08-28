@@ -286,7 +286,11 @@ test("students area is configured as a static page with password reset capabilit
   assert.equal(model.welcomeTitle, "歡迎來到指導學生專區");
   assert.equal(model.guidelines.length, 3);
   assert.ok(model.guidelines[0].title.includes("碩士論文撰寫基本功"));
-  assert.ok(model.guidelines[2].title.includes("如何正確地使用 AI 工具"));
+  assert.equal(model.guidelines[0].points.length, 4);
+  assert.equal(model.guidelines[0].points[0].label, "尋找研究題目");
+  assert.ok(model.guidelines[0].points[0].text.includes("頂級期刊"));
+  assert.ok(model.guidelines[1].intro.includes("會計與財務研究高度依賴實證數據分析"));
+  assert.equal(model.guidelines[1].points[0].label, "Stata / SAS");
 
   const reconstructed = sandbox.serializeStudentsPage(model);
   const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
@@ -301,4 +305,5 @@ test("students area is configured as a static page with password reset capabilit
   assert.equal(reParsed.guidelines[0].handoutUrl, "https://drive.google.com/doc");
   assert.equal(reParsed.guidelines[0].slidesUrl, "https://drive.google.com/slides");
   assert.equal(reParsed.guidelines[0].youtubeUrl, "https://youtube.com/watch?v=xyz");
+  assert.equal(reParsed.guidelines[0].points.length, 4);
 });

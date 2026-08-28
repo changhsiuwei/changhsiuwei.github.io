@@ -986,7 +986,8 @@ function parseStudentsPage(body) {
     if (trimmed.startsWith("### ")) {
       curGuideline = {
         title: trimmed.replace(/^###\s+/, "").trim(),
-        content: "",
+        intro: "",
+        points: [],
         slidesUrl: "",
         handoutUrl: "",
         youtubeUrl: ""
@@ -1017,13 +1018,27 @@ function parseStudentsPage(body) {
         isOnlyLinkLine = true;
       }
 
-      if (!isOnlyLinkLine && (curGuideline.content || trimmed)) {
-        curGuideline.content = curGuideline.content ? `${curGuideline.content}\n${line}` : line;
+      if (isOnlyLinkLine) continue;
+
+      if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+        const bulletText = trimmed.replace(/^[-*]\s+/, "").trim();
+        const boldMatch = bulletText.match(/^\*\*(.*?)\*\*[:：]\s*(.*)$/);
+        if (boldMatch) {
+          curGuideline.points.push({
+            label: boldMatch[1].trim(),
+            text: boldMatch[2].trim()
+          });
+        } else {
+          curGuideline.points.push({
+            label: "",
+            text: bulletText
+          });
+        }
+      } else if (trimmed) {
+        curGuideline.intro = curGuideline.intro ? `${curGuideline.intro}\n${trimmed}` : trimmed;
       }
     }
   }
-
-  guidelines.forEach((g) => { g.content = g.content.trim(); });
 
   return { welcomeTitle, welcomeText, guidelines, schedules };
 }
@@ -1038,8 +1053,15 @@ function serializeStudentsPage(model, lineEnding = "\n") {
   for (const g of model.guidelines || []) {
     parts.push("");
     parts.push(`### ${g.title}`);
-    if (g.content) {
-      parts.push(g.content);
+    if (g.intro) {
+      parts.push(g.intro);
+    }
+    for (const pt of g.points || []) {
+      if (pt.label) {
+        parts.push(`- **${pt.label}**：${pt.text || ""}`);
+      } else if (pt.text) {
+        parts.push(`- ${pt.text}`);
+      }
     }
     const linkParts = [];
     if (g.slidesUrl) {
@@ -2806,26 +2828,123 @@ function renderStudentsEditors() {
 
       headerRow.append(badge, titleIn, delBtn);
 
-      const contentLabel = document.createElement("label");
-      contentLabel.style.fontSize = "12px";
-      contentLabel.style.fontWeight = "600";
-      contentLabel.style.color = "#475569";
-      contentLabel.textContent = "📝 重點內容與指導說明 (Notion 筆記式編輯，支援換行條列)";
-
-      const contentIn = document.createElement("textarea");
-      contentIn.className = "custom-textarea";
-      contentIn.rows = 4;
-      contentIn.style.fontFamily = "inherit";
-      contentIn.style.lineHeight = "1.6";
-      contentIn.style.fontSize = "13px";
-      contentIn.placeholder = "輸入指導說明、研究要求或執行步驟（換行自動條列，不需記憶複雜 markdown 標籤）...";
-      contentIn.value = g.content || "";
-      contentIn.oninput = () => {
-        g.content = contentIn.value;
+      // 1. 引言說明 (選填)
+      const introWrap = document.createElement("div");
+      const introLabel = document.createElement("label");
+      introLabel.style.fontSize = "12px";
+      introLabel.style.fontWeight = "600";
+      introLabel.style.color = "#475569";
+      introLabel.textContent = "💡 前言引導說明 (選填)";
+      const introIn = document.createElement("input");
+      introIn.type = "text";
+      introIn.placeholder = "例如：會計與財務研究高度依賴實證數據分析，請務必熟悉以下工具：";
+      introIn.value = g.intro || "";
+      introIn.style.minHeight = "34px";
+      introIn.style.fontSize = "13px";
+      introIn.oninput = () => {
+        g.intro = introIn.value;
         state.studentsDirty = true;
         state.draftSaved = false;
         scheduleDocumentUpdate();
       };
+      introWrap.append(introLabel, introIn);
+
+      // 2. 條列重點項目清單 (Points)
+      const pointsBox = document.createElement("div");
+      pointsBox.style.background = "#f8fafc";
+      pointsBox.style.border = "1px solid #e2e8f0";
+      pointsBox.style.borderRadius = "8px";
+      pointsBox.style.padding = "10px 12px";
+      pointsBox.style.display = "flex";
+      pointsBox.style.flexDirection = "column";
+      pointsBox.style.gap = "8px";
+
+      const pointsHeader = document.createElement("div");
+      pointsHeader.style.display = "flex";
+      pointsHeader.style.justifyContent = "space-between";
+      pointsHeader.style.alignItems = "center";
+
+      const pointsTitle = document.createElement("div");
+      pointsTitle.style.fontSize = "12px";
+      pointsTitle.style.fontWeight = "700";
+      pointsTitle.style.color = "#001F3F";
+      pointsTitle.textContent = "📋 指導重點與規範清單（免寫 Markdown）";
+
+      const addPointBtn = document.createElement("button");
+      addPointBtn.type = "button";
+      addPointBtn.className = "secondary-button mini-button";
+      addPointBtn.textContent = "＋ 新增要點";
+      addPointBtn.style.padding = "3px 8px";
+      addPointBtn.style.fontSize = "11px";
+      addPointBtn.onclick = () => {
+        g.points = g.points || [];
+        g.points.push({ label: "新重點", text: "" });
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        renderStudentsEditors();
+        scheduleDocumentUpdate();
+      };
+      pointsHeader.append(pointsTitle, addPointBtn);
+      pointsBox.append(pointsHeader);
+
+      const pointsList = document.createElement("div");
+      pointsList.style.display = "flex";
+      pointsList.style.flexDirection = "column";
+      pointsList.style.gap = "8px";
+
+      (g.points || []).forEach((pt, ptIndex) => {
+        const ptRow = document.createElement("div");
+        ptRow.style.display = "grid";
+        ptRow.style.gridTemplateColumns = "150px 1fr 32px";
+        ptRow.style.gap = "8px";
+        ptRow.style.alignItems = "center";
+
+        const labelIn = document.createElement("input");
+        labelIn.type = "text";
+        labelIn.placeholder = "重點標籤 (如: 格式規範)";
+        labelIn.value = pt.label || "";
+        labelIn.style.fontWeight = "700";
+        labelIn.style.color = "#001F3F";
+        labelIn.style.minHeight = "34px";
+        labelIn.style.fontSize = "12px";
+        labelIn.oninput = () => {
+          pt.label = labelIn.value;
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          scheduleDocumentUpdate();
+        };
+
+        const textIn = document.createElement("input");
+        textIn.type = "text";
+        textIn.placeholder = "詳細說明與執行要求...";
+        textIn.value = pt.text || "";
+        textIn.style.minHeight = "34px";
+        textIn.style.fontSize = "12px";
+        textIn.oninput = () => {
+          pt.text = textIn.value;
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          scheduleDocumentUpdate();
+        };
+
+        const delPtBtn = document.createElement("button");
+        delPtBtn.type = "button";
+        delPtBtn.className = "btn-delete mini-delete-btn";
+        delPtBtn.textContent = "×";
+        delPtBtn.title = "刪除此要點";
+        delPtBtn.onclick = () => {
+          g.points.splice(ptIndex, 1);
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          renderStudentsEditors();
+          scheduleDocumentUpdate();
+        };
+
+        ptRow.append(labelIn, textIn, delPtBtn);
+        pointsList.append(ptRow);
+      });
+
+      pointsBox.append(pointsList);
 
       // Resources box: 講義、簡報、YouTube
       const resourcesBox = document.createElement("div");
@@ -2914,7 +3033,7 @@ function renderStudentsEditors() {
       resGrid.append(handoutWrap, slidesWrap, ytWrap);
       resourcesBox.append(resLabel, resGrid);
 
-      card.append(headerRow, contentLabel, contentIn, resourcesBox);
+      card.append(headerRow, introWrap, pointsBox, resourcesBox);
       elements.studentGuidelineList.append(card);
     });
   }
@@ -3615,12 +3734,21 @@ function renderPreview() {
       if (g.youtubeUrl) {
         links.push(`<a href="${escapeHtml(g.youtubeUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#dc2626;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">▶ YouTube 影片 ↗</a>`);
       }
-      const linksHtml = links.length ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">${links.join("")}</div>` : "";
+      const linksHtml = links.length ? `<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">${links.join("")}</div>` : "";
+
+      const introHtml = g.intro ? `<p style="margin:0 0 10px;color:#334155;line-height:1.6;font-size:14px;">${escapeHtml(g.intro)}</p>` : "";
+
+      const pointsHtml = (g.points && g.points.length) ? `
+        <ul style="margin:8px 0;padding-left:20px;line-height:1.7;color:#334155;font-size:14px;">
+          ${g.points.map((pt) => `<li>${pt.label ? `<strong>${escapeHtml(pt.label)}</strong>：` : ""}${escapeHtml(pt.text || "")}</li>`).join("")}
+        </ul>
+      ` : "";
 
       return `
         <div style="margin:20px 0;padding:18px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
           <h3 style="margin:0 0 10px;color:#001F3F;font-size:17px;font-weight:700;">${escapeHtml(g.title || "")}</h3>
-          <div style="color:#475569;line-height:1.7;font-size:14px;">${inlineMarkdownPreview(g.content || "")}</div>
+          ${introHtml}
+          ${pointsHtml}
           ${linksHtml}
         </div>
       `;
