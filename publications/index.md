@@ -9,7 +9,7 @@ subtitle: "Publications, Working Papers & Conference Presentations"
 #### 機器學習於銷售預算之應用：一項方法論比較與教學案例
 **張修瑋 \***  (2025)  
 *會計審計論叢*  
-`✅ Accepted (2026/04/15) | Forthcoming`
+`✅ Accepted (2026/04/15) (Forthcoming)`
 :::
 
 ::: {.callout-note icon=false}
