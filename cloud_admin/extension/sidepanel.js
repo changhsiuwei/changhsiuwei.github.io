@@ -1361,9 +1361,9 @@ function renderTree() {
   elements.pageTree.replaceChildren();
   const contentFiles = state.files.filter((path) => /\.(md|qmd)$/i.test(path));
 
-  // 1. 主要核心頁面（首頁、個人資訊、近期活動、學術出版）
+  // 1. 主要核心頁面（首頁、個人資訊、近期活動、學術出版、學生專區）
   const coreStaticPages = STATIC_PAGES.filter((p) => !p.path.startsWith("knowledge/") && !p.path.startsWith("lab/"));
-  const coreFiles = coreStaticPages.map((p) => p.path).filter((path) => contentFiles.includes(path));
+  const coreFiles = coreStaticPages.map((p) => p.path);
 
   const mainSection = document.createElement("section");
   mainSection.className = "tree-group";
