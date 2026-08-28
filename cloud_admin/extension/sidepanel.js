@@ -12,160 +12,7 @@ const STATIC_PAGES = [
   { path: "knowledge/index.md", label: "AI 知識站", icon: "知" }
 ];
 
-const KNOWN_POST_METADATA = {
-  "knowledge/posts/welcome/index.md": {
-    title: "AI 走進會計課堂後，我們不能再把思考外包",
-    date: "2026-07-06",
-    categories: ["教學現場", "反思", "課堂設計"],
-    desc: "AI 進入課堂後，評量與思考方式必須跟著調整，不能只是依賴工具完成作業。",
-    draft: true,
-    image: ""
-  },
-  "knowledge/posts/2026-07-08-agent-computer-interface/index.md": {
-    title: "讓 Agent 點 UI，是把工程問題推給模型猜",
-    date: "2026-07-08",
-    categories: ["Agentic AI", "ACI", "工作流設計"],
-    desc: "與其讓 AI 透過視覺猜測座標，不如給它乾淨、受限且定義清楚的 API。",
-    draft: true,
-    image: "aci-split.png"
-  },
-  "knowledge/posts/2026-07-08-agentic-ai-automation/index.md": {
-    title: "讓 AI 往前走之前，先教它停下來",
-    date: "2026-07-08",
-    categories: ["自動化", "防呆機制", "Agentic AI"],
-    desc: "可靠的 Agent 不是狂奔不停，而是能在關鍵步驟停下來驗證成果。",
-    draft: true,
-    image: "concept.png"
-  },
-  "knowledge/posts/2026-07-08-ai-agent-verification-harness/index.md": {
-    title: "做 Agent 的九成工夫，藏在檢查規則裡",
-    date: "2026-07-08",
-    categories: ["驗證測試", "Agent Harness", "品質控管"],
-    desc: "沒有嚴謹的測試與邊界檢查，自主代理人很快就會變成失控的腳本。",
-    draft: true,
-    image: "verification-harness.png"
-  },
-  "knowledge/posts/2026-07-08-ai-director-method/index.md": {
-    title: "先把任務說清楚，模型才知道邊界",
-    date: "2026-07-08",
-    categories: ["提示工程", "方法論", "協同合作"],
-    desc: "導演法核心在於定義角色、邊界與驗收準則，讓模型在軌道上發揮。",
-    draft: true,
-    image: "concept.png"
-  },
-  "knowledge/posts/2026-07-09-context-engineering-memory/index.md": {
-    title: "不要把所有紀錄塞回 prompt：context engineering 在解決什麼",
-    date: "2026-07-09",
-    categories: ["Context Engineering", "記憶架構", "工作流設計"],
-    desc: "長對話衰退是真實存在的物理限制，必須靠層次記憶與上下文修剪來克服。",
-    draft: true,
-    image: "context-ledger-v2.png"
-  },
-  "knowledge/posts/2026-07-09-harness-makes-ai-improve/index.md": {
-    title: "模型沒有自己變聰明，是 harness 讓它有地方變好",
-    date: "2026-07-09",
-    categories: ["自我演進", "架構設計", "Agent Harness"],
-    desc: "真正讓系統持續提升的，不是更大的參數量，而是包裹著它的外骨骼。",
-    draft: true,
-    image: "harness-layer-v2.png"
-  },
-  "knowledge/posts/2026-07-09-self-improvement-evaluator-brake/index.md": {
-    title: "誰來評分，誰來踩煞車：自我改進最難的地方",
-    date: "2026-07-09",
-    categories: ["評估機制", "安全性", "防呆保護"],
-    desc: "自我進化的瓶頸永遠在於 evaluator 是否獨立、是否具備回滾機制。",
-    draft: true,
-    image: ""
-  },
-  "knowledge/posts/2026-07-09-self-improving-harness-boundaries/index.md": {
-    title: "讓系統修改自己的規則，危險也在這裡",
-    date: "2026-07-09",
-    categories: ["安全邊界", "自我改進", "工程準則"],
-    desc: "系統規則的演進必須限定在沙盒內，核心不變量絕對不可被覆寫。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-ai-debate-coach/index.md": {
-    title: "把學生的句子放到反方席上",
-    date: "2026-07-08",
-    categories: ["教學案例", "思辨訓練", "會計教育"],
-    desc: "利用 AI 擔任反方辯友，挑戰學生論述的盲點與邏輯漏洞。",
-    draft: true,
-    image: "concept.png"
-  },
-  "lab/posts/2026-07-08-ai-grading-ocr/index.md": {
-    title: "分數要能被打開，AI 批改才有資格進場",
-    date: "2026-07-08",
-    categories: ["評分標準", "教學實驗", "透明度"],
-    desc: "AI 批改若無法追溯評分依據，就無法真正幫助學生理解錯誤。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-ai-lesson-prep-markdown/index.md": {
-    title: "備課資料夾裡，要留下教室剛發生的事",
-    date: "2026-07-08",
-    categories: ["教學筆記", "Markdown", "教材迭代"],
-    desc: "用 Markdown 快速捕捉課堂互動，讓教案隨每學期現場持續演進。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-ai-presentation-generator/index.md": {
-    title: "AI 很會填滿投影片，講者要先學會刪掉",
-    date: "2026-07-08",
-    categories: ["簡報教學", "教學實驗", "認知負荷"],
-    desc: "簡報生成工具往往塞入過多廢話，教導學生去蕪存菁才是關鍵能力。",
-    draft: true,
-    image: "concept.png"
-  },
-  "lab/posts/2026-07-08-ai-super-ta/index.md": {
-    title: "把重複勞動交出去，老師才回得來",
-    date: "2026-07-08",
-    categories: ["助教工作流", "自動化", "教學現場"],
-    desc: "將瑣碎行政與常見問題分流，教師才能投入高價值的引導與對話。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-ai-thinking-resistance/index.md": {
-    title: "太乾淨的答案，常常沒有主人",
-    date: "2026-07-08",
-    categories: ["思考阻力", "作業設計", "批判思維"],
-    desc: "設計具有思考阻力的作業，避免學生直接貼上未經消化的 AI 產出。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-multilingual-inclusive-teaching/index.md": {
-    title: "母語作為助跑，讓學生回到同一張桌子",
-    date: "2026-07-08",
-    categories: ["雙語教學", "多元共融", "課堂實驗"],
-    desc: "善用 AI 即時轉譯與雙語對照，降低國際生與非母語者的參與門檻。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-predictive-ai-sales-budget/index.md": {
-    title: "做預算的那一天，我們到底知道什麼",
-    date: "2026-07-08",
-    categories: ["管理會計", "機器學習", "預算編製"],
-    desc: "結合機器學習模型與管理會計直覺，重新審視傳統預算編製假設。",
-    draft: true,
-    image: ""
-  },
-  "lab/posts/2026-07-08-tao-human-ai-collaboration/index.md": {
-    title: "高手用 AI 後，工作才剛開始",
-    date: "2026-07-08",
-    categories: ["人機協同", "專業判斷", "工作法"],
-    desc: "AI 快速產生初稿後，專家的經驗、批判與細節雕琢才是決勝點。",
-    draft: true,
-    image: "concept.png"
-  },
-  "lab/posts/2026-07-08-vibe-coding-financial-crawler/index.md": {
-    title: "Vibe Coding 進會計課：會寫程式以前，我們先學會寫需求合約",
-    date: "2026-07-08",
-    categories: ["Vibe Coding", "財務爬蟲", "跨領域教學"],
-    desc: "引導會計系學生用自然語言定義精準需求，驅動 AI 撰寫爬蟲。",
-    draft: true,
-    image: ""
-  }
-};
+const KNOWN_POST_METADATA = {};
 
 function getPostMetadata(path) {
   if (state.postMetadataCache && state.postMetadataCache[path]) {
@@ -176,7 +23,7 @@ function getPostMetadata(path) {
   }
   const slug = path.split("/").at(-2) || path;
   const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  return { title: label, date: "", categories: [], desc: "", draft: false, image: "" };
+  return { title: label, date: "", categories: [], desc: "", draft: false, image: "", slides: "", handout: "" };
 }
 
 const state = {
@@ -272,6 +119,7 @@ const elements = {
   sectionHubArticleList: $("sectionHubArticleList"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
+  deleteDocumentButton: $("deleteDocumentButton"),
   titleInput: $("titleInput"),
   descriptionInput: $("descriptionInput"),
   dateInput: $("dateInput"),
@@ -279,6 +127,8 @@ const elements = {
   categoriesInput: $("categoriesInput"),
   featuredImageInput: $("featuredImageInput"),
   uploadCoverButton: $("uploadCoverButton"),
+  slidesUrlInput: $("slidesUrlInput"),
+  handoutUrlInput: $("handoutUrlInput"),
   commitMessage: $("commitMessage"),
   wordCount: $("wordCount"),
   draftStatus: $("draftStatus"),
@@ -1202,6 +1052,14 @@ function currentFrontMatter() {
     const img = elements.featuredImageInput.value.trim();
     frontMatter = img ? setYamlScalar(frontMatter, "image", img) : removeYamlField(frontMatter, "image");
   }
+  if (elements.slidesUrlInput) {
+    const slides = elements.slidesUrlInput.value.trim();
+    frontMatter = slides ? setYamlScalar(frontMatter, "slides", slides) : removeYamlField(frontMatter, "slides");
+  }
+  if (elements.handoutUrlInput) {
+    const handout = elements.handoutUrlInput.value.trim();
+    frontMatter = handout ? setYamlScalar(frontMatter, "handout", handout) : removeYamlField(frontMatter, "handout");
+  }
   return frontMatter;
 }
 
@@ -1357,6 +1215,10 @@ function setMetadata(frontMatter, fallbackTitle = "") {
   if (elements.draftInput) elements.draftInput.value = isDraft ? "true" : "false";
   const imageVal = readYamlScalar(frontMatter, "image") || "";
   if (elements.featuredImageInput) elements.featuredImageInput.value = imageVal;
+  const slidesVal = readYamlScalar(frontMatter, "slides") || readYamlScalar(frontMatter, "slides_url") || "";
+  if (elements.slidesUrlInput) elements.slidesUrlInput.value = slidesVal;
+  const handoutVal = readYamlScalar(frontMatter, "handout") || readYamlScalar(frontMatter, "handout_url") || "";
+  if (elements.handoutUrlInput) elements.handoutUrlInput.value = handoutVal;
 
   if (state.currentPath) {
     state.postMetadataCache[state.currentPath] = {
@@ -1365,7 +1227,9 @@ function setMetadata(frontMatter, fallbackTitle = "") {
       categories: elements.categoriesInput.value.split(",").map((c) => c.trim()).filter(Boolean),
       desc: elements.descriptionInput.value,
       draft: isDraft,
-      image: imageVal
+      image: imageVal,
+      slides: slidesVal,
+      handout: handoutVal
     };
   }
 }
@@ -2315,6 +2179,73 @@ function serializeSectionHub(frontMatter, intro, lineEnding = "\n") {
   return `${normalizedIntro}${lineEnding}`;
 }
 
+async function deletePost(postPath) {
+  if (!postPath || (!postPath.startsWith("knowledge/posts/") && !postPath.startsWith("lab/posts/"))) {
+    log("此頁面為固定結構頁面，無法刪除", "error");
+    return;
+  }
+  const meta = getPostMetadata(postPath);
+  const title = meta.title || postPath;
+  if (!window.confirm(`確定要永久刪除文章「${title}」嗎？\n路徑：${postPath}\n\n此動作將會從網站發布中刪除此文章檔案及其所有附屬圖片。`)) {
+    return;
+  }
+
+  const postDir = postPath.replace(/\/index\.(?:md|qmd)$/i, "");
+  const isLab = postPath.startsWith("lab/");
+  const fallbackPath = isLab ? "lab/index.md" : "knowledge/index.md";
+
+  try {
+    if (state.connected) {
+      const filesToDelete = state.files
+        .filter((f) => f.startsWith(postDir + "/") || f === postPath)
+        .map((f) => ({ path: f, operation: "delete" }));
+
+      if (!filesToDelete.length) {
+        filesToDelete.push({ path: postPath, operation: "delete" });
+      }
+
+      const response = await fetch(`${state.apiBase}/api/publish`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          baseCommitSha: state.head,
+          message: `chore: 刪除文章 ${title}`,
+          files: filesToDelete
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `刪除失敗 (${response.status})`);
+      }
+      const data = await response.json();
+      state.head = data.commitSha;
+    }
+
+    try {
+      await chrome.storage.local.remove(`draft:${postPath}`);
+      await clearDraftUploads(postPath);
+    } catch {}
+
+    state.files = state.files.filter((f) => !f.startsWith(postDir + "/") && f !== postPath);
+    if (state.postMetadataCache) delete state.postMetadataCache[postPath];
+
+    log(`文章「${title}」已成功刪除`, "success");
+
+    if (state.currentPath === postPath || state.currentPath.startsWith(postDir + "/")) {
+      await loadFile(fallbackPath);
+    } else {
+      renderTree();
+      if (state.currentPath === fallbackPath) {
+        const split = splitFrontMatter(state.originalContent);
+        renderSectionHub(state.currentPath, split.body);
+      }
+    }
+  } catch (error) {
+    log(error.message || "刪除文章時發生錯誤", "error");
+  }
+}
+
 function renderSectionHub(path, body) {
   const isKnowledge = path.startsWith("knowledge");
   const sectionName = isKnowledge ? "AI 知識站" : "AI 教學與研究";
@@ -2390,6 +2321,28 @@ function renderSectionHub(path, body) {
           metaRow.append(catTag);
         });
       }
+      if (meta.slides) {
+        const slidesBadge = document.createElement("a");
+        slidesBadge.href = meta.slides;
+        slidesBadge.target = "_blank";
+        slidesBadge.rel = "noopener noreferrer";
+        slidesBadge.className = "resource-pill slides-pill";
+        slidesBadge.textContent = "📊 簡報";
+        slidesBadge.title = "點擊開啟 Google Drive 簡報";
+        slidesBadge.onclick = (e) => e.stopPropagation();
+        metaRow.append(slidesBadge);
+      }
+      if (meta.handout) {
+        const handoutBadge = document.createElement("a");
+        handoutBadge.href = meta.handout;
+        handoutBadge.target = "_blank";
+        handoutBadge.rel = "noopener noreferrer";
+        handoutBadge.className = "resource-pill handout-pill";
+        handoutBadge.textContent = "📄 講義";
+        handoutBadge.title = "點擊開啟 Google Drive 講義";
+        handoutBadge.onclick = (e) => e.stopPropagation();
+        metaRow.append(handoutBadge);
+      }
 
       const desc = document.createElement("p");
       desc.className = "article-hub-desc";
@@ -2439,7 +2392,17 @@ function renderSectionHub(path, body) {
         loadFile(postPath);
       };
 
-      actions.append(toggleDraftBtn, previewBtn, editBtn);
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.className = "btn-delete";
+      deleteBtn.textContent = "🗑️ 刪除";
+      deleteBtn.title = "永久刪除此文章與其圖檔";
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        deletePost(postPath);
+      };
+
+      actions.append(toggleDraftBtn, previewBtn, editBtn, deleteBtn);
       card.append(header, metaRow);
       if (meta.image) {
         const thumb = document.createElement("img");
@@ -2710,6 +2673,10 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isLab = path === "lab/index.md";
   const isSectionHub = isKnowledge || isLab;
   const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
+  const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
+  if (elements.deleteDocumentButton) {
+    elements.deleteDocumentButton.style.display = isDeletable ? "inline-flex" : "none";
+  }
 
   if (elements.homeEditors) elements.homeEditors.hidden = !isHome;
   if (elements.aboutEditors) elements.aboutEditors.hidden = !isAbout;
@@ -3079,12 +3046,33 @@ function renderPreview() {
     body = rewritePreviewImages(body);
   }
   const title = escapeHtml(elements.titleInput.value || pageInfo(state.currentPath).label);
+  const description = escapeHtml(elements.descriptionInput.value);
   const featuredImage = (elements.featuredImageInput && !elements.featuredImageInput.closest("section").hidden)
     ? elements.featuredImageInput.value.trim()
     : readYamlScalar(currentFrontMatter(), "image");
   const featuredImageHtml = featuredImage
     ? `<img class="featured-image" src="${escapeHtml(previewAssetUrl(featuredImage))}" alt="${title}" onerror="this.style.display='none'">`
     : "";
+
+  const slides = (elements.slidesUrlInput && !elements.slidesUrlInput.closest("section").hidden)
+    ? elements.slidesUrlInput.value.trim()
+    : readYamlScalar(currentFrontMatter(), "slides") || readYamlScalar(currentFrontMatter(), "slides_url");
+  const handout = (elements.handoutUrlInput && !elements.handoutUrlInput.closest("section").hidden)
+    ? elements.handoutUrlInput.value.trim()
+    : readYamlScalar(currentFrontMatter(), "handout") || readYamlScalar(currentFrontMatter(), "handout_url");
+
+  let resourceLinksHtml = "";
+  if (slides || handout) {
+    const links = [];
+    if (slides) {
+      links.push(`<a href="${escapeHtml(slides)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:#001F3F;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(0,31,63,0.15)">📊 簡報下載 (Google Drive) ↗</a>`);
+    }
+    if (handout) {
+      links.push(`<a href="${escapeHtml(handout)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;background:#C9A227;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(201,162,39,0.2)">📄 講義下載 (Google Drive) ↗</a>`);
+    }
+    resourceLinksHtml = `<div class="resource-links-bar" style="display:flex;gap:12px;margin:18px 0 24px;flex-wrap:wrap;">${links.join("")}</div>`;
+  }
+
   const navigation = STATIC_PAGES.map((page) => `<span>${escapeHtml(page.label)}</span>`).join("");
   elements.livePreview.srcdoc = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>
     *{box-sizing:border-box}body{margin:0;color:#2c344e;background:#fff;font:15px/1.8 Georgia,'Noto Serif TC',serif}
@@ -3094,7 +3082,7 @@ function renderPreview() {
     .description{margin:0 0 30px;color:#667085;font:16px/1.7 Inter,'Noto Sans TC',sans-serif}.featured-image{display:block;max-width:min(100%,680px);max-height:420px;margin:0 auto 30px;object-fit:contain;border-radius:16px}.content img{max-width:100%;height:auto;border-radius:12px}.content a{color:#403f6f}.content blockquote{margin-left:0;padding:8px 18px;border-left:4px solid #c8d5ff;background:#f6f7ff}.preview-table-wrap{overflow:auto;margin:18px 0}.content table{width:100%;border-collapse:collapse}.content th,.content td{border:1px solid #dfe4ef;padding:7px}
     .preview-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin:18px 0}.preview-column{grid-column:span var(--preview-span,12);min-width:0}.preview-callout{margin:18px 0;padding:14px 18px;border:1px solid #dfe4ef;border-left:5px solid #6b6aa8;border-radius:10px;background:#f8f9ff}.preview-callout-tip{border-left-color:#3b8d76;background:#f4fbf8}.preview-callout-warning,.preview-callout-caution{border-left-color:#d49a36;background:#fffaf0}.preview-callout-important{border-left-color:#b84b61;background:#fff6f7}.preview-layout-section{margin:12px 0}.premium-icon-box{display:grid;place-items:center;width:44px;height:44px;margin-bottom:10px;border-radius:12px;background:#eef1ff;color:#403f6f}
     @media(max-width:700px){.nav{display:none}main{padding:34px 22px}h1{font-size:30px}.preview-column{grid-column:1/-1}}
-  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}<article class="content">${body}</article></main></body></html>`;
+  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}<article class="content">${body}</article></main></body></html>`;
   elements.previewBadge.textContent = "即時更新";
   elements.previewBadge.className = "mini-badge ready";
 }
@@ -3329,7 +3317,7 @@ elements.imageInput.addEventListener("change", async () => {
   }
 });
 
-for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput].filter(Boolean)) {
+for (const input of [elements.titleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput].filter(Boolean)) {
   input.addEventListener("input", () => {
     state.metadataDirty = true;
     state.draftSaved = false;
@@ -3341,6 +3329,10 @@ for (const input of [elements.titleInput, elements.descriptionInput, elements.da
     scheduleDocumentUpdate();
   });
 }
+
+elements.deleteDocumentButton?.addEventListener("click", () => {
+  if (state.currentPath) deletePost(state.currentPath);
+});
 
 elements.activityIntroInput?.addEventListener("input", () => {
   state.bodyDirty = true;

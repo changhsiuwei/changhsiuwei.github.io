@@ -78,6 +78,7 @@
               <h2 id="documentHeading">尚未載入頁面</h2>
             </div>
             <div class="document-state">
+              <button id="deleteDocumentButton" class="danger-button mini-button" type="button" style="display:none;">🗑️ 刪除此文章</button>
               <span id="draftStatus">內容已同步</span>
               <span id="wordCount">0 字</span>
             </div>
@@ -113,6 +114,14 @@
                 <input id="featuredImageInput" type="text" placeholder="例如：cover.png 或 assets/uploads/...，或點右側上傳">
                 <button id="uploadCoverButton" class="secondary-button mini-button" type="button" style="white-space:nowrap;">選擇圖片</button>
               </div>
+            </div>
+            <div class="field field-grow">
+              <label for="slidesUrlInput">📊 簡報連結 (Google Drive / 簡報網址)</label>
+              <input id="slidesUrlInput" type="url" placeholder="https://drive.google.com/... 或簡報下載網址">
+            </div>
+            <div class="field field-grow">
+              <label for="handoutUrlInput">📄 講義連結 (Google Drive / 講義網址)</label>
+              <input id="handoutUrlInput" type="url" placeholder="https://drive.google.com/... 或講義下載網址">
             </div>
           </section>
 
