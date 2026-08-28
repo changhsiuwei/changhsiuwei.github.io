@@ -33,6 +33,8 @@ vm.runInNewContext([
   productionFunction("serializeAboutPage"),
   productionFunction("parsePublicationsPage"),
   productionFunction("serializePublicationsPage"),
+  productionFunction("parseStudentsPage"),
+  productionFunction("serializeStudentsPage"),
   productionFunction("serializeSectionHub"),
   productionFunction("previewAssetUrl"),
   productionFunction("unquoteYaml"),
@@ -54,6 +56,8 @@ vm.runInNewContext([
   "this.serializeAboutPage = serializeAboutPage;",
   "this.parsePublicationsPage = parsePublicationsPage;",
   "this.serializePublicationsPage = serializePublicationsPage;",
+  "this.parseStudentsPage = parseStudentsPage;",
+  "this.serializeStudentsPage = serializeStudentsPage;",
   "this.serializeSectionHub = serializeSectionHub;",
   "this.previewAssetUrl = previewAssetUrl;",
   "this.readYamlScalar = readYamlScalar;",
@@ -270,14 +274,20 @@ test("Google AI Studio configuration supports specified models, thinking level, 
   assert.ok(scriptSource.includes("The \"Kill List\""));
 });
 
-test("students area is configured as a static page with password reset capability", () => {
+test("students area is configured as a static page with password reset capability and roundtrip serialization", () => {
   assert.ok(scriptSource.includes('path: "students/index.qmd"'));
   assert.ok(scriptSource.includes("btnUpdateStudentPassword"));
   assert.ok(scriptSource.includes("students/password_hash.txt"));
 
   const markdown = readFileSync(new URL("../../students/index.qmd", import.meta.url), "utf8");
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
-  const protectedContent = sandbox.protectLayoutSyntax(body);
-  assert.ok(protectedContent.editorBody.includes("碩士論文撰寫基本功"));
-  assert.ok(protectedContent.editorBody.includes("如何正確地使用 AI 工具"));
+  const model = sandbox.parseStudentsPage(body);
+  assert.equal(model.welcomeTitle, "歡迎來到指導學生專區");
+  assert.equal(model.guidelines.length, 3);
+  assert.ok(model.guidelines[0].title.includes("碩士論文撰寫基本功"));
+  assert.ok(model.guidelines[2].title.includes("如何正確地使用 AI 工具"));
+
+  const reconstructed = sandbox.serializeStudentsPage(model);
+  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+  assert.equal(normalize(reconstructed), normalize(body));
 });

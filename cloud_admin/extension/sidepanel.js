@@ -63,6 +63,8 @@ const state = {
   pubDirty: false,
   sectionHubModel: null,
   sectionHubDirty: false,
+  studentsModel: null,
+  studentsDirty: false,
   postMetadataCache: {},
   geminiApiKey: "",
   geminiModel: "gemini-3.7-flash",
@@ -128,6 +130,12 @@ const elements = {
   studentPasswordInput: $("studentPasswordInput"),
   btnUpdateStudentPassword: $("btnUpdateStudentPassword"),
   studentPasswordStatus: $("studentPasswordStatus"),
+  studentsWelcomeTitleInput: $("studentsWelcomeTitleInput"),
+  studentsWelcomeTextInput: $("studentsWelcomeTextInput"),
+  addStudentScheduleButton: $("addStudentScheduleButton"),
+  studentScheduleList: $("studentScheduleList"),
+  addStudentGuidelineButton: $("addStudentGuidelineButton"),
+  studentGuidelineList: $("studentGuidelineList"),
   documentHeading: $("documentHeading"),
   documentLocation: $("documentLocation"),
   deleteDocumentButton: $("deleteDocumentButton"),
@@ -250,7 +258,7 @@ async function removeNewDraftPath(path) {
 
 function hasUnsavedChanges() {
   return state.newDocument || state.bodyDirty || state.metadataDirty
-    || state.homeDirty || state.aboutDirty || state.pubDirty || state.sectionHubDirty
+    || state.homeDirty || state.aboutDirty || state.pubDirty || state.sectionHubDirty || state.studentsDirty
     || Array.from(state.tableModels.values()).some((model) => model.dirty)
     || Array.from(state.activityModels.values()).some((model) => model.dirty)
     || state.pendingUploads.size > 0;
@@ -916,6 +924,106 @@ function serializePublicationsPage(model, lineEnding = "\n") {
   ].join(lineEnding);
 }
 
+function parseStudentsPage(body) {
+  const lines = body.split(/\r?\n/);
+  let welcomeTitle = "歡迎來到指導學生專區";
+  let welcomeText = "";
+  const guidelines = [];
+  const schedules = [];
+
+  let section = "";
+  let curGuideline = null;
+  let inCallout = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith("::: {.callout-note") || trimmed.startsWith("::: callout-note")) {
+      inCallout = true;
+      continue;
+    }
+    if (inCallout) {
+      if (trimmed === ":::") {
+        inCallout = false;
+        continue;
+      }
+      if (trimmed.startsWith("## ")) {
+        welcomeTitle = trimmed.replace(/^##\s+/, "").trim();
+      } else if (trimmed) {
+        welcomeText = welcomeText ? `${welcomeText}\n${trimmed}` : trimmed;
+      }
+      continue;
+    }
+
+    if (trimmed.startsWith("### 📅") || trimmed.includes("進度報告排程")) {
+      section = "schedules";
+      curGuideline = null;
+      continue;
+    }
+
+    if (section === "schedules") {
+      if (trimmed.startsWith("|") && !trimmed.includes("---") && !trimmed.includes("日期")) {
+        const parts = line.split("|").map((p) => p.trim()).filter(Boolean);
+        if (parts.length >= 2) {
+          schedules.push({
+            date: parts[0] || "",
+            presenter: parts[1] || "",
+            topic: parts[2] || ""
+          });
+        }
+      }
+      continue;
+    }
+
+    if (trimmed.startsWith("### ")) {
+      curGuideline = {
+        title: trimmed.replace(/^###\s+/, "").trim(),
+        content: ""
+      };
+      guidelines.push(curGuideline);
+      continue;
+    }
+
+    if (curGuideline) {
+      if (trimmed === "---") continue;
+      if (curGuideline.content || trimmed) {
+        curGuideline.content = curGuideline.content ? `${curGuideline.content}\n${line}` : line;
+      }
+    }
+  }
+
+  guidelines.forEach((g) => { g.content = g.content.trim(); });
+
+  return { welcomeTitle, welcomeText, guidelines, schedules };
+}
+
+function serializeStudentsPage(model, lineEnding = "\n") {
+  const parts = [];
+  parts.push("::: {.callout-note}");
+  parts.push(`## ${model.welcomeTitle || "歡迎來到指導學生專區"}`);
+  parts.push(model.welcomeText || "");
+  parts.push(":::");
+
+  for (const g of model.guidelines || []) {
+    parts.push("");
+    parts.push(`### ${g.title}`);
+    parts.push(g.content || "");
+  }
+
+  parts.push("");
+  parts.push("---");
+  parts.push("");
+  parts.push("### 📅 近期進度報告排程");
+  parts.push("| 日期 | 報告人 | 論文研讀主題 |");
+  parts.push("| :--- | :--- | :--- |");
+  for (const s of model.schedules || []) {
+    parts.push(`| ${s.date || ""} | ${s.presenter || ""} | ${s.topic || ""} |`);
+  }
+
+  return parts.join(lineEnding) + lineEnding;
+}
+
 function validateActivitiesForPublish() {
   for (const model of state.activityModels.values()) {
     for (const [index, event] of model.events.entries()) {
@@ -1164,6 +1272,8 @@ function currentContent() {
     body = elements.sectionHubIntroInput ? elements.sectionHubIntroInput.value.trim() : state.originalBody.trim();
   } else if (state.currentPath === "activities/index.md") {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
+  } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
+    body = serializeStudentsPage(state.studentsModel, state.lineEnding);
   } else {
     if (state.editorChanged) {
       const mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
@@ -2502,6 +2612,157 @@ function renderSectionHub(path, body) {
   }
 }
 
+function renderStudentsEditors() {
+  if (!state.studentsModel) return;
+  const model = state.studentsModel;
+
+  if (elements.studentsWelcomeTitleInput) {
+    elements.studentsWelcomeTitleInput.value = model.welcomeTitle || "";
+    elements.studentsWelcomeTitleInput.oninput = () => {
+      model.welcomeTitle = elements.studentsWelcomeTitleInput.value;
+      state.studentsDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.studentsWelcomeTextInput) {
+    elements.studentsWelcomeTextInput.value = model.welcomeText || "";
+    elements.studentsWelcomeTextInput.oninput = () => {
+      model.welcomeText = elements.studentsWelcomeTextInput.value;
+      state.studentsDirty = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.studentScheduleList) {
+    elements.studentScheduleList.replaceChildren();
+    (model.schedules || []).forEach((sch, index) => {
+      const card = document.createElement("div");
+      card.className = "card-item";
+      card.style.display = "grid";
+      card.style.gridTemplateColumns = "120px 140px 1fr 40px";
+      card.style.gap = "8px";
+      card.style.alignItems = "center";
+
+      const dateIn = document.createElement("input");
+      dateIn.type = "text";
+      dateIn.placeholder = "日期 (如 2026/09)";
+      dateIn.value = sch.date || "";
+      dateIn.style.minHeight = "36px";
+      dateIn.oninput = () => {
+        sch.date = dateIn.value;
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+
+      const presenterIn = document.createElement("input");
+      presenterIn.type = "text";
+      presenterIn.placeholder = "報告人 (如 王小明)";
+      presenterIn.value = sch.presenter || "";
+      presenterIn.style.minHeight = "36px";
+      presenterIn.oninput = () => {
+        sch.presenter = presenterIn.value;
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+
+      const topicIn = document.createElement("input");
+      topicIn.type = "text";
+      topicIn.placeholder = "論文研讀主題或進度說明";
+      topicIn.value = sch.topic || "";
+      topicIn.style.minHeight = "36px";
+      topicIn.oninput = () => {
+        sch.topic = topicIn.value;
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-delete mini-delete-btn";
+      delBtn.textContent = "×";
+      delBtn.title = "刪除此排程";
+      delBtn.onclick = () => {
+        model.schedules.splice(index, 1);
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        renderStudentsEditors();
+        scheduleDocumentUpdate();
+      };
+
+      card.append(dateIn, presenterIn, topicIn, delBtn);
+      elements.studentScheduleList.append(card);
+    });
+  }
+
+  if (elements.studentGuidelineList) {
+    elements.studentGuidelineList.replaceChildren();
+    (model.guidelines || []).forEach((g, index) => {
+      const card = document.createElement("div");
+      card.className = "card-item";
+      card.style.display = "flex";
+      card.style.flexDirection = "column";
+      card.style.gap = "8px";
+      card.style.marginBottom = "14px";
+
+      const headerRow = document.createElement("div");
+      headerRow.style.display = "flex";
+      headerRow.style.gap = "8px";
+      headerRow.style.alignItems = "center";
+
+      const titleIn = document.createElement("input");
+      titleIn.type = "text";
+      titleIn.placeholder = "規範標題 (例如：1. 碩士論文撰寫基本功)";
+      titleIn.value = g.title || "";
+      titleIn.style.flex = "1";
+      titleIn.style.fontWeight = "700";
+      titleIn.style.color = "#001F3F";
+      titleIn.style.minHeight = "36px";
+      titleIn.oninput = () => {
+        g.title = titleIn.value;
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-delete mini-delete-btn";
+      delBtn.textContent = "×";
+      delBtn.title = "刪除此規範";
+      delBtn.onclick = () => {
+        model.guidelines.splice(index, 1);
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        renderStudentsEditors();
+        scheduleDocumentUpdate();
+      };
+
+      headerRow.append(titleIn, delBtn);
+
+      const contentIn = document.createElement("textarea");
+      contentIn.className = "custom-textarea";
+      contentIn.rows = 4;
+      contentIn.placeholder = "輸入規範說明 (支援 Markdown 項目清單與連結)...";
+      contentIn.value = g.content || "";
+      contentIn.oninput = () => {
+        g.content = contentIn.value;
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+
+      card.append(headerRow, contentIn);
+      elements.studentGuidelineList.append(card);
+    });
+  }
+}
+
 function renderActivityEditors() {
   elements.activityEditors.replaceChildren();
   for (const model of state.activityModels.values()) {
@@ -2587,11 +2848,14 @@ function renderStructuredTables() {
   renderActivityEditors();
   const hasActivities = state.activityModels.size > 0;
   const hasTables = state.tableModels.size > 0;
-  elements.structuredData.hidden = !hasActivities && !hasTables;
-  elements.structuredDataTitle.textContent = hasActivities && hasTables ? "活動與表格" : hasActivities ? "活動管理" : "頁面表格";
-  elements.structuredDataHint.textContent = hasActivities
-    ? "直接新增、修改或刪除活動；日期、單位、主題與原網站雙欄版面會自動保留"
-    : "直接修改儲存格；欄位與原網站版面會自動保留";
+  const isStructured = ["index.md", "about/index.md", "publications/index.md", "knowledge/index.md", "lab/index.md", "activities/index.md", "students/index.qmd"].includes(state.currentPath);
+  elements.structuredData.hidden = !hasActivities && !hasTables && !isStructured;
+  if (!isStructured) {
+    elements.structuredDataTitle.textContent = hasActivities && hasTables ? "活動與表格" : hasActivities ? "活動管理" : "頁面表格";
+    elements.structuredDataHint.textContent = hasActivities
+      ? "直接新增、修改或刪除活動；日期、單位、主題與原網站雙欄版面會自動保留"
+      : "直接修改儲存格；欄位與原網站版面會自動保留";
+  }
   let tableNumber = 0;
   for (const model of state.tableModels.values()) {
     tableNumber += 1;
@@ -2787,7 +3051,7 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isLab = path === "lab/index.md";
   const isStudents = path === "students/index.qmd";
   const isSectionHub = isKnowledge || isLab;
-  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
+  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub || isStudents;
   const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
   const isPost = isDeletable;
   if (elements.deleteDocumentButton) {
@@ -2805,12 +3069,12 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   if (elements.activityIntroSection) elements.activityIntroSection.hidden = !isActivities;
   if (elements.activityEditors) elements.activityEditors.hidden = !isActivities;
   if (elements.tableEditors) elements.tableEditors.hidden = isStructuredPage;
-  if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && !isStudents && state.activityModels.size === 0 && state.tableModels.size === 0;
+  if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && state.activityModels.size === 0 && state.tableModels.size === 0;
 
   if (isStudents) {
     if (elements.structuredData) elements.structuredData.hidden = false;
-    if (elements.structuredDataTitle) elements.structuredDataTitle.textContent = "學生專區設定與排程表格";
-    if (elements.structuredDataHint) elements.structuredDataHint.textContent = "管理通行密碼與報告排程表格；下方可直接編修指引內文";
+    if (elements.structuredDataTitle) elements.structuredDataTitle.textContent = "學生專區管理";
+    if (elements.structuredDataHint) elements.structuredDataHint.textContent = "管理通行密碼、指導原則與進度報告排程；原網站版面會自動保留";
   }
 
   if (elements.editorToolbar) elements.editorToolbar.hidden = isStructuredPage;
@@ -2835,6 +3099,10 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
     state.sectionHubModel = { intro: split.body.trim(), path };
     state.sectionHubDirty = false;
     renderSectionHub(path, split.body);
+  } else if (isStudents) {
+    state.studentsModel = parseStudentsPage(split.body);
+    state.studentsDirty = false;
+    renderStudentsEditors();
   }
   ensureEditor();
   state.loadingEditor = true;
@@ -2881,6 +3149,8 @@ function updateDocumentState() {
     let totalEvents = 0;
     for (const model of state.activityModels.values()) totalEvents += model.events.length;
     elements.wordCount.textContent = `${totalEvents} 場活動`;
+  } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
+    elements.wordCount.textContent = `${(state.studentsModel.guidelines || []).length} 條規範 · ${(state.studentsModel.schedules || []).length} 筆排程`;
   } else if (state.editor) {
     const markdown = state.editor.getMarkdown();
     const latin = markdown.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)?/g) || [];
@@ -3163,6 +3433,48 @@ function renderPreview() {
       first = false;
     }
     body = previewBody;
+  } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
+    const model = state.studentsModel;
+    const calloutHtml = `
+      <div class="preview-callout preview-callout-note" style="margin-bottom:20px;">
+        <h2 style="margin:0 0 8px;color:#001F3F;">${escapeHtml(model.welcomeTitle || "歡迎來到指導學生專區")}</h2>
+        <p style="margin:0;line-height:1.6;color:#334155;">${escapeHtml(model.welcomeText || "").replace(/\n\n+/g, "</p><p>").replace(/\n/g, "<br>")}</p>
+      </div>
+    `;
+
+    const guidelinesHtml = (model.guidelines || []).map((g) => `
+      <div style="margin:18px 0;">
+        <h3 style="margin:0 0 8px;color:#001F3F;font-size:16px;">${escapeHtml(g.title || "")}</h3>
+        <div style="color:#475569;line-height:1.6;font-size:14px;">${inlineMarkdownPreview(g.content || "")}</div>
+      </div>
+    `).join("");
+
+    const scheduleRows = (model.schedules || []).map((s) => `
+      <tr>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef;font-weight:700;color:#2c344e;">${escapeHtml(s.date || "")}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef;font-weight:700;color:#403f6f;">${escapeHtml(s.presenter || "")}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef;">${inlineMarkdownPreview(s.topic || "")}</td>
+      </tr>
+    `).join("");
+
+    const scheduleTableHtml = `
+      <hr style="margin:24px 0;">
+      <h3 style="margin:0 0 12px;color:#001F3F;">📅 近期進度報告排程</h3>
+      <div class="preview-table-wrap">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="background:#f4f6fb;">
+              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">日期</th>
+              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">報告人</th>
+              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">論文研讀主題</th>
+            </tr>
+          </thead>
+          <tbody>${scheduleRows || '<tr><td colspan="3" style="padding:12px;text-align:center;color:#94a3b8;">目前尚無報告排程</td></tr>'}</tbody>
+        </table>
+      </div>
+    `;
+
+    body = `${calloutHtml}${guidelinesHtml}${scheduleTableHtml}`;
   } else {
     if (!state.editor) return;
     body = sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML()));
@@ -3800,6 +4112,26 @@ elements.btnUpdateStudentPassword?.addEventListener("click", async () => {
     elements.btnUpdateStudentPassword.disabled = false;
     elements.btnUpdateStudentPassword.textContent = "💾 更新通行密碼";
   }
+});
+
+elements.addStudentScheduleButton?.addEventListener("click", () => {
+  if (!state.studentsModel) return;
+  state.studentsModel.schedules = state.studentsModel.schedules || [];
+  state.studentsModel.schedules.push({ date: "", presenter: "", topic: "" });
+  state.studentsDirty = true;
+  state.draftSaved = false;
+  renderStudentsEditors();
+  scheduleDocumentUpdate();
+});
+
+elements.addStudentGuidelineButton?.addEventListener("click", () => {
+  if (!state.studentsModel) return;
+  state.studentsModel.guidelines = state.studentsModel.guidelines || [];
+  state.studentsModel.guidelines.push({ title: "新指導原則", content: "" });
+  state.studentsDirty = true;
+  state.draftSaved = false;
+  renderStudentsEditors();
+  scheduleDocumentUpdate();
 });
 
 elements.pageSearch.addEventListener("input", () => {

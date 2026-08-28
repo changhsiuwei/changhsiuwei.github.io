@@ -263,8 +263,9 @@
               </div>
             </div>
 
-            <!-- 學生專區專屬管理層（密碼重設與指引） -->
+            <!-- 學生專區專屬管理層（密碼重設、指引規範、報告排程） -->
             <div id="studentsEditors" class="page-editor-group" hidden>
+              <!-- 1. 密碼管理 -->
               <div class="card-section" style="background:#fcfdff;border:1px solid #dbe4f0;">
                 <div class="section-badge-header" style="margin-bottom:12px;">
                   <div class="section-badge" style="background:#001F3F;color:#ffffff;">🔒 學生專區通行密碼管理</div>
@@ -281,6 +282,37 @@
                   </p>
                   <div id="studentPasswordStatus" style="font-size:12px;font-weight:700;color:#059669;background:#f0fdf4;padding:8px 12px;border-radius:6px;border:1px solid #bbf7d0;margin-top:8px;display:none;"></div>
                 </div>
+              </div>
+
+              <!-- 2. 歡迎提示 -->
+              <div class="card-section">
+                <div class="section-badge">📢 歡迎提示與指引前言</div>
+                <div class="structured-field">
+                  <label for="studentsWelcomeTitleInput">提示方塊標題 (Callout Title)</label>
+                  <input id="studentsWelcomeTitleInput" type="text" placeholder="歡迎來到指導學生專區">
+                </div>
+                <div class="structured-field">
+                  <label for="studentsWelcomeTextInput">提示方塊內文 (Callout Content)</label>
+                  <textarea id="studentsWelcomeTextInput" class="custom-textarea" rows="3" placeholder="這裡放置了僅限本研究團隊成員（指導學生）查看的內部資訊..."></textarea>
+                </div>
+              </div>
+
+              <!-- 3. 近期進度報告排程 -->
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">📅 近期進度報告排程</div>
+                  <button id="addStudentScheduleButton" class="secondary-button mini-button" type="button">＋ 新增排程</button>
+                </div>
+                <div id="studentScheduleList" class="card-item-list"></div>
+              </div>
+
+              <!-- 4. 指導原則與規範清單 -->
+              <div class="card-section">
+                <div class="section-badge-header">
+                  <div class="section-badge">📚 指導原則與規範</div>
+                  <button id="addStudentGuidelineButton" class="secondary-button mini-button" type="button">＋ 新增規範</button>
+                </div>
+                <div id="studentGuidelineList" class="card-item-list"></div>
               </div>
             </div>
 
