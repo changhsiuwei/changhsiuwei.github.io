@@ -183,6 +183,17 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
   const head = await getHead(env);
   if (head.commitSha !== payload.baseCommitSha) return json({ error: "Content changed on GitHub", currentHead: head.commitSha }, 409);
 
+  const hasDeletes = payload.files.some((f) => f.operation === "delete");
+  let remotePaths = new Set<string>();
+  if (hasDeletes) {
+    try {
+      const treeData = await github(env, `${repoPath(env)}/git/trees/${head.treeSha}?recursive=1`);
+      if (treeData && Array.isArray(treeData.tree)) {
+        remotePaths = new Set(treeData.tree.map((item: any) => item.path));
+      }
+    } catch {}
+  }
+
   let batchBytes = 0;
   const seenPaths = new Set<string>();
   const tree: Array<{ path: string; mode: "100644"; type: "blob"; sha: string | null }> = [];
@@ -193,7 +204,9 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
     if (change.operation !== "upsert" && change.operation !== "delete") return json({ error: "Invalid file operation" }, 400);
     if (change.operation === "delete") {
       if (EXACT_EDITABLE.has(path)) return json({ error: "Fixed pages cannot be deleted" }, 400);
-      tree.push({ path, mode: "100644", type: "blob", sha: null });
+      if (remotePaths.size === 0 || remotePaths.has(path)) {
+        tree.push({ path, mode: "100644", type: "blob", sha: null });
+      }
       continue;
     }
     const extension = path.toLowerCase().split(".").pop() || "";
@@ -208,6 +221,10 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
       body: JSON.stringify({ content: change.encoding === "base64" ? change.content : change.content ?? "", encoding: change.encoding === "base64" ? "base64" : "utf-8" })
     });
     tree.push({ path, mode: "100644", type: "blob", sha: blob.sha });
+  }
+
+  if (tree.length === 0) {
+    return json({ ok: true, commitSha: head.commitSha, actor });
   }
 
   const newTree = await github(env, `${repoPath(env)}/git/trees`, {

@@ -2438,8 +2438,10 @@ async function deletePost(postPath) {
   const isLab = postPath.startsWith("lab/");
   const fallbackPath = isLab ? "lab/index.md" : "knowledge/index.md";
 
+  const isLocalDraft = state.newDocument && (state.currentPath === postPath);
+
   try {
-    if (state.connected) {
+    if (state.connected && !isLocalDraft) {
       const filesToDelete = state.files
         .filter((f) => f.startsWith(postDir + "/") || f === postPath)
         .map((f) => ({ path: f, operation: "delete" }));
@@ -2460,15 +2462,19 @@ async function deletePost(postPath) {
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || `刪除失敗 (${response.status})`);
+        if (response.status !== 422) {
+          throw new Error(errData.error || `刪除失敗 (${response.status})`);
+        }
+      } else {
+        const data = await response.json();
+        state.head = data.commitSha;
       }
-      const data = await response.json();
-      state.head = data.commitSha;
     }
 
     try {
       await chrome.storage.local.remove(`draft:${postPath}`);
       await clearDraftUploads(postPath);
+      if (typeof removeNewDraftPath === "function") await removeNewDraftPath(postPath);
     } catch {}
 
     state.files = state.files.filter((f) => !f.startsWith(postDir + "/") && f !== postPath);
