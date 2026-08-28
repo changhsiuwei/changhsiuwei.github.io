@@ -2523,6 +2523,10 @@ function renderSectionHub(path, body) {
     elements.sectionHubArticleList.replaceChildren();
     const contentFiles = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
 
+    if (elements.sectionHubArticlesBadge) {
+      elements.sectionHubArticlesBadge.textContent = `📑 最新文章 (共 ${contentFiles.length} 篇)`;
+    }
+
     if (contentFiles.length === 0) {
       const emptyCard = document.createElement("div");
       emptyCard.className = "empty-hub-card";

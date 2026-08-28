@@ -258,17 +258,6 @@
             <div id="tableEditors" class="table-editors"></div>
           </section>
 
-          <!-- 專區文章管理層（AI 教學與研究 / AI 知識站 專屬 Hub，置於畫布上方） -->
-          <div id="sectionHubEditors" class="page-editor-group" style="margin:16px 0;" hidden>
-            <div class="card-section" style="background:#fcfdff;border:1.5px solid #dbe4f0;border-radius:12px;padding:14px;">
-              <div class="section-badge-header">
-                <div id="sectionHubArticlesBadge" class="section-badge" style="background:#001F3F;color:#ffffff;">📑 專區文章管理</div>
-                <button id="sectionHubAddPostButton" class="primary-button mini-button" type="button" style="white-space:nowrap;padding:6px 14px;font-size:12px;background:#001F3F;border-color:#001F3F;">＋ 撰寫新文章</button>
-              </div>
-              <div id="sectionHubArticleList" class="card-item-list" style="margin-top:10px;"></div>
-            </div>
-          </div>
-
           <!-- 學生專區密碼防護管理（頂部快捷卡片） -->
           <div id="studentPasswordCard" class="card-section" style="background:#fcfdff;border:1.5px solid #dbe4f0;border-radius:12px;padding:14px;margin:16px 0;" hidden>
             <div class="section-badge-header" style="margin-bottom:10px;">
@@ -300,6 +289,20 @@
           </div>
 
           <div id="visualEditor" class="visual-editor" aria-label="視覺化內容編輯器"></div>
+
+          <!-- 專區文章管理層（AI 教學與研究 / AI 知識站 專屬 Hub，置於畫布下方） -->
+          <div id="sectionHubEditors" class="page-editor-group" style="margin:24px 0 16px;" hidden>
+            <div class="card-section" style="background:#fcfdff;border:1.5px solid #dbe4f0;border-radius:12px;padding:16px;">
+              <div class="section-badge-header" style="margin-bottom:12px;">
+                <div id="sectionHubArticlesBadge" class="section-badge" style="background:#001F3F;color:#ffffff;font-size:13px;font-weight:700;">📑 最新文章清單</div>
+                <button id="sectionHubAddPostButton" class="primary-button mini-button" type="button" style="white-space:nowrap;padding:7px 16px;font-size:12px;background:#001F3F;border-color:#001F3F;">＋ 撰寫新文章</button>
+              </div>
+              <p style="font-size:12px;color:#64748b;margin:0 0 12px;line-height:1.5;">
+                專區發布的所有個別文章均列於此處，點擊卡片或右側按鈕即可開啟該篇專屬大畫布進行編輯：
+              </p>
+              <div id="sectionHubArticleList" class="card-item-list"></div>
+            </div>
+          </div>
           <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden>
         </div>
       </section>
