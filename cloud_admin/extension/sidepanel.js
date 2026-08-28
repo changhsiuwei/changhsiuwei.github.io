@@ -126,6 +126,7 @@ const elements = {
   sectionHubArticlesBadge: $("sectionHubArticlesBadge"),
   sectionHubAddPostButton: $("sectionHubAddPostButton"),
   sectionHubArticleList: $("sectionHubArticleList"),
+  studentPasswordCard: $("studentPasswordCard"),
   studentsEditors: $("studentsEditors"),
   studentPasswordInput: $("studentPasswordInput"),
   btnUpdateStudentPassword: $("btnUpdateStudentPassword"),
@@ -1318,8 +1319,6 @@ function currentContent() {
     body = elements.sectionHubIntroInput ? elements.sectionHubIntroInput.value.trim() : state.originalBody.trim();
   } else if (state.currentPath === "activities/index.md") {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
-  } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
-    body = serializeStudentsPage(state.studentsModel, state.lineEnding);
   } else {
     if (state.editorChanged) {
       const mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
@@ -3131,7 +3130,7 @@ function renderStructuredTables() {
   renderActivityEditors();
   const hasActivities = state.activityModels.size > 0;
   const hasTables = state.tableModels.size > 0;
-  const isStructured = ["index.md", "about/index.md", "publications/index.md", "knowledge/index.md", "lab/index.md", "activities/index.md", "students/index.qmd"].includes(state.currentPath);
+  const isStructured = ["index.md", "about/index.md", "publications/index.md", "knowledge/index.md", "lab/index.md", "activities/index.md"].includes(state.currentPath);
   elements.structuredData.hidden = !hasActivities && !hasTables && !isStructured;
   if (!isStructured) {
     elements.structuredDataTitle.textContent = hasActivities && hasTables ? "活動與表格" : hasActivities ? "活動管理" : "頁面表格";
@@ -3339,7 +3338,7 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isLab = path === "lab/index.md";
   const isStudents = path === "students/index.qmd";
   const isSectionHub = isKnowledge || isLab;
-  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub || isStudents;
+  const isStructuredPage = isHome || isAbout || isPub || isActivities || isSectionHub;
   const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
   const isPost = isDeletable;
   if (elements.deleteDocumentButton) {
@@ -3353,17 +3352,12 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   if (elements.aboutEditors) elements.aboutEditors.hidden = !isAbout;
   if (elements.publicationEditors) elements.publicationEditors.hidden = !isPub;
   if (elements.sectionHubEditors) elements.sectionHubEditors.hidden = !isSectionHub;
-  if (elements.studentsEditors) elements.studentsEditors.hidden = !isStudents;
+  if (elements.studentPasswordCard) elements.studentPasswordCard.hidden = !isStudents;
+  if (elements.studentsEditors) elements.studentsEditors.hidden = true;
   if (elements.activityIntroSection) elements.activityIntroSection.hidden = !isActivities;
   if (elements.activityEditors) elements.activityEditors.hidden = !isActivities;
   if (elements.tableEditors) elements.tableEditors.hidden = isStructuredPage;
   if (elements.structuredData) elements.structuredData.hidden = !isStructuredPage && state.activityModels.size === 0 && state.tableModels.size === 0;
-
-  if (isStudents) {
-    if (elements.structuredData) elements.structuredData.hidden = false;
-    if (elements.structuredDataTitle) elements.structuredDataTitle.textContent = "學生專區管理";
-    if (elements.structuredDataHint) elements.structuredDataHint.textContent = "管理通行密碼、指導原則與進度報告排程；原網站版面會自動保留";
-  }
 
   if (elements.editorToolbar) elements.editorToolbar.hidden = isStructuredPage;
   if (elements.visualEditor) elements.visualEditor.hidden = isStructuredPage;
@@ -3387,10 +3381,6 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
     state.sectionHubModel = { intro: split.body.trim(), path };
     state.sectionHubDirty = false;
     renderSectionHub(path, split.body);
-  } else if (isStudents) {
-    state.studentsModel = parseStudentsPage(split.body);
-    state.studentsDirty = false;
-    renderStudentsEditors();
   }
   ensureEditor();
   state.loadingEditor = true;
@@ -3721,72 +3711,6 @@ function renderPreview() {
       first = false;
     }
     body = previewBody;
-  } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
-    const model = state.studentsModel;
-    const calloutHtml = `
-      <div class="preview-callout preview-callout-note" style="margin-bottom:24px;">
-        <h2 style="margin:0 0 8px;color:#001F3F;">${escapeHtml(model.welcomeTitle || "歡迎來到指導學生專區")}</h2>
-        <p style="margin:0;line-height:1.7;color:#334155;">${escapeHtml(model.welcomeText || "").replace(/\n\n+/g, "</p><p>").replace(/\n/g, "<br>")}</p>
-      </div>
-    `;
-
-    const guidelinesHtml = (model.guidelines || []).map((g) => {
-      const links = [];
-      if (g.slidesUrl) {
-        links.push(`<a href="${escapeHtml(g.slidesUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#001F3F;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">📊 簡報下載 ↗</a>`);
-      }
-      if (g.handoutUrl) {
-        links.push(`<a href="${escapeHtml(g.handoutUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#C9A227;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">📄 講義下載 ↗</a>`);
-      }
-      if (g.youtubeUrl) {
-        links.push(`<a href="${escapeHtml(g.youtubeUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#dc2626;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">▶ YouTube 影片 ↗</a>`);
-      }
-      const linksHtml = links.length ? `<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">${links.join("")}</div>` : "";
-
-      const introHtml = g.intro ? `<p style="margin:0 0 10px;color:#334155;line-height:1.6;font-size:14px;">${escapeHtml(g.intro)}</p>` : "";
-
-      const pointsHtml = (g.points && g.points.length) ? `
-        <ul style="margin:8px 0;padding-left:20px;line-height:1.7;color:#334155;font-size:14px;">
-          ${g.points.map((pt) => `<li>${pt.label ? `<strong>${escapeHtml(pt.label)}</strong>：` : ""}${escapeHtml(pt.text || "")}</li>`).join("")}
-        </ul>
-      ` : "";
-
-      return `
-        <div style="margin:20px 0;padding:18px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
-          <h3 style="margin:0 0 10px;color:#001F3F;font-size:17px;font-weight:700;">${escapeHtml(g.title || "")}</h3>
-          ${introHtml}
-          ${pointsHtml}
-          ${linksHtml}
-        </div>
-      `;
-    }).join("");
-
-    const scheduleRows = (model.schedules || []).map((s) => `
-      <tr>
-        <td style="padding:8px 12px;border:1px solid #dfe4ef;font-weight:700;color:#2c344e;">${escapeHtml(s.date || "")}</td>
-        <td style="padding:8px 12px;border:1px solid #dfe4ef;font-weight:700;color:#403f6f;">${escapeHtml(s.presenter || "")}</td>
-        <td style="padding:8px 12px;border:1px solid #dfe4ef;">${inlineMarkdownPreview(s.topic || "")}</td>
-      </tr>
-    `).join("");
-
-    const scheduleTableHtml = `
-      <hr style="margin:28px 0;">
-      <h3 style="margin:0 0 12px;color:#001F3F;">📅 近期進度報告排程</h3>
-      <div class="preview-table-wrap">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead>
-            <tr style="background:#f4f6fb;">
-              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">日期</th>
-              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">報告人</th>
-              <th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef;">論文研讀主題</th>
-            </tr>
-          </thead>
-          <tbody>${scheduleRows || '<tr><td colspan="3" style="padding:12px;text-align:center;color:#94a3b8;">目前尚無報告排程</td></tr>'}</tbody>
-        </table>
-      </div>
-    `;
-
-    body = `${calloutHtml}${guidelinesHtml}${scheduleTableHtml}`;
   } else {
     if (!state.editor) return;
     body = sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML()));

@@ -278,29 +278,12 @@ test("students area is configured as a static page with password reset capabilit
   assert.ok(scriptSource.includes('path: "students/index.qmd"'));
   assert.ok(scriptSource.includes("btnUpdateStudentPassword"));
   assert.ok(scriptSource.includes("students/password_hash.txt"));
-  assert.ok(scriptSource.includes("createNotionToolbar"));
+  assert.ok(scriptSource.includes("studentPasswordCard"));
 
   const markdown = readFileSync(new URL("../../students/index.qmd", import.meta.url), "utf8");
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
-  const model = sandbox.parseStudentsPage(body);
-  assert.equal(model.welcomeTitle, "歡迎來到指導學生專區");
-  assert.equal(model.guidelines.length, 3);
-  assert.ok(model.guidelines[0].title.includes("碩士論文撰寫基本功"));
-  assert.ok(model.guidelines[0].content.includes("尋找研究題目"));
-  assert.ok(model.guidelines[1].content.includes("會計與財務研究高度依賴實證數據分析"));
-
-  const reconstructed = sandbox.serializeStudentsPage(model);
-  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
-  assert.equal(normalize(reconstructed), normalize(body));
-
-  // Test with resource links (handout, slides, youtube)
-  model.guidelines[0].handoutUrl = "https://drive.google.com/doc";
-  model.guidelines[0].slidesUrl = "https://drive.google.com/slides";
-  model.guidelines[0].youtubeUrl = "https://youtube.com/watch?v=xyz";
-  const serializedWithLinks = sandbox.serializeStudentsPage(model);
-  const reParsed = sandbox.parseStudentsPage(serializedWithLinks);
-  assert.equal(reParsed.guidelines[0].handoutUrl, "https://drive.google.com/doc");
-  assert.equal(reParsed.guidelines[0].slidesUrl, "https://drive.google.com/slides");
-  assert.equal(reParsed.guidelines[0].youtubeUrl, "https://youtube.com/watch?v=xyz");
-  assert.ok(reParsed.guidelines[0].content.includes("尋找研究題目"));
+  assert.ok(body.includes("歡迎來到指導學生專區"));
+  assert.ok(body.includes("碩士論文撰寫基本功"));
+  assert.ok(body.includes("量化工具的使用介紹"));
+  assert.ok(body.includes("近期進度報告排程"));
 });

@@ -263,56 +263,22 @@
               </div>
             </div>
 
-            <!-- 學生專區專屬管理層（密碼重設、指引規範、報告排程） -->
-            <div id="studentsEditors" class="page-editor-group" hidden>
-              <!-- 1. 密碼管理 -->
-              <div class="card-section" style="background:#fcfdff;border:1px solid #dbe4f0;">
-                <div class="section-badge-header" style="margin-bottom:12px;">
-                  <div class="section-badge" style="background:#001F3F;color:#ffffff;">🔒 學生專區通行密碼管理</div>
-                  <span id="currentPasswordBadge" style="font-size:11px;color:#059669;font-weight:700;background:#ecfdf5;padding:3px 8px;border-radius:6px;border:1px solid #a7f3d0;">🛡️ 密碼防護已啟用</span>
-                </div>
-                <div class="structured-field" style="margin-top:8px;">
-                  <label for="studentPasswordInput" style="font-weight:700;color:#1e293b;margin-bottom:6px;display:block;">設定新通行密碼 (New Password)</label>
-                  <div style="display:flex;gap:10px;align-items:center;">
-                    <input id="studentPasswordInput" type="text" placeholder="請輸入新通行密碼（例如：ntpu2026 或自訂字串）..." style="flex:1;min-height:38px;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;">
-                    <button id="btnUpdateStudentPassword" class="primary-button mini-button" type="button" style="white-space:nowrap;padding:8px 18px;min-height:38px;font-size:12px;background:#001F3F;border-color:#001F3F;">💾 更新通行密碼</button>
-                  </div>
-                  <p id="studentPasswordHint" style="font-size:11px;color:#64748b;margin-top:8px;line-height:1.5;">
-                    💡 點擊「更新通行密碼」後，系統會自動以 SHA-256 加密儲存並推播更新至 <code>students/password_hash.txt</code>，學生即可以新密碼驗證解鎖。
-                  </p>
-                  <div id="studentPasswordStatus" style="font-size:12px;font-weight:700;color:#059669;background:#f0fdf4;padding:8px 12px;border-radius:6px;border:1px solid #bbf7d0;margin-top:8px;display:none;"></div>
-                </div>
+            <!-- 學生專區密碼防護管理（頂部快捷卡片） -->
+            <div id="studentPasswordCard" class="card-section" style="background:#fcfdff;border:1.5px solid #dbe4f0;border-radius:12px;padding:14px;margin-bottom:14px;" hidden>
+              <div class="section-badge-header" style="margin-bottom:10px;">
+                <div class="section-badge" style="background:#001F3F;color:#ffffff;">🔒 學生專區通行密碼管理</div>
+                <span id="currentPasswordBadge" style="font-size:11px;color:#059669;font-weight:700;background:#ecfdf5;padding:3px 8px;border-radius:6px;border:1px solid #a7f3d0;">🛡️ 密碼防護已啟用</span>
               </div>
-
-              <!-- 2. 歡迎提示 -->
-              <div class="card-section">
-                <div class="section-badge">📢 歡迎提示與指引前言</div>
-                <div class="structured-field">
-                  <label for="studentsWelcomeTitleInput">提示方塊標題 (Callout Title)</label>
-                  <input id="studentsWelcomeTitleInput" type="text" placeholder="歡迎來到指導學生專區">
+              <div class="structured-field" style="margin-top:6px;">
+                <label for="studentPasswordInput" style="font-weight:700;color:#1e293b;margin-bottom:6px;display:block;">設定新通行密碼 (New Password)</label>
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <input id="studentPasswordInput" type="text" placeholder="請輸入新通行密碼（例如：ntpu2026 或自訂字串）..." style="flex:1;min-height:38px;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;">
+                  <button id="btnUpdateStudentPassword" class="primary-button mini-button" type="button" style="white-space:nowrap;padding:8px 18px;min-height:38px;font-size:12px;background:#001F3F;border-color:#001F3F;">💾 更新通行密碼</button>
                 </div>
-                <div class="structured-field">
-                  <label for="studentsWelcomeTextInput">提示方塊內文 (Callout Content)</label>
-                  <textarea id="studentsWelcomeTextInput" class="custom-textarea" rows="3" placeholder="這裡放置了僅限本研究團隊成員（指導學生）查看的內部資訊..."></textarea>
-                </div>
-              </div>
-
-              <!-- 3. 近期進度報告排程 -->
-              <div class="card-section">
-                <div class="section-badge-header">
-                  <div class="section-badge">📅 近期進度報告排程</div>
-                  <button id="addStudentScheduleButton" class="secondary-button mini-button" type="button">＋ 新增排程</button>
-                </div>
-                <div id="studentScheduleList" class="card-item-list"></div>
-              </div>
-
-              <!-- 4. 指導原則與規範清單（Notion 筆記與專案式管理） -->
-              <div class="card-section">
-                <div class="section-badge-header">
-                  <div class="section-badge">📚 指導原則與專案資源（Notion 筆記風格）</div>
-                  <button id="addStudentGuidelineButton" class="secondary-button mini-button" type="button">＋ 新增專案項目</button>
-                </div>
-                <div id="studentGuidelineList" class="card-item-list"></div>
+                <p id="studentPasswordHint" style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;">
+                  💡 點擊「更新通行密碼」後，系統會自動以 SHA-256 加密儲存並推播更新至 <code>students/password_hash.txt</code>，學生即可以新密碼驗證解鎖。
+                </p>
+                <div id="studentPasswordStatus" style="font-size:12px;font-weight:700;color:#059669;background:#f0fdf4;padding:8px 12px;border-radius:6px;border:1px solid #bbf7d0;margin-top:6px;display:none;"></div>
               </div>
             </div>
 
