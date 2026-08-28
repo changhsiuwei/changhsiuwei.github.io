@@ -317,6 +317,13 @@ function base64ToText(value) {
   return new TextDecoder().decode(bytes);
 }
 
+function textToBase64(value) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
 function splitFrontMatter(content) {
   const match = content.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n)?/);
   if (!match) return { frontMatter: "", body: content, prefix: "" };
@@ -979,7 +986,10 @@ function parseStudentsPage(body) {
     if (trimmed.startsWith("### ")) {
       curGuideline = {
         title: trimmed.replace(/^###\s+/, "").trim(),
-        content: ""
+        content: "",
+        slidesUrl: "",
+        handoutUrl: "",
+        youtubeUrl: ""
       };
       guidelines.push(curGuideline);
       continue;
@@ -987,7 +997,27 @@ function parseStudentsPage(body) {
 
     if (curGuideline) {
       if (trimmed === "---") continue;
-      if (curGuideline.content || trimmed) {
+      
+      const linkRegex = /\[(.*?)\]\((.*?)\)(?:\{[^}]*\})?/g;
+      let linkMatch;
+      let isOnlyLinkLine = false;
+      
+      if (trimmed.includes(".activity-materials-link") || trimmed.includes("簡報下載") || trimmed.includes("講義下載") || trimmed.includes("YouTube")) {
+        while ((linkMatch = linkRegex.exec(trimmed)) !== null) {
+          const label = linkMatch[1];
+          const url = linkMatch[2];
+          if (/youtube|youtu\.be|影片|video/i.test(url) || /YouTube|影片/i.test(label)) {
+            curGuideline.youtubeUrl = url;
+          } else if (/簡報|slide/i.test(label)) {
+            curGuideline.slidesUrl = url;
+          } else if (/講義|handout|範本/i.test(label)) {
+            curGuideline.handoutUrl = url;
+          }
+        }
+        isOnlyLinkLine = true;
+      }
+
+      if (!isOnlyLinkLine && (curGuideline.content || trimmed)) {
         curGuideline.content = curGuideline.content ? `${curGuideline.content}\n${line}` : line;
       }
     }
@@ -1008,7 +1038,23 @@ function serializeStudentsPage(model, lineEnding = "\n") {
   for (const g of model.guidelines || []) {
     parts.push("");
     parts.push(`### ${g.title}`);
-    parts.push(g.content || "");
+    if (g.content) {
+      parts.push(g.content);
+    }
+    const linkParts = [];
+    if (g.slidesUrl) {
+      linkParts.push(`[📊 簡報下載 ↗](${g.slidesUrl}){target="_blank" .activity-materials-link .activity-slides-link}`);
+    }
+    if (g.handoutUrl) {
+      linkParts.push(`[📄 講義下載 ↗](${g.handoutUrl}){target="_blank" .activity-materials-link .activity-handout-link}`);
+    }
+    if (g.youtubeUrl) {
+      linkParts.push(`[▶ YouTube 影片 ↗](${g.youtubeUrl}){target="_blank" .activity-materials-link .activity-youtube-link}`);
+    }
+    if (linkParts.length) {
+      parts.push("");
+      parts.push(linkParts.join(" "));
+    }
   }
 
   parts.push("");
@@ -2707,17 +2753,32 @@ function renderStudentsEditors() {
       card.className = "card-item";
       card.style.display = "flex";
       card.style.flexDirection = "column";
-      card.style.gap = "8px";
-      card.style.marginBottom = "14px";
+      card.style.gap = "10px";
+      card.style.marginBottom = "16px";
+      card.style.background = "#ffffff";
+      card.style.border = "1.5px solid #dbe4f0";
+      card.style.borderRadius = "12px";
+      card.style.padding = "14px";
+      card.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)";
 
       const headerRow = document.createElement("div");
       headerRow.style.display = "flex";
       headerRow.style.gap = "8px";
       headerRow.style.alignItems = "center";
 
+      const badge = document.createElement("span");
+      badge.textContent = `📌 專案項目 ${index + 1}`;
+      badge.style.fontSize = "11px";
+      badge.style.fontWeight = "700";
+      badge.style.color = "#001F3F";
+      badge.style.background = "#eef4fb";
+      badge.style.padding = "4px 8px";
+      badge.style.borderRadius = "6px";
+      badge.style.whiteSpace = "nowrap";
+
       const titleIn = document.createElement("input");
       titleIn.type = "text";
-      titleIn.placeholder = "規範標題 (例如：1. 碩士論文撰寫基本功)";
+      titleIn.placeholder = "專案主題 / 規範標題 (例如：1. 碩士論文撰寫基本功)";
       titleIn.value = g.title || "";
       titleIn.style.flex = "1";
       titleIn.style.fontWeight = "700";
@@ -2734,7 +2795,7 @@ function renderStudentsEditors() {
       delBtn.type = "button";
       delBtn.className = "btn-delete mini-delete-btn";
       delBtn.textContent = "×";
-      delBtn.title = "刪除此規範";
+      delBtn.title = "刪除此專案項目";
       delBtn.onclick = () => {
         model.guidelines.splice(index, 1);
         state.studentsDirty = true;
@@ -2743,12 +2804,21 @@ function renderStudentsEditors() {
         scheduleDocumentUpdate();
       };
 
-      headerRow.append(titleIn, delBtn);
+      headerRow.append(badge, titleIn, delBtn);
+
+      const contentLabel = document.createElement("label");
+      contentLabel.style.fontSize = "12px";
+      contentLabel.style.fontWeight = "600";
+      contentLabel.style.color = "#475569";
+      contentLabel.textContent = "📝 重點內容與指導說明 (Notion 筆記式編輯，支援換行條列)";
 
       const contentIn = document.createElement("textarea");
       contentIn.className = "custom-textarea";
       contentIn.rows = 4;
-      contentIn.placeholder = "輸入規範說明 (支援 Markdown 項目清單與連結)...";
+      contentIn.style.fontFamily = "inherit";
+      contentIn.style.lineHeight = "1.6";
+      contentIn.style.fontSize = "13px";
+      contentIn.placeholder = "輸入指導說明、研究要求或執行步驟（換行自動條列，不需記憶複雜 markdown 標籤）...";
       contentIn.value = g.content || "";
       contentIn.oninput = () => {
         g.content = contentIn.value;
@@ -2757,7 +2827,94 @@ function renderStudentsEditors() {
         scheduleDocumentUpdate();
       };
 
-      card.append(headerRow, contentIn);
+      // Resources box: 講義、簡報、YouTube
+      const resourcesBox = document.createElement("div");
+      resourcesBox.style.background = "#f8fafc";
+      resourcesBox.style.border = "1px dashed #cbd5e1";
+      resourcesBox.style.borderRadius = "8px";
+      resourcesBox.style.padding = "10px 12px";
+      resourcesBox.style.display = "flex";
+      resourcesBox.style.flexDirection = "column";
+      resourcesBox.style.gap = "8px";
+
+      const resLabel = document.createElement("div");
+      resLabel.style.fontSize = "11px";
+      resLabel.style.fontWeight = "700";
+      resLabel.style.color = "#334155";
+      resLabel.textContent = "🔗 專案資源與影音教材連結（選填，自動於前台產生精美按鈕）";
+
+      const resGrid = document.createElement("div");
+      resGrid.style.display = "grid";
+      resGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(180px, 1fr))";
+      resGrid.style.gap = "8px";
+
+      // 1. 講義連結
+      const handoutWrap = document.createElement("div");
+      const handoutTag = document.createElement("span");
+      handoutTag.style.fontSize = "11px";
+      handoutTag.style.fontWeight = "600";
+      handoutTag.style.color = "#C9A227";
+      handoutTag.textContent = "📄 講義 / 範本連結";
+      const handoutIn = document.createElement("input");
+      handoutIn.type = "url";
+      handoutIn.placeholder = "Google Drive 講義或範本 URL";
+      handoutIn.value = g.handoutUrl || "";
+      handoutIn.style.minHeight = "32px";
+      handoutIn.style.fontSize = "12px";
+      handoutIn.oninput = () => {
+        g.handoutUrl = handoutIn.value.trim();
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      handoutWrap.append(handoutTag, handoutIn);
+
+      // 2. 簡報連結
+      const slidesWrap = document.createElement("div");
+      const slidesTag = document.createElement("span");
+      slidesTag.style.fontSize = "11px";
+      slidesTag.style.fontWeight = "600";
+      slidesTag.style.color = "#001F3F";
+      slidesTag.textContent = "📊 簡報下載連結";
+      const slidesIn = document.createElement("input");
+      slidesIn.type = "url";
+      slidesIn.placeholder = "Google Drive 簡報 URL";
+      slidesIn.value = g.slidesUrl || "";
+      slidesIn.style.minHeight = "32px";
+      slidesIn.style.fontSize = "12px";
+      slidesIn.oninput = () => {
+        g.slidesUrl = slidesIn.value.trim();
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      slidesWrap.append(slidesTag, slidesIn);
+
+      // 3. YouTube 連結
+      const ytWrap = document.createElement("div");
+      const ytTag = document.createElement("span");
+      ytTag.style.fontSize = "11px";
+      ytTag.style.fontWeight = "600";
+      ytTag.style.color = "#dc2626";
+      ytTag.textContent = "▶ YouTube 影片連結";
+      const ytIn = document.createElement("input");
+      ytIn.type = "url";
+      ytIn.placeholder = "https://youtu.be/...";
+      ytIn.value = g.youtubeUrl || "";
+      ytIn.style.minHeight = "32px";
+      ytIn.style.fontSize = "12px";
+      ytIn.oninput = () => {
+        g.youtubeUrl = ytIn.value.trim();
+        state.studentsDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      ytWrap.append(ytTag, ytIn);
+
+      resGrid.append(handoutWrap, slidesWrap, ytWrap);
+      resourcesBox.append(resLabel, resGrid);
+
+      card.append(headerRow, contentLabel, contentIn, resourcesBox);
       elements.studentGuidelineList.append(card);
     });
   }
@@ -3441,18 +3598,33 @@ function renderPreview() {
   } else if (state.currentPath === "students/index.qmd" && state.studentsModel) {
     const model = state.studentsModel;
     const calloutHtml = `
-      <div class="preview-callout preview-callout-note" style="margin-bottom:20px;">
+      <div class="preview-callout preview-callout-note" style="margin-bottom:24px;">
         <h2 style="margin:0 0 8px;color:#001F3F;">${escapeHtml(model.welcomeTitle || "歡迎來到指導學生專區")}</h2>
-        <p style="margin:0;line-height:1.6;color:#334155;">${escapeHtml(model.welcomeText || "").replace(/\n\n+/g, "</p><p>").replace(/\n/g, "<br>")}</p>
+        <p style="margin:0;line-height:1.7;color:#334155;">${escapeHtml(model.welcomeText || "").replace(/\n\n+/g, "</p><p>").replace(/\n/g, "<br>")}</p>
       </div>
     `;
 
-    const guidelinesHtml = (model.guidelines || []).map((g) => `
-      <div style="margin:18px 0;">
-        <h3 style="margin:0 0 8px;color:#001F3F;font-size:16px;">${escapeHtml(g.title || "")}</h3>
-        <div style="color:#475569;line-height:1.6;font-size:14px;">${inlineMarkdownPreview(g.content || "")}</div>
-      </div>
-    `).join("");
+    const guidelinesHtml = (model.guidelines || []).map((g) => {
+      const links = [];
+      if (g.slidesUrl) {
+        links.push(`<a href="${escapeHtml(g.slidesUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#001F3F;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">📊 簡報下載 ↗</a>`);
+      }
+      if (g.handoutUrl) {
+        links.push(`<a href="${escapeHtml(g.handoutUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#C9A227;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">📄 講義下載 ↗</a>`);
+      }
+      if (g.youtubeUrl) {
+        links.push(`<a href="${escapeHtml(g.youtubeUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#dc2626;color:#ffffff;text-decoration:none;font-weight:600;font-size:12px;">▶ YouTube 影片 ↗</a>`);
+      }
+      const linksHtml = links.length ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">${links.join("")}</div>` : "";
+
+      return `
+        <div style="margin:20px 0;padding:18px;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <h3 style="margin:0 0 10px;color:#001F3F;font-size:17px;font-weight:700;">${escapeHtml(g.title || "")}</h3>
+          <div style="color:#475569;line-height:1.7;font-size:14px;">${inlineMarkdownPreview(g.content || "")}</div>
+          ${linksHtml}
+        </div>
+      `;
+    }).join("");
 
     const scheduleRows = (model.schedules || []).map((s) => `
       <tr>
@@ -3463,7 +3635,7 @@ function renderPreview() {
     `).join("");
 
     const scheduleTableHtml = `
-      <hr style="margin:24px 0;">
+      <hr style="margin:28px 0;">
       <h3 style="margin:0 0 12px;color:#001F3F;">📅 近期進度報告排程</h3>
       <div class="preview-table-wrap">
         <table style="width:100%;border-collapse:collapse;">
@@ -4132,7 +4304,13 @@ elements.addStudentScheduleButton?.addEventListener("click", () => {
 elements.addStudentGuidelineButton?.addEventListener("click", () => {
   if (!state.studentsModel) return;
   state.studentsModel.guidelines = state.studentsModel.guidelines || [];
-  state.studentsModel.guidelines.push({ title: "新指導原則", content: "" });
+  state.studentsModel.guidelines.push({
+    title: `${state.studentsModel.guidelines.length + 1}. 新指導主題與專案`,
+    content: "",
+    slidesUrl: "",
+    handoutUrl: "",
+    youtubeUrl: ""
+  });
   state.studentsDirty = true;
   state.draftSaved = false;
   renderStudentsEditors();

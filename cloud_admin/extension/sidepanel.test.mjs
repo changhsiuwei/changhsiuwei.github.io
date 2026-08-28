@@ -278,6 +278,7 @@ test("students area is configured as a static page with password reset capabilit
   assert.ok(scriptSource.includes('path: "students/index.qmd"'));
   assert.ok(scriptSource.includes("btnUpdateStudentPassword"));
   assert.ok(scriptSource.includes("students/password_hash.txt"));
+  assert.ok(scriptSource.includes("textToBase64"));
 
   const markdown = readFileSync(new URL("../../students/index.qmd", import.meta.url), "utf8");
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
@@ -290,4 +291,14 @@ test("students area is configured as a static page with password reset capabilit
   const reconstructed = sandbox.serializeStudentsPage(model);
   const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
   assert.equal(normalize(reconstructed), normalize(body));
+
+  // Test with resource links (handout, slides, youtube)
+  model.guidelines[0].handoutUrl = "https://drive.google.com/doc";
+  model.guidelines[0].slidesUrl = "https://drive.google.com/slides";
+  model.guidelines[0].youtubeUrl = "https://youtube.com/watch?v=xyz";
+  const serializedWithLinks = sandbox.serializeStudentsPage(model);
+  const reParsed = sandbox.parseStudentsPage(serializedWithLinks);
+  assert.equal(reParsed.guidelines[0].handoutUrl, "https://drive.google.com/doc");
+  assert.equal(reParsed.guidelines[0].slidesUrl, "https://drive.google.com/slides");
+  assert.equal(reParsed.guidelines[0].youtubeUrl, "https://youtube.com/watch?v=xyz");
 });
