@@ -92,6 +92,27 @@ Material Disclosure & Corporate Transparency
 
 :::
 
+<!-- HWCMS-HIDDEN:evaluations
+## 授課評價與學生回饋
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card p-3 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+  <span style="font-weight:700;color:#001F3F;font-size:14px;">會計資訊系統</span>
+  <span class="badge bg-warning text-dark" style="font-weight:700;font-size:12px;">⭐ 教學評鑑  / 5.0</span>
+</div>
+<blockquote style="margin:0 0 8px;padding-left:12px;border-left:3px solid #C9A227;color:#334155;font-size:13px;font-style:italic;line-height:1.6;">
+  「課程內容充實且緊跟科技趨勢，收穫良多！」
+</blockquote>
+<div style="font-size:11px;color:#64748b;text-align:right;">— — 國立臺北大學會計系 學生修課回饋</div>
+</div>
+:::
+
+:::
+-->
+
 ## 最新動態
 
 | 日期 | 事件 |
