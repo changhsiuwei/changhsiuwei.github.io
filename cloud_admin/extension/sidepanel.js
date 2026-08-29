@@ -98,12 +98,16 @@ const elements = {
   homeEditors: $("homeEditors"),
   homeBioInput: $("homeBioInput"),
   homeMottoInput: $("homeMottoInput"),
+  toggleResearchAreasButton: $("toggleResearchAreasButton"),
   addResearchAreaButton: $("addResearchAreaButton"),
   researchAreaList: $("researchAreaList"),
+  toggleCoursesButton: $("toggleCoursesButton"),
   addTeachingCourseButton: $("addTeachingCourseButton"),
   teachingCourseList: $("teachingCourseList"),
+  toggleEvaluationsButton: $("toggleEvaluationsButton"),
   addTeachingEvaluationButton: $("addTeachingEvaluationButton"),
   teachingEvaluationList: $("teachingEvaluationList"),
+  toggleHighlightsButton: $("toggleHighlightsButton"),
   addHighlightButton: $("addHighlightButton"),
   highlightList: $("highlightList"),
   aboutEditors: $("aboutEditors"),
@@ -552,6 +556,11 @@ function serializeActivitiesBody(introText, activityModels, lineEnding = "\n") {
 }
 
 function parseHomePage(body) {
+  const showResearchAreas = !body.includes("<!-- HWCMS-HIDDEN:research");
+  const showCourses = !body.includes("<!-- HWCMS-HIDDEN:courses");
+  const showEvaluations = !body.includes("<!-- HWCMS-HIDDEN:evaluations");
+  const showHighlights = !body.includes("<!-- HWCMS-HIDDEN:highlights");
+
   const lines = body.split(/\r?\n/);
   let bio = "";
   let motto = "";
@@ -563,10 +572,22 @@ function parseHomePage(body) {
   let curArea = null;
   let curCourse = null;
   let curEval = null;
+  let nextCardHidden = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const trimmed = line.trim();
+    let trimmed = line.trim();
+
+    if (trimmed.startsWith("<!-- HWCMS-HIDDEN-CARD")) {
+      nextCardHidden = true;
+      trimmed = trimmed.replace(/^<!--\s*HWCMS-HIDDEN-CARD\s*/, "").trim();
+    }
+    if (trimmed.startsWith("<!-- HWCMS-HIDDEN:")) {
+      trimmed = trimmed.replace(/^<!--\s*HWCMS-HIDDEN:\w+\s*/, "").trim();
+    }
+    if (trimmed === "-->" || trimmed.endsWith("-->")) {
+      trimmed = trimmed.replace(/-->\s*$/, "").trim();
+    }
 
     if (trimmed === "## 關於我") {
       section = "about";
@@ -599,7 +620,8 @@ function parseHomePage(body) {
       }
     } else if (section === "research") {
       if (trimmed.startsWith("::: {.g-col-12")) {
-        curArea = { icon: "bi bi-cpu", title: "", desc: "" };
+        curArea = { icon: "bi bi-cpu", title: "", desc: "", hidden: nextCardHidden };
+        nextCardHidden = false;
         researchAreas.push(curArea);
         continue;
       }
@@ -619,7 +641,8 @@ function parseHomePage(body) {
       }
     } else if (section === "courses") {
       if (trimmed.startsWith("::: {.g-col-12")) {
-        curCourse = { time: "", name: "", desc: "", syllabusUrl: "" };
+        curCourse = { time: "", name: "", desc: "", syllabusUrl: "", hidden: nextCardHidden };
+        nextCardHidden = false;
         courses.push(curCourse);
         continue;
       }
@@ -647,7 +670,8 @@ function parseHomePage(body) {
       }
     } else if (section === "evaluations") {
       if (trimmed.startsWith("::: {.g-col-12")) {
-        curEval = { course: "", score: "", feedback: "", source: "" };
+        curEval = { course: "", score: "", feedback: "", source: "", hidden: nextCardHidden };
+        nextCardHidden = false;
         evaluations.push(curEval);
         continue;
       }
@@ -685,7 +709,7 @@ function parseHomePage(body) {
     }
   }
 
-  return { bio, motto, researchAreas, courses, evaluations, highlights };
+  return { bio, motto, researchAreas, courses, evaluations, highlights, showResearchAreas, showCourses, showEvaluations, showHighlights };
 }
 
 function serializeHomePage(model, lineEnding = "\n") {
@@ -694,19 +718,23 @@ function serializeHomePage(model, lineEnding = "\n") {
   const mottoLine = motto ? `${lineEnding}${lineEnding}*"${motto}"*` : "";
 
   const areaBlocks = (model.researchAreas || []).map((area) => {
-    return [
+    const cardBlock = [
       "::: {.g-col-12 .g-col-md-4}",
       `<div class="premium-icon-box"><i class="${area.icon || "bi bi-cpu"}"></i></div>`,
       `### ${area.title || ""}`,
       area.desc || "",
       ":::"
     ].join(lineEnding);
+    if (area.hidden) {
+      return `<!-- HWCMS-HIDDEN-CARD${lineEnding}${cardBlock}${lineEnding}-->`;
+    }
+    return cardBlock;
   });
 
   const courseBlocks = (model.courses || []).map((c) => {
     const timeBadge = c.time ? `<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">${lineEnding}  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">${c.time}</span>${lineEnding}</div>` : "";
     const syllabusLink = c.syllabusUrl ? `${lineEnding}<a href="${c.syllabusUrl}" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:4px;">${lineEnding}  <i class="bi bi-file-earmark-text"></i> 下載 / 查看授課大綱 ↗${lineEnding}</a>` : "";
-    return [
+    const cardBlock = [
       "::: {.g-col-12 .g-col-md-6}",
       `<div class="card p-3 shadow-sm h-100 border-start border-primary border-4" style="background:#f8faff;border-radius:12px;">`,
       timeBadge,
@@ -715,12 +743,16 @@ function serializeHomePage(model, lineEnding = "\n") {
       `</div>`,
       ":::"
     ].filter(Boolean).join(lineEnding);
+    if (c.hidden) {
+      return `<!-- HWCMS-HIDDEN-CARD${lineEnding}${cardBlock}${lineEnding}-->`;
+    }
+    return cardBlock;
   });
 
   const evalBlocks = (model.evaluations || []).map((e) => {
     const scoreBadge = e.score ? `<span class="badge bg-warning text-dark" style="font-weight:700;font-size:12px;">${e.score}</span>` : "";
     const sourceHtml = e.source ? `${lineEnding}<div style="font-size:11px;color:#64748b;text-align:right;">— ${e.source}</div>` : "";
-    return [
+    const cardBlock = [
       "::: {.g-col-12 .g-col-md-6}",
       `<div class="card p-3 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">`,
       `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">${lineEnding}  <span style="font-weight:700;color:#001F3F;font-size:14px;">${e.course || "課程名稱"}</span>${lineEnding}  ${scoreBadge}${lineEnding}</div>`,
@@ -728,6 +760,10 @@ function serializeHomePage(model, lineEnding = "\n") {
       `</div>`,
       ":::"
     ].join(lineEnding);
+    if (e.hidden) {
+      return `<!-- HWCMS-HIDDEN-CARD${lineEnding}${cardBlock}${lineEnding}-->`;
+    }
+    return cardBlock;
   });
 
   const highlightRows = [
@@ -742,50 +778,110 @@ function serializeHomePage(model, lineEnding = "\n") {
     ``,
     `${bio}${mottoLine}`,
     `:::`,
-    ``,
-    `## 研究領域`,
-    ``,
-    `::: {.grid}`,
-    ``,
-    areaBlocks.join(`${lineEnding}${lineEnding}`),
-    ``,
-    `:::`
+    ``
   ];
 
-  if (courseBlocks.length) {
+  if (model.showResearchAreas !== false) {
+    sections.push(
+      `## 研究領域`,
+      ``,
+      `::: {.grid}`,
+      ``,
+      areaBlocks.join(`${lineEnding}${lineEnding}`),
+      ``,
+      `:::`
+    );
+  } else {
+    sections.push(
+      `<!-- HWCMS-HIDDEN:research`,
+      `## 研究領域`,
+      ``,
+      `::: {.grid}`,
+      ``,
+      areaBlocks.join(`${lineEnding}${lineEnding}`),
+      ``,
+      `:::`,
+      `-->`
+    );
+  }
+
+  if (model.showCourses !== false) {
+    if (courseBlocks.length) {
+      sections.push(
+        ``,
+        `## 本學期授課`,
+        ``,
+        `::: {.grid}`,
+        ``,
+        courseBlocks.join(`${lineEnding}${lineEnding}`),
+        ``,
+        `:::`
+      );
+    }
+  } else {
     sections.push(
       ``,
+      `<!-- HWCMS-HIDDEN:courses`,
       `## 本學期授課`,
       ``,
       `::: {.grid}`,
       ``,
       courseBlocks.join(`${lineEnding}${lineEnding}`),
       ``,
-      `:::`
+      `:::`,
+      `-->`
     );
   }
 
-  if (evalBlocks.length) {
+  if (model.showEvaluations !== false) {
+    if (evalBlocks.length) {
+      sections.push(
+        ``,
+        `## 授課評價與學生回饋`,
+        ``,
+        `::: {.grid}`,
+        ``,
+        evalBlocks.join(`${lineEnding}${lineEnding}`),
+        ``,
+        `:::`
+      );
+    }
+  } else {
     sections.push(
       ``,
+      `<!-- HWCMS-HIDDEN:evaluations`,
       `## 授課評價與學生回饋`,
       ``,
       `::: {.grid}`,
       ``,
       evalBlocks.join(`${lineEnding}${lineEnding}`),
       ``,
-      `:::`
+      `:::`,
+      `-->`
     );
   }
 
-  sections.push(
-    ``,
-    `## 最新動態`,
-    ``,
-    highlightRows,
-    ``,
-    `: {tbl-colwidths="[15, 85]"}`
-  );
+  if (model.showHighlights !== false) {
+    sections.push(
+      ``,
+      `## 最新動態`,
+      ``,
+      highlightRows,
+      ``,
+      `: {tbl-colwidths="[15, 85]"}`
+    );
+  } else {
+    sections.push(
+      ``,
+      `<!-- HWCMS-HIDDEN:highlights`,
+      `## 最新動態`,
+      ``,
+      highlightRows,
+      ``,
+      `: {tbl-colwidths="[15, 85]"}`,
+      `-->`
+    );
+  }
 
   return sections.join(lineEnding);
 }
@@ -1803,15 +1899,86 @@ function renderHomeEditors() {
     scheduleDocumentUpdate();
   };
 
+  if (elements.toggleResearchAreasButton) {
+    const isVisible = state.homeModel.showResearchAreas !== false;
+    elements.toggleResearchAreasButton.textContent = isVisible ? "👁️ 公開" : "🙈 隱藏";
+    elements.toggleResearchAreasButton.className = `visibility-toggle-btn ${isVisible ? "" : "is-hidden"}`;
+    elements.toggleResearchAreasButton.onclick = () => {
+      state.homeModel.showResearchAreas = !isVisible;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.toggleCoursesButton) {
+    const isVisible = state.homeModel.showCourses !== false;
+    elements.toggleCoursesButton.textContent = isVisible ? "👁️ 公開" : "🙈 隱藏";
+    elements.toggleCoursesButton.className = `visibility-toggle-btn ${isVisible ? "" : "is-hidden"}`;
+    elements.toggleCoursesButton.onclick = () => {
+      state.homeModel.showCourses = !isVisible;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.toggleEvaluationsButton) {
+    const isVisible = state.homeModel.showEvaluations !== false;
+    elements.toggleEvaluationsButton.textContent = isVisible ? "👁️ 公開" : "🙈 隱藏";
+    elements.toggleEvaluationsButton.className = `visibility-toggle-btn ${isVisible ? "" : "is-hidden"}`;
+    elements.toggleEvaluationsButton.onclick = () => {
+      state.homeModel.showEvaluations = !isVisible;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+  }
+
+  if (elements.toggleHighlightsButton) {
+    const isVisible = state.homeModel.showHighlights !== false;
+    elements.toggleHighlightsButton.textContent = isVisible ? "👁️ 公開" : "🙈 隱藏";
+    elements.toggleHighlightsButton.className = `visibility-toggle-btn ${isVisible ? "" : "is-hidden"}`;
+    elements.toggleHighlightsButton.onclick = () => {
+      state.homeModel.showHighlights = !isVisible;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+  }
+
   elements.researchAreaList.replaceChildren();
   (state.homeModel.researchAreas || []).forEach((area, index) => {
     const card = document.createElement("div");
     card.className = "structured-row-card";
+    if (area.hidden) card.classList.add("is-hidden-card");
 
     const top = document.createElement("div");
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `領域 ${index + 1}：${area.title || "未命名"}`;
+
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button";
+    hideBtn.className = `item-visibility-btn ${area.hidden ? "is-hidden" : ""}`;
+    hideBtn.textContent = area.hidden ? "🙈 隱藏中" : "👁️ 顯示";
+    hideBtn.onclick = () => {
+      area.hidden = !area.hidden;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -1823,7 +1990,8 @@ function renderHomeEditors() {
       renderHomeEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+    actions.append(hideBtn, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid cols-3";
@@ -1889,11 +2057,30 @@ function renderHomeEditors() {
     (state.homeModel.courses || []).forEach((c, index) => {
       const card = document.createElement("div");
       card.className = "structured-row-card";
+      if (c.hidden) card.classList.add("is-hidden-card");
 
       const top = document.createElement("div");
       top.className = "structured-card-top";
       const title = document.createElement("strong");
       title.textContent = `課程 ${index + 1}：${c.name || "未命名課程"}`;
+
+      const actions = document.createElement("div");
+      actions.style.display = "flex";
+      actions.style.alignItems = "center";
+      actions.style.gap = "6px";
+
+      const hideBtn = document.createElement("button");
+      hideBtn.type = "button";
+      hideBtn.className = `item-visibility-btn ${c.hidden ? "is-hidden" : ""}`;
+      hideBtn.textContent = c.hidden ? "🙈 隱藏中" : "👁️ 顯示";
+      hideBtn.onclick = () => {
+        c.hidden = !c.hidden;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "remove-btn";
@@ -1905,7 +2092,8 @@ function renderHomeEditors() {
         renderHomeEditors();
         scheduleDocumentUpdate();
       };
-      top.append(title, removeBtn);
+      actions.append(hideBtn, removeBtn);
+      top.append(title, actions);
 
       const grid = document.createElement("div");
       grid.className = "structured-card-grid";
@@ -2001,11 +2189,30 @@ function renderHomeEditors() {
     (state.homeModel.evaluations || []).forEach((e, index) => {
       const card = document.createElement("div");
       card.className = "structured-row-card";
+      if (e.hidden) card.classList.add("is-hidden-card");
 
       const top = document.createElement("div");
       top.className = "structured-card-top";
       const title = document.createElement("strong");
       title.textContent = `評價 ${index + 1}：${e.course || "課程評價"}`;
+
+      const actions = document.createElement("div");
+      actions.style.display = "flex";
+      actions.style.alignItems = "center";
+      actions.style.gap = "6px";
+
+      const hideBtn = document.createElement("button");
+      hideBtn.type = "button";
+      hideBtn.className = `item-visibility-btn ${e.hidden ? "is-hidden" : ""}`;
+      hideBtn.textContent = e.hidden ? "🙈 隱藏中" : "👁️ 顯示";
+      hideBtn.onclick = () => {
+        e.hidden = !e.hidden;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
       removeBtn.className = "remove-btn";
@@ -2017,7 +2224,8 @@ function renderHomeEditors() {
         renderHomeEditors();
         scheduleDocumentUpdate();
       };
-      top.append(title, removeBtn);
+      actions.append(hideBtn, removeBtn);
+      top.append(title, actions);
 
       const grid = document.createElement("div");
       grid.className = "structured-card-grid";
@@ -2112,11 +2320,30 @@ function renderHomeEditors() {
   (state.homeModel.highlights || []).forEach((h, index) => {
     const card = document.createElement("div");
     card.className = "structured-row-card";
+    if (h.hidden) card.classList.add("is-hidden-card");
 
     const top = document.createElement("div");
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `動態 ${index + 1}：${h.date || ""}`;
+
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button";
+    hideBtn.className = `item-visibility-btn ${h.hidden ? "is-hidden" : ""}`;
+    hideBtn.textContent = h.hidden ? "🙈 隱藏中" : "👁️ 顯示";
+    hideBtn.onclick = () => {
+      h.hidden = !h.hidden;
+      state.homeDirty = true;
+      state.draftSaved = false;
+      renderHomeEditors();
+      scheduleDocumentUpdate();
+    };
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2128,7 +2355,8 @@ function renderHomeEditors() {
       renderHomeEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+    actions.append(hideBtn, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid";
@@ -3985,24 +4213,24 @@ function renderPreview() {
   if (state.currentPath === "index.md" && state.homeModel) {
     const bio = escapeHtml(state.homeModel.bio || "");
     const motto = escapeHtml(state.homeModel.motto || "");
-    const areasHtml = (state.homeModel.researchAreas || []).map((a) => `
+    const areasHtml = (state.homeModel.showResearchAreas !== false) ? (state.homeModel.researchAreas || []).filter(a => !a.hidden).map((a) => `
       <div class="preview-column" style="--preview-span:4">
         <div class="premium-icon-box"><i class="${escapeHtml(a.icon)}"></i></div>
         <h3 style="margin:0 0 6px">${escapeHtml(a.title)}</h3>
         <p style="margin:0;color:#667085;font-size:13px">${escapeHtml(a.desc)}</p>
       </div>
-    `).join("");
+    `).join("") : "";
 
-    const coursesHtml = (state.homeModel.courses || []).map((c) => `
+    const coursesHtml = (state.homeModel.showCourses !== false) ? (state.homeModel.courses || []).filter(c => !c.hidden).map((c) => `
       <div class="preview-column" style="--preview-span:6;padding:16px;border-left:4px solid #001F3F;border-radius:12px;background:#f8faff;border:1px solid #dbeafe;">
         ${c.time ? `<div style="margin-bottom:8px"><span style="background:#001F3F;color:#fff;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px">${escapeHtml(c.time)}</span></div>` : ""}
         <h4 style="margin:0 0 6px;color:#001F3F;font-size:16px;font-weight:700">${escapeHtml(c.name || "")}</h4>
         <p style="margin:0 0 10px;color:#475569;font-size:12px;line-height:1.5">${escapeHtml(c.desc || "")}</p>
         ${c.syllabusUrl ? `<a href="${escapeHtml(c.syllabusUrl)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#001F3F;font-weight:700;text-decoration:none;padding:4px 10px;background:#fff;border:1px solid #cbd5e1;border-radius:6px">📄 授課大綱 ↗</a>` : ""}
       </div>
-    `).join("");
+    `).join("") : "";
 
-    const evalsHtml = (state.homeModel.evaluations || []).map((e) => `
+    const evalsHtml = (state.homeModel.showEvaluations !== false) ? (state.homeModel.evaluations || []).filter(e => !e.hidden).map((e) => `
       <div class="preview-column" style="--preview-span:6;padding:16px;border-left:4px solid #C9A227;border-radius:12px;background:#fffdfa;border:1px solid #fef3c7;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <strong style="color:#001F3F;font-size:14px">${escapeHtml(e.course || "")}</strong>
@@ -4011,29 +4239,29 @@ function renderPreview() {
         <blockquote style="margin:0 0 8px;padding-left:10px;border-left:3px solid #C9A227;font-size:12px;font-style:italic;color:#334155;line-height:1.6">「${escapeHtml(e.feedback || "")}」</blockquote>
         ${e.source ? `<div style="font-size:11px;color:#64748b;text-align:right">— ${escapeHtml(e.source)}</div>` : ""}
       </div>
-    `).join("");
+    `).join("") : "";
 
-    const highlightsHtml = (state.homeModel.highlights || []).map((h) => `
+    const highlightsHtml = (state.homeModel.showHighlights !== false) ? (state.homeModel.highlights || []).filter(h => !h.hidden).map((h) => `
       <tr>
         <td style="font-weight:700;white-space:nowrap;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(h.date)}</td>
         <td style="padding:8px 12px;border:1px solid #dfe4ef">${inlineMarkdownPreview(h.event)}</td>
       </tr>
-    `).join("");
+    `).join("") : "";
+
     body = `
       <h2>關於我</h2>
       <p>${bio.replace(/\n\n+/g, "</p><p>")}</p>
       ${motto ? `<blockquote><em>"${motto}"</em></blockquote>` : ""}
-      <h2>研究領域</h2>
-      <div class="preview-grid">${areasHtml}</div>
+      ${areasHtml ? `<h2>研究領域</h2><div class="preview-grid">${areasHtml}</div>` : ""}
       ${coursesHtml ? `<h2>本學期授課</h2><div class="preview-grid">${coursesHtml}</div>` : ""}
       ${evalsHtml ? `<h2>授課評價與學生回饋</h2><div class="preview-grid">${evalsHtml}</div>` : ""}
-      <h2>最新動態</h2>
+      ${highlightsHtml ? `<h2>最新動態</h2>
       <div class="preview-table-wrap">
         <table style="width:100%;border-collapse:collapse">
           <thead><tr style="background:#f4f6fb"><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">日期</th><th style="padding:8px 12px;text-align:left;border:1px solid #dfe4ef">事件</th></tr></thead>
           <tbody>${highlightsHtml}</tbody>
         </table>
-      </div>
+      </div>` : ""}
     `;
   } else if (state.currentPath === "about/index.md" && state.aboutModel) {
     const eduHtml = (state.aboutModel.education || []).map((e) => `

@@ -191,6 +191,41 @@ test("home page cards, courses, evaluations and highlights parse and reconstruct
   assert.equal(normalize(reconstructed), normalize(body));
 });
 
+test("home page selective visibility toggles hide sections safely with 100% data recovery", () => {
+  const markdown = readFileSync(new URL("../../index.md", import.meta.url), "utf8");
+  const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
+  const model = sandbox.parseHomePage(body);
+  
+  // Hide courses section and evaluations section
+  model.showCourses = false;
+  model.showEvaluations = false;
+  model.researchAreas[0].hidden = true;
+
+  const hiddenSerialized = sandbox.serializeHomePage(model);
+  assert.ok(hiddenSerialized.includes("<!-- HWCMS-HIDDEN:courses"));
+  assert.ok(hiddenSerialized.includes("<!-- HWCMS-HIDDEN:evaluations"));
+  assert.ok(hiddenSerialized.includes("<!-- HWCMS-HIDDEN-CARD"));
+
+  // Reparse hidden serialized output
+  const reparsed = sandbox.parseHomePage(hiddenSerialized);
+  assert.equal(reparsed.showCourses, false);
+  assert.equal(reparsed.showEvaluations, false);
+  assert.equal(reparsed.showResearchAreas, true);
+  assert.equal(reparsed.courses.length, 2);
+  assert.equal(reparsed.evaluations.length, 2);
+  assert.equal(reparsed.researchAreas[0].hidden, true);
+  assert.equal(reparsed.researchAreas[1].hidden, false);
+
+  // Unhide and re-serialize to verify perfect restoration
+  reparsed.showCourses = true;
+  reparsed.showEvaluations = true;
+  reparsed.researchAreas[0].hidden = false;
+
+  const unhiddenSerialized = sandbox.serializeHomePage(reparsed);
+  const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
+  assert.equal(normalize(unhiddenSerialized), normalize(body));
+});
+
 test("about page cards, education, and experience parse and reconstruct exact Quarto page layout", () => {
   const markdown = readFileSync(new URL("../../about/index.md", import.meta.url), "utf8");
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
