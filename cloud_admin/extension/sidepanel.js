@@ -100,6 +100,10 @@ const elements = {
   homeMottoInput: $("homeMottoInput"),
   addResearchAreaButton: $("addResearchAreaButton"),
   researchAreaList: $("researchAreaList"),
+  addTeachingCourseButton: $("addTeachingCourseButton"),
+  teachingCourseList: $("teachingCourseList"),
+  addTeachingEvaluationButton: $("addTeachingEvaluationButton"),
+  teachingEvaluationList: $("teachingEvaluationList"),
   addHighlightButton: $("addHighlightButton"),
   highlightList: $("highlightList"),
   aboutEditors: $("aboutEditors"),
@@ -552,9 +556,13 @@ function parseHomePage(body) {
   let bio = "";
   let motto = "";
   const researchAreas = [];
+  const courses = [];
+  const evaluations = [];
   const highlights = [];
   let section = "";
   let curArea = null;
+  let curCourse = null;
+  let curEval = null;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -565,6 +573,12 @@ function parseHomePage(body) {
       continue;
     } else if (trimmed === "## 研究領域") {
       section = "research";
+      continue;
+    } else if (trimmed === "## 本學期授課" || trimmed.includes("本學期授課")) {
+      section = "courses";
+      continue;
+    } else if (trimmed === "## 授課評價與學生回饋" || trimmed.includes("授課評價") || trimmed.includes("學生回饋")) {
+      section = "evaluations";
       continue;
     } else if (trimmed === "## 最新動態") {
       section = "highlights";
@@ -599,8 +613,66 @@ function parseHomePage(body) {
           curArea.icon = iconMatch[1].trim();
         } else if (trimmed.startsWith("### ")) {
           curArea.title = trimmed.replace(/^###\s+/, "").trim();
-        } else if (trimmed) {
+        } else if (trimmed && !trimmed.startsWith("<div") && !trimmed.startsWith("</div")) {
           curArea.desc = curArea.desc ? `${curArea.desc} ${trimmed}` : trimmed;
+        }
+      }
+    } else if (section === "courses") {
+      if (trimmed.startsWith("::: {.g-col-12")) {
+        curCourse = { time: "", name: "", desc: "", syllabusUrl: "" };
+        courses.push(curCourse);
+        continue;
+      }
+      if (curCourse) {
+        if (trimmed === ":::") {
+          curCourse = null;
+          continue;
+        }
+        const badgeMatch = trimmed.match(/<span class="badge[^>]*>([\s\S]*?)<\/span>/);
+        if (badgeMatch) {
+          curCourse.time = badgeMatch[1].trim();
+        }
+        const titleMatch = trimmed.match(/<h3[^>]*>([\s\S]*?)<\/h3>/);
+        if (titleMatch) {
+          curCourse.name = titleMatch[1].trim();
+        }
+        const pMatch = trimmed.match(/<p[^>]*>([\s\S]*?)<\/p>/);
+        if (pMatch) {
+          curCourse.desc = pMatch[1].trim();
+        }
+        const hrefMatch = trimmed.match(/href="([^"]*)"/);
+        if (hrefMatch) {
+          curCourse.syllabusUrl = hrefMatch[1].trim();
+        }
+      }
+    } else if (section === "evaluations") {
+      if (trimmed.startsWith("::: {.g-col-12")) {
+        curEval = { course: "", score: "", feedback: "", source: "" };
+        evaluations.push(curEval);
+        continue;
+      }
+      if (curEval) {
+        if (trimmed === ":::") {
+          curEval = null;
+          continue;
+        }
+        const badgeMatch = trimmed.match(/<span class="badge[^>]*>([\s\S]*?)<\/span>/);
+        if (badgeMatch) {
+          curEval.score = badgeMatch[1].trim();
+        }
+        const spanMatch = trimmed.match(/<span style="[^"]*font-weight:\s*700[^"]*">([\s\S]*?)<\/span>/);
+        if (spanMatch && !trimmed.includes("class=\"badge")) {
+          curEval.course = spanMatch[1].trim();
+        }
+        const quoteMatch = trimmed.match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/);
+        if (quoteMatch) {
+          curEval.feedback = quoteMatch[1].replace(/^[「“"']|[」”"']$/g, "").trim();
+        } else if (trimmed.startsWith("「") || trimmed.startsWith("\"")) {
+          curEval.feedback = trimmed.replace(/^[「“"']|[」”"']$/g, "").trim();
+        }
+        const sourceMatch = trimmed.match(/<div[^>]*>(?:—|--|-)\s*([\s\S]*?)<\/div>/) || trimmed.match(/^(?:—|--|-)\s*(.*)$/);
+        if (sourceMatch) {
+          curEval.source = sourceMatch[1].trim();
         }
       }
     } else if (section === "highlights") {
@@ -613,7 +685,7 @@ function parseHomePage(body) {
     }
   }
 
-  return { bio, motto, researchAreas, highlights };
+  return { bio, motto, researchAreas, courses, evaluations, highlights };
 }
 
 function serializeHomePage(model, lineEnding = "\n") {
@@ -631,13 +703,40 @@ function serializeHomePage(model, lineEnding = "\n") {
     ].join(lineEnding);
   });
 
+  const courseBlocks = (model.courses || []).map((c) => {
+    const timeBadge = c.time ? `<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">${lineEnding}  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">${c.time}</span>${lineEnding}</div>` : "";
+    const syllabusLink = c.syllabusUrl ? `${lineEnding}<a href="${c.syllabusUrl}" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:4px;">${lineEnding}  <i class="bi bi-file-earmark-text"></i> 下載 / 查看授課大綱 ↗${lineEnding}</a>` : "";
+    return [
+      "::: {.g-col-12 .g-col-md-6}",
+      `<div class="card p-3 shadow-sm h-100 border-start border-primary border-4" style="background:#f8faff;border-radius:12px;">`,
+      timeBadge,
+      `<h3 style="margin:4px 0 8px;font-size:18px;color:#001F3F;font-weight:700;">${c.name || "課程名稱"}</h3>`,
+      `<p style="margin:0 0 12px;color:#475569;font-size:13px;line-height:1.5;">${c.desc || ""}</p>${syllabusLink}`,
+      `</div>`,
+      ":::"
+    ].filter(Boolean).join(lineEnding);
+  });
+
+  const evalBlocks = (model.evaluations || []).map((e) => {
+    const scoreBadge = e.score ? `<span class="badge bg-warning text-dark" style="font-weight:700;font-size:12px;">${e.score}</span>` : "";
+    const sourceHtml = e.source ? `${lineEnding}<div style="font-size:11px;color:#64748b;text-align:right;">— ${e.source}</div>` : "";
+    return [
+      "::: {.g-col-12 .g-col-md-6}",
+      `<div class="card p-3 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">`,
+      `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">${lineEnding}  <span style="font-weight:700;color:#001F3F;font-size:14px;">${e.course || "課程名稱"}</span>${lineEnding}  ${scoreBadge}${lineEnding}</div>`,
+      `<blockquote style="margin:0 0 8px;padding-left:12px;border-left:3px solid #C9A227;color:#334155;font-size:13px;font-style:italic;line-height:1.6;">${lineEnding}  「${e.feedback || ""}」${lineEnding}</blockquote>${sourceHtml}`,
+      `</div>`,
+      ":::"
+    ].join(lineEnding);
+  });
+
   const highlightRows = [
     "| 日期 | 事件 |",
     "|------|------|",
     ...(model.highlights || []).map((h) => `| ${h.date || ""} | ${h.event || ""} |`)
   ].join(lineEnding);
 
-  return [
+  const sections = [
     `:::{#hero-heading}`,
     `## 關於我`,
     ``,
@@ -650,14 +749,45 @@ function serializeHomePage(model, lineEnding = "\n") {
     ``,
     areaBlocks.join(`${lineEnding}${lineEnding}`),
     ``,
-    `:::`,
+    `:::`
+  ];
+
+  if (courseBlocks.length) {
+    sections.push(
+      ``,
+      `## 本學期授課`,
+      ``,
+      `::: {.grid}`,
+      ``,
+      courseBlocks.join(`${lineEnding}${lineEnding}`),
+      ``,
+      `:::`
+    );
+  }
+
+  if (evalBlocks.length) {
+    sections.push(
+      ``,
+      `## 授課評價與學生回饋`,
+      ``,
+      `::: {.grid}`,
+      ``,
+      evalBlocks.join(`${lineEnding}${lineEnding}`),
+      ``,
+      `:::`
+    );
+  }
+
+  sections.push(
     ``,
     `## 最新動態`,
     ``,
     highlightRows,
     ``,
     `: {tbl-colwidths="[15, 85]"}`
-  ].join(lineEnding);
+  );
+
+  return sections.join(lineEnding);
 }
 
 function parseAboutPage(body) {
@@ -1753,6 +1883,230 @@ function renderHomeEditors() {
     renderHomeEditors();
     scheduleDocumentUpdate();
   };
+
+  if (elements.teachingCourseList) {
+    elements.teachingCourseList.replaceChildren();
+    (state.homeModel.courses || []).forEach((c, index) => {
+      const card = document.createElement("div");
+      card.className = "structured-row-card";
+
+      const top = document.createElement("div");
+      top.className = "structured-card-top";
+      const title = document.createElement("strong");
+      title.textContent = `課程 ${index + 1}：${c.name || "未命名課程"}`;
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "remove-btn";
+      removeBtn.textContent = "刪除";
+      removeBtn.onclick = () => {
+        state.homeModel.courses.splice(index, 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+      top.append(title, removeBtn);
+
+      const grid = document.createElement("div");
+      grid.className = "structured-card-grid";
+      grid.style.gridTemplateColumns = "1fr 1fr";
+
+      const nameField = document.createElement("div");
+      nameField.className = "structured-field";
+      nameField.innerHTML = `<label>課程名稱 (Course Name)</label>`;
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.value = c.name || "";
+      nameInput.placeholder = "例如：會計人工智慧與大數據分析";
+      nameInput.oninput = () => {
+        c.name = nameInput.value;
+        title.textContent = `課程 ${index + 1}：${c.name || "未命名課程"}`;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      nameField.append(nameInput);
+
+      const timeField = document.createElement("div");
+      timeField.className = "structured-field";
+      timeField.innerHTML = `<label>學期與時間 (Semester & Time)</label>`;
+      const timeInput = document.createElement("input");
+      timeInput.type = "text";
+      timeInput.value = c.time || "";
+      timeInput.placeholder = "例如：114-1 學期 · 週四 09:10-12:00";
+      timeInput.oninput = () => {
+        c.time = timeInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      timeField.append(timeInput);
+
+      const syllabusField = document.createElement("div");
+      syllabusField.className = "structured-field";
+      syllabusField.style.gridColumn = "1 / -1";
+      syllabusField.innerHTML = `<label>📄 授課大綱連結 (Syllabus URL)</label>`;
+      const syllabusInput = document.createElement("input");
+      syllabusInput.type = "url";
+      syllabusInput.value = c.syllabusUrl || "";
+      syllabusInput.placeholder = "例如：https://drive.google.com/... 或校務系統大綱網址";
+      syllabusInput.oninput = () => {
+        c.syllabusUrl = syllabusInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      syllabusField.append(syllabusInput);
+
+      const descField = document.createElement("div");
+      descField.className = "structured-field";
+      descField.style.gridColumn = "1 / -1";
+      descField.innerHTML = `<label>課程簡述 / 教室說明 (Description / Classroom)</label>`;
+      const descInput = document.createElement("input");
+      descInput.type = "text";
+      descInput.value = c.desc || "";
+      descInput.placeholder = "例如：介紹機器學習在財務分析中的實務應用，上課地點：商學院 3F02 教室";
+      descInput.oninput = () => {
+        c.desc = descInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      descField.append(descInput);
+
+      grid.append(nameField, timeField, syllabusField, descField);
+      card.append(top, grid);
+      elements.teachingCourseList.append(card);
+    });
+
+    if (elements.addTeachingCourseButton) {
+      elements.addTeachingCourseButton.onclick = () => {
+        state.homeModel.courses = state.homeModel.courses || [];
+        state.homeModel.courses.push({
+          name: "新開授課程",
+          time: "114-1 學期 · 週四 09:10-12:00",
+          syllabusUrl: "",
+          desc: "課程簡介與教學實務說明"
+        });
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+    }
+  }
+
+  if (elements.teachingEvaluationList) {
+    elements.teachingEvaluationList.replaceChildren();
+    (state.homeModel.evaluations || []).forEach((e, index) => {
+      const card = document.createElement("div");
+      card.className = "structured-row-card";
+
+      const top = document.createElement("div");
+      top.className = "structured-card-top";
+      const title = document.createElement("strong");
+      title.textContent = `評價 ${index + 1}：${e.course || "課程評價"}`;
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "remove-btn";
+      removeBtn.textContent = "刪除";
+      removeBtn.onclick = () => {
+        state.homeModel.evaluations.splice(index, 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+      top.append(title, removeBtn);
+
+      const grid = document.createElement("div");
+      grid.className = "structured-card-grid";
+      grid.style.gridTemplateColumns = "1fr 1fr";
+
+      const courseField = document.createElement("div");
+      courseField.className = "structured-field";
+      courseField.innerHTML = `<label>課程名稱與學期 (Course & Semester)</label>`;
+      const courseInput = document.createElement("input");
+      courseInput.type = "text";
+      courseInput.value = e.course || "";
+      courseInput.placeholder = "例如：會計資訊系統 (113-2)";
+      courseInput.oninput = () => {
+        e.course = courseInput.value;
+        title.textContent = `評價 ${index + 1}：${e.course || "課程評價"}`;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      courseField.append(courseInput);
+
+      const scoreField = document.createElement("div");
+      scoreField.className = "structured-field";
+      scoreField.innerHTML = `<label>評鑑得分 / 亮點徽章 (Rating / Badge)</label>`;
+      const scoreInput = document.createElement("input");
+      scoreInput.type = "text";
+      scoreInput.value = e.score || "";
+      scoreInput.placeholder = "例如：⭐ 教學評鑑 4.9 / 5.0 或 特優教學";
+      scoreInput.oninput = () => {
+        e.score = scoreInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      scoreField.append(scoreInput);
+
+      const feedbackField = document.createElement("div");
+      feedbackField.className = "structured-field";
+      feedbackField.style.gridColumn = "1 / -1";
+      feedbackField.innerHTML = `<label>學生評價回饋內文 (Student Feedback Quote)</label>`;
+      const feedbackInput = document.createElement("textarea");
+      feedbackInput.rows = 2;
+      feedbackInput.value = e.feedback || "";
+      feedbackInput.placeholder = "例如：老師用生動實務案例帶我們手把手寫 AI 工具，收穫非常多！";
+      feedbackInput.oninput = () => {
+        e.feedback = feedbackInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      feedbackField.append(feedbackInput);
+
+      const sourceField = document.createElement("div");
+      sourceField.className = "structured-field";
+      sourceField.style.gridColumn = "1 / -1";
+      sourceField.innerHTML = `<label>來源備註 (Source Note)</label>`;
+      const sourceInput = document.createElement("input");
+      sourceInput.type = "text";
+      sourceInput.value = e.source || "";
+      sourceInput.placeholder = "例如：— 國立臺北大學會計系 學生修課回饋";
+      sourceInput.oninput = () => {
+        e.source = sourceInput.value;
+        state.homeDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      };
+      sourceField.append(sourceInput);
+
+      grid.append(courseField, scoreField, feedbackField, sourceField);
+      card.append(top, grid);
+      elements.teachingEvaluationList.append(card);
+    });
+
+    if (elements.addTeachingEvaluationButton) {
+      elements.addTeachingEvaluationButton.onclick = () => {
+        state.homeModel.evaluations = state.homeModel.evaluations || [];
+        state.homeModel.evaluations.push({
+          course: "會計資訊系統",
+          score: "⭐ 教學評鑑 4.9 / 5.0",
+          feedback: "課程內容充實且緊跟科技趨勢，收穫良多！",
+          source: "— 國立臺北大學會計系 學生修課回饋"
+        });
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      };
+    }
+  }
 
   elements.highlightList.replaceChildren();
   (state.homeModel.highlights || []).forEach((h, index) => {
@@ -3473,7 +3827,7 @@ function scheduleDocumentUpdate() {
 function updateDocumentState() {
   if (!state.currentPath) return;
   if (state.currentPath === "index.md" && state.homeModel) {
-    elements.wordCount.textContent = `${(state.homeModel.researchAreas || []).length} 個領域 · ${(state.homeModel.highlights || []).length} 筆動態`;
+    elements.wordCount.textContent = `${(state.homeModel.researchAreas || []).length} 個領域 · ${(state.homeModel.courses || []).length} 門授課 · ${(state.homeModel.evaluations || []).length} 筆評價 · ${(state.homeModel.highlights || []).length} 筆動態`;
   } else if (state.currentPath === "about/index.md" && state.aboutModel) {
     elements.wordCount.textContent = `${(state.aboutModel.education || []).length} 項學歷 · ${(state.aboutModel.experience || []).length} 項經歷 · ${(state.aboutModel.honors || []).length} 項榮譽`;
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
@@ -3638,6 +3992,27 @@ function renderPreview() {
         <p style="margin:0;color:#667085;font-size:13px">${escapeHtml(a.desc)}</p>
       </div>
     `).join("");
+
+    const coursesHtml = (state.homeModel.courses || []).map((c) => `
+      <div class="preview-column" style="--preview-span:6;padding:16px;border-left:4px solid #001F3F;border-radius:12px;background:#f8faff;border:1px solid #dbeafe;">
+        ${c.time ? `<div style="margin-bottom:8px"><span style="background:#001F3F;color:#fff;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px">${escapeHtml(c.time)}</span></div>` : ""}
+        <h4 style="margin:0 0 6px;color:#001F3F;font-size:16px;font-weight:700">${escapeHtml(c.name || "")}</h4>
+        <p style="margin:0 0 10px;color:#475569;font-size:12px;line-height:1.5">${escapeHtml(c.desc || "")}</p>
+        ${c.syllabusUrl ? `<a href="${escapeHtml(c.syllabusUrl)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#001F3F;font-weight:700;text-decoration:none;padding:4px 10px;background:#fff;border:1px solid #cbd5e1;border-radius:6px">📄 授課大綱 ↗</a>` : ""}
+      </div>
+    `).join("");
+
+    const evalsHtml = (state.homeModel.evaluations || []).map((e) => `
+      <div class="preview-column" style="--preview-span:6;padding:16px;border-left:4px solid #C9A227;border-radius:12px;background:#fffdfa;border:1px solid #fef3c7;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <strong style="color:#001F3F;font-size:14px">${escapeHtml(e.course || "")}</strong>
+          ${e.score ? `<span style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px">${escapeHtml(e.score)}</span>` : ""}
+        </div>
+        <blockquote style="margin:0 0 8px;padding-left:10px;border-left:3px solid #C9A227;font-size:12px;font-style:italic;color:#334155;line-height:1.6">「${escapeHtml(e.feedback || "")}」</blockquote>
+        ${e.source ? `<div style="font-size:11px;color:#64748b;text-align:right">— ${escapeHtml(e.source)}</div>` : ""}
+      </div>
+    `).join("");
+
     const highlightsHtml = (state.homeModel.highlights || []).map((h) => `
       <tr>
         <td style="font-weight:700;white-space:nowrap;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(h.date)}</td>
@@ -3650,6 +4025,8 @@ function renderPreview() {
       ${motto ? `<blockquote><em>"${motto}"</em></blockquote>` : ""}
       <h2>研究領域</h2>
       <div class="preview-grid">${areasHtml}</div>
+      ${coursesHtml ? `<h2>本學期授課</h2><div class="preview-grid">${coursesHtml}</div>` : ""}
+      ${evalsHtml ? `<h2>授課評價與學生回饋</h2><div class="preview-grid">${evalsHtml}</div>` : ""}
       <h2>最新動態</h2>
       <div class="preview-table-wrap">
         <table style="width:100%;border-collapse:collapse">

@@ -171,11 +171,17 @@ test("activity intro field and cards reconstruct the exact Quarto page layout", 
   assert.equal(normalize(reconstructed), normalize(body));
 });
 
-test("home page cards and highlights parse and reconstruct exact Quarto page layout", () => {
+test("home page cards, courses, evaluations and highlights parse and reconstruct exact Quarto page layout", () => {
   const markdown = readFileSync(new URL("../../index.md", import.meta.url), "utf8");
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
   const model = sandbox.parseHomePage(body);
   assert.equal(model.researchAreas.length, 5);
+  assert.equal(model.courses.length, 2);
+  assert.equal(model.courses[0].name, "會計人工智慧與大數據分析");
+  assert.equal(model.courses[0].time, "114-1 學期 · 週四 09:10-12:00");
+  assert.equal(model.evaluations.length, 2);
+  assert.equal(model.evaluations[0].course, "會計資訊系統");
+  assert.equal(model.evaluations[0].score, "⭐ 教學評鑑 4.9 / 5.0");
   assert.equal(model.highlights.length, 5);
   assert.ok(model.bio.includes("我是張修瑋"));
   assert.equal(model.motto, "Honoring God and benefiting people! (榮神益人！)");

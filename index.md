@@ -60,6 +60,70 @@ Material Disclosure & Corporate Transparency
 
 :::
 
+## 本學期授課
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card p-3 shadow-sm h-100 border-start border-primary border-4" style="background:#f8faff;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">114-1 學期 · 週四 09:10-12:00</span>
+</div>
+<h3 style="margin:4px 0 8px;font-size:18px;color:#001F3F;font-weight:700;">會計人工智慧與大數據分析</h3>
+<p style="margin:0 0 12px;color:#475569;font-size:13px;line-height:1.5;">介紹機器學習、大語言模型在財務分析與審計作業中的實戰應用與 Python 程式演練。</p>
+<a href="https://drive.google.com" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:4px;">
+  <i class="bi bi-file-earmark-text"></i> 下載 / 查看授課大綱 ↗
+</a>
+</div>
+:::
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card p-3 shadow-sm h-100 border-start border-primary border-4" style="background:#f8faff;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">114-1 學期 · 週二 13:10-16:00</span>
+</div>
+<h3 style="margin:4px 0 8px;font-size:18px;color:#001F3F;font-weight:700;">會計資訊系統 (AIS)</h3>
+<p style="margin:0 0 12px;color:#475569;font-size:13px;line-height:1.5;">企業內部控制、ERP 核心流程架構與智慧財會資訊流設計與案例分析。</p>
+<a href="https://drive.google.com" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:4px;">
+  <i class="bi bi-file-earmark-text"></i> 下載 / 查看授課大綱 ↗
+</a>
+</div>
+:::
+
+:::
+
+## 授課評價與學生回饋
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card p-3 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+  <span style="font-weight:700;color:#001F3F;font-size:14px;">會計資訊系統</span>
+  <span class="badge bg-warning text-dark" style="font-weight:700;font-size:12px;">⭐ 教學評鑑 4.9 / 5.0</span>
+</div>
+<blockquote style="margin:0 0 8px;padding-left:12px;border-left:3px solid #C9A227;color:#334155;font-size:13px;font-style:italic;line-height:1.6;">
+  「老師用非常生動實務的案例帶我們手把手寫 AI 工具，完全破除對寫程式的恐懼，是我大學四年收穫最多的一門課！」
+</blockquote>
+<div style="font-size:11px;color:#64748b;text-align:right;">— 國立臺北大學會計系 學生修課回饋</div>
+</div>
+:::
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card p-3 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+  <span style="font-weight:700;color:#001F3F;font-size:14px;">AI 財會實務應用</span>
+  <span class="badge bg-warning text-dark" style="font-weight:700;font-size:12px;">⭐ 特優教學推薦</span>
+</div>
+<blockquote style="margin:0 0 8px;padding-left:12px;border-left:3px solid #C9A227;color:#334155;font-size:13px;font-style:italic;line-height:1.6;">
+  「課程內容緊跟產業最新趨勢，教材準備非常用心扎實，讓非資工背景的我們也能真正運用 AI 解決複雜會計問題。」
+</blockquote>
+<div style="font-size:11px;color:#64748b;text-align:right;">— NTPU 碩士班 修課同學評價</div>
+</div>
+:::
+
+:::
+
 ## 最新動態
 
 | 日期 | 事件 |
