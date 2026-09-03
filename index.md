@@ -154,10 +154,10 @@ Material Disclosure & Corporate Transparency
 
 | 日期 | 事件 |
 |------|------|
+| 2026/08 | <i class="bi bi-award text-warning"></i> 指導臺北大學會計學系團隊參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」殊榮 |
 | 2026/08 | <i class="bi bi-mic text-primary"></i> 中華會計學會：Google Sheets × 生成式 AI 教學研討會（給會計初學者的 AI 工具坊） |
 | 2026/08 | <i class="bi bi-lightbulb"></i> 受邀至莎美娜實業股份有限公司進行企業 AI 內訓 |
 | 2026/07 | <i class="bi bi-lightbulb"></i> 受邀至國立台北市召會第四聚會所「駕馭 AI 的智慧少年」 |
-| 2026/05 | <i class="bi bi-award text-warning"></i> 指導臺北大學會計學系團隊參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」殊榮 |
 | 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
 | 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
 | 2026/03 | <i class="bi bi-mortarboard text-primary"></i> 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
