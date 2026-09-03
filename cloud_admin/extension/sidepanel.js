@@ -4228,13 +4228,17 @@ function sanitizePreviewHtml(html) {
 }
 
 function inlineMarkdownPreview(value) {
+  if (!value) return "";
   return escapeHtml(value)
     .replace(/\\\*/g, "*")
     .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__(.+?)__/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/\[([^\]]+)]\((https?:\/\/[^)]+)\)(?:\{[^}]+\})?/g, '<a href="$2">$1</a>')
-    .replace(/&lt;i\s+class=&quot;([^&]+)&quot;&gt;&lt;\/i&gt;/g, '<i class="$1"></i>');
+    .replace(/_([^_]+)_/g, "<em>$1</em>")
+    .replace(/\[([^\]]+)]\((https?:\/\/[^)]+)\)(?:\{[^}]+\})?/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/&lt;i\s+class=&quot;([^&]+)&quot;&gt;&lt;\/i&gt;/g, '<i class="$1"></i>')
+    .replace(/&lt;(\/)?(strong|b|em|i|span|a)\b([^&]*)&gt;/gi, '<$1$2$3>');
 }
 
 function tablePreviewHtml(model) {
@@ -4402,7 +4406,7 @@ function renderPreview() {
     const eduHtml = (state.aboutModel.education || []).map((e) => `
       <div class="preview-column" style="--preview-span:6;padding:12px;border:1px solid #e2e7f2;border-radius:10px;background:#fbfcfe">
         <h4 style="margin:0 0 4px;color:#403f6f">${escapeHtml(e.degree)}</h4>
-        <strong style="display:block;color:#2c344e">${escapeHtml(e.school)}</strong>
+        <strong style="display:block;color:#2c344e">${inlineMarkdownPreview(e.school)}</strong>
         ${e.detail ? `<span style="display:block;color:#667085;font-size:12px">${escapeHtml(e.detail)}</span>` : ""}
         <span style="display:block;color:#667085;font-size:12px;margin-top:4px">${escapeHtml(e.period)}</span>
         ${e.linkUrl ? `<a href="${escapeHtml(e.linkUrl)}" target="_blank" style="display:inline-block;margin-top:6px;font-size:12px">${escapeHtml(e.linkText || "📄 Dissertation")}</a>` : ""}
@@ -4411,16 +4415,17 @@ function renderPreview() {
     const expHtml = (state.aboutModel.experience || []).map((exp) => `
       <tr>
         <td style="font-weight:700;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.period)}</td>
-        <td style="font-weight:700;color:#403f6f;padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.title)}</td>
-        <td style="padding:8px 12px;border:1px solid #dfe4ef">${escapeHtml(exp.institution)}</td>
+        <td style="font-weight:700;color:#403f6f;padding:8px 12px;border:1px solid #dfe4ef">${inlineMarkdownPreview(exp.title)}</td>
+        <td style="padding:8px 12px;border:1px solid #dfe4ef">${inlineMarkdownPreview(exp.institution)}</td>
       </tr>
     `).join("");
     const honorsHtml = (state.aboutModel.honors || []).map((h) => `<li>${inlineMarkdownPreview(h)}</li>`).join("");
     const servicesHtml = (state.aboutModel.services || []).map((s) => `<li>${inlineMarkdownPreview(s)}</li>`).join("");
+    const studentHonorsHtml = (state.aboutModel.studentHonors || []).map((sh) => `<li>${inlineMarkdownPreview(sh)}</li>`).join("");
     body = `
       <div class="preview-callout preview-callout-note">
         <h2 style="margin:0 0 6px">${escapeHtml(state.aboutModel.calloutTitle)}</h2>
-        <p style="margin:0;font-weight:700">${escapeHtml(state.aboutModel.calloutSubtitle)}</p>
+        <p style="margin:0;font-weight:700">${inlineMarkdownPreview(state.aboutModel.calloutSubtitle)}</p>
       </div>
       <h2>學歷 (Education)</h2>
       <div class="preview-grid">${eduHtml}</div>
@@ -4438,6 +4443,7 @@ function renderPreview() {
       <hr>
       <h2>服務 (Service)</h2>
       <ul>${servicesHtml}</ul>
+      ${studentHonorsHtml ? `<hr><h2>指導學生榮譽榜 (Student Mentorship Honors)</h2><ul>${studentHonorsHtml}</ul>` : ""}
     `;
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
     const journalHtml = (state.pubModel.journalPapers || []).map((p) => `

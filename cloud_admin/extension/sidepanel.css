@@ -522,6 +522,8 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   border: 1px solid #e2e7f2;
   border-radius: 10px;
   background: #fff;
+}
+
 .visibility-toggle-btn {
   display: inline-flex;
   align-items: center;
@@ -692,8 +694,9 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
 }
 
 .tree-folder-title {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
 }
 
 .tree-folder-title strong {
@@ -701,32 +704,51 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   font-size: 13px;
   font-weight: 700;
   color: var(--brand-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tree-folder-title small {
   display: block;
   font-size: 10px;
   color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tree-folder-badge {
+  flex: 0 0 auto;
   padding: 2px 7px;
   border-radius: 10px;
   background: #eef2ff;
   color: #4338ca;
   font-size: 11px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .tree-folder-toggle {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  padding: 0;
   border-radius: 6px;
   color: var(--muted);
   font-size: 10px;
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.tree-folder-toggle:hover {
+  background: #eef2ff;
+  color: var(--brand);
 }
 
 .tree-folder.open .tree-folder-toggle {

@@ -44,6 +44,8 @@ vm.runInNewContext([
   productionFunction("protectLayoutSyntax"),
   productionFunction("uniqueIndexOf"),
   productionFunction("applyEditorDeltaToSource"),
+  productionFunction("escapeHtml"),
+  productionFunction("inlineMarkdownPreview"),
   productionFunction("applyEditorChangesToSource"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
@@ -64,6 +66,7 @@ vm.runInNewContext([
   "this.setYamlScalar = setYamlScalar;",
   "this.removeYamlField = removeYamlField;",
   "this.protectLayoutSyntax = protectLayoutSyntax;",
+  "this.inlineMarkdownPreview = inlineMarkdownPreview;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;"
 ].join("\n"), sandbox);
 
@@ -340,3 +343,11 @@ test("students area is configured as a static page with password reset capabilit
   assert.ok(body.includes("量化工具的使用介紹"));
   assert.ok(body.includes("近期進度報告排程"));
 });
+
+test("inlineMarkdownPreview parses bold tags cleanly without exposing raw asterisks", () => {
+  const sample = "**國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU";
+  const rendered = sandbox.inlineMarkdownPreview(sample);
+  assert.equal(rendered.includes("**"), false);
+  assert.ok(rendered.includes("<strong>國立臺北大學會計學系 助理教授</strong>"));
+});
+
