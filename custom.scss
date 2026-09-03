@@ -307,6 +307,78 @@ div.callout .callout-title-container {
 }
 
 /* ===================================================
+   RESEARCH AREAS - HORIZONTAL MINI-ICON CARDS
+   =================================================== */
+section#研究領域,
+section[id*="研究領域"],
+#研究領域 {
+  .grid {
+    row-gap: 1.15rem;
+    column-gap: 1.15rem;
+  }
+
+  .grid > div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    padding: 16px 18px !important;
+    background: #ffffff !important;
+    border-radius: 14px !important;
+    border: 1px solid #e8edf5 !important;
+    box-shadow: 0 2px 8px rgba(0, 31, 63, 0.04) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    &:hover {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 8px 18px rgba(0, 31, 63, 0.09) !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    .premium-icon-box {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 38px !important;
+      height: 38px !important;
+      min-width: 38px !important;
+      border-radius: 10px !important;
+      background: linear-gradient(135deg, #E4EAFF 0%, #d8e4fc 100%) !important;
+      color: #001F3F !important;
+      font-size: 1.15rem !important;
+      margin-bottom: 0 !important;
+      box-shadow: 0 2px 6px rgba(0, 31, 63, 0.06) !important;
+      flex-shrink: 0 !important;
+      margin-top: 2px !important;
+    }
+
+    section.level3,
+    > div:last-child {
+      flex: 1 !important;
+      min-width: 0 !important;
+      margin-top: 0 !important;
+
+      h3 {
+        margin-top: 0 !important;
+        margin-bottom: 4px !important;
+        font-size: 1.05rem !important;
+        font-weight: 750 !important;
+        color: #001F3F !important;
+        line-height: 1.35 !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      p {
+        margin-bottom: 0 !important;
+        font-size: 0.84rem !important;
+        color: #64748b !important;
+        line-height: 1.35 !important;
+      }
+    }
+  }
+}
+
+/* ===================================================
    INLINE CODE TAGS ??USED FOR JOURNAL RANKINGS
    =================================================== */
 code {

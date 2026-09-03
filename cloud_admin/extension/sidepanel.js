@@ -4343,10 +4343,12 @@ function renderPreview() {
     const bio = escapeHtml(state.homeModel.bio || "");
     const motto = escapeHtml(state.homeModel.motto || "");
     const areasHtml = (state.homeModel.showResearchAreas !== false) ? (state.homeModel.researchAreas || []).filter(a => !a.hidden).map((a) => `
-      <div class="preview-column" style="--preview-span:4">
-        <div class="premium-icon-box"><i class="${escapeHtml(a.icon)}"></i></div>
-        <h3 style="margin:0 0 6px">${escapeHtml(a.title)}</h3>
-        <p style="margin:0;color:#667085;font-size:13px">${escapeHtml(a.desc)}</p>
+      <div class="preview-column" style="--preview-span:4;display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#fff;border-radius:12px;border:1px solid #e8edf5;box-shadow:0 2px 6px rgba(0,31,63,0.04);">
+        <div class="premium-icon-box" style="width:34px;height:34px;min-width:34px;font-size:1.05rem;border-radius:8px;margin-bottom:0;flex-shrink:0;background:linear-gradient(135deg,#E4EAFF,#d8e4fc);color:#001F3F;display:inline-flex;align-items:center;justify-content:center;"><i class="${escapeHtml(a.icon)}"></i></div>
+        <div style="flex:1;min-width:0;">
+          <h4 style="margin:0 0 3px;font-size:14px;font-weight:700;color:#001F3F">${escapeHtml(a.title)}</h4>
+          <p style="margin:0;color:#64748b;font-size:12px;line-height:1.35">${escapeHtml(a.desc)}</p>
+        </div>
       </div>
     `).join("") : "";
 
