@@ -196,6 +196,10 @@ test("home page selective visibility toggles hide sections safely with 100% data
   const body = markdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/, "");
   const model = sandbox.parseHomePage(body);
   
+  const initialShowCourses = model.showCourses;
+  const initialShowEvaluations = model.showEvaluations;
+  const initialFirstAreaHidden = Boolean(model.researchAreas[0].hidden);
+
   // Hide courses section and evaluations section
   model.showCourses = false;
   model.showEvaluations = false;
@@ -216,10 +220,10 @@ test("home page selective visibility toggles hide sections safely with 100% data
   assert.equal(reparsed.researchAreas[0].hidden, true);
   assert.equal(reparsed.researchAreas[1].hidden, false);
 
-  // Unhide and re-serialize to verify perfect restoration
-  reparsed.showCourses = true;
-  reparsed.showEvaluations = true;
-  reparsed.researchAreas[0].hidden = false;
+  // Restore to initial visibility settings and re-serialize to verify perfect restoration
+  reparsed.showCourses = initialShowCourses;
+  reparsed.showEvaluations = initialShowEvaluations;
+  reparsed.researchAreas[0].hidden = initialFirstAreaHidden;
 
   const unhiddenSerialized = sandbox.serializeHomePage(reparsed);
   const normalize = (s) => s.replace(/\r\n/g, "\n").trim();
