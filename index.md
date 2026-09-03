@@ -13,7 +13,7 @@ about:
       href: mailto:andychang@mail.ntpu.edu.tw
     - icon: file-earmark-pdf
       text: CV (PDF)
-      href: "https://drive.google.com/file/d/1mmz5jxjUmZvtFVZIgTckq4fEvFW3VcjU/view?usp=sharing"
+      href: Chang_HsiuWei_CV.pdf
 ---
 
 :::{#hero-heading}

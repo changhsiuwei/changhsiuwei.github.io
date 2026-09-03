@@ -4,6 +4,7 @@ project:
     - CNAME
     - images/**
     - assets/**
+    - Chang_HsiuWei_CV.pdf
   render:
     - index.md
     - about/index.md
@@ -38,6 +39,10 @@ website:
         text: AI 知識站
       - href: students/index.qmd
         text: 學生專區
+    right:
+      - text: "履歷 (CV)"
+        href: Chang_HsiuWei_CV.pdf
+        icon: file-earmark-pdf
   page-footer:
     center: "© 2025–2026 張修瑋 (H.W. Chang) · National Taipei University"
     background: dark
