@@ -156,6 +156,7 @@ Material Disclosure & Corporate Transparency
 <div><strong>頒發單位</strong>：勤業眾信聯合會計師事務所 (Deloitte Taiwan)</div>
 <div><strong>簽署長官</strong>：許嘉銘 稅務暨法律部門營運長</div>
 <div><strong>指導團隊</strong>：國立臺北大學會計學系 代表隊（榮獲 達人軍）</div>
+<div><strong>指導學生</strong>：盧霈華、張郁佳、鄭兆璿、王力成、蔡宜芳</div>
 </div>
 </div>
 :::

@@ -716,6 +716,7 @@ function parseHomePage(body) {
           organizer: "勤業眾信聯合會計師事務所 (Deloitte Taiwan)",
           signee: "許嘉銘 稅務暨法律部門營運長",
           team: "國立臺北大學會計學系 代表隊（榮獲 達人軍）",
+          students: "盧霈華、張郁佳、鄭兆璿、王力成、蔡宜芳",
           hidden: nextCardHidden
         };
         nextCardHidden = false;
@@ -741,6 +742,8 @@ function parseHomePage(body) {
         if (sigMatch) curHonor.signee = sigMatch[1].trim();
         const teamMatch = trimmed.match(/<strong>指導團隊<\/strong>：(.*?)<\/div>/);
         if (teamMatch) curHonor.team = teamMatch[1].trim();
+        const stuMatch = trimmed.match(/<strong>(?:指導學生|獲獎學生)<\/strong>：(.*?)<\/div>/);
+        if (stuMatch) curHonor.students = stuMatch[1].trim();
       }
     } else if (section === "highlights") {
       if (trimmed.startsWith("|") && !trimmed.includes("---") && !trimmed.includes("日期")) {
@@ -839,6 +842,7 @@ function serializeHomePage(model, lineEnding = "\n") {
       `<div><strong>頒發單位</strong>：${h.organizer || "勤業眾信聯合會計師事務所 (Deloitte Taiwan)"}</div>`,
       `<div><strong>簽署長官</strong>：${h.signee || "許嘉銘 稅務暨法律部門營運長"}</div>`,
       `<div><strong>指導團隊</strong>：${h.team || "國立臺北大學會計學系 代表隊（榮獲 達人軍）"}</div>`,
+      `<div><strong>指導學生</strong>：${h.students || "盧霈華、張郁佳、鄭兆璿、王力成、蔡宜芳"}</div>`,
       `</div>`,
       `</div>`,
       ":::",
