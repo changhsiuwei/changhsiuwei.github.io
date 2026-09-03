@@ -91,8 +91,15 @@ test("activities render as structured cards without exposing Quarto layout", () 
   assert.equal(grids.length, 2);
   assert.equal(grids[0].year, "2026");
   assert.deepEqual(JSON.parse(JSON.stringify(grids[0].events.slice(0, 2))), [
-    { date: "August  14", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：AI in Excel 實戰" },
-    { date: "August  12", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：企業 Agentic AI 的設計與實務" }
+    {
+      date: "August  28",
+      venue: "中華會計學會：Google Sheets × 生成式 AI 教學研討會",
+      topic: "給會計初學者的 AI 工具坊",
+      slidesUrl: "https://drive.google.com/file/d/1dGuLlSPHXYAlFUNLUEAoS9nWhpB9tmNP/view?usp=drive_link",
+      handoutUrl: "https://drive.google.com/file/d/1aFg7vKx52R7ZicVVvXoCxD_SHabfDPDX/view?usp=drive_link",
+      youtubeUrl: "https://youtu.be/TqBA2YQnQ4c"
+    },
+    { date: "August  14", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：AI in Excel 實戰" }
   ]);
   assert.equal(sandbox.serializeActivityGrid(grids[0]), grids[0].originalSource);
 
@@ -177,12 +184,12 @@ test("home page cards, courses, evaluations and highlights parse and reconstruct
   const model = sandbox.parseHomePage(body);
   assert.equal(model.researchAreas.length, 5);
   assert.equal(model.courses.length, 2);
-  assert.equal(model.courses[0].name, "會計人工智慧與大數據分析");
-  assert.equal(model.courses[0].time, "114-1 學期 · 週四 09:10-12:00");
-  assert.equal(model.evaluations.length, 2);
+  assert.equal(model.courses[0].name, "會計資訊系統");
+  assert.equal(model.courses[0].time, "115-1 學期 · 週二 09:10-12:00");
+  assert.equal(model.evaluations.length, 1);
   assert.equal(model.evaluations[0].course, "會計資訊系統");
   assert.equal(model.honors.length, 1);
-  assert.equal(model.highlights.length, 6);
+  assert.equal(model.highlights.length, 7);
   assert.ok(model.bio.includes("我是張修瑋"));
   assert.equal(model.motto, "Honoring God and benefiting people! (榮神益人！)");
 
@@ -216,7 +223,7 @@ test("home page selective visibility toggles hide sections safely with 100% data
   assert.equal(reparsed.showEvaluations, false);
   assert.equal(reparsed.showResearchAreas, true);
   assert.equal(reparsed.courses.length, 2);
-  assert.equal(reparsed.evaluations.length, 2);
+  assert.equal(reparsed.evaluations.length, 1);
   assert.equal(reparsed.researchAreas[0].hidden, true);
   assert.equal(reparsed.researchAreas[1].hidden, false);
 
