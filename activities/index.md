@@ -49,7 +49,7 @@ subtitle: "Invited Presentations & Latest News"
 :::
 ::: {.g-col-12 .g-col-md-10}
 #### 勤業眾信聯合會計師事務所 (Deloitte Taiwan)
-*指導國立臺北大學會計學系學生團隊參加「2026 勤業眾信稅務達人挑戰賽」獲頒感謝狀*
+*指導國立臺北大學會計學系學生團隊參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」*
 :::
 
 ::: {.g-col-12 .g-col-md-2}

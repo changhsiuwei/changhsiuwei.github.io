@@ -146,16 +146,16 @@ Material Disclosure & Corporate Transparency
 ::: {.g-col-12 .g-col-md-7 style="display:flex;flex-direction:column;justify-content:center;"}
 <div class="card p-4 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
 <div style="margin-bottom:8px;">
-  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">Deloitte 勤業眾信 · 產學榮譽</span>
+  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">Deloitte 勤業眾信 · 產學榮譽（達人軍）</span>
 </div>
-<h3 style="margin:4px 0 12px;font-size:20px;color:#001F3F;font-weight:700;">2026 勤業眾信稅務達人挑戰賽</h3>
+<h3 style="margin:4px 0 12px;font-size:20px;color:#001F3F;font-weight:700;">2026 勤業眾信稅務達人挑戰賽 · 榮獲「達人軍」</h3>
 <p style="margin:0 0 14px;color:#475569;font-size:14px;line-height:1.6;">
-  茲感謝勤業眾信聯合會計師事務所（Deloitte Taiwan）稅務暨法律部門頒發感謝狀，致謝張修瑋老師帶領國立臺北大學會計學系優秀代表隊投入全國性稅務競賽，肯定卓越之教學指導與產學培育成果。
+  茲感謝勤業眾信聯合會計師事務所（Deloitte Taiwan）稅務暨法律部門頒發感謝狀，致謝張修瑋老師帶領國立臺北大學會計學系優秀代表隊投入全國性稅務競賽，榮獲「達人軍」殊榮，肯定卓越之教學指導與產學培育成果。
 </p>
 <div style="font-size:12px;color:#64748b;line-height:1.8;border-top:1px dashed #e2e8f0;padding-top:10px;">
 <div><strong>頒發單位</strong>：勤業眾信聯合會計師事務所 (Deloitte Taiwan)</div>
 <div><strong>簽署長官</strong>：許嘉銘 稅務暨法律部門營運長</div>
-<div><strong>指導團隊</strong>：國立臺北大學會計學系 代表隊</div>
+<div><strong>指導團隊</strong>：國立臺北大學會計學系 代表隊（榮獲 達人軍）</div>
 </div>
 </div>
 :::
@@ -168,7 +168,7 @@ Material Disclosure & Corporate Transparency
 |------|------|
 | 2026/08 | <i class="bi bi-lightbulb"></i> 受邀至莎美娜實業股份有限公司進行企業 AI 內訓 |
 | 2026/07 | <i class="bi bi-lightbulb"></i> 受邀至國立台北市召會第四聚會所「駕馭 AI 的智慧少年」 |
-| 2026/05 | <i class="bi bi-award text-warning"></i> 指導臺北大學會計學系團隊參加「2026 勤業眾信稅務達人挑戰賽」獲頒感謝狀 |
+| 2026/05 | <i class="bi bi-award text-warning"></i> 指導臺北大學會計學系團隊參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」殊榮 |
 | 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
 | 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
 | 2026/03 | <i class="bi bi-mortarboard text-primary"></i> 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
