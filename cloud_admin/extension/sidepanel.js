@@ -559,6 +559,7 @@ function parseHomePage(body) {
   const showResearchAreas = !body.includes("<!-- HWCMS-HIDDEN:research");
   const showCourses = !body.includes("<!-- HWCMS-HIDDEN:courses");
   const showEvaluations = !body.includes("<!-- HWCMS-HIDDEN:evaluations");
+  const showHonors = !body.includes("<!-- HWCMS-HIDDEN:honors");
   const showHighlights = !body.includes("<!-- HWCMS-HIDDEN:highlights");
 
   const lines = body.split(/\r?\n/);
@@ -567,11 +568,13 @@ function parseHomePage(body) {
   const researchAreas = [];
   const courses = [];
   const evaluations = [];
+  const honors = [];
   const highlights = [];
   let section = "";
   let curArea = null;
   let curCourse = null;
   let curEval = null;
+  let curHonor = null;
   let nextCardHidden = false;
 
   for (let i = 0; i < lines.length; i++) {
@@ -600,6 +603,9 @@ function parseHomePage(body) {
       continue;
     } else if (trimmed === "## 授課評價與學生回饋" || trimmed.includes("授課評價") || trimmed.includes("學生回饋")) {
       section = "evaluations";
+      continue;
+    } else if (trimmed === "## 指導學生榮譽" || trimmed.includes("指導學生榮譽")) {
+      section = "honors";
       continue;
     } else if (trimmed === "## 最新動態") {
       section = "highlights";
@@ -699,6 +705,43 @@ function parseHomePage(body) {
           curEval.source = sourceMatch[1].trim();
         }
       }
+    } else if (section === "honors") {
+      if (trimmed.startsWith("::: {.g-col-12 .g-col-md-5}")) {
+        curHonor = {
+          image: "images/deloitte-tax-challenge-2026.png",
+          pdfUrl: "assets/感謝狀-北大會計.pdf",
+          badge: "Deloitte 勤業眾信 · 產學榮譽",
+          title: "2026 勤業眾信稅務達人挑戰賽",
+          desc: "茲感謝勤業眾信聯合會計師事務所（Deloitte Taiwan）稅務暨法律部門頒發感謝狀，致謝張修瑋老師帶領國立臺北大學會計學系優秀代表隊投入全國性稅務競賽，肯定卓越之教學指導與產學培育成果。",
+          organizer: "勤業眾信聯合會計師事務所 (Deloitte Taiwan)",
+          signee: "許嘉銘 稅務暨法律部門營運長",
+          team: "國立臺北大學會計學系 代表隊",
+          hidden: nextCardHidden
+        };
+        nextCardHidden = false;
+        honors.push(curHonor);
+        continue;
+      }
+      if (curHonor) {
+        const srcMatch = trimmed.match(/<img[^>]*src="([^"]*)"/);
+        if (srcMatch) curHonor.image = srcMatch[1];
+        const altMatch = trimmed.match(/<img[^>]*alt="([^"]*)"/);
+        if (altMatch) curHonor.alt = altMatch[1];
+        const hrefPdfMatch = trimmed.match(/href="([^"]*\.pdf)"/);
+        if (hrefPdfMatch) curHonor.pdfUrl = hrefPdfMatch[1];
+        const badgeMatch = trimmed.match(/<span class="badge[^>]*>([\s\S]*?)<\/span>/);
+        if (badgeMatch) curHonor.badge = badgeMatch[1].trim();
+        const titleMatch = trimmed.match(/<h3[^>]*>([\s\S]*?)<\/h3>/);
+        if (titleMatch) curHonor.title = titleMatch[1].trim();
+        const pMatch = trimmed.match(/<p[^>]*>([\s\S]*?)<\/p>/);
+        if (pMatch) curHonor.desc = pMatch[1].trim();
+        const orgMatch = trimmed.match(/<strong>頒發單位<\/strong>：(.*?)<\/div>/);
+        if (orgMatch) curHonor.organizer = orgMatch[1].trim();
+        const sigMatch = trimmed.match(/<strong>簽署長官<\/strong>：(.*?)<\/div>/);
+        if (sigMatch) curHonor.signee = sigMatch[1].trim();
+        const teamMatch = trimmed.match(/<strong>指導團隊<\/strong>：(.*?)<\/div>/);
+        if (teamMatch) curHonor.team = teamMatch[1].trim();
+      }
     } else if (section === "highlights") {
       if (trimmed.startsWith("|") && !trimmed.includes("---") && !trimmed.includes("日期")) {
         const parts = line.split("|").map((p) => p.trim()).filter(Boolean);
@@ -709,7 +752,7 @@ function parseHomePage(body) {
     }
   }
 
-  return { bio, motto, researchAreas, courses, evaluations, highlights, showResearchAreas, showCourses, showEvaluations, showHighlights };
+  return { bio, motto, researchAreas, courses, evaluations, honors, highlights, showResearchAreas, showCourses, showEvaluations, showHonors, showHighlights };
 }
 
 function serializeHomePage(model, lineEnding = "\n") {
@@ -761,6 +804,49 @@ function serializeHomePage(model, lineEnding = "\n") {
       ":::"
     ].join(lineEnding);
     if (e.hidden) {
+      return `<!-- HWCMS-HIDDEN-CARD${lineEnding}${cardBlock}${lineEnding}-->`;
+    }
+    return cardBlock;
+  });
+
+  const honorBlocks = (model.honors || []).map((h) => {
+    const cardBlock = [
+      "::: {.grid}",
+      "",
+      "::: {.g-col-12 .g-col-md-5}",
+      `<div class="text-center p-2" style="background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.05);">`,
+      `  <a href="${h.image || "images/deloitte-tax-challenge-2026.png"}" target="_blank" title="點擊檢視高解析原圖">`,
+      `    <img src="${h.image || "images/deloitte-tax-challenge-2026.png"}" alt="${h.alt || "2026 勤業眾信稅務達人挑戰賽感謝狀"}" class="img-fluid rounded" style="max-height:420px;width:auto;display:inline-block;">`,
+      `  </a>`,
+      `  <div style="margin-top:10px;">`,
+      `    <a href="${h.pdfUrl || "assets/感謝狀-北大會計.pdf"}" target="_blank" class="btn btn-sm btn-outline-primary" style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">`,
+      `      <i class="bi bi-file-earmark-pdf"></i> 下載 / 檢視原始 PDF 感謝狀 ↗`,
+      `    </a>`,
+      `  </div>`,
+      `</div>`,
+      ":::",
+      "",
+      `::: {.g-col-12 .g-col-md-7 style="display:flex;flex-direction:column;justify-content:center;"}`,
+      `<div class="card p-4 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">`,
+      `  <div style="margin-bottom:8px;">`,
+      `    <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">${h.badge || "Deloitte 勤業眾信 · 產學榮譽"}</span>`,
+      `  </div>`,
+      `  <h3 style="margin:4px 0 12px;font-size:20px;color:#001F3F;font-weight:700;">${h.title || "2026 勤業眾信稅務達人挑戰賽"}</h3>`,
+      `  <p style="margin:0 0 14px;color:#475569;font-size:14px;line-height:1.6;">`,
+      `    ${h.desc || "茲感謝勤業眾信聯合會計師事務所（Deloitte Taiwan）稅務暨法律部門頒發感謝狀，致謝張修瑋老師帶領國立臺北大學會計學系優秀代表隊投入全國性稅務競賽，肯定卓越之教學指導與產學培育成果。"}`,
+      `  </p>`,
+      `  <div style="font-size:12px;color:#64748b;line-height:1.8;border-top:1px dashed #e2e8f0;padding-top:10px;">`,
+      `    <div><strong>頒發單位</strong>：${h.organizer || "勤業眾信聯合會計師事務所 (Deloitte Taiwan)"}</div>`,
+      `    <div><strong>簽署長官</strong>：${h.signee || "許嘉銘 稅務暨法律部門營運長"}</div>`,
+      `    <div><strong>指導團隊</strong>：${h.team || "國立臺北大學會計學系 代表隊"}</div>`,
+      `  </div>`,
+      `</div>`,
+      ":::",
+      "",
+      ":::"
+    ].join(lineEnding);
+
+    if (h.hidden) {
       return `<!-- HWCMS-HIDDEN-CARD${lineEnding}${cardBlock}${lineEnding}-->`;
     }
     return cardBlock;
@@ -857,6 +943,26 @@ function serializeHomePage(model, lineEnding = "\n") {
       evalBlocks.join(`${lineEnding}${lineEnding}`),
       ``,
       `:::`,
+      `-->`
+    );
+  }
+
+  if (model.showHonors !== false) {
+    if (honorBlocks.length) {
+      sections.push(
+        ``,
+        `## 指導學生榮譽`,
+        ``,
+        honorBlocks.join(`${lineEnding}${lineEnding}`)
+      );
+    }
+  } else {
+    sections.push(
+      ``,
+      `<!-- HWCMS-HIDDEN:honors`,
+      `## 指導學生榮譽`,
+      ``,
+      honorBlocks.join(`${lineEnding}${lineEnding}`),
       `-->`
     );
   }
@@ -962,7 +1068,16 @@ function parseAboutPage(body) {
     }
   }
 
-  return { calloutTitle, calloutSubtitle, education, experience, honors, services };
+  const studentHonors = [];
+  const studentHonorsMatch = body.match(/##\s*<i class="[^"]*"><\/i>\s*指導學生榮譽榜\s*\(Student Mentorship Honors\)\s*\r?\n([\s\S]*?)(?:\r?\n---|$)/);
+  if (studentHonorsMatch) {
+    const lines = studentHonorsMatch[1].split(/\r?\n/).filter((l) => l.trim().startsWith("-"));
+    for (const line of lines) {
+      studentHonors.push(line.replace(/^-\s*/, "").trim());
+    }
+  }
+
+  return { calloutTitle, calloutSubtitle, education, experience, honors, services, studentHonors };
 }
 
 function serializeAboutPage(model, lineEnding = "\n") {
@@ -984,8 +1099,9 @@ function serializeAboutPage(model, lineEnding = "\n") {
 
   const honorLines = (model.honors || []).map((h) => `- ${h}`).join(lineEnding);
   const serviceLines = (model.services || []).map((s) => `- ${s}`).join(lineEnding);
+  const studentHonorLines = (model.studentHonors || []).map((h) => `- ${h}`).join(lineEnding);
 
-  return [
+  const sections = [
     `::: {.callout-note appearance="minimal"}`,
     `## ${model.calloutTitle || "張修瑋 (H.W. Chang)"}`,
     `${model.calloutSubtitle || "**國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU"}`,
@@ -1016,7 +1132,20 @@ function serializeAboutPage(model, lineEnding = "\n") {
     `## <i class="bi bi-people"></i> 服務 (Service)`,
     ``,
     serviceLines
-  ].join(lineEnding);
+  ];
+
+  if (studentHonorLines) {
+    sections.push(
+      ``,
+      `---`,
+      ``,
+      `## <i class="bi bi-award"></i> 指導學生榮譽榜 (Student Mentorship Honors)`,
+      ``,
+      studentHonorLines
+    );
+  }
+
+  return sections.join(lineEnding);
 }
 
 function parsePublicationsPage(body) {

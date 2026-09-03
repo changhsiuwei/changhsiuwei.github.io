@@ -2,6 +2,8 @@ project:
   type: website
   resources:
     - CNAME
+    - images/**
+    - assets/**
   render:
     - index.md
     - about/index.md

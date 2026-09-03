@@ -5,7 +5,7 @@ subtitle: "Curriculum Vitae"
 
 ::: {.callout-note appearance="minimal"}
 ## 張修瑋 (H.W. Chang)
-國立臺北大學會計學系 助理教授 | Assistant Professor, Dept. of Accountancy, NTPU
+**國立臺北大學會計學系 助理教授** | Assistant Professor, Dept. of Accountancy, NTPU
 :::
 
 ## <i class="bi bi-mortarboard"></i> 學歷 (Education)
@@ -14,27 +14,29 @@ subtitle: "Curriculum Vitae"
 
 ::: {.g-col-12 .g-col-md-6}
 #### Ph.D. in Accounting
-國立臺灣大學 (National Taiwan University)  
+**國立臺灣大學** (National Taiwan University)  
 Sep 2019 – June 2024  
 [📄 Dissertation](https://tdr.lib.ntu.edu.tw/handle/123456789/92755?locale=en){target="_blank"}
 :::
 
 ::: {.g-col-12 .g-col-md-6}
 #### Visiting Ph.D. Student (IVGS)
-多倫多大學 (University of Toronto)  
+**多倫多大學** (University of Toronto)  
 Rotman School of Management  
 May 2023 – Dec 2023
 :::
 
 ::: {.g-col-12 .g-col-md-6}
 #### M.A. in Taxation and Finance Management
-國立臺中科技大學 (National Taichung University of Science and Technology)  
+**國立臺中科技大學**  
+(National Taichung University of Science and Technology)  
 June 2015
 :::
 
 ::: {.g-col-12 .g-col-md-6}
 #### B.S. in Public Finance and Taxation
-國立臺中科技大學 (National Taichung University of Science and Technology)  
+**國立臺中科技大學**  
+(National Taichung University of Science and Technology)  
 June 2013
 :::
 
@@ -44,11 +46,11 @@ June 2013
 
 ## <i class="bi bi-briefcase"></i> 經歷 (Professional Experience)
 
-| 期間 | 職位 | 單位 |
-|------|------|------|
-| 2025 – 迄今 | Assistant Professor | 國立臺北大學 會計學系 |
-| 2022 – 2022 | Analyst | KPMG Taiwan 安侯建業 稅務投資部 |
-| 2018 – 2019 | Tax Executive (稅務員) | 財政部臺北國稅局 徵收科二股 |
+| 期間          | 職位                      | 單位                     |
+| ----------- | ----------------------- | ---------------------- |
+| 2025 – 迄今   | **Assistant Professor** | 國立臺北大學 會計學系            |
+| 2022 – 2022 | **Analyst**               | KPMG Taiwan 安侯建業 稅務投資部 |
+| 2018 – 2019 | **Tax Executive (稅務員)** | 財政部臺北國稅局 徵收科二股         |
 
 ---
 
@@ -64,3 +66,9 @@ June 2013
 ## <i class="bi bi-people"></i> 服務 (Service)
 
 - **會計教育AI應用兼任研究員** — 中華會計學會 | Apr 2025 – June 2025
+
+---
+
+## <i class="bi bi-award"></i> 指導學生榮譽榜 (Student Mentorship Honors)
+
+- **指導國立臺北大學會計學系學生團隊參加「2026 勤業眾信稅務達人挑戰賽」獲頒感謝狀** — 勤業眾信聯合會計師事務所 (Deloitte Taiwan) | 2026

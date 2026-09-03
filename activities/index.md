@@ -13,16 +13,6 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
-**August  28**
-:::
-::: {.g-col-12 .g-col-md-10}
-#### 中華會計學會：Google Sheets × 生成式 AI 教學研討會
-*給會計初學者的 AI 工具坊*
-
-[📊 簡報下載 ↗](https://drive.google.com/file/d/1dGuLlSPHXYAlFUNLUEAoS9nWhpB9tmNP/view?usp=drive_link){target="_blank" .activity-materials-link .activity-slides-link} [📄 講義下載 ↗](https://drive.google.com/file/d/1aFg7vKx52R7ZicVVvXoCxD_SHabfDPDX/view?usp=drive_link){target="_blank" .activity-materials-link .activity-handout-link} [▶ YouTube 影片 ↗](https://youtu.be/TqBA2YQnQ4c){target="_blank" .activity-materials-link .activity-youtube-link}
-:::
-
-::: {.g-col-12 .g-col-md-2}
 **August  14**
 :::
 ::: {.g-col-12 .g-col-md-10}
@@ -52,6 +42,14 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.g-col-12 .g-col-md-10}
 #### 長庚大學 AI EMBA
 *AI策略會計：基礎AI工具工作坊*
+:::
+
+::: {.g-col-12 .g-col-md-2}
+**May**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 勤業眾信聯合會計師事務所 (Deloitte Taiwan)
+*指導國立臺北大學會計學系學生團隊參加「2026 勤業眾信稅務達人挑戰賽」獲頒感謝狀*
 :::
 
 ::: {.g-col-12 .g-col-md-2}

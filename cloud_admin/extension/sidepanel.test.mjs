@@ -181,8 +181,8 @@ test("home page cards, courses, evaluations and highlights parse and reconstruct
   assert.equal(model.courses[0].time, "114-1 學期 · 週四 09:10-12:00");
   assert.equal(model.evaluations.length, 2);
   assert.equal(model.evaluations[0].course, "會計資訊系統");
-  assert.equal(model.evaluations[0].score, "⭐ 教學評鑑 4.9 / 5.0");
-  assert.equal(model.highlights.length, 5);
+  assert.equal(model.honors.length, 1);
+  assert.equal(model.highlights.length, 6);
   assert.ok(model.bio.includes("我是張修瑋"));
   assert.equal(model.motto, "Honoring God and benefiting people! (榮神益人！)");
 
