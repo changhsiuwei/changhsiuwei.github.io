@@ -4561,13 +4561,38 @@ function renderPreview() {
   }
 
   const navigation = STATIC_PAGES.map((page) => `<span>${escapeHtml(page.label)}</span>`).join("");
-  elements.livePreview.srcdoc = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><style>
+  elements.livePreview.srcdoc = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script>
+    function renderAllMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\\\[", right: "\\\\]", display: true},
+            {left: "\\\\(", right: "\\\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      } else {
+        setTimeout(renderAllMath, 60);
+      }
+    }
+    document.addEventListener("DOMContentLoaded", renderAllMath);
+    setTimeout(renderAllMath, 100);
+    setTimeout(renderAllMath, 600);
+  </script>
+  <style>
     *{box-sizing:border-box}body{margin:0;color:#2c344e;background:#fff;font:15px/1.8 Georgia,'Noto Serif TC',serif}
     header{padding:16px 22px;border-bottom:1px solid #e4e7ef;background:#fff;font-family:Inter,'Noto Sans TC',sans-serif}
     .top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:800}.nav{display:flex;gap:12px;color:#5968a6;font-size:10px;font-weight:700}
     main{max-width:820px;margin:auto;padding:48px 42px 80px}h1{margin:0 0 12px;color:#2c344e;font-size:38px;line-height:1.2}h2,h3{color:#403f6f;line-height:1.35}
     .description{margin:0 0 30px;color:#667085;font:16px/1.7 Inter,'Noto Sans TC',sans-serif}.featured-image{display:block;max-width:min(100%,680px);max-height:420px;margin:0 auto 30px;object-fit:contain;border-radius:16px}.content img{max-width:100%;height:auto;border-radius:12px}.content a{color:#403f6f}.content blockquote{margin-left:0;padding:8px 18px;border-left:4px solid #c8d5ff;background:#f6f7ff}.preview-table-wrap{overflow:auto;margin:18px 0}.content table{width:100%;border-collapse:collapse}.content th,.content td{border:1px solid #dfe4ef;padding:7px}
     .preview-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin:18px 0}.preview-column{grid-column:span var(--preview-span,12);min-width:0}.preview-callout{margin:18px 0;padding:14px 18px;border:1px solid #dfe4ef;border-left:5px solid #6b6aa8;border-radius:10px;background:#f8f9ff}.preview-callout-tip{border-left-color:#3b8d76;background:#f4fbf8}.preview-callout-warning,.preview-callout-caution{border-left-color:#d49a36;background:#fffaf0}.preview-callout-important{border-left-color:#b84b61;background:#fff6f7}.preview-layout-section{margin:12px 0}.premium-icon-box{display:grid;place-items:center;width:44px;height:44px;margin-bottom:10px;border-radius:12px;background:#eef1ff;color:#403f6f}
+    .katex-display{margin:1em 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
     @media(max-width:700px){.nav{display:none}main{padding:34px 22px}h1{font-size:30px}.preview-column{grid-column:1/-1}}
   </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${subtitle ? `<p style="font-size:18px;color:#5968a6;margin:-4px 0 16px;font-style:italic;">${subtitle}</p>` : ""}${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}<article class="content">${body}</article></main></body></html>`;
   elements.previewBadge.textContent = "即時更新";
