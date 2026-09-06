@@ -7,6 +7,7 @@ listing:
   categories: true
   sort-ui: false
   filter-ui: false
+  fields: [title, date, description, categories]
 page-layout: full
 title-block-banner: true
 subtitle: "A Hub for Sharing Practical and State-of-the-Art AI Insights."
