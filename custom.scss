@@ -12,7 +12,7 @@ $font-family-sans-serif: 'Plus Jakarta Sans', 'Inter', 'Noto Sans TC', system-ui
 $font-family-monospace:  'JetBrains Mono', 'Fira Code', 'Consolas', monospace !default;
 $headings-font-family:   'Plus Jakarta Sans', 'Noto Sans TC', sans-serif !default;
 $headings-font-weight:   800 !default;
-$font-size-base:         1.05rem !default;
+$font-size-base:         1.15rem !default;
 
 /* === Bootstrap Variable Overrides === */
 $body-bg:       #F7F8FC !default;
@@ -41,7 +41,7 @@ body {
   background-color: #F7F8FC;
   font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans TC', system-ui, sans-serif;
   color: #2C344E;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
