@@ -926,6 +926,23 @@ ui <- page_navbar(
     )
   ),
 
+  # 模組 5: 站台設定 — 文章字體大小
+  nav_panel("🎨 文章字體",
+    fluidRow(
+      column(12, align = "center", style = "margin-top: 30px;",
+        h3("調整文章字體大小"),
+        p("選擇後點「套用」，再到「☁️ 雲端同步與部署」上傳 GitHub；GitHub Actions 重新建置後即生效。"),
+        div(style = "max-width: 480px; margin: 0 auto; text-align: left;",
+          selectInput("site_font_size", "字體大小",
+            choices = c("標準 (1.05rem)" = "1.05", "中 (1.15rem)" = "1.15", "大 (1.25rem)" = "1.25", "特大 (1.4rem)" = "1.4"),
+            selected = "1.15",
+            width = "100%"),
+          actionButton("apply_font_size_btn", "🎨 套用字體大小", class = "btn-lg btn-primary", style = "width: 100%; font-weight: bold; margin-top: 10px;")
+        )
+      )
+    )
+  ),
+
   # 模組 3: 雲端發布
   nav_panel("☁️ 雲端同步與部署",
     fluidRow(
@@ -957,6 +974,34 @@ server <- function(input, output, session) {
   app_dir <- getwd()
   site_dir <- normalizePath(dirname(app_dir), winslash = "/")
   preview_host <- "127.0.0.1"
+
+  # 文章字體大小設定：改 custom.scss 的正文/字體基準
+  set_site_font_size <- function(site_dir, size_rem) {
+    p <- file.path(site_dir, "custom.scss")
+    if (!file.exists(p)) return(FALSE)
+    txt <- readLines(p, warn = FALSE, encoding = "UTF-8")
+    for (i in seq_along(txt)) {
+      if (grepl("^\\s*\\$font-size-base\\s*:", txt[i])) {
+        txt[i] <- sub("[0-9.]+rem", paste0(size_rem, "rem"), txt[i])
+      }
+      if (grepl("^\\s*font-size\\s*:\\s*[0-9.]+rem", txt[i])) {
+        txt[i] <- sub("[0-9.]+rem", paste0(size_rem, "rem"), txt[i])
+      }
+    }
+    writeLines(txt, p, useBytes = TRUE)
+    TRUE
+  }
+
+  observeEvent(input$apply_font_size_btn, {
+    req(site_dir)
+    size <- input$site_font_size
+    ok <- set_site_font_size(site_dir, size)
+    if (ok) {
+      showNotification(paste0("✅ 已套用文章字體：", size, "rem。請至「☁️ 雲端同步與部署」上傳 GitHub 以更新網站。"), type = "message", duration = 8)
+    } else {
+      showNotification("❌ 找不到 custom.scss，未變更。", type = "error")
+    }
+  })
   preview_port <- "4200"
   preview_base_url <- paste0("http://", preview_host, ":", preview_port)
   preview_is_ready <- function() {
