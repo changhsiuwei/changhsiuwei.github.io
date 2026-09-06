@@ -28,6 +28,34 @@ read_text_file <- function(path) {
   paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
 }
 
+normalize_paragraphs_content <- function(text) {
+  text <- gsub("\r\n", "\n", text, fixed = TRUE)
+  lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
+  count <- 0L
+  fm_end <- NA_integer_
+  for (i in seq_along(lines)) {
+    if (trimws(lines[i]) == "---") {
+      count <- count + 1L
+      if (count == 2L) {
+        fm_end <- i
+        break
+      }
+    }
+  }
+  if (is.na(fm_end)) return(text)
+  fm <- lines[seq_len(fm_end)]
+  body <- if (fm_end < length(lines)) lines[(fm_end + 1L):length(lines)] else character(0)
+  if (length(body) == 0L) return(text)
+  out <- character(0)
+  for (ln in body) {
+    out <- c(out, ln)
+    t <- trimws(ln)
+    struct <- grepl("^\\s*(<|#|>|\\||[-*+]\\s|[0-9]+\\.\\s)", ln)
+    if (nzchar(t) && !struct) out <- c(out, "")
+  }
+  gsub("\n{3,}", "\n\n", paste(c(fm, out), collapse = "\n"))
+}
+
 split_front_matter_r <- function(text) {
   normalized <- gsub("\r\n", "\n", text, fixed = TRUE)
   normalized <- gsub("\r", "\n", normalized, fixed = TRUE)
@@ -1334,6 +1362,7 @@ draft: %s
       )
 
       file_content <- yaml_content
+      file_content <- normalize_paragraphs_content(file_content)
       relative_file_path <- paste0("knowledge/posts/", timestamp_slug, "/index.qmd")
       file_path <- file.path(site_dir, relative_file_path)
       writeLines(file_content, file_path, useBytes = TRUE)
@@ -1360,6 +1389,7 @@ draft: %s
 
     tryCatch({
       content_text <- set_post_visibility(input$knowledge_post_content, visible = visible)
+      content_text <- normalize_paragraphs_content(content_text)
       writeLines(content_text, file_path, useBytes = TRUE)
       updateTextAreaInput(session, "knowledge_post_content", value = content_text)
       session$sendCustomMessage(
