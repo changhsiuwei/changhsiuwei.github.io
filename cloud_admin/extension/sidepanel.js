@@ -3160,49 +3160,62 @@ async function deletePost(postPath) {
   const isLab = postPath.startsWith("lab/");
   const fallbackPath = isLab ? "lab/index.md" : "knowledge/index.md";
 
-  const isLocalDraft = state.newDocument && (state.currentPath === postPath);
+  if (elements.deleteDocumentButton) {
+    elements.deleteDocumentButton.disabled = true;
+    elements.deleteDocumentButton.textContent = "⏳ 刪除中...";
+  }
 
   try {
-    if (state.connected && !isLocalDraft) {
+    log(`正在刪除文章「${title}」...`, "info");
+    const newDraftPaths = await readNewDraftPaths();
+    const isLocalDraft = newDraftPaths.includes(postPath);
+
+    // Call Cloudflare Worker publish endpoint with delete operation
+    if (state.connected) {
       const filesToDelete = state.files
-        .filter((f) => f.startsWith(postDir + "/") || f === postPath)
+        .filter((f) => (f.startsWith(postDir + "/") || f === postPath) && !newDraftPaths.includes(f))
         .map((f) => ({ path: f, operation: "delete" }));
 
-      if (!filesToDelete.length) {
+      if (filesToDelete.length === 0 && !isLocalDraft) {
         filesToDelete.push({ path: postPath, operation: "delete" });
       }
 
-      const response = await fetch(`${state.apiBase}/api/publish`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          baseCommitSha: state.head,
-          message: `chore: 刪除文章 ${title}`,
-          files: filesToDelete
-        })
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        if (response.status !== 422) {
-          throw new Error(errData.error || `刪除失敗 (${response.status})`);
+      if (filesToDelete.length > 0) {
+        const result = await api("/api/publish", {
+          method: "POST",
+          body: JSON.stringify({
+            baseCommitSha: state.head,
+            message: `chore: 刪除文章 ${title}`,
+            files: filesToDelete
+          })
+        });
+        if (result && result.commitSha) {
+          state.head = result.commitSha;
         }
-      } else {
-        const data = await response.json();
-        state.head = data.commitSha;
       }
     }
 
+    // Clean up local draft caches
     try {
       await chrome.storage.local.remove(`draft:${postPath}`);
       await clearDraftUploads(postPath);
-      if (typeof removeNewDraftPath === "function") await removeNewDraftPath(postPath);
-    } catch {}
+      await removeNewDraftPath(postPath);
+    } catch (err) {
+      console.warn("清理本機草稿失敗:", err);
+    }
 
     state.files = state.files.filter((f) => !f.startsWith(postDir + "/") && f !== postPath);
     if (state.postMetadataCache) delete state.postMetadataCache[postPath];
 
-    log(`文章「${title}」已成功刪除`, "success");
+    // Reset dirty state to avoid false unsaved changes warning
+    state.newDocument = false;
+    state.draftSaved = true;
+    state.bodyDirty = false;
+    state.metadataDirty = false;
+    state.editorChanged = false;
+    state.pendingUploads.clear();
+
+    log(`文章「${title}」已成功刪除並同步至 GitHub`, "success");
 
     if (state.currentPath === postPath || state.currentPath.startsWith(postDir + "/")) {
       await loadFile(fallbackPath);
@@ -3214,7 +3227,13 @@ async function deletePost(postPath) {
       }
     }
   } catch (error) {
-    log(error.message || "刪除文章時發生錯誤", "error");
+    log(`刪除文章失敗：${error.message || error}`, "error");
+    alert(`刪除文章失敗：${error.message || error}`);
+  } finally {
+    if (elements.deleteDocumentButton) {
+      elements.deleteDocumentButton.disabled = false;
+      elements.deleteDocumentButton.textContent = "🗑️ 刪除此文章";
+    }
   }
 }
 

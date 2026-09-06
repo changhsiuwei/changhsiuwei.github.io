@@ -204,7 +204,7 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
     if (change.operation !== "upsert" && change.operation !== "delete") return json({ error: "Invalid file operation" }, 400);
     if (change.operation === "delete") {
       if (EXACT_EDITABLE.has(path)) return json({ error: "Fixed pages cannot be deleted" }, 400);
-      if (remotePaths.size === 0 || remotePaths.has(path)) {
+      if (remotePaths.has(path)) {
         tree.push({ path, mode: "100644", type: "blob", sha: null });
       }
       continue;
