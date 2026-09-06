@@ -30,3 +30,10 @@ description: "Guidelines and workflows for maintaining, updating, and extending 
 - **本地編輯不等於上線**：使用者在 Shiny 中點擊的「儲存」皆只會在本地端生效。
 - **一鍵發布邏輯**：Shiny 內的「🚀 一鍵發布至 GitHub」按鈕實際上是執行 `git add .`, `git commit`, `git push`。
 - **時間差問題**：推播至 GitHub 後，GitHub Actions 需要約 **2-3 分鐘** 來執行 `quarto publish`。開發者必須提醒使用者：發布後請等待 3 分鐘，並在瀏覽器使用 `Ctrl + F5` 清除快取，才能看到最新結果。
+
+## 6. 知識文章發布與渲染防呆 (Knowledge Post Rendering)
+- **YouTube 影片**：一律在「正文」用 raw HTML `<iframe>`（`https://www.youtube.com/embed/VIDEO_ID`，放在 16:9 響應式容器 `position:relative;padding-top:56.25%;max-width:640px;`）。**切勿**在 front matter 用 `youtube:` 欄位——Quarto/Pandoc 不認得該 key，影片不會顯示。
+- **Markdown 分段**：段落之間必須有「空行」，否則 Quarto 會把相鄰行合併成一大段。後台 `app.R` 的 `normalize_paragraphs_content()` 已在儲存/建立貼文時自動補空行；人工編輯請遵守空行規則。
+- **數學公式**：反斜線只能一次（`\times`、`\neq`、`\mathbb`）；若 MathJax CDN 不穩或被擋（如 unpkg 於台灣），可直接用 Unicode 符號 `×`、`≠`，零依賴、必定顯示。
+- **Quarto listing 縮圖**：若文章正文開頭放 `<iframe>`，Quarto listing 會把該 iframe 當成「卡片縮圖/摘要」而把影片當背景。解決：listing 用 `fields: [title, date, description, categories]` 排除 `image`，並在每篇 front matter 提供 `description` 文字。
+- **後台「文章字體」**：`admin_app` 的「🎨 文章字體」分頁會改 `custom.scss` 的 `$font-size-base` 與 `body { font-size }`，需重新 render / 上傳 GitHub 後由 GitHub Actions 套用。
