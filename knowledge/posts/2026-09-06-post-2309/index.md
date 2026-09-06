@@ -3,6 +3,7 @@ description: "從 AI 用強化學習玩《神奇寶貝》的實驗，對照人�
 date: "2026-09-06"
 categories: ["AI"]
 title: "看 AI 玩神奇寶貝，我卻看見了自己被囚禁的靈魂"
+youtube: "https://www.youtube.com/watch?v=DcYLT37ImBY&t=2s"
 ---
 
 <div style="position:relative;padding-top:56.25%;max-width:640px;margin:16px 0;">
