@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "為什麼 AI 也要「挨餓」才會變聰明？從資源受限的適居帶，談泛化與智能的真正來源。"
 date: "2026-09-06"
 categories: ["AI"]
 title: "為什麼 AI 也要「挨餓」才會變聰明？"
