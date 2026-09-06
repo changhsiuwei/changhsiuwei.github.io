@@ -7,6 +7,11 @@ youtube: "https://youtu.be/nRrt7AczYV4"
 ---
 
 這是一份關於大腦重塑與系統底層邏輯重建的省思筆記。
+
+<div style="position:relative;padding-top:56.25%;max-width:640px;margin:16px 0;">
+  <iframe src="https://www.youtube.com/embed/nRrt7AczYV4" title="Max Tegmark — Neural network interpretability, geometry & formal verification" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 看完 Max Tegmark 在 IPAM 關於「神經網路可解釋性、對稱性、幾何與形式驗證」的演講後，我花了很長的時間讓大腦背景的邏輯模擬器空轉。我在拆解他丟出的每一個變量。多數人看這場演講，看到的是一個物理學家跨界搞 AI 的奇聞軼事，或者是對神經網路內部出現「圓形」與「螺旋」的獵奇驚嘆。
 但如果你剝開那些學術包裝，剔除掉對於黑盒子的盲目恐懼與無效崇拜，Tegmark 實際上給出了一套極度冷酷、極度講求效率的「終局破解架構」。
 當前的 AI 產業正陷入一種集體精神分裂。我們依賴一個由數千億個參數組成的非線性矩陣乘法器來推進人類文明，卻對它為何起作用毫無頭緒。我們試圖用社會學的道德呼籲、用補丁式的微調（Fine-tuning）來掩蓋這台機器的隨機性。這是在治標不治本。
