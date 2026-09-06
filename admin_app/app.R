@@ -845,7 +845,14 @@ ui <- page_navbar(
             id = "knowledge_yaml_panel",
             class = "metadata-panel",
             tags$summary("貼文設定"),
-            textAreaInput("knowledge_post_yaml", NULL, width = "100%", height = "140px", value = "")
+            textAreaInput("knowledge_post_yaml", NULL, width = "100%", height = "140px", value = ""),
+            tags$p(
+              class = "yaml-hint",
+              style = "font-size:12px; color:#9aa0a6; margin:6px 0 0; line-height:1.5;",
+              HTML("front matter 保留 <code>title / date / categories / draft</code>。
+                  YouTube 影片請貼在「完整原始碼」正文：<code>&lt;iframe src=&quot;https://www.youtube.com/embed/VIDEO_ID&quot; allowfullscreen&gt;&lt;/iframe&gt;</code>。
+                  <strong>勿用</strong> <code>youtube:</code> 欄位（Quarto 不認得，不會顯示）。")
+            )
           ),
           div(
             id = "knowledge_rich_editor_shell",

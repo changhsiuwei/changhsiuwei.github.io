@@ -3,7 +3,6 @@ description: ""
 date: "2026-09-06"
 categories: ["AI"]
 title: "別猜AI在想什麼了：用數學驗證，直接榨出黑盒的底層邏輯"
-youtube: "https://youtu.be/nRrt7AczYV4"
 ---
 
 這是一份關於大腦重塑與系統底層邏輯重建的省思筆記。

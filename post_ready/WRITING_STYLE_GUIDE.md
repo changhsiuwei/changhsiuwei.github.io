@@ -135,6 +135,12 @@
   - 視覺 QA：每張 TikZ 圖編譯成 PNG 後，必須用 100% 尺寸與文章縮圖尺寸各看一次。若出現框貼框、字貼框、圓角切字、箭頭壓字、標籤壓線、清單列過密、外框底部太窄、或讀者需要停下來猜圖意，必須重畫或拆成兩張圖。
   - 來源圖片搭配：如果 PDF 或 PPT 有可用的原始圖片，先放在合適段落旁，再用 TikZ 畫出「我們怎麼理解這張圖」。原始圖片提供證據，TikZ 負責拆解觀念。
 
+# Video Embedding Rules (影片嵌入):
+- 影片一律用「正文 iframe」：`https://www.youtube.com/embed/VIDEO_ID`。**不要**在 front matter 用 `youtube:` 這個 key——Quarto 不認得，影片不會顯示。
+- 用 16:9 響應式容器（外包 `position:relative;padding-top:56.25%;max-width:640px;`），iframe 填滿容器，避免寬度撐爆版面。
+- 影片只放在「真的需要讀者先看」的地方（例如演講、實作影片），不要每篇都塞。
+- iframe 的 title 用中文、語意清楚；不要用 emoji。
+
 # Publishing Checklist (發布前自我檢查表):
 - 讀者看到的正文中，絕對沒有殘留的 # 或 * 等 Markdown 原始符號。
 - 文章中絕對沒有「本文整理自...」這種 AI 助理語氣的聲明。

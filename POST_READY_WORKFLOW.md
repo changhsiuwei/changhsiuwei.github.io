@@ -59,6 +59,18 @@ categories: AI教育, 教學實踐
 - `.pdf`：Codex 會先擷取內容與圖片，再整理成 `content.md`。
 - `.png`、`.jpg`、`.jpeg`、`.webp`、`.gif`、`.svg`：自動複製到正式文章資料夾。
 
+## 影片嵌入（YouTube）
+
+影片必須「直接放正文」，用 Quarto 相容的 HTML iframe（不是 front matter）：
+
+```html
+<iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+```
+
+- 取得 embed 網址：把 `https://www.youtube.com/watch?v=VIDEO_ID` 改成 `https://www.youtube.com/embed/VIDEO_ID`，或直接用 YouTube「分享 → 嵌入」複製的 iframe。
+- **切勿**在 front matter 使用 `youtube:` 欄位——Quarto/Pandoc 不認得這個 key，影片「不會」被渲染，發布後會整段消失。
+- 建議用 16:9 響應式容器：外包一層 `style="position:relative;padding-top:56.25%;max-width:640px;"`，iframe 設 `style="position:absolute;inset:0;width:100%;height:100%;border:0;"`。
+
 ## 發布後
 
 成功匯入後，原始資料夾會移到：
