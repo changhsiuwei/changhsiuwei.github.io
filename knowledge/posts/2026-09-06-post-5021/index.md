@@ -3,6 +3,7 @@ description: "為什麼 AI 也要「挨餓」才會變聰明？從資源受限�
 date: "2026-09-06"
 categories: ["AI"]
 title: "為什麼 AI 也要「挨餓」才會變聰明？"
+youtube: "https://www.youtube.com/watch?v=nRrt7AczYV4&t=10s"
 ---
 
 <div style="position:relative;padding-top:56.25%;max-width:640px;margin:16px 0;">
@@ -78,4 +79,3 @@ Tegmark 試圖告訴我們，宇宙的邏輯是普適的。無論是碳基的大
 這場思辨對話讓我明白：通往未來的路，不是要讓 AI 變得更像人，而是要讓 AI 產出的結果，回歸到那套支撐了人類文明幾千年的、冰冷而優美的邏輯與幾何。
 
 畢竟，真理沒有國界，更沒有物種之分。它只是在那裡，等待著被某種足夠「飢餓」的智慧捕捉。
-
