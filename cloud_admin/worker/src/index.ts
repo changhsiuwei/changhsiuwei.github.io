@@ -35,6 +35,7 @@ const EXACT_EDITABLE = new Set([
   "activities/index.md",
   "publications/index.md",
   "knowledge/index.md",
+  "workshop/index.md",
   "lab/index.md",
   "students/index.qmd",
   "students/password_hash.txt"
@@ -78,7 +79,7 @@ export function normalizeEditablePath(input: string): string {
   if (/[\x00-\x1f\x7f]/.test(decoded)) throw new Error("Invalid path");
   const lower = decoded.toLowerCase();
   const extension = lower.includes(".") ? lower.split(".").pop()! : "";
-  const inPost = /^(knowledge|lab)\/posts\/[a-z0-9][a-z0-9-]{2,80}\/[a-z0-9][a-z0-9._-]{0,120}$/i.test(decoded);
+  const inPost = /^(knowledge|lab|workshop)\/posts\/[a-z0-9][a-z0-9-]{2,80}\/[a-z0-9][a-z0-9._-]{0,120}$/i.test(decoded);
   const inSharedUploads = /^assets\/uploads\/[a-z0-9][a-z0-9._-]{0,120}$/i.test(decoded);
   if (
     !EXACT_EDITABLE.has(decoded) &&

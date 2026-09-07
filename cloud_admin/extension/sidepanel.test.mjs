@@ -267,8 +267,8 @@ test("publications page cards, working papers, and conferences parse and reconst
   assert.equal(normalize(reconstructed), normalize(body));
 });
 
-test("section hub pages (knowledge and lab) reconstruct exact Quarto listing page layout", () => {
-  for (const pagePath of ["knowledge/index.md", "lab/index.md"]) {
+test("section hub pages (knowledge, lab, workshop) reconstruct exact Quarto listing page layout", () => {
+  for (const pagePath of ["knowledge/index.md", "lab/index.md", "workshop/index.md"]) {
     const raw = readFileSync(new URL(`../../${pagePath}`, import.meta.url), "utf8");
     const match = raw.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$/);
     assert.ok(match);

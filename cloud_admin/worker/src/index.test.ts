@@ -7,6 +7,9 @@ test("allows only the intended editable paths", () => {
   assert.equal(normalizeEditablePath("students/index.qmd"), "students/index.qmd");
   assert.equal(normalizeEditablePath("students/password_hash.txt"), "students/password_hash.txt");
   assert.equal(normalizeEditablePath("knowledge/posts/safe-post/index.md"), "knowledge/posts/safe-post/index.md");
+  assert.equal(normalizeEditablePath("lab/posts/safe-post/index.md"), "lab/posts/safe-post/index.md");
+  assert.equal(normalizeEditablePath("workshop/posts/safe-post/index.md"), "workshop/posts/safe-post/index.md");
+  assert.equal(normalizeEditablePath("workshop/index.md"), "workshop/index.md");
   assert.equal(normalizeEditablePath("assets/uploads/photo.webp"), "assets/uploads/photo.webp");
 });
 

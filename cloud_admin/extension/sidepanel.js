@@ -10,8 +10,20 @@ const STATIC_PAGES = [
   { path: "publications/index.md", label: "學術出版", icon: "文" },
   { path: "lab/index.md", label: "教學與研究", icon: "研" },
   { path: "knowledge/index.md", label: "AI 知識站", icon: "知" },
+  { path: "workshop/index.md", label: "AI 工具坊", icon: "具" },
   { path: "students/index.qmd", label: "學生專區", icon: "學" }
 ];
+
+const POST_SECTIONS = [
+  { id: "lab", label: "教學與研究", icon: "研", indexPath: "lab/index.md", postPrefix: "lab/posts/" },
+  { id: "knowledge", label: "AI 知識站", icon: "知", indexPath: "knowledge/index.md", postPrefix: "knowledge/posts/" },
+  { id: "workshop", label: "AI 工具坊", icon: "具", indexPath: "workshop/index.md", postPrefix: "workshop/posts/" }
+];
+
+function postSectionOf(path) {
+  if (!path) return null;
+  return POST_SECTIONS.find((s) => path === s.indexPath || path.startsWith(s.id + "/")) || null;
+}
 
 const KNOWN_POST_METADATA = {};
 
@@ -72,7 +84,7 @@ const state = {
   geminiTemperature: "0.7",
   pendingAiGeneratedPost: null,
   activeAiPolishResult: null,
-  expandedFolders: new Set(["lab", "knowledge"])
+  expandedFolders: new Set(["lab", "knowledge", "workshop"])
 };
 
 const $ = (id) => document.getElementById(id);
@@ -1713,10 +1725,11 @@ function currentContent() {
 function pageInfo(path) {
   const staticPage = STATIC_PAGES.find((item) => item.path === path);
   if (staticPage) return { label: staticPage.label, location: "固定頁面", icon: staticPage.icon };
-  const collection = path.startsWith("knowledge/") ? "AI 知識站" : path.startsWith("lab/") ? "教學與研究" : "網站內容";
+  const section = postSectionOf(path);
   const meta = getPostMetadata(path);
   const label = meta.title || path.split("/").at(-2) || path;
-  return { label, location: `${collection} / 文章`, icon: collection === "AI 知識站" ? "知" : "研" };
+  if (section) return { label, location: `${section.label} / 文章`, icon: section.icon };
+  return { label, location: "網站內容", icon: "頁" };
 }
 
 function ensureEditor() {
@@ -1889,7 +1902,7 @@ function renderTree() {
   const contentFiles = state.files.filter((path) => /\.(md|qmd)$/i.test(path));
 
   // 1. 主要核心頁面（首頁、個人資訊、近期活動、學術出版、學生專區）
-  const coreStaticPages = STATIC_PAGES.filter((p) => !p.path.startsWith("knowledge/") && !p.path.startsWith("lab/"));
+  const coreStaticPages = STATIC_PAGES.filter((p) => !p.path.startsWith("knowledge/") && !p.path.startsWith("lab/") && !p.path.startsWith("workshop/"));
   const coreFiles = coreStaticPages.map((p) => p.path);
 
   const mainSection = document.createElement("section");
@@ -1900,25 +1913,15 @@ function renderTree() {
   mainSection.append(mainTitle, ...coreFiles.map(createTreeItem));
   elements.pageTree.append(mainSection);
 
-  // 2. 專區層次管理（教學與研究 & AI 知識站）
-  const sectionGroups = [
-    {
-      id: "lab",
-      indexPath: "lab/index.md",
-      label: "教學與研究",
-      icon: "研",
-      subtitle: "專區文章管理",
-      posts: contentFiles.filter((p) => /^lab\/posts\//.test(p)).sort().reverse()
-    },
-    {
-      id: "knowledge",
-      indexPath: "knowledge/index.md",
-      label: "AI 知識站",
-      icon: "知",
-      subtitle: "專區文章管理",
-      posts: contentFiles.filter((p) => /^knowledge\/posts\//.test(p)).sort().reverse()
-    }
-  ];
+  // 2. 專區層次管理（教學與研究、AI 知識站、AI 工具坊）
+  const sectionGroups = POST_SECTIONS.map((section) => ({
+    id: section.id,
+    indexPath: section.indexPath,
+    label: section.label,
+    icon: section.icon,
+    subtitle: "專區文章管理",
+    posts: contentFiles.filter((p) => p.startsWith(section.postPrefix)).sort().reverse()
+  }));
 
   for (const group of sectionGroups) {
     const folder = document.createElement("div");
@@ -3146,7 +3149,8 @@ function serializeSectionHub(frontMatter, intro, lineEnding = "\n") {
 }
 
 async function deletePost(postPath) {
-  if (!postPath || (!postPath.startsWith("knowledge/posts/") && !postPath.startsWith("lab/posts/"))) {
+  const postSection = postSectionOf(postPath);
+  if (!postPath || !postSection || !postPath.startsWith(postSection.postPrefix)) {
     log("此頁面為固定結構頁面，無法刪除", "error");
     return;
   }
@@ -3157,8 +3161,7 @@ async function deletePost(postPath) {
   }
 
   const postDir = postPath.replace(/\/index\.(?:md|qmd)$/i, "");
-  const isLab = postPath.startsWith("lab/");
-  const fallbackPath = isLab ? "lab/index.md" : "knowledge/index.md";
+  const fallbackPath = postSection ? postSection.indexPath : "index.md";
 
   if (elements.deleteDocumentButton) {
     elements.deleteDocumentButton.disabled = true;
@@ -3238,10 +3241,10 @@ async function deletePost(postPath) {
 }
 
 function renderSectionHub(path, body) {
-  const isKnowledge = path.startsWith("knowledge");
-  const sectionName = isKnowledge ? "AI 知識站" : "教學與研究";
-  const icon = isKnowledge ? "知" : "研";
-  const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
+  const section = postSectionOf(path);
+  const sectionName = section ? section.label : "教學與研究";
+  const icon = section ? section.icon : "研";
+  const prefix = section ? section.postPrefix : "lab/posts/";
 
   if (elements.sectionHubBadge) {
     elements.sectionHubBadge.textContent = `${icon} · ${sectionName} 專區導言設定`;
@@ -3262,7 +3265,7 @@ function renderSectionHub(path, body) {
 
   if (elements.sectionHubAddPostButton) {
     elements.sectionHubAddPostButton.onclick = () => {
-      startNewPost(isKnowledge ? "knowledge" : "lab");
+      startNewPost(section ? section.id : "lab");
     };
   }
 
@@ -3285,7 +3288,7 @@ function renderSectionHub(path, body) {
         <button class="primary-button mini-button" type="button" style="padding:8px 20px;font-size:13px;background:#001F3F;border-color:#001F3F;cursor:pointer;">＋ 立即開啟大畫布撰寫新文章</button>
       `;
       emptyCard.querySelector("button").onclick = () => {
-        startNewPost(isKnowledge ? "knowledge" : "lab");
+        startNewPost(section ? section.id : "lab");
       };
       elements.sectionHubArticleList.append(emptyCard);
       return;
@@ -4128,12 +4131,11 @@ function openDocument(path, content, isNew, sourceContent = content, draftUpload
   const isAbout = path === "about/index.md";
   const isPub = path === "publications/index.md";
   const isActivities = path === "activities/index.md";
-  const isKnowledge = path === "knowledge/index.md";
-  const isLab = path === "lab/index.md";
+  const section = postSectionOf(path);
   const isStudents = path === "students/index.qmd";
-  const isSectionHub = isKnowledge || isLab;
+  const isSectionHub = !!section && path === section.indexPath;
   const isStructuredPage = isHome || isAbout || isPub || isActivities;
-  const isDeletable = path.startsWith("knowledge/posts/") || path.startsWith("lab/posts/");
+  const isDeletable = !!section && path.startsWith(section.postPrefix);
   const isPost = isDeletable;
   if (elements.deleteDocumentButton) {
     elements.deleteDocumentButton.style.display = isDeletable ? "inline-flex" : "none";
@@ -4212,10 +4214,9 @@ function updateDocumentState() {
     elements.wordCount.textContent = `${(state.aboutModel.education || []).length} 項學歷 · ${(state.aboutModel.experience || []).length} 項經歷 · ${(state.aboutModel.honors || []).length} 項榮譽`;
   } else if (state.currentPath === "publications/index.md" && state.pubModel) {
     elements.wordCount.textContent = `${(state.pubModel.journalPapers || []).length} 篇期刊 · ${(state.pubModel.workingPapers || []).length} 篇工作論文 · ${(state.pubModel.conferences || []).length} 場研討會`;
-  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
-    const isKnowledge = state.currentPath.startsWith("knowledge");
-    const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
-    const count = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).length;
+  } else if (postSectionOf(state.currentPath)?.indexPath === state.currentPath) {
+    const section = postSectionOf(state.currentPath);
+    const count = state.files.filter((p) => p.startsWith(section.postPrefix) && /\.(md|qmd)$/i.test(p)).length;
     elements.wordCount.textContent = `共 ${count} 篇文章`;
   } else if (state.currentPath === "activities/index.md") {
     let totalEvents = 0;
@@ -4503,9 +4504,9 @@ function renderPreview() {
         </table>
       </div>
     `;
-  } else if (state.currentPath === "knowledge/index.md" || state.currentPath === "lab/index.md") {
-    const isKnowledge = state.currentPath.startsWith("knowledge");
-    const prefix = isKnowledge ? "knowledge/posts/" : "lab/posts/";
+  } else if (postSectionOf(state.currentPath)?.indexPath === state.currentPath) {
+    const section = postSectionOf(state.currentPath);
+    const prefix = section.postPrefix;
     const introHtml = state.editor ? sanitizePreviewHtml(restorePreviewLayout(state.editor.getHTML())) : "";
     const posts = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
     const cardsHtml = posts.map((p) => {
@@ -4741,7 +4742,7 @@ function startNewPost(collection = "lab") {
   const timeStr = Date.now().toString().slice(-4);
   const slug = `${date}-post-${timeStr}`;
   const path = `${collection}/posts/${slug}/index.md`;
-  const defaultTitle = collection === "knowledge" ? "新 AI 知識站專欄" : "新教學與研究文章";
+  const defaultTitle = collection === "knowledge" ? "新 AI 知識站專欄" : collection === "workshop" ? "新 AI 工具坊文章" : "新教學與研究文章";
   const content = `---\ntitle: ${JSON.stringify(defaultTitle)}\ndescription: ""\ndate: ${JSON.stringify(date)}\ncategories: ["AI"]\nslides: ""\nhandout: ""\nyoutube: ""\ndraft: false\n---\n\n從這裡開始撰寫您的文章內容...\n`;
   if (!state.files.includes(path)) {
     state.files.push(path);
