@@ -3,7 +3,6 @@ description: "為什麼 AI 也要「挨餓」才會變聰明？從資源受限�
 date: "2026-09-06"
 categories: ["AI"]
 title: "為什麼 AI 也要「挨餓」才會變聰明？"
-youtube: "https://www.youtube.com/watch?v=nRrt7AczYV4&t=10s"
 ---
 
 <div style="position:relative;padding-top:56.25%;max-width:640px;margin:16px 0;">

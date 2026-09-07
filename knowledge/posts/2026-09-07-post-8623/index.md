@@ -1,10 +1,13 @@
 ---
-description: ""
+description: "從陶哲軒的對話反思「天才」的本質：高溫試錯、撞上現實數據的牆，以及在 AI 時代真正稀缺的驗證能力。"
 date: "2026-09-07"
 categories: ["AI"]
-youtube: "https://www.youtube.com/watch?v=Q8Fkpi18QXU"
 title: "天才的腦袋，其實是一台瘋狂的「點子扭蛋機」"
 ---
+
+<div style="position:relative;padding-top:56.25%;max-width:640px;margin:16px 0;">
+  <iframe src="https://www.youtube.com/embed/Q8Fkpi18QXU" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+</div>
 
 看完陶哲軒（Terence Tao）這段對話，我坐在螢幕前發愣了很久。我原本預期會聽到這位「數學界的莫札特」談論一些深不可測的演算法或精密的邏輯架構，但他卻從刻卜勒（Kepler）講起。
 
