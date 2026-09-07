@@ -335,6 +335,33 @@ async function api(path, options = {}) {
   return body;
 }
 
+async function publishPayload({ message, files }) {
+  try {
+    const result = await api("/api/publish", {
+      method: "POST",
+      body: JSON.stringify({ baseCommitSha: state.head, message, files })
+    });
+    if (result && result.commitSha) {
+      state.head = result.commitSha;
+    }
+    return result;
+  } catch (err) {
+    if (err.status === 409 && err.body && err.body.currentHead) {
+      log("遠端已有新提交，正在自動以最新版本重新發布…", "info");
+      state.head = err.body.currentHead;
+      const retryResult = await api("/api/publish", {
+        method: "POST",
+        body: JSON.stringify({ baseCommitSha: state.head, message, files })
+      });
+      if (retryResult && retryResult.commitSha) {
+        state.head = retryResult.commitSha;
+      }
+      return retryResult;
+    }
+    throw err;
+  }
+}
+
 function base64ToText(value) {
   const binary = atob(value.replace(/\s/g, ""));
   const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
@@ -1702,14 +1729,16 @@ function currentContent() {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
   } else {
     const isPost = state.currentPath.startsWith("knowledge/posts/") || state.currentPath.startsWith("lab/posts/") || state.currentPath.startsWith("workshop/posts/");
-    if (state.editorChanged) {
+    const editorMd = state.editor ? state.editor.getMarkdown() : "";
+    const hasEditorDelta = Boolean(state.editor && editorMd.trimEnd() !== (state.originalBody || "").trimEnd());
+    if (state.editorChanged || hasEditorDelta) {
       let mappedBody = null;
       if (state.layoutLocks && state.layoutLocks.size > 0 && !isPost) {
-        mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
+        mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, editorMd, state.originalBody);
       }
       if (mappedBody === null) {
         if (!state.layoutLocks || state.layoutLocks.size === 0 || isPost) {
-          mappedBody = state.editor.getMarkdown();
+          mappedBody = editorMd;
         } else {
           throw new Error("這次修改無法安全對應原版面，請分段修改或重新讀取後再試一次");
         }
@@ -1726,7 +1755,8 @@ function currentContent() {
     }
   }
   const frontMatter = currentFrontMatter();
-  if (!state.metadataDirty && state.frontMatterPrefix) return `${state.frontMatterPrefix}${body}${state.lineEnding}`;
+  const isFrontMatterChanged = state.metadataDirty || (state.frontMatter !== undefined && frontMatter.trim() !== (state.frontMatter || "").trim());
+  if (!isFrontMatterChanged && state.frontMatterPrefix) return `${state.frontMatterPrefix}${body}${state.lineEnding}`;
   const normalizedFrontMatter = frontMatter.replace(/\r?\n/g, state.lineEnding);
   return frontMatter
     ? `---${state.lineEnding}${normalizedFrontMatter}${state.lineEnding}---${state.lineEnding}${state.lineEnding}${body}${state.lineEnding}`
@@ -3199,13 +3229,9 @@ async function deletePost(postPath) {
       }
 
       if (filesToDelete.length > 0) {
-        const result = await api("/api/publish", {
-          method: "POST",
-          body: JSON.stringify({
-            baseCommitSha: state.head,
-            message: `chore: 刪除文章 ${title}`,
-            files: filesToDelete
-          })
+        const result = await publishPayload({
+          message: `chore: 刪除文章 ${title}`,
+          files: filesToDelete
         });
         if (result && result.commitSha) {
           state.head = result.commitSha;
@@ -4633,7 +4659,6 @@ function renderPreview() {
         renderMathInElement(document.body, {
           delimiters: [
             {left: "$$", right: "$$", display: true},
-            {left: "$", right: "$", display: false},
             {left: "\\\\[", right: "\\\\]", display: true},
             {left: "\\\\(", right: "\\\\)", display: false}
           ],
@@ -4731,10 +4756,7 @@ async function publish() {
     files.push({ path: upload.path, operation: "upsert", encoding: "base64", content: upload.base64 });
   }
   log("正在同步到 GitHub…");
-  const result = await api("/api/publish", {
-    method: "POST",
-    body: JSON.stringify({ baseCommitSha: state.head, message, files })
-  });
+  const result = await publishPayload({ message, files });
   state.head = result.commitSha;
   state.originalContent = content;
   const publishedSplit = splitFrontMatter(content);
@@ -5247,18 +5269,14 @@ elements.btnUpdateStudentPassword?.addEventListener("click", async () => {
     const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(newPw));
     const hashHex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("");
 
-    const result = await api("/api/publish", {
-      method: "POST",
-      body: JSON.stringify({
-        baseCommitSha: state.head,
-        message: "security(students): update student area password hash",
-        files: [{
-          path: "students/password_hash.txt",
-          operation: "upsert",
-          encoding: "utf-8",
-          content: `${hashHex}\n`
-        }]
-      })
+    const result = await publishPayload({
+      message: "security(students): update student area password hash",
+      files: [{
+        path: "students/password_hash.txt",
+        operation: "upsert",
+        encoding: "utf-8",
+        content: `${hashHex}\n`
+      }]
     });
 
     state.head = result.commitSha;
