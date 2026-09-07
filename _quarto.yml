@@ -53,6 +53,8 @@ format:
     theme:
       - cosmo
       - custom.scss
+    filters:
+      - filters/resource-links.lua
     include-after-body: views-tracker.html
     highlight-style: dracula
     toc: true

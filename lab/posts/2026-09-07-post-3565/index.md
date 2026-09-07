@@ -1,10 +1,10 @@
 ---
-description: ""
+description: "讀 PCAOB 主席 George R. Botic 演講：良心的定價與認知的抵押——審計、資本侵蝕與機器時代的信任寓言。"
 date: "2026-09-07"
-categories: ["AI"]
+categories: ["AI", "審計與信任"]
 title: "PCAOB 主席 George R. Botic 演講讀後感想"
 subtitle: "良心的定價與認知的抵押：審計、資本侵蝕與機器時代的信任寓言"
-slides: "https://pcaobus.org/news-events/speeches/speech-detail/from-one-acorn-to-a-thousand-forests--trust--financial-statement-auditing--and-the-future-of-the-accounting-profession"
+handout: "https://pcaobus.org/news-events/speeches/speech-detail/from-one-acorn-to-a-thousand-forests--trust--financial-statement-auditing--and-the-future-of-the-accounting-profession"
 ---
 
 **◆ 歷史的迴光：那顆被遺忘的橡實與「王座旁的僕人」**
