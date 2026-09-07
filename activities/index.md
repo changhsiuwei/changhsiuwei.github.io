@@ -13,6 +13,16 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
+**September 7**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 會計研究發展基金會 · 年度專題演講
+*從實證到科學化：AI 與數位報導下的會計教學與研究新方法*
+
+[📊 簡報下載 ↗](https://drive.google.com/file/d/1xklABIX2ilOtJJYwhJ8bV4TBmjfzQEYW/view?usp=sharing){target="_blank" .activity-materials-link .activity-slides-link}
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **August  28**
 :::
 ::: {.g-col-12 .g-col-md-10}
