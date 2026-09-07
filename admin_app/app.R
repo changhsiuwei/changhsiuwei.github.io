@@ -19,6 +19,7 @@ get_core_pages <- function(site_dir) {
     "學術出版 (publications/index.md)" = "publications/index.md",
     "AI 教學與研究 (lab/index.md)" = "lab/index.md",
     "知識站介紹 (knowledge/index.md)" = "knowledge/index.md",
+    "AI 工具坊 (workshop/index.md)" = "workshop/index.md",
     "學生專區內容 (students/index.qmd)" = "students/index.qmd",
     "全站設定檔 (_quarto.yml)" = "_quarto.yml"
   )
@@ -190,8 +191,8 @@ image_markdown_block <- function(filename, caption) {
   paste0("![](", filename, ")\n\n*", caption, "*")
 }
 
-get_knowledge_posts <- function(site_dir) {
-  posts_dir <- file.path(site_dir, "knowledge", "posts")
+get_knowledge_posts <- function(site_dir, section = "knowledge") {
+  posts_dir <- file.path(site_dir, section, "posts")
   if (!dir.exists(posts_dir)) return(list())
 
   post_files <- list.files(posts_dir, pattern = "\\.(md|qmd)$", recursive = TRUE, full.names = TRUE)
@@ -938,12 +939,22 @@ ui <- page_navbar(
   ),
 
   # 模組 1: 知識站管理
-  nav_panel("✍️ 知識站管理",
+  nav_panel("✍️ 文章管理",
     editor_workspace_layout(
       sidebar_ui = tagList(
         div(
           class = "sidebar-section",
-          div(class = "sidebar-section-title", "新增貼文"),
+          div(class = "sidebar-section-title", "文章區塊"),
+          selectInput(
+            "post_section",
+            "選擇區塊",
+            choices = c("AI 知識站" = "knowledge", "AI 工具坊" = "workshop"),
+            selected = "knowledge"
+          )
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "新增文章"),
           textInput("post_title", "文章標題", placeholder = "請輸入文章標題"),
           dateInput("post_date", "發布日期", value = Sys.Date()),
           textInput("post_categories", "文章分類", placeholder = "例如: AI, Teaching, 心得"),
@@ -952,8 +963,8 @@ ui <- page_navbar(
         ),
         div(
           class = "sidebar-section",
-          div(class = "sidebar-section-title", "管理既有貼文"),
-          selectInput("knowledge_post_select", "選擇知識貼文", choices = knowledge_posts),
+          div(class = "sidebar-section-title", "管理既有文章"),
+          selectInput("knowledge_post_select", "選擇文章", choices = knowledge_posts),
           actionButton("load_knowledge_post_btn", "🔄 載入貼文", class = "btn-secondary"),
           radioButtons(
             "knowledge_post_visibility",
@@ -1337,21 +1348,43 @@ server <- function(input, output, session) {
   current_knowledge_post_hidden <- reactiveVal(FALSE)
   pending_delete_knowledge_post_rel <- reactiveVal(NULL)
 
+  # 目前管理的文章區塊（knowledge 或 workshop）
+  post_section <- reactive({
+    if (is.null(input$post_section) || !nzchar(input$post_section)) "knowledge" else input$post_section
+  })
+
+  observeEvent(input$post_section, {
+    req(input$post_section)
+    current_knowledge_post_file(NULL)
+    current_knowledge_post_rel(NULL)
+    current_knowledge_post_hidden(FALSE)
+    updateRadioButtons(session, "knowledge_post_visibility", selected = "open")
+    updateRadioButtons(session, "knowledge_edit_mode", selected = "wysiwyg")
+    updateTextAreaInput(session, "knowledge_post_content", value = "")
+    session$sendCustomMessage(
+      "set-knowledge-editor-content",
+      list(content = "", sourceOnly = FALSE)
+    )
+    refresh_knowledge_post_choices()
+    knowledge_url_trigger(knowledge_url_trigger() + 1)
+  }, ignoreInit = TRUE)
+
   move_knowledge_post_to_trash <- function(relative_file_path) {
     if (is.null(relative_file_path) || !nzchar(relative_file_path)) {
       stop("尚未選擇知識貼文。")
     }
+    sec <- post_section()
     file_path <- normalizePath(file.path(site_dir, relative_file_path), winslash = "/", mustWork = TRUE)
-    posts_root <- normalizePath(file.path(site_dir, "knowledge", "posts"), winslash = "/", mustWork = TRUE)
+    posts_root <- normalizePath(file.path(site_dir, sec, "posts"), winslash = "/", mustWork = TRUE)
     if (!startsWith(tolower(file_path), paste0(tolower(posts_root), "/"))) {
-      stop("安全檢查失敗：只能刪除 knowledge/posts/ 內的貼文。")
+      stop(paste0("安全檢查失敗：只能刪除 ", sec, "/posts/ 內的貼文。"))
     }
     if (!basename(file_path) %in% c("index.md", "index.qmd")) {
       stop("安全檢查失敗：只能刪除貼文的 index.md 或 index.qmd。")
     }
 
     post_dir <- dirname(file_path)
-    trash_root <- file.path(site_dir, "knowledge", "_trash")
+    trash_root <- file.path(site_dir, sec, "_trash")
     dir.create(trash_root, recursive = TRUE, showWarnings = FALSE)
     trash_root <- normalizePath(trash_root, winslash = "/", mustWork = TRUE)
 
@@ -1374,7 +1407,7 @@ server <- function(input, output, session) {
   }
 
   refresh_knowledge_post_choices <- function(selected = NULL) {
-    choices <- get_knowledge_posts(site_dir)
+    choices <- get_knowledge_posts(site_dir, post_section())
     updateSelectInput(session, "knowledge_post_select", choices = choices, selected = selected)
   }
 
@@ -1415,7 +1448,7 @@ server <- function(input, output, session) {
 
   output$knowledge_frame_ui <- renderUI({
     knowledge_url_trigger()
-    url <- paste0(preview_base_url, "/knowledge/?t=", as.numeric(Sys.time()))
+    url <- paste0(preview_base_url, "/", post_section(), "/?t=", as.numeric(Sys.time()))
     tags$iframe(src = url, style = "width: 100%; height: 100%; flex-grow: 1; border: 1px solid #ddd; border-radius: 8px; background-color: white;")
   })
 
@@ -1463,8 +1496,8 @@ server <- function(input, output, session) {
 
     showModal(modalDialog(
       title = "確認刪除知識貼文",
-      tags$p("這篇貼文會從知識站管理清單移除，並移到本機垃圾桶資料夾："),
-      tags$code("knowledge/_trash/"),
+      tags$p("這篇貼文會從文章管理清單移除，並移到本機垃圾桶資料夾："),
+      tags$code(paste0(post_section(), "/_trash/")),
       tags$hr(),
       tags$p(tags$strong("貼文："), post_title),
       tags$p(tags$strong("路徑："), tags$code(rel_path)),
@@ -1518,7 +1551,7 @@ server <- function(input, output, session) {
 
     tryCatch({
       timestamp_slug <- format(Sys.time(), "post-%Y%m%d-%H%M%S")
-      post_dir <- file.path(site_dir, "knowledge", "posts", timestamp_slug)
+      post_dir <- file.path(site_dir, post_section(), "posts", timestamp_slug)
       dir.create(post_dir, recursive = TRUE, showWarnings = FALSE)
 
       cats <- unlist(strsplit(input$post_categories, ","))
@@ -1548,7 +1581,7 @@ draft: %s
 
       file_content <- yaml_content
       file_content <- normalize_paragraphs_content(file_content)
-      relative_file_path <- paste0("knowledge/posts/", timestamp_slug, "/index.qmd")
+      relative_file_path <- paste0(post_section(), "/posts/", timestamp_slug, "/index.qmd")
       file_path <- file.path(site_dir, relative_file_path)
       writeLines(file_content, file_path, useBytes = TRUE)
 
@@ -1758,7 +1791,8 @@ draft: %s
     "START_HERE.md",
     "students",
     "styles.css",
-    "WEBSITE_UPDATE_MAINTENANCE_MANUAL.md"
+    "WEBSITE_UPDATE_MAINTENANCE_MANUAL.md",
+    "workshop"
   )
 
   observeEvent(input$publish_btn, {

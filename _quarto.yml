@@ -16,6 +16,9 @@ project:
     - knowledge/index.md
     - knowledge/posts/**/*.md
     - knowledge/posts/**/*.qmd
+    - workshop/index.md
+    - workshop/posts/**/*.md
+    - workshop/posts/**/*.qmd
     - students/index.qmd
 
 website:
@@ -37,6 +40,8 @@ website:
         text: 教學與研究
       - href: knowledge/index.md
         text: AI 知識站
+      - href: workshop/index.md
+        text: AI 工具坊
       - href: students/index.qmd
         text: 學生專區
   page-footer:
