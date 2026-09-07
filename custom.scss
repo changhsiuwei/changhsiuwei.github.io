@@ -658,6 +658,8 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
    ACTIVITIES TIMELINE ALIGNMENT (DATE & TITLE HORIZONTAL ALIGNMENT)
    =================================================== */
 .g-col-md-2 {
+  min-width: fit-content;
+
   > p:first-child {
     margin-top: 0 !important;
     margin-bottom: 0.25rem;
@@ -665,6 +667,7 @@ main section, main .grid, main div.callout, main .quarto-about-trestles, main .q
     font-weight: 800;
     color: #2C344E;
     line-height: 1.35;
+    white-space: nowrap;
   }
 }
 
