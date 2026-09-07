@@ -117,6 +117,67 @@ set_post_visibility <- function(content, visible = TRUE) {
   set_yaml_field(content, "draft", if (isTRUE(visible)) "false" else "true")
 }
 
+# ── YouTube 影片處理（治本：避免 front matter 用 youtube: 欄位導致影片不顯示）──
+extract_youtube_id <- function(url) {
+  url <- trimws(url)
+  if (is.na(url) || !nzchar(url)) return(NA_character_)
+  pats <- c(
+    "youtu\\.be/([A-Za-z0-9_-]{6,})",
+    "youtube-nocookie\\.com/embed/([A-Za-z0-9_-]{6,})",
+    "youtube\\.com/(embed|shorts|v)/([A-Za-z0-9_-]{6,})",
+    "youtube\\.com/watch[^#\"' ]*[?&]v=([A-Za-z0-9_-]{6,})"
+  )
+  for (p in pats) {
+    m <- regexec(p, url, ignore.case = TRUE, perl = TRUE)
+    idx <- m[[1]]
+    if (length(idx) == 0 || idx[1] == -1L) next
+    caps <- regmatches(url, m)[[1]]
+    id <- caps[length(caps)]
+    if (!is.na(id) && nzchar(id)) return(id)
+  }
+  NA_character_
+}
+
+youtube_iframe_block <- function(video_id) {
+  sprintf(
+    '<div style="position:relative;padding-top:56.25%%;max-width:640px;margin:16px 0;">\n  <iframe src="https://www.youtube.com/embed/%s" style="position:absolute;inset:0;width:100%%;height:100%%;border:0;" allowfullscreen></iframe>\n</div>',
+    video_id
+  )
+}
+
+remove_yaml_key <- function(yaml_text, key) {
+  lines <- strsplit(yaml_text, "\n", fixed = TRUE)[[1]]
+  lines <- lines[!grepl(paste0("^", key, "\\s*:"), lines)]
+  paste(lines, collapse = "\n")
+}
+
+# 將 front matter 的 youtube: 欄位轉為正文 iframe（Quarto 不認得 youtube: key）
+convert_youtube_front_matter <- function(content) {
+  split <- split_front_matter_r(content)
+  if (!isTRUE(split$has_yaml)) return(content)
+  yt <- yaml_scalar(split$yaml, "youtube", default = "")
+  if (!nzchar(yt)) return(content)
+
+  vid <- extract_youtube_id(yt)
+  yaml_clean <- remove_yaml_key(split$yaml, "youtube")
+  body <- sub("^[ \t\r\n]+", "", split$body)
+
+  if (!is.na(vid)) {
+    if (!grepl(vid, body, fixed = TRUE)) {
+      body <- paste0(youtube_iframe_block(vid), "\n\n", body)
+    }
+  } else {
+    # 無法解析影片 ID：保留原始網址當純文字，避免影片遺失
+    body <- paste0(yt, "\n\n", body)
+  }
+
+  if (nzchar(trimws(yaml_clean))) {
+    paste0("---\n", yaml_clean, "\n---\n\n", body)
+  } else {
+    body
+  }
+}
+
 clean_image_caption <- function(caption, fallback = "請在此輸入圖片標題") {
   caption <- trimws(if (is.null(caption)) "" else caption)
   if (!nzchar(caption)) caption <- fallback
@@ -721,6 +782,58 @@ ui <- page_navbar(
           }
         }
 
+        function setSourceMode(key, sourceOnly) {
+          var cfg = editorConfigs[key];
+          var state = getState(key);
+          var raw = byId(cfg.raw);
+          var yamlEl = byId(cfg.yaml);
+          initEditor(key);
+          if (sourceOnly) {
+            if (!state.sourceOnlyMode) {
+              pushContent(key);
+              state.sourceOnlyMode = true;
+            }
+          } else {
+            if (state.sourceOnlyMode) {
+              var rawVal = raw ? raw.value : '';
+              var split = splitFrontMatter(rawVal);
+              state.sourceOnlyMode = false;
+              state.suppressUpdate = true;
+              if (yamlEl) yamlEl.value = split.yaml;
+              if (state.editor) state.editor.setMarkdown(split.body, false);
+              if (raw) raw.value = rawVal;
+              state.suppressUpdate = false;
+              pushContent(key);
+            }
+          }
+          var wrapper = byId(cfg.wrapper);
+          var rawPanel = byId(cfg.rawPanel);
+          if (wrapper) wrapper.classList.toggle('source-only-mode', state.sourceOnlyMode);
+          if (rawPanel) rawPanel.open = state.sourceOnlyMode;
+        }
+
+        function insertRawHtmlAtCursor(key, html) {
+          var cfg = editorConfigs[key];
+          var state = getState(key);
+          var raw = byId(cfg.raw);
+          if (!raw || !html) return;
+          initEditor(key);
+          pushContent(key);
+          setSourceMode(key, true);
+          var start = raw.selectionStart || raw.value.length;
+          var end = raw.selectionEnd || raw.value.length;
+          var before = raw.value.slice(0, start);
+          var after = raw.value.slice(end);
+          var lead = (before.length > 0 && !/\\s$/.test(before)) ? '\\n\\n' : '';
+          var trail = (after.length > 0 && !/^\\s/.test(after)) ? '\\n\\n' : '';
+          raw.value = before + lead + html + trail + after;
+          raw.focus();
+          var caret = start + lead.length + html.length;
+          raw.selectionStart = raw.selectionEnd = caret;
+          raw.dispatchEvent(new Event('input', { bubbles: true }));
+          pushContent(key);
+        }
+
         function registerShinyHandlers() {
           if (!window.Shiny || !Shiny.addCustomMessageHandler) {
             setTimeout(registerShinyHandlers, 100);
@@ -737,6 +850,12 @@ ui <- page_navbar(
           });
           Shiny.addCustomMessageHandler('insert-knowledge-markdown', function(message) {
             insertMarkdown('knowledge', (message && message.markdown) || '');
+          });
+          Shiny.addCustomMessageHandler('set-knowledge-source-mode', function(message) {
+            setSourceMode('knowledge', !!(message && message.sourceOnly));
+          });
+          Shiny.addCustomMessageHandler('insert-knowledge-iframe', function(message) {
+            insertRawHtmlAtCursor('knowledge', (message && message.html) || '');
           });
         }
 
@@ -853,6 +972,24 @@ ui <- page_navbar(
         ),
         div(
           class = "sidebar-section",
+          div(class = "sidebar-section-title", "編輯模式"),
+          radioButtons(
+            "knowledge_edit_mode",
+            "切換編輯器",
+            choices = c("所見即所得 (WYSIWYG)" = "wysiwyg", "原始碼 (Source)" = "source"),
+            selected = "wysiwyg",
+            inline = TRUE
+          )
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "插入 YouTube 影片"),
+          textInput("knowledge_youtube_url", "YouTube 影片網址",
+            placeholder = "https://www.youtube.com/watch?v=... 或 https://youtu.be/..."),
+          actionButton("insert_youtube_btn", "🎬 插入影片 (游標處)", class = "btn-secondary")
+        ),
+        div(
+          class = "sidebar-section",
           div(class = "sidebar-section-title", "插入圖片"),
           fileInput(
             "knowledge_upload_image",
@@ -878,8 +1015,8 @@ ui <- page_navbar(
               class = "yaml-hint",
               style = "font-size:12px; color:#9aa0a6; margin:6px 0 0; line-height:1.5;",
               HTML("front matter 保留 <code>title / date / categories / draft</code>。
-                  YouTube 影片請貼在「完整原始碼」正文：<code>&lt;iframe src=&quot;https://www.youtube.com/embed/VIDEO_ID&quot; allowfullscreen&gt;&lt;/iframe&gt;</code>。
-                  <strong>勿用</strong> <code>youtube:</code> 欄位（Quarto 不認得，不會顯示）。")
+                  若在 front matter 貼了 <code>youtube:</code> 網址，儲存時會<strong>自動轉成</strong>正文的影片 <code>&lt;iframe&gt;</code>（Quarto 不認得 <code>youtube:</code> 欄位）。
+                  也可用左側「插入 YouTube 影片」按鈕，或在「原始碼」模式下直接貼 <code>&lt;iframe&gt;</code>。")
             )
           ),
           div(
@@ -1252,14 +1389,17 @@ server <- function(input, output, session) {
       return(invisible(FALSE))
     }
     content_text <- read_text_file(file_path)
+    content_text <- convert_youtube_front_matter(content_text)
     split <- split_front_matter_r(content_text)
     hidden <- yaml_bool(split$yaml, "draft", FALSE)
+    has_iframe <- grepl("<iframe", split$body, fixed = TRUE)
 
     updateRadioButtons(session, "knowledge_post_visibility", selected = if (hidden) "hidden" else "open")
+    updateRadioButtons(session, "knowledge_edit_mode", selected = if (has_iframe) "source" else "wysiwyg")
     updateTextAreaInput(session, "knowledge_post_content", value = content_text)
     session$sendCustomMessage(
       "set-knowledge-editor-content",
-      list(content = content_text, sourceOnly = FALSE)
+      list(content = content_text, sourceOnly = has_iframe)
     )
     current_knowledge_post_file(file_path)
     current_knowledge_post_rel(relative_file_path)
@@ -1434,12 +1574,13 @@ draft: %s
 
     tryCatch({
       content_text <- set_post_visibility(input$knowledge_post_content, visible = visible)
+      content_text <- convert_youtube_front_matter(content_text)
       content_text <- normalize_paragraphs_content(content_text)
       writeLines(content_text, file_path, useBytes = TRUE)
       updateTextAreaInput(session, "knowledge_post_content", value = content_text)
       session$sendCustomMessage(
         "set-knowledge-editor-content",
-        list(content = content_text, sourceOnly = FALSE)
+        list(content = content_text, sourceOnly = identical(input$knowledge_edit_mode, "source"))
       )
       current_knowledge_post_hidden(!visible)
       refresh_knowledge_post_choices(selected = rel_path)
@@ -1448,6 +1589,33 @@ draft: %s
     }, error = function(e) {
       showNotification(paste("❌ 儲存知識貼文失敗：", e$message), type = "error")
     })
+  })
+
+  observeEvent(input$knowledge_edit_mode, {
+    req(input$knowledge_edit_mode)
+    session$sendCustomMessage(
+      "set-knowledge-source-mode",
+      list(sourceOnly = identical(input$knowledge_edit_mode, "source"))
+    )
+  })
+
+  observeEvent(input$insert_youtube_btn, {
+    if (is.null(current_knowledge_post_file()) || !nzchar(current_knowledge_post_file())) {
+      showNotification("請先載入或建立一篇知識貼文，再插入影片。", type = "warning", duration = 5)
+      return()
+    }
+    vid <- extract_youtube_id(input$knowledge_youtube_url)
+    if (is.na(vid)) {
+      showNotification("❌ 無法解析 YouTube 網址（支援 watch?v=、youtu.be、embed、shorts）。", type = "error", duration = 8)
+      return()
+    }
+    session$sendCustomMessage(
+      "insert-knowledge-iframe",
+      list(html = youtube_iframe_block(vid))
+    )
+    updateRadioButtons(session, "knowledge_edit_mode", selected = "source")
+    updateTextInput(session, "knowledge_youtube_url", value = "")
+    showNotification(paste0("✅ 已在游標處插入影片 ", vid, "（已切換到原始碼模式，請按「儲存」寫入檔案）。"), type = "message", duration = 6)
   })
 
   observeEvent(input$knowledge_upload_image, {
@@ -1568,8 +1736,12 @@ draft: %s
     "about",
     "activities",
     "admin_app",
+    "assets",
+    "Chang_HsiuWei_CV.pdf",
+    "CNAME",
     "custom.scss",
     "DEPENDENCIES.md",
+    "images",
     "index.md",
     "install_r_packages.R",
     "knowledge",
