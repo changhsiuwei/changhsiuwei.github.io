@@ -2,8 +2,8 @@
 description: ""
 date: "2026-09-07"
 categories: ["AI"]
-title: "天才其實是台高溫運行的亂數產生器"
 youtube: "https://www.youtube.com/watch?v=Q8Fkpi18QXU"
+title: "天才的腦袋，其實是一台瘋狂的「點子扭蛋機」"
 ---
 
 看完陶哲軒（Terence Tao）這段對話，我坐在螢幕前發愣了很久。我原本預期會聽到這位「數學界的莫札特」談論一些深不可測的演算法或精密的邏輯架構，但他卻從刻卜勒（Kepler）講起。
