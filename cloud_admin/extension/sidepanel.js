@@ -78,6 +78,7 @@ const state = {
   studentsModel: null,
   studentsDirty: false,
   postMetadataCache: {},
+  viewStats: null,
   geminiApiKey: "",
   geminiModel: "gemini-3.7-flash",
   geminiThinkingLevel: "2048",
@@ -1892,7 +1893,11 @@ function createTreeItem(path) {
   button.querySelector(".tree-icon").textContent = info.icon;
   button.querySelector("strong").textContent = info.label;
   const small = button.querySelector("small");
-  small.textContent = isDraft ? `${info.location} · 🟡 草稿` : info.location;
+  const views = viewsFor(path);
+  let smallText = info.location;
+  if (isDraft) smallText += " · 🟡 草稿";
+  if (views != null) smallText += ` · 👁 ${views}`;
+  small.textContent = smallText;
   button.addEventListener("click", () => loadFile(path));
   return button;
 }
@@ -4057,6 +4062,32 @@ async function connect() {
   return session;
 }
 
+function viewsFor(path) {
+  if (!state.viewStats || !Array.isArray(state.viewStats.pages)) return null;
+  const entry = state.viewStats.pages.find((p) => p.path === path);
+  return entry ? entry.views : null;
+}
+
+function renderViewStatsLine() {
+  const el = $("viewStatsLine");
+  if (!el) return;
+  if (state.viewStats && typeof state.viewStats.total === "number") {
+    el.textContent = `👁 到站總觀看：${state.viewStats.total.toLocaleString()}`;
+  } else {
+    el.textContent = "";
+  }
+}
+
+async function fetchViewStats() {
+  try {
+    state.viewStats = await api("/api/stats");
+  } catch (e) {
+    state.viewStats = null;
+  }
+  renderViewStatsLine();
+  renderTree();
+}
+
 async function refreshTree() {
   if (!state.connected) throw new Error("請先登入並連線");
   const result = await api("/api/tree");
@@ -4065,6 +4096,7 @@ async function refreshTree() {
   state.files = Array.from(new Set([...result.files, ...newDraftPaths]));
   renderTree();
   log(`已同步 ${result.files.filter((path) => /\.(md|qmd)$/i.test(path)).length} 個頁面`);
+  fetchViewStats();
 }
 
 async function loadFile(path) {

@@ -10,6 +10,7 @@ interface Env {
   ALLOWED_EMAIL: string;
   ALLOWED_ORIGINS: string;
   DEV_ADMIN_EMAIL?: string;
+  VIEWS_KV: KVNamespace;
 }
 
 type FileChange = {
@@ -243,21 +244,72 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
   return json({ ok: true, commitSha: commit.sha, actor });
 }
 
+async function handleTrack(request: Request, env: Env, cors: HeadersInit): Promise<Response> {
+  const payload = await request.json<{ path?: string }>();
+  const path = (payload.path || "").trim();
+  if (!path || path.length > 200 || path.includes("\0") || path.includes("\\")) {
+    return json({ error: "Invalid path" }, 400, cors);
+  }
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  if (normalized.split("/").some((part) => part === ".." || part === "")) {
+    return json({ error: "Invalid path" }, 400, cors);
+  }
+
+  const totalKey = "total";
+  const pageKey = `views:${normalized}`;
+  const [totalStr, pageStr] = await Promise.all([
+    env.VIEWS_KV.get(totalKey),
+    env.VIEWS_KV.get(pageKey)
+  ]);
+  const total = parseInt(totalStr || "0", 10) + 1;
+  const views = parseInt(pageStr || "0", 10) + 1;
+  await Promise.all([
+    env.VIEWS_KV.put(totalKey, String(total)),
+    env.VIEWS_KV.put(pageKey, String(views))
+  ]);
+  return json({ ok: true, views, total }, 200, cors);
+}
+
+async function handleStats(env: Env): Promise<Response> {
+  const total = parseInt((await env.VIEWS_KV.get("total")) || "0", 10);
+  const pages: Array<{ path: string; views: number }> = [];
+  const list = await env.VIEWS_KV.list({ prefix: "views:" });
+  for (const key of list.keys) {
+    const path = key.name.slice("views:".length);
+    const views = parseInt((await env.VIEWS_KV.get(key.name)) || "0", 10);
+    pages.push({ path, views });
+  }
+  pages.sort((a, b) => b.views - a.views);
+  return json({ total, pages });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const cors = corsHeaders(request, env);
+    const url = new URL(request.url);
     if (request.method === "OPTIONS") {
       if (!allowedOrigin(request, env)) return new Response(null, { status: 403 });
       return new Response(null, { status: 204, headers: cors });
     }
-    if (request.headers.has("Origin") && !allowedOrigin(request, env)) return json({ error: "Origin is not allowed" }, 403);
+    if (request.headers.has("Origin") && !allowedOrigin(request, env)) {
+      return json({ error: "Origin is not allowed" }, 403, cors);
+    }
+    // 公開端點：網站觀看計數（不需登入，僅允許已設定來源）
+    if (request.method === "POST" && url.pathname === "/api/track") {
+      try {
+        return await handleTrack(request, env, cors);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Track failed";
+        return json({ error: message }, 400, cors);
+      }
+    }
     try {
       const actor = await authenticate(request, env);
-      const url = new URL(request.url);
       let response: Response;
       if (request.method === "GET" && url.pathname === "/api/session") response = json({ authenticated: true, email: actor });
       else if (request.method === "GET" && url.pathname === "/api/tree") response = await handleTree(env);
       else if (request.method === "GET" && url.pathname === "/api/file") response = await handleFile(url, env);
+      else if (request.method === "GET" && url.pathname === "/api/stats") response = await handleStats(env);
       else if (request.method === "POST" && url.pathname === "/api/publish") response = await handlePublish(request, env, actor);
       else response = json({ error: "Not found" }, 404);
       const headers = new Headers(response.headers);

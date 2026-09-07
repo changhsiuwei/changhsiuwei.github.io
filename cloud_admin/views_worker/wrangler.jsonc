@@ -1,0 +1,11 @@
+{
+  "name": "hw-chang-site-views",
+  "main": "index.js",
+  "compatibility_date": "2026-08-27",
+  "kv_namespaces": [
+    {
+      "binding": "VIEWS_KV",
+      "id": "4ec079c1bb4d48caa3f1c4f77211fe58"
+    }
+  ]
+}

@@ -53,6 +53,7 @@ format:
     theme:
       - cosmo
       - custom.scss
+    include-after-body: views-tracker.html
     highlight-style: dracula
     toc: true
     toc-depth: 3
