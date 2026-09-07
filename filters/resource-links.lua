@@ -1,4 +1,4 @@
-﻿function Pandoc(doc)
+function Pandoc(doc)
   local meta = doc.meta
   if not meta then return doc end
 
@@ -36,4 +36,8 @@
   end
 
   return doc
+end
+
+function SoftBreak()
+  return pandoc.LineBreak()
 end

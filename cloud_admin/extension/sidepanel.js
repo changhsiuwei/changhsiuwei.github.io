@@ -199,6 +199,7 @@ const elements = {
   aiStatWordCount: $("aiStatWordCount"),
   aiStatSubtitle: $("aiStatSubtitle"),
   aiRecommendedTitles: $("aiRecommendedTitles"),
+  formatPostButton: $("formatPostButton"),
   aiPolishEditorButton: $("aiPolishEditorButton"),
   aiPolishDialog: $("aiPolishDialog"),
   cancelAiPolishButton: $("cancelAiPolishButton"),
@@ -1773,6 +1774,28 @@ function pageInfo(path) {
   return { label, location: "網站內容", icon: "頁" };
 }
 
+function formatPastedPost(text) {
+  if (!text || typeof text !== "string") return "";
+  let cleaned = text.trim();
+  if ((cleaned.startsWith('"') && cleaned.endsWith('"')) || (cleaned.startsWith('“') && cleaned.endsWith('”'))) {
+    cleaned = cleaned.slice(1, -1).trim();
+  }
+  const rawLines = cleaned.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+  const resultBlocks = [];
+  for (let i = 0; i < rawLines.length; i++) {
+    let line = rawLines[i].trim();
+    if (!line) continue;
+    const isSectionHeader = /^[◆◇■□▶●★☆]|^第[一二三四五六七八九十0-9]+[章節點條]|^[一二三四五六七八九十0-9]+[、.]/.test(line);
+    if (isSectionHeader) {
+      if (!line.startsWith("**") && !line.startsWith("#")) {
+        line = `**${line}**`;
+      }
+    }
+    resultBlocks.push(line);
+  }
+  return resultBlocks.join("\n\n");
+}
+
 function ensureEditor() {
   if (state.editor) return;
   if (!window.toastui?.Editor) throw new Error("視覺化編輯器尚未載入");
@@ -1857,6 +1880,29 @@ function ensureEditor() {
       if (resolved && event.target.src !== resolved) {
         event.target.src = resolved;
       }
+    }
+  }, true);
+  elements.visualEditor.addEventListener("paste", (event) => {
+    const plain = event.clipboardData?.getData("text/plain");
+    if (!plain || !plain.includes("\n")) return;
+    const lines = plain.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    if (lines.length < 2) return;
+
+    const currentMd = state.editor ? state.editor.getMarkdown().trim() : "";
+    const isPlaceholder = !currentMd ||
+      currentMd === "從這裡開始寫您的文章內容..." ||
+      currentMd === "從這裡開始撰寫文章。" ||
+      currentMd === "從這裡開始撰寫文章...\n";
+
+    if (isPlaceholder) {
+      event.preventDefault();
+      const formatted = formatPastedPost(plain);
+      state.editor.setMarkdown(formatted);
+      state.bodyDirty = true;
+      state.editorChanged = true;
+      state.draftSaved = false;
+      scheduleDocumentUpdate();
+      log("✨ 貼文已自動完成智慧分段與排版！所有行換已獨立斷行，小標題已加粗。", "success");
     }
   }, true);
   state.editor.on("change", () => {
@@ -4678,6 +4724,7 @@ function renderPreview() {
     .top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:800}.nav{display:flex;gap:12px;color:#5968a6;font-size:10px;font-weight:700}
     main{max-width:820px;margin:auto;padding:48px 42px 80px}h1{margin:0 0 12px;color:#2c344e;font-size:38px;line-height:1.2}h2,h3{color:#403f6f;line-height:1.35}
     .description{margin:0 0 30px;color:#667085;font:16px/1.7 Inter,'Noto Sans TC',sans-serif}.featured-image{display:block;max-width:min(100%,680px);max-height:420px;margin:0 auto 30px;object-fit:contain;border-radius:16px}.content img{max-width:100%;height:auto;border-radius:12px}.content a{color:#403f6f}.content blockquote{margin-left:0;padding:8px 18px;border-left:4px solid #c8d5ff;background:#f6f7ff}.preview-table-wrap{overflow:auto;margin:18px 0}.content table{width:100%;border-collapse:collapse}.content th,.content td{border:1px solid #dfe4ef;padding:7px}
+    .content p{margin:0 0 1.25em;line-height:1.85}
     .preview-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin:18px 0}.preview-column{grid-column:span var(--preview-span,12);min-width:0}.preview-callout{margin:18px 0;padding:14px 18px;border:1px solid #dfe4ef;border-left:5px solid #6b6aa8;border-radius:10px;background:#f8f9ff}.preview-callout-tip{border-left-color:#3b8d76;background:#f4fbf8}.preview-callout-warning,.preview-callout-caution{border-left-color:#d49a36;background:#fffaf0}.preview-callout-important{border-left-color:#b84b61;background:#fff6f7}.preview-layout-section{margin:12px 0}.premium-icon-box{display:grid;place-items:center;width:44px;height:44px;margin-bottom:10px;border-radius:12px;background:#eef1ff;color:#403f6f}
     .katex-display{margin:1em 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
     @media(max-width:700px){.nav{display:none}main{padding:34px 22px}h1{font-size:30px}.preview-column{grid-column:1/-1}}
@@ -5099,6 +5146,22 @@ elements.btnRunAiGenerateNewPost?.addEventListener("click", async () => {
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
+});
+
+elements.formatPostButton?.addEventListener("click", () => {
+  if (!state.editor) return;
+  const current = state.editor.getMarkdown();
+  if (!current || !current.trim()) {
+    log("編輯器內目前尚無文字內容", "info");
+    return;
+  }
+  const formatted = formatPastedPost(current);
+  state.editor.setMarkdown(formatted);
+  state.bodyDirty = true;
+  state.editorChanged = true;
+  state.draftSaved = false;
+  scheduleDocumentUpdate();
+  log("✨ 已完成智慧分段！每行已獨立成段，小標題已自動加粗。", "success");
 });
 
 elements.aiPolishEditorButton?.addEventListener("click", () => {
