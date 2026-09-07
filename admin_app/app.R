@@ -247,6 +247,119 @@ editor_workspace_layout <- function(sidebar_ui, editor_ui, preview_ui) {
   )
 }
 
+# 內容區塊編輯面板（1:1 對應網站內容區塊：AI 知識站 / AI 工具坊）
+post_section_ui <- function(prefix, label, emoji) {
+  initial_choices <- get_knowledge_posts(site_dir_global, prefix)
+  nav_panel(
+    paste0(emoji, " ", label),
+    editor_workspace_layout(
+      sidebar_ui = tagList(
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", paste0("新增文章（", label, "）")),
+          textInput(paste0(prefix, "_post_title"), "文章標題", placeholder = "請輸入文章標題"),
+          dateInput(paste0(prefix, "_post_date"), "發布日期", value = Sys.Date()),
+          textInput(paste0(prefix, "_post_categories"), "文章分類", placeholder = "例如: AI, 工具, 心得"),
+          checkboxInput(paste0(prefix, "_post_public"), "建立後立即公開", value = TRUE),
+          actionButton(paste0(prefix, "_create_post_btn"), "＋ 建立並載入文章", class = "btn-primary")
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "管理既有文章"),
+          selectInput(paste0(prefix, "_post_select"), "選擇文章", choices = initial_choices),
+          actionButton(paste0(prefix, "_load_post_btn"), "🔄 載入文章", class = "btn-secondary"),
+          radioButtons(
+            paste0(prefix, "_post_visibility"),
+            "公開狀態",
+            choices = c("公開" = "open", "隱藏" = "hidden"),
+            selected = "open",
+            inline = TRUE
+          ),
+          actionButton(paste0(prefix, "_save_post_btn"), "💾 儲存內容與狀態", class = "btn-primary", style = "margin-top: 10px;"),
+          actionButton(paste0(prefix, "_delete_post_btn"), "🗑️ 移至垃圾桶", class = "btn-danger", style = "margin-top: 10px;")
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "文章狀態"),
+          uiOutput(paste0(prefix, "_post_status"))
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "編輯模式"),
+          radioButtons(
+            paste0(prefix, "_edit_mode"),
+            "切換編輯器",
+            choices = c("所見即所得 (WYSIWYG)" = "wysiwyg", "原始碼 (Source)" = "source"),
+            selected = "wysiwyg",
+            inline = TRUE
+          )
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "插入 YouTube 影片"),
+          textInput(paste0(prefix, "_youtube_url"), "YouTube 影片網址",
+            placeholder = "https://www.youtube.com/watch?v=... 或 https://youtu.be/..."),
+          actionButton(paste0(prefix, "_insert_youtube_btn"), "🎬 插入影片 (游標處)", class = "btn-secondary")
+        ),
+        div(
+          class = "sidebar-section",
+          div(class = "sidebar-section-title", "插入圖片"),
+          fileInput(
+            paste0(prefix, "_upload_image"),
+            "上傳圖片至此文章",
+            multiple = TRUE,
+            accept = c("image/png", "image/jpeg", "image/gif", "image/webp"),
+            buttonLabel = "瀏覽...",
+            placeholder = "尚未選擇圖片"
+          ),
+          textInput(paste0(prefix, "_image_caption"), "圖片標題", placeholder = "例如：工具操作畫面"),
+          uiOutput(paste0(prefix, "_upload_image_msg"))
+        )
+      ),
+      editor_ui = tagList(
+        div(
+          id = paste0(prefix, "_post_editor_wrapper"),
+          tags$details(
+            id = paste0(prefix, "_yaml_panel"),
+            class = "metadata-panel",
+            tags$summary("文章設定"),
+            textAreaInput(paste0(prefix, "_post_yaml"), NULL, width = "100%", height = "140px", value = ""),
+            tags$p(
+              class = "yaml-hint",
+              style = "font-size:12px; color:#9aa0a6; margin:6px 0 0; line-height:1.5;",
+              HTML("front matter 保留 <code>title / date / categories / draft</code>。\n                  若在 front matter 貼了 <code>youtube:</code> 網址，儲存時會<strong>自動轉成</strong>正文的影片 <code>&lt;iframe&gt;</code>（Quarto 不認得 <code>youtube:</code> 欄位）。\n                  也可用左側「插入 YouTube 影片」按鈕，或在「原始碼」模式下直接貼 <code>&lt;iframe&gt;</code>。")
+            )
+          ),
+          div(
+            id = paste0(prefix, "_rich_editor_shell"),
+            class = "editor-card",
+            div(
+              class = "editor-card-header",
+              tags$span("文章編輯器"),
+              tags$span(id = paste0(prefix, "_editor_status"), class = "editor-status", "0 字")
+            ),
+            div(id = paste0(prefix, "_rich_editor"))
+          ),
+          tags$details(
+            id = paste0(prefix, "_raw_source_panel"),
+            class = "raw-source-panel",
+            tags$summary("完整原始碼"),
+            textAreaInput(paste0(prefix, "_post_content"), NULL, width = "100%", height = "260px", value = "")
+          )
+        )
+      ),
+      preview_ui = tagList(
+        div(
+          class = "preview-header",
+          h5(paste0("👁️ ", label, " 預覽")),
+          actionButton(paste0(prefix, "_refresh_btn"), "🔄 重新整理", class = "btn-sm btn-outline-secondary")
+        ),
+        uiOutput(paste0(prefix, "_frame_ui"))
+      )
+    )
+  )
+}
+
 # 定義高質感自訂主題
 custom_theme <- bs_theme(
   version = 5,
@@ -457,7 +570,8 @@ ui <- page_navbar(
         white-space: nowrap;
       }
       #rich_editor,
-      #knowledge_rich_editor {
+      #knowledge_rich_editor,
+      #workshop_rich_editor {
         flex: 1 1 auto;
         min-height: 620px;
         height: 100%;
@@ -501,7 +615,9 @@ ui <- page_navbar(
       #edit_page_yaml,
       #edit_page_content,
       #knowledge_post_yaml,
-      #knowledge_post_content {
+      #knowledge_post_content,
+      #workshop_post_yaml,
+      #workshop_post_content {
         font-family: Consolas, 'Liberation Mono', monospace !important;
         font-size: 14px;
         line-height: 1.55;
@@ -509,7 +625,9 @@ ui <- page_navbar(
       .source-only-mode #rich_editor_shell,
       .source-only-mode #edit_yaml_panel,
       .source-only-mode #knowledge_rich_editor_shell,
-      .source-only-mode #knowledge_yaml_panel {
+      .source-only-mode #knowledge_yaml_panel,
+      .source-only-mode #workshop_rich_editor_shell,
+      .source-only-mode #workshop_yaml_panel {
         display: none;
       }
       #page_editor_wrapper,
@@ -592,6 +710,17 @@ ui <- page_navbar(
             editor: 'knowledge_rich_editor',
             status: 'knowledge_editor_status',
             inputName: 'knowledge_post_content'
+          },
+          workshop: {
+            wrapper: 'workshop_post_editor_wrapper',
+            rawPanel: 'workshop_raw_source_panel',
+            yamlPanel: 'workshop_yaml_panel',
+            raw: 'workshop_post_content',
+            yaml: 'workshop_post_yaml',
+            shell: 'workshop_rich_editor_shell',
+            editor: 'workshop_rich_editor',
+            status: 'workshop_editor_status',
+            inputName: 'workshop_post_content'
           }
         };
         var toolbarItems = [
@@ -858,11 +987,24 @@ ui <- page_navbar(
           Shiny.addCustomMessageHandler('insert-knowledge-iframe', function(message) {
             insertRawHtmlAtCursor('knowledge', (message && message.html) || '');
           });
+          Shiny.addCustomMessageHandler('set-workshop-editor-content', function(message) {
+            setEditorContent('workshop', message);
+          });
+          Shiny.addCustomMessageHandler('insert-workshop-markdown', function(message) {
+            insertMarkdown('workshop', (message && message.markdown) || '');
+          });
+          Shiny.addCustomMessageHandler('set-workshop-source-mode', function(message) {
+            setSourceMode('workshop', !!(message && message.sourceOnly));
+          });
+          Shiny.addCustomMessageHandler('insert-workshop-iframe', function(message) {
+            insertRawHtmlAtCursor('workshop', (message && message.html) || '');
+          });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
           initEditor('page');
           initEditor('knowledge');
+          initEditor('workshop');
           registerShinyHandlers();
         });
       })();
@@ -938,126 +1080,9 @@ ui <- page_navbar(
     )
   ),
 
-  # 模組 1: 知識站管理
-  nav_panel("✍️ 文章管理",
-    editor_workspace_layout(
-      sidebar_ui = tagList(
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "文章區塊"),
-          selectInput(
-            "post_section",
-            "選擇區塊",
-            choices = c("AI 知識站" = "knowledge", "AI 工具坊" = "workshop"),
-            selected = "knowledge"
-          )
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "新增文章"),
-          textInput("post_title", "文章標題", placeholder = "請輸入文章標題"),
-          dateInput("post_date", "發布日期", value = Sys.Date()),
-          textInput("post_categories", "文章分類", placeholder = "例如: AI, Teaching, 心得"),
-          checkboxInput("post_public", "建立後立即公開", value = TRUE),
-          actionButton("create_post_btn", "＋ 建立並載入貼文", class = "btn-primary")
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "管理既有文章"),
-          selectInput("knowledge_post_select", "選擇文章", choices = knowledge_posts),
-          actionButton("load_knowledge_post_btn", "🔄 載入貼文", class = "btn-secondary"),
-          radioButtons(
-            "knowledge_post_visibility",
-            "公開狀態",
-            choices = c("公開" = "open", "隱藏" = "hidden"),
-            selected = "open",
-            inline = TRUE
-          ),
-          actionButton("save_knowledge_post_btn", "💾 儲存內容與狀態", class = "btn-primary", style = "margin-top: 10px;"),
-          actionButton("delete_knowledge_post_btn", "🗑️ 移至垃圾桶", class = "btn-danger", style = "margin-top: 10px;")
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "貼文狀態"),
-          uiOutput("knowledge_post_status")
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "編輯模式"),
-          radioButtons(
-            "knowledge_edit_mode",
-            "切換編輯器",
-            choices = c("所見即所得 (WYSIWYG)" = "wysiwyg", "原始碼 (Source)" = "source"),
-            selected = "wysiwyg",
-            inline = TRUE
-          )
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "插入 YouTube 影片"),
-          textInput("knowledge_youtube_url", "YouTube 影片網址",
-            placeholder = "https://www.youtube.com/watch?v=... 或 https://youtu.be/..."),
-          actionButton("insert_youtube_btn", "🎬 插入影片 (游標處)", class = "btn-secondary")
-        ),
-        div(
-          class = "sidebar-section",
-          div(class = "sidebar-section-title", "插入圖片"),
-          fileInput(
-            "knowledge_upload_image",
-            "上傳圖片至此貼文",
-            multiple = TRUE,
-            accept = c("image/png", "image/jpeg", "image/gif", "image/webp"),
-            buttonLabel = "瀏覽...",
-            placeholder = "尚未選擇圖片"
-          ),
-          textInput("knowledge_image_caption", "圖片標題", placeholder = "例如：成本會計中的預測式 AI"),
-          uiOutput("knowledge_upload_image_msg")
-        )
-      ),
-      editor_ui = tagList(
-        div(
-          id = "knowledge_post_editor_wrapper",
-          tags$details(
-            id = "knowledge_yaml_panel",
-            class = "metadata-panel",
-            tags$summary("貼文設定"),
-            textAreaInput("knowledge_post_yaml", NULL, width = "100%", height = "140px", value = ""),
-            tags$p(
-              class = "yaml-hint",
-              style = "font-size:12px; color:#9aa0a6; margin:6px 0 0; line-height:1.5;",
-              HTML("front matter 保留 <code>title / date / categories / draft</code>。
-                  若在 front matter 貼了 <code>youtube:</code> 網址，儲存時會<strong>自動轉成</strong>正文的影片 <code>&lt;iframe&gt;</code>（Quarto 不認得 <code>youtube:</code> 欄位）。
-                  也可用左側「插入 YouTube 影片」按鈕，或在「原始碼」模式下直接貼 <code>&lt;iframe&gt;</code>。")
-            )
-          ),
-          div(
-            id = "knowledge_rich_editor_shell",
-            class = "editor-card",
-            div(
-              class = "editor-card-header",
-              tags$span("知識貼文編輯器"),
-              tags$span(id = "knowledge_editor_status", class = "editor-status", "0 字")
-            ),
-            div(id = "knowledge_rich_editor")
-          ),
-          tags$details(
-            id = "knowledge_raw_source_panel",
-            class = "raw-source-panel",
-            tags$summary("完整原始碼"),
-            textAreaInput("knowledge_post_content", NULL, width = "100%", height = "260px", value = "")
-          )
-        )
-      ),
-      preview_ui = tagList(
-        div(
-          class = "preview-header",
-          h5("👁️ 知識站預覽"),
-          actionButton("refresh_knowledge_btn", "🔄 重新整理", class = "btn-sm btn-outline-secondary")
-        ),
-        uiOutput("knowledge_frame_ui")
-      )
-    )
-  ),
+  # 模組 1: 內容區塊管理（1:1 對應網站內容區塊）
+  post_section_ui("knowledge", "AI 知識站", "🧠"),
+  post_section_ui("workshop", "AI 工具坊", "🛠️"),
 
   # 模組 4: 學生專區密碼設定
   nav_panel("🔐 存取權限設定",
@@ -1341,230 +1366,194 @@ server <- function(input, output, session) {
     })
   })
 
-  # 3. 模組 1: 知識站管理
-  knowledge_url_trigger <- reactiveVal(0)
-  current_knowledge_post_file <- reactiveVal(NULL)
-  current_knowledge_post_rel <- reactiveVal(NULL)
-  current_knowledge_post_hidden <- reactiveVal(FALSE)
-  pending_delete_knowledge_post_rel <- reactiveVal(NULL)
+  # 3. 內容區塊管理（1:1 對應網站內容區塊：knowledge / workshop）
+  setup_post_section <- function(prefix, section) {
+    id_in <- function(name) paste0(prefix, "_", name)
+    msg_set <- paste0("set-", prefix, "-editor-content")
+    msg_insert_md <- paste0("insert-", prefix, "-markdown")
+    msg_set_mode <- paste0("set-", prefix, "-source-mode")
+    msg_insert_iframe <- paste0("insert-", prefix, "-iframe")
 
-  # 目前管理的文章區塊（knowledge 或 workshop）
-  post_section <- reactive({
-    if (is.null(input$post_section) || !nzchar(input$post_section)) "knowledge" else input$post_section
-  })
+    url_trigger <- reactiveVal(0)
+    cur_file <- reactiveVal(NULL)
+    cur_rel <- reactiveVal(NULL)
+    cur_hidden <- reactiveVal(FALSE)
+    pending_delete_rel <- reactiveVal(NULL)
 
-  observeEvent(input$post_section, {
-    req(input$post_section)
-    current_knowledge_post_file(NULL)
-    current_knowledge_post_rel(NULL)
-    current_knowledge_post_hidden(FALSE)
-    updateRadioButtons(session, "knowledge_post_visibility", selected = "open")
-    updateRadioButtons(session, "knowledge_edit_mode", selected = "wysiwyg")
-    updateTextAreaInput(session, "knowledge_post_content", value = "")
-    session$sendCustomMessage(
-      "set-knowledge-editor-content",
-      list(content = "", sourceOnly = FALSE)
-    )
-    refresh_knowledge_post_choices()
-    knowledge_url_trigger(knowledge_url_trigger() + 1)
-  }, ignoreInit = TRUE)
-
-  move_knowledge_post_to_trash <- function(relative_file_path) {
-    if (is.null(relative_file_path) || !nzchar(relative_file_path)) {
-      stop("尚未選擇知識貼文。")
-    }
-    sec <- post_section()
-    file_path <- normalizePath(file.path(site_dir, relative_file_path), winslash = "/", mustWork = TRUE)
-    posts_root <- normalizePath(file.path(site_dir, sec, "posts"), winslash = "/", mustWork = TRUE)
-    if (!startsWith(tolower(file_path), paste0(tolower(posts_root), "/"))) {
-      stop(paste0("安全檢查失敗：只能刪除 ", sec, "/posts/ 內的貼文。"))
-    }
-    if (!basename(file_path) %in% c("index.md", "index.qmd")) {
-      stop("安全檢查失敗：只能刪除貼文的 index.md 或 index.qmd。")
-    }
-
-    post_dir <- dirname(file_path)
-    trash_root <- file.path(site_dir, sec, "_trash")
-    dir.create(trash_root, recursive = TRUE, showWarnings = FALSE)
-    trash_root <- normalizePath(trash_root, winslash = "/", mustWork = TRUE)
-
-    stamp <- format(Sys.time(), "%Y%m%d-%H%M%S")
-    base_target <- file.path(trash_root, paste0(stamp, "-", basename(post_dir)))
-    target_dir <- base_target
-    i <- 1
-    while (file.exists(target_dir)) {
-      target_dir <- paste0(base_target, "-", i)
-      i <- i + 1
-    }
-
-    moved <- file.rename(post_dir, target_dir)
-    if (!isTRUE(moved)) {
-      stop("無法移動貼文資料夾到垃圾桶。")
-    }
-
-    rel_trash <- sub(paste0("^", normalizePath(site_dir, winslash = "/"), "/?"), "", normalizePath(target_dir, winslash = "/"))
-    list(trash_dir = target_dir, rel_trash = rel_trash)
-  }
-
-  refresh_knowledge_post_choices <- function(selected = NULL) {
-    choices <- get_knowledge_posts(site_dir, post_section())
-    updateSelectInput(session, "knowledge_post_select", choices = choices, selected = selected)
-  }
-
-  load_knowledge_post <- function(relative_file_path) {
-    if (is.null(relative_file_path) || !nzchar(relative_file_path)) {
-      showNotification("目前沒有可載入的知識貼文。", type = "warning")
-      return(invisible(FALSE))
-    }
-    file_path <- file.path(site_dir, relative_file_path)
-    if (!file.exists(file_path)) {
-      showNotification("❌ 找不到該知識貼文檔案！", type = "error")
-      return(invisible(FALSE))
-    }
-    content_text <- read_text_file(file_path)
-    content_text <- convert_youtube_front_matter(content_text)
-    split <- split_front_matter_r(content_text)
-    hidden <- yaml_bool(split$yaml, "draft", FALSE)
-    has_iframe <- grepl("<iframe", split$body, fixed = TRUE)
-
-    updateRadioButtons(session, "knowledge_post_visibility", selected = if (hidden) "hidden" else "open")
-    updateRadioButtons(session, "knowledge_edit_mode", selected = if (has_iframe) "source" else "wysiwyg")
-    updateTextAreaInput(session, "knowledge_post_content", value = content_text)
-    session$sendCustomMessage(
-      "set-knowledge-editor-content",
-      list(content = content_text, sourceOnly = has_iframe)
-    )
-    current_knowledge_post_file(file_path)
-    current_knowledge_post_rel(relative_file_path)
-    current_knowledge_post_hidden(hidden)
-    knowledge_url_trigger(knowledge_url_trigger() + 1)
-    showNotification("✅ 知識貼文已載入。", type = "message")
-    invisible(TRUE)
-  }
-
-  observeEvent(input$refresh_knowledge_btn, {
-    knowledge_url_trigger(knowledge_url_trigger() + 1)
-  })
-
-  output$knowledge_frame_ui <- renderUI({
-    knowledge_url_trigger()
-    url <- paste0(preview_base_url, "/", post_section(), "/?t=", as.numeric(Sys.time()))
-    tags$iframe(src = url, style = "width: 100%; height: 100%; flex-grow: 1; border: 1px solid #ddd; border-radius: 8px; background-color: white;")
-  })
-
-  output$knowledge_post_status <- renderUI({
-    rel_path <- current_knowledge_post_rel()
-    if (is.null(rel_path)) {
-      return(div(class = "autosave-pill", "尚未載入貼文。"))
-    }
-    hidden <- current_knowledge_post_hidden()
-    color_style <- if (hidden) {
-      "background:#FFF7ED;border-color:#FDBA74;color:#C2410C;"
-    } else {
-      "background:#ECFDF5;border-color:#A7F3D0;color:#047857;"
-    }
-    div(
-      class = "autosave-pill",
-      style = color_style,
-      tags$strong(if (hidden) "目前狀態：隱藏" else "目前狀態：公開"),
-      tags$br(),
-      tags$small(rel_path)
-    )
-  })
-
-  observeEvent(input$load_knowledge_post_btn, {
-    load_knowledge_post(input$knowledge_post_select)
-  })
-
-  observeEvent(input$delete_knowledge_post_btn, {
-    rel_path <- input$knowledge_post_select
-    if (is.null(rel_path) || !nzchar(rel_path)) {
-      showNotification("目前沒有可刪除的知識貼文。", type = "warning")
-      return()
-    }
-
-    file_path <- file.path(site_dir, rel_path)
-    if (!file.exists(file_path)) {
-      showNotification("❌ 找不到該知識貼文檔案。", type = "error")
-      return()
-    }
-
-    content_text <- read_text_file(file_path)
-    split <- split_front_matter_r(content_text)
-    post_title <- yaml_scalar(split$yaml, "title", basename(dirname(rel_path)))
-    pending_delete_knowledge_post_rel(rel_path)
-
-    showModal(modalDialog(
-      title = "確認刪除知識貼文",
-      tags$p("這篇貼文會從文章管理清單移除，並移到本機垃圾桶資料夾："),
-      tags$code(paste0(post_section(), "/_trash/")),
-      tags$hr(),
-      tags$p(tags$strong("貼文："), post_title),
-      tags$p(tags$strong("路徑："), tags$code(rel_path)),
-      tags$p("這個操作不會立刻永久刪除檔案，但發布前仍請確認網站列表。"),
-      easyClose = TRUE,
-      footer = tagList(
-        modalButton("取消"),
-        actionButton("confirm_delete_knowledge_post_btn", "確認移至垃圾桶", class = "btn-danger")
-      )
-    ))
-  })
-
-  observeEvent(input$confirm_delete_knowledge_post_btn, {
-    rel_path <- pending_delete_knowledge_post_rel()
-    req(rel_path)
-
-    tryCatch({
-      result <- move_knowledge_post_to_trash(rel_path)
-      removeModal()
-      pending_delete_knowledge_post_rel(NULL)
-
-      current_knowledge_post_file(NULL)
-      current_knowledge_post_rel(NULL)
-      current_knowledge_post_hidden(FALSE)
-      updateRadioButtons(session, "knowledge_post_visibility", selected = "open")
-      updateTextAreaInput(session, "knowledge_post_content", value = "")
-      session$sendCustomMessage(
-        "set-knowledge-editor-content",
-        list(content = "", sourceOnly = FALSE)
-      )
-      output$knowledge_upload_image_msg <- renderUI(NULL)
-
-      refresh_knowledge_post_choices()
-      knowledge_url_trigger(knowledge_url_trigger() + 1)
-      showNotification(
-        paste0("✅ 貼文已移至垃圾桶：", result$rel_trash),
-        type = "message",
-        duration = 8
-      )
-    }, error = function(e) {
-      removeModal()
-      showNotification(paste("❌ 刪除貼文失敗：", e$message), type = "error", duration = 10)
-    })
-  })
-
-  observeEvent(input$create_post_btn, {
-    if (trimws(input$post_title) == "") {
-      showNotification("❌ 儲存失敗：文章標題不能為空！", type = "error", duration = 5)
-      return()
-    }
-
-    tryCatch({
-      timestamp_slug <- format(Sys.time(), "post-%Y%m%d-%H%M%S")
-      post_dir <- file.path(site_dir, post_section(), "posts", timestamp_slug)
-      dir.create(post_dir, recursive = TRUE, showWarnings = FALSE)
-
-      cats <- unlist(strsplit(input$post_categories, ","))
-      cats <- trimws(cats)
-      cats <- cats[cats != ""]
-      cat_string <- if (length(cats) > 0) {
-        paste0("[", paste(vapply(cats, yaml_string, character(1)), collapse = ", "), "]")
-      } else {
-        "[]"
+    move_to_trash <- function(relative_file_path) {
+      if (is.null(relative_file_path) || !nzchar(relative_file_path)) {
+        stop("尚未選擇文章。")
       }
-      draft_value <- if (isTRUE(input$post_public)) "false" else "true"
+      file_path <- normalizePath(file.path(site_dir, relative_file_path), winslash = "/", mustWork = TRUE)
+      posts_root <- normalizePath(file.path(site_dir, section, "posts"), winslash = "/", mustWork = TRUE)
+      if (!startsWith(tolower(file_path), paste0(tolower(posts_root), "/"))) {
+        stop(paste0("安全檢查失敗：只能刪除 ", section, "/posts/ 內的文章。"))
+      }
+      if (!basename(file_path) %in% c("index.md", "index.qmd")) {
+        stop("安全檢查失敗：只能刪除文章的 index.md 或 index.qmd。")
+      }
+      post_dir <- dirname(file_path)
+      trash_root <- file.path(site_dir, section, "_trash")
+      dir.create(trash_root, recursive = TRUE, showWarnings = FALSE)
+      trash_root <- normalizePath(trash_root, winslash = "/", mustWork = TRUE)
+      stamp <- format(Sys.time(), "%Y%m%d-%H%M%S")
+      base_target <- file.path(trash_root, paste0(stamp, "-", basename(post_dir)))
+      target_dir <- base_target
+      i <- 1
+      while (file.exists(target_dir)) {
+        target_dir <- paste0(base_target, "-", i)
+        i <- i + 1
+      }
+      moved <- file.rename(post_dir, target_dir)
+      if (!isTRUE(moved)) stop("無法移動文章資料夾到垃圾桶。")
+      rel_trash <- sub(paste0("^", normalizePath(site_dir, winslash = "/"), "/?"), "", normalizePath(target_dir, winslash = "/"))
+      list(trash_dir = target_dir, rel_trash = rel_trash)
+    }
 
-      yaml_content <- sprintf(
+    refresh_choices <- function(selected = NULL) {
+      choices <- get_knowledge_posts(site_dir, section)
+      updateSelectInput(session, id_in("post_select"), choices = choices, selected = selected)
+    }
+
+    load_post <- function(relative_file_path) {
+      if (is.null(relative_file_path) || !nzchar(relative_file_path)) {
+        showNotification("目前沒有可載入的文章。", type = "warning")
+        return(invisible(FALSE))
+      }
+      file_path <- file.path(site_dir, relative_file_path)
+      if (!file.exists(file_path)) {
+        showNotification("❌ 找不到該文章檔案！", type = "error")
+        return(invisible(FALSE))
+      }
+      content_text <- read_text_file(file_path)
+      content_text <- convert_youtube_front_matter(content_text)
+      split <- split_front_matter_r(content_text)
+      hidden <- yaml_bool(split$yaml, "draft", FALSE)
+      has_iframe <- grepl("<iframe", split$body, fixed = TRUE)
+
+      updateRadioButtons(session, id_in("post_visibility"), selected = if (hidden) "hidden" else "open")
+      updateRadioButtons(session, id_in("edit_mode"), selected = if (has_iframe) "source" else "wysiwyg")
+      updateTextAreaInput(session, id_in("post_content"), value = content_text)
+      session$sendCustomMessage(msg_set, list(content = content_text, sourceOnly = has_iframe))
+      cur_file(file_path)
+      cur_rel(relative_file_path)
+      cur_hidden(hidden)
+      url_trigger(url_trigger() + 1)
+      showNotification("✅ 文章已載入。", type = "message")
+      invisible(TRUE)
+    }
+
+    observeEvent(input[[id_in("refresh_btn")]], {
+      url_trigger(url_trigger() + 1)
+    })
+
+    output[[id_in("frame_ui")]] <- renderUI({
+      url_trigger()
+      url <- paste0(preview_base_url, "/", section, "/?t=", as.numeric(Sys.time()))
+      tags$iframe(src = url, style = "width: 100%; height: 100%; flex-grow: 1; border: 1px solid #ddd; border-radius: 8px; background-color: white;")
+    })
+
+    output[[id_in("post_status")]] <- renderUI({
+      rel_path <- cur_rel()
+      if (is.null(rel_path)) {
+        return(div(class = "autosave-pill", "尚未載入文章。"))
+      }
+      hidden <- cur_hidden()
+      color_style <- if (hidden) {
+        "background:#FFF7ED;border-color:#FDBA74;color:#C2410C;"
+      } else {
+        "background:#ECFDF5;border-color:#A7F3D0;color:#047857;"
+      }
+      div(
+        class = "autosave-pill",
+        style = color_style,
+        tags$strong(if (hidden) "目前狀態：隱藏" else "目前狀態：公開"),
+        tags$br(),
+        tags$small(rel_path)
+      )
+    })
+
+    observeEvent(input[[id_in("load_post_btn")]], {
+      load_post(input[[id_in("post_select")]])
+    })
+
+    observeEvent(input[[id_in("delete_post_btn")]], {
+      rel_path <- input[[id_in("post_select")]]
+      if (is.null(rel_path) || !nzchar(rel_path)) {
+        showNotification("目前沒有可刪除的文章。", type = "warning")
+        return()
+      }
+      file_path <- file.path(site_dir, rel_path)
+      if (!file.exists(file_path)) {
+        showNotification("❌ 找不到該文章檔案。", type = "error")
+        return()
+      }
+      content_text <- read_text_file(file_path)
+      split <- split_front_matter_r(content_text)
+      post_title <- yaml_scalar(split$yaml, "title", basename(dirname(rel_path)))
+      pending_delete_rel(rel_path)
+
+      showModal(modalDialog(
+        title = "確認刪除文章",
+        tags$p("這篇文章會從管理清單移除，並移到本機垃圾桶資料夾："),
+        tags$code(paste0(section, "/_trash/")),
+        tags$hr(),
+        tags$p(tags$strong("文章："), post_title),
+        tags$p(tags$strong("路徑："), tags$code(rel_path)),
+        tags$p("這個操作不會立刻永久刪除檔案，但發布前仍請確認網站列表。"),
+        easyClose = TRUE,
+        footer = tagList(
+          modalButton("取消"),
+          actionButton(id_in("confirm_delete_post_btn"), "確認移至垃圾桶", class = "btn-danger")
+        )
+      ))
+    })
+
+    observeEvent(input[[id_in("confirm_delete_post_btn")]], {
+      rel_path <- pending_delete_rel()
+      req(rel_path)
+      tryCatch({
+        result <- move_to_trash(rel_path)
+        removeModal()
+        pending_delete_rel(NULL)
+        cur_file(NULL)
+        cur_rel(NULL)
+        cur_hidden(FALSE)
+        updateRadioButtons(session, id_in("post_visibility"), selected = "open")
+        updateRadioButtons(session, id_in("edit_mode"), selected = "wysiwyg")
+        updateTextAreaInput(session, id_in("post_content"), value = "")
+        session$sendCustomMessage(msg_set, list(content = "", sourceOnly = FALSE))
+        output[[id_in("upload_image_msg")]] <- renderUI(NULL)
+        refresh_choices()
+        url_trigger(url_trigger() + 1)
+        showNotification(paste0("✅ 文章已移至垃圾桶：", result$rel_trash), type = "message", duration = 8)
+      }, error = function(e) {
+        removeModal()
+        showNotification(paste("❌ 刪除文章失敗：", e$message), type = "error", duration = 10)
+      })
+    })
+
+    observeEvent(input[[id_in("create_post_btn")]], {
+      if (trimws(input[[id_in("post_title")]]) == "") {
+        showNotification("❌ 儲存失敗：文章標題不能為空！", type = "error", duration = 5)
+        return()
+      }
+      tryCatch({
+        timestamp_slug <- format(Sys.time(), "post-%Y%m%d-%H%M%S")
+        post_dir <- file.path(site_dir, section, "posts", timestamp_slug)
+        dir.create(post_dir, recursive = TRUE, showWarnings = FALSE)
+
+        cats <- unlist(strsplit(input[[id_in("post_categories")]], ","))
+        cats <- trimws(cats)
+        cats <- cats[cats != ""]
+        cat_string <- if (length(cats) > 0) {
+          paste0("[", paste(vapply(cats, yaml_string, character(1)), collapse = ", "), "]")
+        } else {
+          "[]"
+        }
+        draft_value <- if (isTRUE(input[[id_in("post_public")]])) "false" else "true"
+
+        yaml_content <- sprintf(
 "---
 title: \"%s\"
 date: \"%s\"
@@ -1573,119 +1562,108 @@ draft: %s
 ---
 
 ",
-        input$post_title,
-        format(input$post_date, "%Y-%m-%d"),
-        cat_string,
-        draft_value
-      )
-
-      file_content <- yaml_content
-      file_content <- normalize_paragraphs_content(file_content)
-      relative_file_path <- paste0(post_section(), "/posts/", timestamp_slug, "/index.qmd")
-      file_path <- file.path(site_dir, relative_file_path)
-      writeLines(file_content, file_path, useBytes = TRUE)
-
-      showNotification(sprintf("✅ 新貼文已建立並載入：%s", timestamp_slug), type = "message", duration = 5)
-
-      updateTextInput(session, "post_title", value = "")
-      updateTextInput(session, "post_categories", value = "")
-      refresh_knowledge_post_choices(selected = relative_file_path)
-      load_knowledge_post(relative_file_path)
-      knowledge_url_trigger(knowledge_url_trigger() + 1)
-
-    }, error = function(e) {
-      showNotification(paste("❌ 發生錯誤：", e$message), type = "error", duration = 10)
-    })
-  })
-
-  observeEvent(input$save_knowledge_post_btn, {
-    req(current_knowledge_post_file())
-    req(input$knowledge_post_content)
-    visible <- identical(input$knowledge_post_visibility, "open")
-    file_path <- current_knowledge_post_file()
-    rel_path <- current_knowledge_post_rel()
-
-    tryCatch({
-      content_text <- set_post_visibility(input$knowledge_post_content, visible = visible)
-      content_text <- convert_youtube_front_matter(content_text)
-      content_text <- normalize_paragraphs_content(content_text)
-      writeLines(content_text, file_path, useBytes = TRUE)
-      updateTextAreaInput(session, "knowledge_post_content", value = content_text)
-      session$sendCustomMessage(
-        "set-knowledge-editor-content",
-        list(content = content_text, sourceOnly = identical(input$knowledge_edit_mode, "source"))
-      )
-      current_knowledge_post_hidden(!visible)
-      refresh_knowledge_post_choices(selected = rel_path)
-      knowledge_url_trigger(knowledge_url_trigger() + 1)
-      showNotification(if (visible) "✅ 貼文已儲存並設為公開。" else "✅ 貼文已儲存並設為隱藏。", type = "message")
-    }, error = function(e) {
-      showNotification(paste("❌ 儲存知識貼文失敗：", e$message), type = "error")
-    })
-  })
-
-  observeEvent(input$knowledge_edit_mode, {
-    req(input$knowledge_edit_mode)
-    session$sendCustomMessage(
-      "set-knowledge-source-mode",
-      list(sourceOnly = identical(input$knowledge_edit_mode, "source"))
-    )
-  })
-
-  observeEvent(input$insert_youtube_btn, {
-    if (is.null(current_knowledge_post_file()) || !nzchar(current_knowledge_post_file())) {
-      showNotification("請先載入或建立一篇知識貼文，再插入影片。", type = "warning", duration = 5)
-      return()
-    }
-    vid <- extract_youtube_id(input$knowledge_youtube_url)
-    if (is.na(vid)) {
-      showNotification("❌ 無法解析 YouTube 網址（支援 watch?v=、youtu.be、embed、shorts）。", type = "error", duration = 8)
-      return()
-    }
-    session$sendCustomMessage(
-      "insert-knowledge-iframe",
-      list(html = youtube_iframe_block(vid))
-    )
-    updateRadioButtons(session, "knowledge_edit_mode", selected = "source")
-    updateTextInput(session, "knowledge_youtube_url", value = "")
-    showNotification(paste0("✅ 已在游標處插入影片 ", vid, "（已切換到原始碼模式，請按「儲存」寫入檔案）。"), type = "message", duration = 6)
-  })
-
-  observeEvent(input$knowledge_upload_image, {
-    req(input$knowledge_upload_image)
-    req(current_knowledge_post_file())
-
-    img_info <- input$knowledge_upload_image
-    target_dir <- dirname(current_knowledge_post_file())
-    caption <- clean_image_caption(input$knowledge_image_caption)
-
-    tryCatch({
-      md_codes <- c()
-      for (i in seq_len(nrow(img_info))) {
-        safe_filename <- gsub("\\s+", "_", img_info$name[i])
-        target_path <- file.path(target_dir, safe_filename)
-        file.copy(img_info$datapath[i], target_path, overwrite = TRUE)
-        md_codes <- c(md_codes, image_markdown_block(safe_filename, caption))
-      }
-
-      output$knowledge_upload_image_msg <- renderUI({
-        div(
-          style = "background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb; margin-top: 10px;",
-          tags$strong(sprintf("✅ %d 張圖片上傳成功！", nrow(img_info))),
-          tags$p("圖片與圖標題已插入目前編輯位置；也可複製下方語法手動貼上：", style = "margin-top: 5px; margin-bottom: 5px;"),
-          tags$code(paste(md_codes, collapse = "\n"), style = "font-size: 14px; background-color: white; padding: 5px; border: 1px solid #ccc; display: block; white-space: pre-wrap;")
+          input[[id_in("post_title")]],
+          format(input[[id_in("post_date")]], "%Y-%m-%d"),
+          cat_string,
+          draft_value
         )
-      })
-      session$sendCustomMessage(
-        "insert-knowledge-markdown",
-        list(markdown = paste(md_codes, collapse = "\n\n"))
-      )
-    }, error = function(e) {
-      output$knowledge_upload_image_msg <- renderUI({
-        div(style = "color: red; font-weight: bold;", paste("❌ 上傳失敗：", e$message))
+
+        file_content <- normalize_paragraphs_content(yaml_content)
+        relative_file_path <- paste0(section, "/posts/", timestamp_slug, "/index.qmd")
+        file_path <- file.path(site_dir, relative_file_path)
+        writeLines(file_content, file_path, useBytes = TRUE)
+
+        showNotification(sprintf("✅ 新文章已建立並載入：%s", timestamp_slug), type = "message", duration = 5)
+        updateTextInput(session, id_in("post_title"), value = "")
+        updateTextInput(session, id_in("post_categories"), value = "")
+        refresh_choices(selected = relative_file_path)
+        load_post(relative_file_path)
+        url_trigger(url_trigger() + 1)
+      }, error = function(e) {
+        showNotification(paste("❌ 發生錯誤：", e$message), type = "error", duration = 10)
       })
     })
-  })
+
+    observeEvent(input[[id_in("save_post_btn")]], {
+      req(cur_file())
+      req(input[[id_in("post_content")]])
+      visible <- identical(input[[id_in("post_visibility")]], "open")
+      file_path <- cur_file()
+      rel_path <- cur_rel()
+
+      tryCatch({
+        content_text <- set_post_visibility(input[[id_in("post_content")]], visible = visible)
+        content_text <- convert_youtube_front_matter(content_text)
+        content_text <- normalize_paragraphs_content(content_text)
+        writeLines(content_text, file_path, useBytes = TRUE)
+        updateTextAreaInput(session, id_in("post_content"), value = content_text)
+        session$sendCustomMessage(
+          msg_set,
+          list(content = content_text, sourceOnly = identical(input[[id_in("edit_mode")]], "source"))
+        )
+        cur_hidden(!visible)
+        refresh_choices(selected = rel_path)
+        url_trigger(url_trigger() + 1)
+        showNotification(if (visible) "✅ 文章已儲存並設為公開。" else "✅ 文章已儲存並設為隱藏。", type = "message")
+      }, error = function(e) {
+        showNotification(paste("❌ 儲存文章失敗：", e$message), type = "error")
+      })
+    })
+
+    observeEvent(input[[id_in("edit_mode")]], {
+      req(input[[id_in("edit_mode")]])
+      session$sendCustomMessage(msg_set_mode, list(sourceOnly = identical(input[[id_in("edit_mode")]], "source")))
+    })
+
+    observeEvent(input[[id_in("insert_youtube_btn")]], {
+      if (is.null(cur_file()) || !nzchar(cur_file())) {
+        showNotification("請先載入或建立一篇文章，再插入影片。", type = "warning", duration = 5)
+        return()
+      }
+      vid <- extract_youtube_id(input[[id_in("youtube_url")]])
+      if (is.na(vid)) {
+        showNotification("❌ 無法解析 YouTube 網址（支援 watch?v=、youtu.be、embed、shorts）。", type = "error", duration = 8)
+        return()
+      }
+      session$sendCustomMessage(msg_insert_iframe, list(html = youtube_iframe_block(vid)))
+      updateRadioButtons(session, id_in("edit_mode"), selected = "source")
+      updateTextInput(session, id_in("youtube_url"), value = "")
+      showNotification(paste0("✅ 已在游標處插入影片 ", vid, "（已切換到原始碼模式，請按「儲存」寫入檔案）。"), type = "message", duration = 6)
+    })
+
+    observeEvent(input[[id_in("upload_image")]], {
+      req(input[[id_in("upload_image")]])
+      req(cur_file())
+      img_info <- input[[id_in("upload_image")]]
+      target_dir <- dirname(cur_file())
+      caption <- clean_image_caption(input[[id_in("image_caption")]])
+      tryCatch({
+        md_codes <- c()
+        for (i in seq_len(nrow(img_info))) {
+          safe_filename <- gsub("\\s+", "_", img_info$name[i])
+          target_path <- file.path(target_dir, safe_filename)
+          file.copy(img_info$datapath[i], target_path, overwrite = TRUE)
+          md_codes <- c(md_codes, image_markdown_block(safe_filename, caption))
+        }
+        output[[id_in("upload_image_msg")]] <- renderUI({
+          div(
+            style = "background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb; margin-top: 10px;",
+            tags$strong(sprintf("✅ %d 張圖片上傳成功！", nrow(img_info))),
+            tags$p("圖片與圖標題已插入目前編輯位置；也可複製下方語法手動貼上：", style = "margin-top: 5px; margin-bottom: 5px;"),
+            tags$code(paste(md_codes, collapse = "\n"), style = "font-size: 14px; background-color: white; padding: 5px; border: 1px solid #ccc; display: block; white-space: pre-wrap;")
+          )
+        })
+        session$sendCustomMessage(msg_insert_md, list(markdown = paste(md_codes, collapse = "\n\n")))
+      }, error = function(e) {
+        output[[id_in("upload_image_msg")]] <- renderUI({
+          div(style = "color: red; font-weight: bold;", paste("❌ 上傳失敗：", e$message))
+        })
+      })
+    })
+  }
+
+  setup_post_section("knowledge", "knowledge")
+  setup_post_section("workshop", "workshop")
 
   # 5. 模組 4: 學生密碼設定邏輯
   output$current_password_display <- renderUI({
