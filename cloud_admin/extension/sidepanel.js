@@ -1701,18 +1701,28 @@ function currentContent() {
   } else if (state.currentPath === "activities/index.md") {
     body = serializeActivitiesBody(elements.activityIntroInput?.value, state.activityModels, state.lineEnding);
   } else {
+    const isPost = state.currentPath.startsWith("knowledge/posts/") || state.currentPath.startsWith("lab/posts/") || state.currentPath.startsWith("workshop/posts/");
     if (state.editorChanged) {
-      const mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
-      if (mappedBody === null) throw new Error("這次修改無法安全對應原版面，請分段修改或重新讀取後再試一次");
+      let mappedBody = null;
+      if (state.layoutLocks && state.layoutLocks.size > 0 && !isPost) {
+        mappedBody = applyEditorChangesToSource(state.lastEditorMarkdown, state.editor.getMarkdown(), state.originalBody);
+      }
+      if (mappedBody === null) {
+        if (!state.layoutLocks || state.layoutLocks.size === 0 || isPost) {
+          mappedBody = state.editor.getMarkdown();
+        } else {
+          throw new Error("這次修改無法安全對應原版面，請分段修改或重新讀取後再試一次");
+        }
+      }
       body = mappedBody.trimEnd();
     } else {
       body = state.originalBody.trimEnd();
     }
     for (const [token, model] of state.tableModels) {
-      if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeTable(model));
+      if (model.dirty && state.layoutLocks?.has(token)) body = body.replace(state.layoutLocks.get(token), serializeTable(model));
     }
     for (const [token, model] of state.activityModels) {
-      if (model.dirty) body = body.replace(state.layoutLocks.get(token), serializeActivityGrid(model));
+      if (model.dirty && state.layoutLocks?.has(token)) body = body.replace(state.layoutLocks.get(token), serializeActivityGrid(model));
     }
   }
   const frontMatter = currentFrontMatter();
