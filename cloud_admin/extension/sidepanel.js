@@ -27,6 +27,21 @@ function postSectionOf(path) {
 
 const KNOWN_POST_METADATA = {};
 
+function extractYouTubeId(url) {
+  if (!url || typeof url !== "string") return "";
+  const trimmed = url.trim();
+  const matchYoutuBe = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]{6,})/);
+  if (matchYoutuBe) return matchYoutuBe[1];
+  const matchWatch = trimmed.match(/[?&]v=([a-zA-Z0-9_-]{6,})/);
+  if (matchWatch) return matchWatch[1];
+  const matchEmbed = trimmed.match(/youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{6,})/);
+  if (matchEmbed) return matchEmbed[1];
+  const matchShorts = trimmed.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/);
+  if (matchShorts) return matchShorts[1];
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+  return "";
+}
+
 function getPostMetadata(path) {
   if (state.postMetadataCache && state.postMetadataCache[path]) {
     return state.postMetadataCache[path];
@@ -36,7 +51,7 @@ function getPostMetadata(path) {
   }
   const slug = path.split("/").at(-2) || path;
   const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  return { title: label, date: "", categories: [], desc: "", draft: false, image: "", slides: "", handout: "" };
+  return { title: label, date: "", categories: [], desc: "", draft: false, image: "", slides: "", handout: "", youtube: "" };
 }
 
 const state = {
@@ -4694,6 +4709,14 @@ function renderPreview() {
     resourceLinksHtml = `<div class="resource-links-bar" style="display:flex;gap:12px;margin:18px 0 24px;flex-wrap:wrap;">${links.join("")}</div>`;
   }
 
+  let youtubeEmbedHtml = "";
+  if (youtube) {
+    const vid = extractYouTubeId(youtube);
+    if (vid) {
+      youtubeEmbedHtml = `<div class="post-youtube-embed" style="position:relative;padding-top:56.25%;max-width:760px;margin:0 0 24px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1);background:#000;"><iframe src="https://www.youtube.com/embed/${escapeHtml(vid)}" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>`;
+    }
+  }
+
   const navigation = STATIC_PAGES.map((page) => `<span>${escapeHtml(page.label)}</span>`).join("");
   elements.livePreview.srcdoc = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -4728,7 +4751,7 @@ function renderPreview() {
     .preview-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin:18px 0}.preview-column{grid-column:span var(--preview-span,12);min-width:0}.preview-callout{margin:18px 0;padding:14px 18px;border:1px solid #dfe4ef;border-left:5px solid #6b6aa8;border-radius:10px;background:#f8f9ff}.preview-callout-tip{border-left-color:#3b8d76;background:#f4fbf8}.preview-callout-warning,.preview-callout-caution{border-left-color:#d49a36;background:#fffaf0}.preview-callout-important{border-left-color:#b84b61;background:#fff6f7}.preview-layout-section{margin:12px 0}.premium-icon-box{display:grid;place-items:center;width:44px;height:44px;margin-bottom:10px;border-radius:12px;background:#eef1ff;color:#403f6f}
     .katex-display{margin:1em 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
     @media(max-width:700px){.nav{display:none}main{padding:34px 22px}h1{font-size:30px}.preview-column{grid-column:1/-1}}
-  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${subtitle ? `<p style="font-size:18px;color:#5968a6;margin:-4px 0 16px;font-style:italic;">${subtitle}</p>` : ""}${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}<article class="content">${body}</article></main></body></html>`;
+  </style></head><body><header><div class="top"><div class="brand">張修瑋 · H.W. Chang</div><div class="nav">${navigation}</div></div></header><main><h1>${title}</h1>${subtitle ? `<p style="font-size:18px;color:#5968a6;margin:-4px 0 16px;font-style:italic;">${subtitle}</p>` : ""}${description ? `<p class="description">${description}</p>` : ""}${featuredImageHtml}${resourceLinksHtml}${youtubeEmbedHtml}<article class="content">${body}</article></main></body></html>`;
   elements.previewBadge.textContent = "即時更新";
   elements.previewBadge.className = "mini-badge ready";
 }

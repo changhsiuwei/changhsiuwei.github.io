@@ -2,6 +2,7 @@
 description: "從 AI 用強化學習玩《神奇寶貝》的實驗，對照人類的認知陷阱、創傷、舒適圈慣性與欲望錯位。"
 date: "2026-09-06"
 categories: ["AI"]
+youtube: "https://www.youtube.com/watch?v=DcYLT37ImBY"
 title: "看 AI 玩神奇寶貝，我卻看見了自己被囚禁的靈魂"
 ---
 

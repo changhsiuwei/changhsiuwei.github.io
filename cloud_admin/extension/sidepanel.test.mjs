@@ -47,6 +47,7 @@ vm.runInNewContext([
   productionFunction("escapeHtml"),
   productionFunction("inlineMarkdownPreview"),
   productionFunction("applyEditorChangesToSource"),
+  productionFunction("extractYouTubeId"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
@@ -67,7 +68,8 @@ vm.runInNewContext([
   "this.removeYamlField = removeYamlField;",
   "this.protectLayoutSyntax = protectLayoutSyntax;",
   "this.inlineMarkdownPreview = inlineMarkdownPreview;",
-  "this.applyEditorChangesToSource = applyEditorChangesToSource;"
+  "this.applyEditorChangesToSource = applyEditorChangesToSource;",
+  "this.extractYouTubeId = extractYouTubeId;"
 ].join("\n"), sandbox);
 
 function activityGrids(markdown) {
@@ -95,14 +97,19 @@ test("activities render as structured cards without exposing Quarto layout", () 
   assert.equal(grids[0].year, "2026");
   assert.deepEqual(JSON.parse(JSON.stringify(grids[0].events.slice(0, 2))), [
     {
+      date: "September 7",
+      venue: "會計研究發展基金會 · 年度專題演講",
+      topic: "從實證到科學化：AI 與數位報導下的會計教學與研究新方法",
+      slidesUrl: "https://drive.google.com/file/d/1xklABIX2ilOtJJYwhJ8bV4TBmjfzQEYW/view?usp=sharing"
+    },
+    {
       date: "August  28",
       venue: "中華會計學會：Google Sheets × 生成式 AI 教學研討會",
       topic: "給會計初學者的 AI 工具坊",
       slidesUrl: "https://drive.google.com/file/d/1dGuLlSPHXYAlFUNLUEAoS9nWhpB9tmNP/view?usp=drive_link",
       handoutUrl: "https://drive.google.com/file/d/1aFg7vKx52R7ZicVVvXoCxD_SHabfDPDX/view?usp=drive_link",
       youtubeUrl: "https://youtu.be/TqBA2YQnQ4c"
-    },
-    { date: "August  14", venue: "莎美娜實業股份有限公司", topic: "【企業AI內訓】：AI in Excel 實戰" }
+    }
   ]);
   assert.equal(sandbox.serializeActivityGrid(grids[0]), grids[0].originalSource);
 
@@ -314,6 +321,16 @@ test("slides, handout, and youtube URLs read and write cleanly in frontmatter", 
   const removedFm = sandbox.removeYamlField(updatedFm, "youtube");
   assert.equal(sandbox.readYamlScalar(removedFm, "youtube"), "");
   assert.equal(sandbox.readYamlScalar(removedFm, "handout"), "https://drive.google.com/file/d/456/view");
+});
+
+test("extractYouTubeId correctly extracts video ID from various YouTube URL formats", () => {
+  assert.equal(sandbox.extractYouTubeId("https://www.youtube.com/watch?v=Q8Fkpi18QXU"), "Q8Fkpi18QXU");
+  assert.equal(sandbox.extractYouTubeId("https://youtu.be/DcYLT37ImBY?t=2"), "DcYLT37ImBY");
+  assert.equal(sandbox.extractYouTubeId("https://www.youtube.com/embed/nRrt7AczYV4"), "nRrt7AczYV4");
+  assert.equal(sandbox.extractYouTubeId("https://www.youtube.com/shorts/abc123XYZ0_"), "abc123XYZ0_");
+  assert.equal(sandbox.extractYouTubeId("Q8Fkpi18QXU"), "Q8Fkpi18QXU");
+  assert.equal(sandbox.extractYouTubeId("https://example.com/not-youtube"), "");
+  assert.equal(sandbox.extractYouTubeId(""), "");
 });
 
 test("Google AI Studio configuration supports specified models, thinking level, temperature and Human Editor prompt", () => {

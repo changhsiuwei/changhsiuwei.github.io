@@ -2,6 +2,7 @@
 description: "從陶哲軒的對話反思「天才」的本質：高溫試錯、撞上現實數據的牆，以及在 AI 時代真正稀缺的驗證能力。"
 date: "2026-09-07"
 categories: ["AI"]
+youtube: "https://www.youtube.com/watch?v=Q8Fkpi18QXU"
 title: "天才的腦袋，其實是一台瘋狂的「點子扭蛋機」"
 ---
 
