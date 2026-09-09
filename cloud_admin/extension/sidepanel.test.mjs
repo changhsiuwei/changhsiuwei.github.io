@@ -48,6 +48,7 @@ vm.runInNewContext([
   productionFunction("inlineMarkdownPreview"),
   productionFunction("applyEditorChangesToSource"),
   productionFunction("extractYouTubeId"),
+  productionFunction("moveArrayItem"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
@@ -69,7 +70,8 @@ vm.runInNewContext([
   "this.protectLayoutSyntax = protectLayoutSyntax;",
   "this.inlineMarkdownPreview = inlineMarkdownPreview;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;",
-  "this.extractYouTubeId = extractYouTubeId;"
+  "this.extractYouTubeId = extractYouTubeId;",
+  "this.moveArrayItem = moveArrayItem;"
 ].join("\n"), sandbox);
 
 function activityGrids(markdown) {
@@ -366,5 +368,51 @@ test("inlineMarkdownPreview parses bold tags cleanly without exposing raw asteri
   const rendered = sandbox.inlineMarkdownPreview(sample);
   assert.equal(rendered.includes("**"), false);
   assert.ok(rendered.includes("<strong>國立臺北大學會計學系 助理教授</strong>"));
+});
+
+test("moveArrayItem properly swaps items and handles boundary conditions safely", () => {
+  const list = ["Item A", "Item B", "Item C", "Item D"];
+
+  // Moving down: index 0 to 1
+  assert.equal(sandbox.moveArrayItem(list, 0, 1), true);
+  assert.deepEqual(list, ["Item B", "Item A", "Item C", "Item D"]);
+
+  // Moving up: index 2 to 1
+  assert.equal(sandbox.moveArrayItem(list, 2, 1), true);
+  assert.deepEqual(list, ["Item B", "Item C", "Item A", "Item D"]);
+
+  // Out-of-bounds or same index
+  assert.equal(sandbox.moveArrayItem(list, 0, 0), false);
+  assert.equal(sandbox.moveArrayItem(list, -1, 1), false);
+  assert.equal(sandbox.moveArrayItem(list, 0, 5), false);
+  assert.equal(sandbox.moveArrayItem(null, 0, 1), false);
+});
+
+test("activities reordering updates serializes in new order without breaking Quarto layout", () => {
+  const markdown = readFileSync(new URL("../../activities/index.md", import.meta.url), "utf8");
+  const grids = activityGrids(markdown);
+  const model2026 = grids[0];
+  const firstEventTopic = model2026.events[0].topic;
+  const secondEventTopic = model2026.events[1].topic;
+
+  // Swap first and second events
+  assert.equal(sandbox.moveArrayItem(model2026.events, 0, 1), true);
+  model2026.dirty = true;
+  assert.equal(model2026.events[0].topic, secondEventTopic);
+  assert.equal(model2026.events[1].topic, firstEventTopic);
+
+  const modelsMap = new Map([["test-layout", model2026]]);
+  const serialized = sandbox.serializeActivitiesBody("前言測試", modelsMap, "\n");
+  assert.ok(serialized.includes(secondEventTopic));
+  assert.ok(serialized.indexOf(secondEventTopic) < serialized.indexOf(firstEventTopic));
+});
+
+test("order YAML scalar can be set and read for custom post sorting", () => {
+  const fm = `title: "測試文章"\ndate: "2026-09-07"\ndraft: false`;
+  const updated = sandbox.setYamlScalar(fm, "order", 1);
+  assert.equal(sandbox.readYamlScalar(updated, "order"), "1");
+
+  const reordered = sandbox.setYamlScalar(updated, "order", 3);
+  assert.equal(sandbox.readYamlScalar(reordered, "order"), "3");
 });
 

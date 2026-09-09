@@ -42,6 +42,54 @@ function extractYouTubeId(url) {
   return "";
 }
 
+function moveArrayItem(array, fromIndex, toIndex) {
+  if (!Array.isArray(array)) return false;
+  if (fromIndex < 0 || fromIndex >= array.length) return false;
+  if (toIndex < 0 || toIndex >= array.length) return false;
+  if (fromIndex === toIndex) return false;
+  const [item] = array.splice(fromIndex, 1);
+  array.splice(toIndex, 0, item);
+  return true;
+}
+
+function createMoveButtons({
+  index,
+  total,
+  onMoveUp,
+  onMoveDown,
+  upTitle = "往上移動",
+  downTitle = "往下移動",
+  className = "move-item-btn"
+}) {
+  const group = document.createElement("div");
+  group.className = "move-btn-group";
+
+  const upBtn = document.createElement("button");
+  upBtn.type = "button";
+  upBtn.className = `${className} move-up`;
+  upBtn.textContent = "▲ 上移";
+  upBtn.title = upTitle;
+  upBtn.disabled = index === 0;
+  upBtn.onclick = (e) => {
+    e.stopPropagation();
+    if (index > 0 && onMoveUp) onMoveUp();
+  };
+
+  const downBtn = document.createElement("button");
+  downBtn.type = "button";
+  downBtn.className = `${className} move-down`;
+  downBtn.textContent = "▼ 下移";
+  downBtn.title = downTitle;
+  downBtn.disabled = index === total - 1;
+  downBtn.onclick = (e) => {
+    e.stopPropagation();
+    if (index < total - 1 && onMoveDown) onMoveDown();
+  };
+
+  group.append(upBtn, downBtn);
+  return group;
+}
+
 function getPostMetadata(path) {
   if (state.postMetadataCache && state.postMetadataCache[path]) {
     return state.postMetadataCache[path];
@@ -51,7 +99,7 @@ function getPostMetadata(path) {
   }
   const slug = path.split("/").at(-2) || path;
   const label = slug.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  return { title: label, date: "", categories: [], desc: "", draft: false, image: "", slides: "", handout: "", youtube: "" };
+  return { title: label, date: "", categories: [], desc: "", draft: false, image: "", slides: "", handout: "", youtube: "", order: "" };
 }
 
 const state = {
@@ -181,6 +229,7 @@ const elements = {
   descriptionInput: $("descriptionInput"),
   dateInput: $("dateInput"),
   draftInput: $("draftInput"),
+  orderInput: $("orderInput"),
   categoriesInput: $("categoriesInput"),
   featuredImageInput: $("featuredImageInput"),
   uploadCoverButton: $("uploadCoverButton"),
@@ -1729,6 +1778,10 @@ function currentFrontMatter() {
     const yt = elements.youtubeUrlInput.value.trim();
     frontMatter = yt ? setYamlScalar(frontMatter, "youtube", yt) : removeYamlField(frontMatter, "youtube");
   }
+  if (elements.orderInput) {
+    const ord = elements.orderInput.value.trim();
+    frontMatter = (ord && !isNaN(Number(ord))) ? setYamlScalar(frontMatter, "order", Number(ord)) : removeYamlField(frontMatter, "order");
+  }
   return frontMatter;
 }
 
@@ -1948,6 +2001,8 @@ function setMetadata(frontMatter, fallbackTitle = "") {
   if (elements.handoutUrlInput) elements.handoutUrlInput.value = handoutVal;
   const youtubeVal = readYamlScalar(frontMatter, "youtube") || readYamlScalar(frontMatter, "youtube_url") || "";
   if (elements.youtubeUrlInput) elements.youtubeUrlInput.value = youtubeVal;
+  const orderVal = readYamlScalar(frontMatter, "order") || "";
+  if (elements.orderInput) elements.orderInput.value = orderVal;
 
   if (state.currentPath) {
     state.postMetadataCache[state.currentPath] = {
@@ -1959,7 +2014,8 @@ function setMetadata(frontMatter, fallbackTitle = "") {
       image: imageVal,
       slides: slidesVal,
       handout: handoutVal,
-      youtube: youtubeVal
+      youtube: youtubeVal,
+      order: orderVal
     };
   }
 }
@@ -2232,7 +2288,29 @@ function renderHomeEditors() {
       renderHomeEditors();
       scheduleDocumentUpdate();
     };
-    actions.append(hideBtn, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.homeModel.researchAreas || []).length,
+      upTitle: "將此領域往上移動",
+      downTitle: "將此領域往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.homeModel.researchAreas, index, index - 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.homeModel.researchAreas, index, index + 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, hideBtn, removeBtn);
     top.append(title, actions);
 
     const grid = document.createElement("div");
@@ -2334,7 +2412,29 @@ function renderHomeEditors() {
         renderHomeEditors();
         scheduleDocumentUpdate();
       };
-      actions.append(hideBtn, removeBtn);
+
+      const moveBtns = createMoveButtons({
+        index,
+        total: (state.homeModel.courses || []).length,
+        upTitle: "將此課程往上移動",
+        downTitle: "將此課程往下移動",
+        onMoveUp: () => {
+          moveArrayItem(state.homeModel.courses, index, index - 1);
+          state.homeDirty = true;
+          state.draftSaved = false;
+          renderHomeEditors();
+          scheduleDocumentUpdate();
+        },
+        onMoveDown: () => {
+          moveArrayItem(state.homeModel.courses, index, index + 1);
+          state.homeDirty = true;
+          state.draftSaved = false;
+          renderHomeEditors();
+          scheduleDocumentUpdate();
+        }
+      });
+
+      actions.append(moveBtns, hideBtn, removeBtn);
       top.append(title, actions);
 
       const grid = document.createElement("div");
@@ -2466,7 +2566,29 @@ function renderHomeEditors() {
         renderHomeEditors();
         scheduleDocumentUpdate();
       };
-      actions.append(hideBtn, removeBtn);
+
+      const moveBtns = createMoveButtons({
+        index,
+        total: (state.homeModel.evaluations || []).length,
+        upTitle: "將此評價往上移動",
+        downTitle: "將此評價往下移動",
+        onMoveUp: () => {
+          moveArrayItem(state.homeModel.evaluations, index, index - 1);
+          state.homeDirty = true;
+          state.draftSaved = false;
+          renderHomeEditors();
+          scheduleDocumentUpdate();
+        },
+        onMoveDown: () => {
+          moveArrayItem(state.homeModel.evaluations, index, index + 1);
+          state.homeDirty = true;
+          state.draftSaved = false;
+          renderHomeEditors();
+          scheduleDocumentUpdate();
+        }
+      });
+
+      actions.append(moveBtns, hideBtn, removeBtn);
       top.append(title, actions);
 
       const grid = document.createElement("div");
@@ -2597,7 +2719,29 @@ function renderHomeEditors() {
       renderHomeEditors();
       scheduleDocumentUpdate();
     };
-    actions.append(hideBtn, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.homeModel.highlights || []).length,
+      upTitle: "將此動態往上移動",
+      downTitle: "將此動態往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.homeModel.highlights, index, index - 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.homeModel.highlights, index, index + 1);
+        state.homeDirty = true;
+        state.draftSaved = false;
+        renderHomeEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, hideBtn, removeBtn);
     top.append(title, actions);
 
     const grid = document.createElement("div");
@@ -2676,6 +2820,11 @@ function renderAboutEditors() {
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `學歷 ${index + 1}：${edu.degree || "未命名"}`;
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2687,7 +2836,30 @@ function renderAboutEditors() {
       renderAboutEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.aboutModel.education || []).length,
+      upTitle: "將此學歷往上移動",
+      downTitle: "將此學歷往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.aboutModel.education, index, index - 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.aboutModel.education, index, index + 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid";
@@ -2789,6 +2961,11 @@ function renderAboutEditors() {
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `經歷 ${index + 1}：${exp.title || ""}`;
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2800,7 +2977,30 @@ function renderAboutEditors() {
       renderAboutEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.aboutModel.experience || []).length,
+      upTitle: "將此經歷往上移動",
+      downTitle: "將此經歷往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.aboutModel.experience, index, index - 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.aboutModel.experience, index, index + 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid cols-3";
@@ -2881,6 +3081,11 @@ function renderAboutEditors() {
       scheduleDocumentUpdate();
     };
 
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2893,7 +3098,29 @@ function renderAboutEditors() {
       scheduleDocumentUpdate();
     };
 
-    card.append(input, removeBtn);
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.aboutModel.honors || []).length,
+      upTitle: "將此榮譽往上移動",
+      downTitle: "將此榮譽往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.aboutModel.honors, index, index - 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.aboutModel.honors, index, index + 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    card.append(input, actions);
     elements.honorsList.append(card);
   });
 
@@ -2925,6 +3152,11 @@ function renderAboutEditors() {
       scheduleDocumentUpdate();
     };
 
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2937,7 +3169,29 @@ function renderAboutEditors() {
       scheduleDocumentUpdate();
     };
 
-    card.append(input, removeBtn);
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.aboutModel.services || []).length,
+      upTitle: "將此服務往上移動",
+      downTitle: "將此服務往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.aboutModel.services, index, index - 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.aboutModel.services, index, index + 1);
+        state.aboutDirty = true;
+        state.draftSaved = false;
+        renderAboutEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    card.append(input, actions);
     elements.servicesList.append(card);
   });
 
@@ -2963,6 +3217,11 @@ function renderPublicationsEditors() {
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `期刊論文 ${index + 1}：${p.title || "未命名"}`;
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -2974,7 +3233,30 @@ function renderPublicationsEditors() {
       renderPublicationsEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.pubModel.journalPapers || []).length,
+      upTitle: "將此期刊論文往上移動",
+      downTitle: "將此期刊論文往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.pubModel.journalPapers, index, index - 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.pubModel.journalPapers, index, index + 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid";
@@ -3074,6 +3356,11 @@ function renderPublicationsEditors() {
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `工作論文 ${index + 1}：${wp.title || "未命名"}`;
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -3085,7 +3372,30 @@ function renderPublicationsEditors() {
       renderPublicationsEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.pubModel.workingPapers || []).length,
+      upTitle: "將此工作論文往上移動",
+      downTitle: "將此工作論文往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.pubModel.workingPapers, index, index - 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.pubModel.workingPapers, index, index + 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid";
@@ -3172,6 +3482,11 @@ function renderPublicationsEditors() {
     top.className = "structured-card-top";
     const title = document.createElement("strong");
     title.textContent = `研討會 ${index + 1}：${c.year || ""}`;
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.alignItems = "center";
+    actions.style.gap = "6px";
+
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
     removeBtn.className = "remove-btn";
@@ -3183,7 +3498,30 @@ function renderPublicationsEditors() {
       renderPublicationsEditors();
       scheduleDocumentUpdate();
     };
-    top.append(title, removeBtn);
+
+    const moveBtns = createMoveButtons({
+      index,
+      total: (state.pubModel.conferences || []).length,
+      upTitle: "將此研討會往上移動",
+      downTitle: "將此研討會往下移動",
+      onMoveUp: () => {
+        moveArrayItem(state.pubModel.conferences, index, index - 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      },
+      onMoveDown: () => {
+        moveArrayItem(state.pubModel.conferences, index, index + 1);
+        state.pubDirty = true;
+        state.draftSaved = false;
+        renderPublicationsEditors();
+        scheduleDocumentUpdate();
+      }
+    });
+
+    actions.append(moveBtns, removeBtn);
+    top.append(title, actions);
 
     const grid = document.createElement("div");
     grid.className = "structured-card-grid cols-3";
@@ -3342,6 +3680,78 @@ async function deletePost(postPath) {
   }
 }
 
+async function moveSectionPost(contentFiles, fromIndex, toIndex, hubPath, hubBody) {
+  if (fromIndex < 0 || fromIndex >= contentFiles.length) return;
+  if (toIndex < 0 || toIndex >= contentFiles.length) return;
+  if (fromIndex === toIndex) return;
+
+  const targetPost = contentFiles[fromIndex];
+  const targetTitle = getPostMetadata(targetPost).title || targetPost;
+
+  log(`正在調整文章順序：${targetTitle}...`, "info");
+
+  moveArrayItem(contentFiles, fromIndex, toIndex);
+
+  const updatedFiles = [];
+  for (let i = 0; i < contentFiles.length; i++) {
+    const p = contentFiles[i];
+    const newOrder = i + 1;
+    const meta = getPostMetadata(p);
+    const oldOrder = meta.order !== undefined && meta.order !== "" ? Number(meta.order) : null;
+    if (oldOrder !== newOrder) {
+      meta.order = newOrder;
+      state.postMetadataCache[p] = { ...meta, order: newOrder };
+
+      if (state.currentPath === p) {
+        state.frontMatter = setYamlScalar(state.frontMatter, "order", newOrder);
+        if (elements.orderInput) elements.orderInput.value = newOrder;
+        state.metadataDirty = true;
+        state.draftSaved = false;
+        scheduleDocumentUpdate();
+      } else {
+        try {
+          let fileContent = "";
+          const draft = await chrome.storage.local.get(`draft:${p}`);
+          if (draft[`draft:${p}`]) {
+            fileContent = draft[`draft:${p}`];
+          } else if (state.connected) {
+            const res = await api(`/api/file?path=${encodeURIComponent(p)}&ref=${encodeURIComponent(state.head)}`);
+            fileContent = base64ToText(res.content);
+          }
+          if (fileContent) {
+            const split = splitFrontMatter(fileContent);
+            const newFm = setYamlScalar(split.frontMatter, "order", newOrder);
+            const fullContent = `${split.prefix}---\n${newFm}---\n${split.body}`;
+            await chrome.storage.local.set({ [`draft:${p}`]: fullContent });
+            updatedFiles.push({ path: p, content: fullContent });
+          }
+        } catch (err) {
+          console.warn(`讀取文章 ${p} 失敗:`, err);
+        }
+      }
+    }
+  }
+
+  if (state.connected && updatedFiles.length > 0) {
+    try {
+      const pubResult = await publishPayload({
+        message: `chore(order): 調整文章順序 (${targetTitle})`,
+        files: updatedFiles
+      });
+      if (pubResult && pubResult.commitSha) {
+        state.head = pubResult.commitSha;
+      }
+      log(`文章順序已成功同步至 GitHub`, "success");
+    } catch (err) {
+      log(`文章順序本機已調整，同步至 GitHub 失敗：${err.message}`, "error");
+    }
+  } else {
+    log(`已成功調整文章順序`, "success");
+  }
+
+  renderSectionHub(hubPath, hubBody);
+}
+
 function renderSectionHub(path, body) {
   const section = postSectionOf(path);
   const sectionName = section ? section.label : "教學與研究";
@@ -3373,7 +3783,17 @@ function renderSectionHub(path, body) {
 
   if (elements.sectionHubArticleList) {
     elements.sectionHubArticleList.replaceChildren();
-    const contentFiles = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort().reverse();
+    const contentFiles = state.files.filter((p) => p.startsWith(prefix) && /\.(md|qmd)$/i.test(p)).sort((a, b) => {
+      const metaA = getPostMetadata(a);
+      const metaB = getPostMetadata(b);
+      const orderA = metaA.order !== undefined && metaA.order !== "" && !isNaN(Number(metaA.order)) ? Number(metaA.order) : Infinity;
+      const orderB = metaB.order !== undefined && metaB.order !== "" && !isNaN(Number(metaB.order)) ? Number(metaB.order) : Infinity;
+      if (orderA !== orderB) return orderA - orderB;
+      const dateA = metaA.date || "";
+      const dateB = metaB.date || "";
+      if (dateA !== dateB) return dateB.localeCompare(dateA);
+      return b.localeCompare(a);
+    });
 
     if (elements.sectionHubArticlesBadge) {
       elements.sectionHubArticlesBadge.textContent = `📑 最新文章 (共 ${contentFiles.length} 篇)`;
@@ -3396,7 +3816,7 @@ function renderSectionHub(path, body) {
       return;
     }
 
-    contentFiles.forEach((postPath) => {
+    contentFiles.forEach((postPath, postIndex) => {
       const meta = getPostMetadata(postPath);
       const isDraft = meta.draft === true || meta.draft === "true";
       const card = document.createElement("div");
@@ -3526,7 +3946,17 @@ function renderSectionHub(path, body) {
         deletePost(postPath);
       };
 
-      actions.append(toggleDraftBtn, previewBtn, editBtn, deleteBtn);
+      const moveBtns = createMoveButtons({
+        index: postIndex,
+        total: contentFiles.length,
+        upTitle: "將此文章順序往前/往上移動",
+        downTitle: "將此文章順序往後/往下移動",
+        className: "btn-move",
+        onMoveUp: () => moveSectionPost(contentFiles, postIndex, postIndex - 1, path, body),
+        onMoveDown: () => moveSectionPost(contentFiles, postIndex, postIndex + 1, path, body)
+      });
+
+      actions.append(moveBtns, toggleDraftBtn, previewBtn, editBtn, deleteBtn);
       card.append(header, metaRow);
       if (meta.image) {
         const thumb = document.createElement("img");
@@ -3573,7 +4003,7 @@ function renderStudentsEditors() {
       const card = document.createElement("div");
       card.className = "card-item";
       card.style.display = "grid";
-      card.style.gridTemplateColumns = "120px 140px 1fr 40px";
+      card.style.gridTemplateColumns = "120px 140px 1fr auto";
       card.style.gap = "8px";
       card.style.alignItems = "center";
 
@@ -3613,6 +4043,11 @@ function renderStudentsEditors() {
         scheduleDocumentUpdate();
       };
 
+      const actions = document.createElement("div");
+      actions.style.display = "flex";
+      actions.style.alignItems = "center";
+      actions.style.gap = "6px";
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "btn-delete mini-delete-btn";
@@ -3626,7 +4061,29 @@ function renderStudentsEditors() {
         scheduleDocumentUpdate();
       };
 
-      card.append(dateIn, presenterIn, topicIn, delBtn);
+      const moveBtns = createMoveButtons({
+        index,
+        total: (model.schedules || []).length,
+        upTitle: "將此排程往上移動",
+        downTitle: "將此排程往下移動",
+        onMoveUp: () => {
+          moveArrayItem(model.schedules, index, index - 1);
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          renderStudentsEditors();
+          scheduleDocumentUpdate();
+        },
+        onMoveDown: () => {
+          moveArrayItem(model.schedules, index, index + 1);
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          renderStudentsEditors();
+          scheduleDocumentUpdate();
+        }
+      });
+
+      actions.append(moveBtns, delBtn);
+      card.append(dateIn, presenterIn, topicIn, actions);
       elements.studentScheduleList.append(card);
     });
   }
@@ -3798,7 +4255,28 @@ function createNotionToolbar(textarea, onUpdate) {
         scheduleDocumentUpdate();
       };
 
-      headerRow.append(badge, titleIn, delBtn);
+      const moveBtns = createMoveButtons({
+        index,
+        total: (model.guidelines || []).length,
+        upTitle: "將此專案區塊往上移動",
+        downTitle: "將此專案區塊往下移動",
+        onMoveUp: () => {
+          moveArrayItem(model.guidelines, index, index - 1);
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          renderStudentsEditors();
+          scheduleDocumentUpdate();
+        },
+        onMoveDown: () => {
+          moveArrayItem(model.guidelines, index, index + 1);
+          state.studentsDirty = true;
+          state.draftSaved = false;
+          renderStudentsEditors();
+          scheduleDocumentUpdate();
+        }
+      });
+
+      headerRow.append(badge, titleIn, moveBtns, delBtn);
 
       // Notion Block Free Writing Container with Tools Bar
       const blockContainer = document.createElement("div");
@@ -3965,6 +4443,27 @@ function renderActivityEditors() {
         createActivityField("單位／場合", event.venue, (value) => { event.venue = value; markStructuredModelDirty(model); }),
         createActivityField("主題", event.topic, (value) => { event.topic = value; markStructuredModelDirty(model); })
       );
+      const actionBtns = document.createElement("div");
+      actionBtns.className = "activity-action-btns";
+
+      const moveBtns = createMoveButtons({
+        index: eventIndex,
+        total: model.events.length,
+        upTitle: "將此活動往上移動一格",
+        downTitle: "將此活動往下移動一格",
+        className: "move-activity-btn",
+        onMoveUp: () => {
+          moveArrayItem(model.events, eventIndex, eventIndex - 1);
+          markStructuredModelDirty(model);
+          renderActivityEditors();
+        },
+        onMoveDown: () => {
+          moveArrayItem(model.events, eventIndex, eventIndex + 1);
+          markStructuredModelDirty(model);
+          renderActivityEditors();
+        }
+      });
+
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "remove-activity";
@@ -3975,7 +4474,8 @@ function renderActivityEditors() {
         markStructuredModelDirty(model);
         renderActivityEditors();
       });
-      mainRow.append(remove);
+      actionBtns.append(moveBtns, remove);
+      mainRow.append(actionBtns);
 
       const resourcesRow = document.createElement("div");
       resourcesRow.className = "activity-resources-row";
@@ -5318,7 +5818,7 @@ elements.imageInput.addEventListener("change", async () => {
   }
 });
 
-for (const input of [elements.titleInput, elements.subtitleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput, elements.youtubeUrlInput].filter(Boolean)) {
+for (const input of [elements.titleInput, elements.subtitleInput, elements.descriptionInput, elements.dateInput, elements.draftInput, elements.orderInput, elements.categoriesInput, elements.featuredImageInput, elements.slidesUrlInput, elements.handoutUrlInput, elements.youtubeUrlInput].filter(Boolean)) {
   input.addEventListener("input", () => {
     state.metadataDirty = true;
     state.draftSaved = false;
