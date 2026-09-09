@@ -109,12 +109,9 @@ test("activities render as structured cards without exposing Quarto layout", () 
       slidesUrl: "https://drive.google.com/file/d/1xklABIX2ilOtJJYwhJ8bV4TBmjfzQEYW/view?usp=sharing"
     },
     {
-      date: "August  28",
-      venue: "中華會計學會：Google Sheets × 生成式 AI 教學研討會",
-      topic: "給會計初學者的 AI 工具坊",
-      slidesUrl: "https://drive.google.com/file/d/1dGuLlSPHXYAlFUNLUEAoS9nWhpB9tmNP/view?usp=drive_link",
-      handoutUrl: "https://drive.google.com/file/d/1aFg7vKx52R7ZicVVvXoCxD_SHabfDPDX/view?usp=drive_link",
-      youtubeUrl: "https://youtu.be/TqBA2YQnQ4c"
+      date: "August 29",
+      venue: "勤業眾信聯合會計師事務所 (Deloitte Taiwan)",
+      topic: "指導國立臺北大學會計學系學生（盧霈華、張郁佳、鄭兆璿、王力成、蔡宜芳）參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」"
     }
   ]);
   assert.equal(sandbox.serializeActivityGrid(grids[0]), grids[0].originalSource);
