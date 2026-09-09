@@ -2,6 +2,7 @@ project:
   type: website
   resources:
     - CNAME
+    - robots.txt
     - images/**
     - assets/**
     - Chang_HsiuWei_CV.pdf
