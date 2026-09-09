@@ -65,7 +65,7 @@ subtitle: "Invited Presentations & Latest News"
 :::
 
 ::: {.g-col-12 .g-col-md-2}
-**May**
+**August 29**
 :::
 ::: {.g-col-12 .g-col-md-10}
 #### 勤業眾信聯合會計師事務所 (Deloitte Taiwan)
