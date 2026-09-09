@@ -1,4 +1,5 @@
 const DEFAULT_API_BASE = "https://hw-chang-site-admin-api.hw-chang-site-admin-worker.workers.dev";
+const PUBLIC_VIEWS_API = "https://hw-chang-site-views.hw-chang-site-admin-worker.workers.dev";
 const DEFAULT_SITE_URL = "https://changhsiuwei.com/";
 const LEGACY_SITE_URL = "https://changhsiuwei.github.io/";
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
@@ -2053,7 +2054,7 @@ function createTreeItem(path) {
   const views = viewsFor(path);
   let smallText = info.location;
   if (isDraft) smallText += " · 🟡 草稿";
-  if (views != null) smallText += ` · 👁 ${views}`;
+  smallText += ` · 👁 ${views != null ? views.toLocaleString() : 0}`;
   small.textContent = smallText;
   button.addEventListener("click", () => loadFile(path));
   return button;
@@ -3795,8 +3796,9 @@ function renderSectionHub(path, body) {
       return b.localeCompare(a);
     });
 
+    const sectionTotalViews = contentFiles.reduce((sum, p) => sum + (viewsFor(p) || 0), 0);
     if (elements.sectionHubArticlesBadge) {
-      elements.sectionHubArticlesBadge.textContent = `📑 最新文章 (共 ${contentFiles.length} 篇)`;
+      elements.sectionHubArticlesBadge.textContent = `📑 最新文章 (共 ${contentFiles.length} 篇 · 專區累計觀看：${sectionTotalViews.toLocaleString()} 次)`;
     }
 
     if (contentFiles.length === 0) {
@@ -3837,7 +3839,13 @@ function renderSectionHub(path, body) {
       const statusPill = document.createElement("span");
       statusPill.className = `status-pill ${isDraft ? "status-draft" : "status-published"}`;
       statusPill.textContent = isDraft ? "🟡 隱藏草稿" : "🟢 已發布";
-      metaRow.append(statusPill);
+
+      const postViews = viewsFor(postPath);
+      const viewsBadge = document.createElement("span");
+      viewsBadge.className = "views-badge";
+      viewsBadge.textContent = `👁️ ${postViews != null ? postViews.toLocaleString() : 0} 次觀看`;
+
+      metaRow.append(statusPill, viewsBadge);
 
       if (meta.date) {
         const dateBadge = document.createElement("span");
@@ -4659,17 +4667,30 @@ async function connect() {
   return session;
 }
 
+function normalizePathForStats(p) {
+  if (!p) return "index";
+  let clean = p.replace(/^\/+|\/+$/g, "").toLowerCase();
+  clean = clean.replace(/\/(?:index)?\.(md|qmd|html?)$/i, "");
+  clean = clean.replace(/\.(md|qmd|html?)$/i, "");
+  if (!clean || clean === "index") return "index";
+  return clean;
+}
+
 function viewsFor(path) {
   if (!state.viewStats || !Array.isArray(state.viewStats.pages)) return null;
-  const entry = state.viewStats.pages.find((p) => p.path === path);
-  return entry ? entry.views : null;
+  const exact = state.viewStats.pages.find((p) => p.path === path);
+  if (exact) return exact.views;
+
+  const targetNorm = normalizePathForStats(path);
+  const matched = state.viewStats.pages.find((p) => normalizePathForStats(p.path) === targetNorm);
+  return matched ? matched.views : null;
 }
 
 function renderViewStatsLine() {
   const el = $("viewStatsLine");
   if (!el) return;
   if (state.viewStats && typeof state.viewStats.total === "number") {
-    el.textContent = `👁 到站總觀看：${state.viewStats.total.toLocaleString()}`;
+    el.textContent = `👁 到站總觀看：${state.viewStats.total.toLocaleString()} 次`;
   } else {
     el.textContent = "";
   }
@@ -4679,10 +4700,22 @@ async function fetchViewStats() {
   try {
     state.viewStats = await api("/api/stats");
   } catch (e) {
-    state.viewStats = null;
+    try {
+      const res = await fetch(`${PUBLIC_VIEWS_API}/api/stats`);
+      if (res.ok) state.viewStats = await res.json();
+      else state.viewStats = null;
+    } catch {
+      state.viewStats = null;
+    }
   }
   renderViewStatsLine();
   renderTree();
+  if (state.currentPath) {
+    const section = postSectionOf(state.currentPath);
+    if (section && state.currentPath === section.indexPath && elements.sectionHubArticleList && !elements.sectionHubEditors?.hidden && state.originalBody !== undefined) {
+      renderSectionHub(state.currentPath, state.originalBody);
+    }
+  }
 }
 
 async function refreshTree() {
@@ -4846,7 +4879,9 @@ function updateDocumentState() {
   } else if (postSectionOf(state.currentPath)?.indexPath === state.currentPath) {
     const section = postSectionOf(state.currentPath);
     const count = state.files.filter((p) => p.startsWith(section.postPrefix) && /\.(md|qmd)$/i.test(p)).length;
-    elements.wordCount.textContent = `共 ${count} 篇文章`;
+    const views = viewsFor(state.currentPath);
+    const viewsText = views != null ? ` · 👁️ ${views.toLocaleString()} 次觀看` : "";
+    elements.wordCount.textContent = `共 ${count} 篇文章${viewsText}`;
   } else if (state.currentPath === "activities/index.md") {
     let totalEvents = 0;
     for (const model of state.activityModels.values()) totalEvents += model.events.length;
@@ -4857,7 +4892,9 @@ function updateDocumentState() {
     const markdown = state.editor.getMarkdown();
     const latin = markdown.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)?/g) || [];
     const cjk = markdown.match(/[\u3400-\u9fff\uf900-\ufaff]/g) || [];
-    elements.wordCount.textContent = `${latin.length + cjk.length} 字`;
+    const views = viewsFor(state.currentPath);
+    const viewsText = views != null ? ` · 👁️ ${views.toLocaleString()} 次觀看` : "";
+    elements.wordCount.textContent = `${latin.length + cjk.length} 字${viewsText}`;
   }
   const changed = hasUnsavedChanges();
   elements.draftStatus.textContent = changed ? "有尚未發布的變更" : "內容已同步";
@@ -5924,6 +5961,7 @@ chrome.storage.local.get(["apiBase", "siteUrl", "geminiApiKey"]).then(async ({ a
   elements.siteUrl.value = state.siteUrl;
   if (elements.geminiApiKey) elements.geminiApiKey.value = state.geminiApiKey;
   await chrome.storage.local.set({ apiBase: state.apiBase, siteUrl: state.siteUrl, geminiApiKey: state.geminiApiKey });
+  fetchViewStats();
   try {
     const hasPermission = await chrome.permissions.contains({ origins: [`${normalizeApiBase(state.apiBase)}/*`] });
     if (hasPermission) await connect();

@@ -17,6 +17,8 @@ knowledge/_trash/
 # Cloud admin local dependencies and secrets
 cloud_admin/worker/node_modules/
 cloud_admin/worker/.wrangler/
+cloud_admin/views_worker/.wrangler/
+**/.wrangler/
 cloud_admin/worker/.dev.vars
 cloud_admin/worker/wrangler.jsonc
 

@@ -244,16 +244,36 @@ async function handlePublish(request: Request, env: Env, actor: string): Promise
   return json({ ok: true, commitSha: commit.sha, actor });
 }
 
+function normalizeTrackingPath(rawPath: string): string {
+  if (!rawPath || typeof rawPath !== "string") return "index.md";
+  let p = rawPath.trim().replace(/^\/+|\/+$/g, "");
+  if (!p || p === "index" || p === "index.html") return "index.md";
+  p = p.replace(/\/(?:index)?\.html?$/i, "");
+  p = p.replace(/\/index$/i, "");
+  p = p.replace(/\.html?$/i, "");
+  if (!p) return "index.md";
+  if (p === "students") return "students/index.qmd";
+  if (!/\.(md|qmd)$/i.test(p)) {
+    p = p + "/index.md";
+  }
+  return p;
+}
+
 async function handleTrack(request: Request, env: Env, cors: HeadersInit): Promise<Response> {
-  const payload = await request.json<{ path?: string }>();
-  const path = (payload.path || "").trim();
-  if (!path || path.length > 200 || path.includes("\0") || path.includes("\\")) {
+  let payload: { path?: string } = {};
+  try {
+    payload = await request.json<{ path?: string }>();
+  } catch {
+    const text = await request.text();
+    if (text) {
+      try { payload = JSON.parse(text); } catch {}
+    }
+  }
+  const rawPath = (payload.path || "").trim();
+  if (!rawPath || rawPath.length > 200 || rawPath.includes("\0") || rawPath.includes("\\")) {
     return json({ error: "Invalid path" }, 400, cors);
   }
-  const normalized = path.startsWith("/") ? path.slice(1) : path;
-  if (normalized.split("/").some((part) => part === ".." || part === "")) {
-    return json({ error: "Invalid path" }, 400, cors);
-  }
+  const normalized = normalizeTrackingPath(rawPath);
 
   const totalKey = "total";
   const pageKey = `views:${normalized}`;
@@ -267,7 +287,7 @@ async function handleTrack(request: Request, env: Env, cors: HeadersInit): Promi
     env.VIEWS_KV.put(totalKey, String(total)),
     env.VIEWS_KV.put(pageKey, String(views))
   ]);
-  return json({ ok: true, views, total }, 200, cors);
+  return json({ ok: true, views, total, path: normalized }, 200, cors);
 }
 
 async function handleStats(env: Env): Promise<Response> {

@@ -2,23 +2,33 @@
 (function () {
   var API = "https://hw-chang-site-views.hw-chang-site-admin-worker.workers.dev";
   function pathToFile(pathname) {
-    var p = pathname.replace(/^\/+|\/+$/g, "");
-    if (p === "") return "index.md";
-    if (/\.html?$/.test(p)) p = p.replace(/\.html?$/, "");
-    if (p === "index") return "index.md";
-    return p + "/index.md";
+    var p = (pathname || "").replace(/^\/+|\/+$/g, "");
+    if (!p || p === "index" || p === "index.html") return "index.md";
+    p = p.replace(/\/(?:index)?\.html?$/i, "");
+    p = p.replace(/\/index$/i, "");
+    p = p.replace(/\.html?$/i, "");
+    if (!p) return "index.md";
+    if (p === "students") return "students/index.qmd";
+    if (!/\.(md|qmd)$/i.test(p)) {
+      p = p + "/index.md";
+    }
+    return p;
   }
+
   var file = pathToFile(window.location.pathname);
+  var payload = JSON.stringify({ path: file });
+
   try {
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(API + "/api/track", new Blob([JSON.stringify({ path: file })], { type: "application/json" }));
-    } else {
+    if (window.fetch) {
       fetch(API + "/api/track", {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ path: file }),
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: payload,
+        mode: "cors",
         keepalive: true
       }).catch(function () {});
+    } else if (navigator.sendBeacon) {
+      navigator.sendBeacon(API + "/api/track", payload);
     }
   } catch (e) {}
 })();

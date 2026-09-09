@@ -1019,6 +1019,21 @@ dialog::backdrop { background: rgba(24, 32, 52, 0.42); backdrop-filter: blur(4px
   transition: all 0.2s ease;
 }
 
+.views-badge,
+.views-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f0f7ff;
+  color: #001F3F;
+  border: 1px solid #bfdbfe;
+  white-space: nowrap;
+}
+
 .resource-pill.slides-pill {
   background: #e0f2fe;
   color: #0369a1;

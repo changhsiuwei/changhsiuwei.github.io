@@ -49,6 +49,8 @@ vm.runInNewContext([
   productionFunction("applyEditorChangesToSource"),
   productionFunction("extractYouTubeId"),
   productionFunction("moveArrayItem"),
+  productionFunction("normalizePathForStats"),
+  productionFunction("viewsFor"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
@@ -71,7 +73,9 @@ vm.runInNewContext([
   "this.inlineMarkdownPreview = inlineMarkdownPreview;",
   "this.applyEditorChangesToSource = applyEditorChangesToSource;",
   "this.extractYouTubeId = extractYouTubeId;",
-  "this.moveArrayItem = moveArrayItem;"
+  "this.moveArrayItem = moveArrayItem;",
+  "this.normalizePathForStats = normalizePathForStats;",
+  "this.viewsFor = viewsFor;"
 ].join("\n"), sandbox);
 
 function activityGrids(markdown) {
@@ -414,5 +418,35 @@ test("order YAML scalar can be set and read for custom post sorting", () => {
 
   const reordered = sandbox.setYamlScalar(updated, "order", 3);
   assert.equal(sandbox.readYamlScalar(reordered, "order"), "3");
+});
+
+test("viewsFor and normalizePathForStats resolve page views across varying URL and file path formats", () => {
+  sandbox.state.viewStats = {
+    total: 100,
+    pages: [
+      { path: "about/index.md", views: 25 },
+      { path: "lab/posts/2026-09-07-post-3565/index.md", views: 42 },
+      { path: "students/index.qmd", views: 18 },
+      { path: "index.md", views: 15 }
+    ]
+  };
+
+  // Exact match
+  assert.equal(sandbox.viewsFor("about/index.md"), 25);
+  // Match with .html
+  assert.equal(sandbox.viewsFor("about/index.html"), 25);
+  // Match with trailing slash directory
+  assert.equal(sandbox.viewsFor("about/"), 25);
+  // Post match
+  assert.equal(sandbox.viewsFor("lab/posts/2026-09-07-post-3565/index.md"), 42);
+  assert.equal(sandbox.viewsFor("/lab/posts/2026-09-07-post-3565/"), 42);
+  // Students .qmd match
+  assert.equal(sandbox.viewsFor("students/index.qmd"), 18);
+  assert.equal(sandbox.viewsFor("students/index.html"), 18);
+  // Home page match
+  assert.equal(sandbox.viewsFor("index.md"), 15);
+  assert.equal(sandbox.viewsFor("/"), 15);
+  // Non-existent page
+  assert.equal(sandbox.viewsFor("nonexistent/post"), null);
 });
 
