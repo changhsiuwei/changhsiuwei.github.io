@@ -2,7 +2,9 @@
 title: "AI 工具坊 (AI Workshop)"
 listing:
   contents: posts
-  sort: "date desc"
+  sort:
+    - "order asc"
+    - "date desc"
   type: default
   categories: true
   sort-ui: false
