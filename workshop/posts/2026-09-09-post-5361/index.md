@@ -7,6 +7,7 @@ slides: "https://drive.google.com/file/d/1OY01Ttu2vjiyYXIeKCVasf_zG9guN_Fr/view?
 handout: "https://drive.google.com/file/d/1pAz_iJCWiG9AFIOp0Z0Ro8qv-dNogBYz/view?usp=drive_link"
 youtube: "https://youtu.be/wFQ4glFfu_g"
 date: "2026-08-28"
+order: 1
 ---
 
 這幾個月在許多教學研討與交流場合中，常有老師和助教朋友和我聊到一個很真實的焦慮：現在的生成式 AI 只要貼上題目，幾秒鐘就能把初級會計學的分錄、借貸方向甚至計算過程完整寫出來。如果 AI 已經這麼會解題，那大一的會計課，我們究竟還要帶學生學些什麼？

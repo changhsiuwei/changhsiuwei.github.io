@@ -51,6 +51,7 @@ vm.runInNewContext([
   productionFunction("moveArrayItem"),
   productionFunction("normalizePathForStats"),
   productionFunction("viewsFor"),
+  productionFunction("splitFrontMatter"),
   "this.findFencedDivEnd = findFencedDivEnd;",
   "this.parseActivityGrid = parseActivityGrid;",
   "this.serializeActivityGrid = serializeActivityGrid;",
@@ -75,7 +76,8 @@ vm.runInNewContext([
   "this.extractYouTubeId = extractYouTubeId;",
   "this.moveArrayItem = moveArrayItem;",
   "this.normalizePathForStats = normalizePathForStats;",
-  "this.viewsFor = viewsFor;"
+  "this.viewsFor = viewsFor;",
+  "this.splitFrontMatter = splitFrontMatter;"
 ].join("\n"), sandbox);
 
 function activityGrids(markdown) {
@@ -443,7 +445,51 @@ test("viewsFor and normalizePathForStats resolve page views across varying URL a
   // Home page match
   assert.equal(sandbox.viewsFor("index.md"), 15);
   assert.equal(sandbox.viewsFor("/"), 15);
-  // Non-existent page
   assert.equal(sandbox.viewsFor("nonexistent/post"), null);
 });
+
+test("splitFrontMatter automatically detects and heals duplicated or leaked frontmatter in body", () => {
+  const corruptedContent = `description: ""categories: ["AI"]title: "給會計初學者的 AI 工具坊"subtitle: "當 AI 已經會算，我們該教學生什麼？"slides: "https://example.com/slides"handout: "https://example.com/handout"youtube: "https://youtu.be/test"date: "2026-08-28"order: "2"---
+
+這幾個月在許多教學研討與交流場合中，常有老師和助教朋友和我聊到一個很真實的焦慮。`;
+
+  const result = sandbox.splitFrontMatter(corruptedContent);
+  assert.equal(result.healed, true);
+  assert.equal(sandbox.readYamlScalar(result.frontMatter, "title"), "給會計初學者的 AI 工具坊");
+  assert.equal(sandbox.readYamlScalar(result.frontMatter, "order"), "2");
+  assert.equal(result.body.startsWith("這幾個月在許多教學研討與交流場合中"), true);
+  assert.equal(result.body.includes("description:"), false);
+  assert.equal(result.body.includes("title:"), false);
+
+  const doubleFrontMatter = `---
+title: "原始標題"
+date: "2026-09-08"
+---
+
+---
+order: "1"
+subtitle: "副標題"
+---
+
+這裡是內文段落。`;
+
+  const doubleResult = sandbox.splitFrontMatter(doubleFrontMatter);
+  assert.equal(doubleResult.healed, true);
+  assert.equal(sandbox.readYamlScalar(doubleResult.frontMatter, "title"), "原始標題");
+  assert.equal(sandbox.readYamlScalar(doubleResult.frontMatter, "order"), "1");
+  assert.equal(sandbox.readYamlScalar(doubleResult.frontMatter, "subtitle"), "副標題");
+  assert.equal(doubleResult.body, "這裡是內文段落。");
+
+  // Clean frontmatter should not trigger healed flag
+  const cleanContent = `---
+title: "乾淨文章"
+date: "2026-09-09"
+---
+
+乾淨內文。`;
+  const cleanResult = sandbox.splitFrontMatter(cleanContent);
+  assert.equal(cleanResult.healed, false);
+  assert.equal(cleanResult.body, "乾淨內文。");
+});
+
 

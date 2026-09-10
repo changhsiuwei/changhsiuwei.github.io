@@ -443,8 +443,56 @@ function textToBase64(value) {
 
 function splitFrontMatter(content) {
   const match = content.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n)?/);
-  if (!match) return { frontMatter: "", body: content, prefix: "" };
-  return { frontMatter: match[1].trimEnd(), body: content.slice(match[0].length), prefix: match[0] };
+  if (!match) {
+    const leakedRaw = content.match(/^(?:description|title|categories|subtitle|slides|handout|youtube|date|order)\s*:[\s\S]*?---\s*(?:\r?\n)*/i);
+    if (leakedRaw) {
+      const rawFm = leakedRaw[0].replace(/---\s*$/m, "").replace(/(description|title|categories|subtitle|slides|handout|youtube|date|order|draft)\s*:/gi, "\n$1:").trim();
+      const rawBody = content.slice(leakedRaw[0].length);
+      const res = splitFrontMatter(`---\n${rawFm}\n---\n\n${rawBody}`);
+      res.healed = true;
+      return res;
+    }
+    return { frontMatter: "", body: content, prefix: "", healed: false };
+  }
+
+  let frontMatter = match[1].trimEnd();
+  let body = content.slice(match[0].length);
+  let healed = false;
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    const subMatch = body.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n)*/);
+    if (subMatch) {
+      const leakedFm = subMatch[1];
+      for (const field of ["order", "date", "title", "subtitle", "description", "slides", "handout", "youtube", "draft", "categories"]) {
+        const val = readYamlScalar(leakedFm, field);
+        if (val && !readYamlScalar(frontMatter, field)) {
+          frontMatter = setYamlScalar(frontMatter, field, val);
+        }
+      }
+      body = body.slice(subMatch[0].length);
+      changed = true;
+      healed = true;
+      continue;
+    }
+    const leakedMatch = body.match(/^(?:description|title|categories|subtitle|slides|handout|youtube|date|order)\s*:[\s\S]*?---\s*(?:\r?\n)*/i);
+    if (leakedMatch) {
+      const leakedFm = leakedMatch[0].replace(/---\s*$/m, "").replace(/(description|title|categories|subtitle|slides|handout|youtube|date|order|draft)\s*:/gi, "\n$1:").trim();
+      for (const field of ["order", "date", "title", "subtitle", "description", "slides", "handout", "youtube", "draft", "categories"]) {
+        const val = readYamlScalar(leakedFm, field);
+        if (val && !readYamlScalar(frontMatter, field)) {
+          frontMatter = setYamlScalar(frontMatter, field, val);
+        }
+      }
+      body = body.slice(leakedMatch[0].length);
+      changed = true;
+      healed = true;
+      continue;
+    }
+  }
+
+  return { frontMatter, body: body.trimStart(), prefix: `---\n${frontMatter}\n---\n\n`, healed };
 }
 
 function isProtectedLayoutLine(line) {
@@ -3722,7 +3770,7 @@ async function moveSectionPost(contentFiles, fromIndex, toIndex, hubPath, hubBod
           if (fileContent) {
             const split = splitFrontMatter(fileContent);
             const newFm = setYamlScalar(split.frontMatter, "order", newOrder);
-            const fullContent = `${split.prefix}---\n${newFm}---\n${split.body}`;
+            const fullContent = `---\n${newFm}\n---\n\n${split.body.trimStart()}`;
             await chrome.storage.local.set({ [`draft:${p}`]: fullContent });
             updatedFiles.push({ path: p, content: fullContent });
           }
@@ -3750,10 +3798,49 @@ async function moveSectionPost(contentFiles, fromIndex, toIndex, hubPath, hubBod
     log(`已成功調整文章順序`, "success");
   }
 
-  renderSectionHub(hubPath, hubBody);
+  renderSectionHub(hubPath, hubBody, false);
 }
 
-function renderSectionHub(path, body) {
+async function preloadSectionMetadata(contentFiles, hubPath, hubBody) {
+  let hasUpdates = false;
+  for (const p of contentFiles) {
+    const cached = state.postMetadataCache[p];
+    if (!cached || !cached.title || cached.date === "") {
+      try {
+        let content = "";
+        const draft = await chrome.storage.local.get(`draft:${p}`);
+        if (draft[`draft:${p}`]) {
+          content = draft[`draft:${p}`];
+        } else if (state.connected) {
+          const res = await api(`/api/file?path=${encodeURIComponent(p)}&ref=${encodeURIComponent(state.head)}`);
+          content = base64ToText(res.content);
+        }
+        if (content) {
+          const split = splitFrontMatter(content);
+          const title = readYamlScalar(split.frontMatter, "title");
+          const date = readYamlScalar(split.frontMatter, "date");
+          const desc = readYamlScalar(split.frontMatter, "description");
+          const draftVal = readYamlScalar(split.frontMatter, "draft");
+          const order = readYamlScalar(split.frontMatter, "order");
+          state.postMetadataCache[p] = {
+            title: title || p,
+            date: date || "",
+            desc: desc || "",
+            draft: draftVal === "true" || draftVal === true,
+            order: order !== "" && !isNaN(Number(order)) ? Number(order) : "",
+            categories: readYamlCategories(split.frontMatter).split(",").map((s) => s.trim()).filter(Boolean)
+          };
+          hasUpdates = true;
+        }
+      } catch (err) {}
+    }
+  }
+  if (hasUpdates && state.currentPath === hubPath) {
+    renderSectionHub(hubPath, hubBody, false);
+  }
+}
+
+function renderSectionHub(path, body, shouldPreload = true) {
   const section = postSectionOf(path);
   const sectionName = section ? section.label : "教學與研究";
   const icon = section ? section.icon : "研";
@@ -3795,6 +3882,10 @@ function renderSectionHub(path, body) {
       if (dateA !== dateB) return dateB.localeCompare(dateA);
       return b.localeCompare(a);
     });
+
+    if (shouldPreload) {
+      preloadSectionMetadata(contentFiles, path, body);
+    }
 
     const sectionTotalViews = contentFiles.reduce((sum, p) => sum + (viewsFor(p) || 0), 0);
     if (elements.sectionHubArticlesBadge) {
@@ -4767,6 +4858,10 @@ async function loadFile(path) {
 
 function openDocument(path, content, isNew, sourceContent = content, draftUploads = []) {
   const split = splitFrontMatter(content);
+  if (split.healed) {
+    const healedContent = `${split.prefix}${split.body}`;
+    chrome.storage.local.set({ [`draft:${path}`]: healedContent }).catch(() => {});
+  }
   const protectedLayout = protectLayoutSyntax(split.body);
   const info = pageInfo(path);
   state.currentPath = path;

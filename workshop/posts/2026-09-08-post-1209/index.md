@@ -7,6 +7,7 @@ slides: "https://drive.google.com/file/d/1exdJgjONuf8IjYVnV2JM9seAw4g1k0fO/view?
 handout: "https://drive.google.com/file/d/1KIkKcYH4TD7Hq4FNmqwvUsN0GdITG8vF/view?usp=sharing"
 youtube: "https://youtu.be/0TrBZ1gE4_8"
 subtitle: "附詳細操作錄影、簡報與講義"
+order: 2
 ---
 
 這幾年大家在日常工作或學習中使用 AI，大多習慣在瀏覽器的對話框裡輸入提示詞（Prompt），請模型幫忙查資料或寫草稿。不過在商業、財務與會計審計的應用場景中，AI 正在經歷一次很重要的轉變——從過去單純的「問答聊天」，走向能夠自主規劃步驟、操作工具、執行驗證的「自主代理人（AI Agent）」。
