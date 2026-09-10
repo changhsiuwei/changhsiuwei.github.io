@@ -1,0 +1,23 @@
+[
+  {
+    "listing": "/lab/index.html",
+    "items": [
+      "/lab/posts/2026-09-07-post-3565/index.html"
+    ]
+  },
+  {
+    "listing": "/knowledge/index.html",
+    "items": [
+      "/knowledge/posts/2026-09-07-post-8623/index.html",
+      "/knowledge/posts/2026-09-06-post-2309/index.html",
+      "/knowledge/posts/2026-09-06-post-5021/index.html"
+    ]
+  },
+  {
+    "listing": "/workshop/index.html",
+    "items": [
+      "/workshop/posts/2026-09-09-post-5361/index.html",
+      "/workshop/posts/2026-09-08-post-1209/index.html"
+    ]
+  }
+]

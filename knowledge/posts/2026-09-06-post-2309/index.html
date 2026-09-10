@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-06">
+<meta name="description" content="從 AI 用強化學習玩《神奇寶貝》的實驗，對照人類的認知陷阱、創傷、舒適圈慣性與欲望錯位。">
+
+<title>看 AI 玩神奇寶貝，我卻看見了自己被囚禁的靈魂 – 張修瑋 H.W. Chang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../profile.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-844969dab530614281f321c59c099772.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-bb31ac030351f78e95611f244dfbedf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">張修瑋 H.W. Chang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">首頁</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/index.html"> 
+<span class="menu-text">個人資訊</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../activities/index.html"> 
+<span class="menu-text">近期活動</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications/index.html"> 
+<span class="menu-text">學術出版</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../lab/index.html"> 
+<span class="menu-text">教學與研究</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../knowledge/index.html"> 
+<span class="menu-text">AI 知識站</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../workshop/index.html"> 
+<span class="menu-text">AI 工具坊</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../students/index.html"> 
+<span class="menu-text">學生專區</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">看 AI 玩神奇寶貝，我卻看見了自己被囚禁的靈魂</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">AI</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    從 AI 用強化學習玩《神奇寶貝》的實驗，對照人類的認知陷阱、創傷、舒適圈慣性與欲望錯位。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 6, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="post-materials-bar" style="margin: 1.25rem 0 2rem 0; display: flex; flex-wrap: wrap; gap: 10px;"><a href="https://www.youtube.com/watch?v=DcYLT37ImBY" target="_blank" rel="noopener noreferrer" class="activity-materials-link activity-youtube-link">▶ YouTube 影片 (線上收看) ↗</a></div>
+<div class="post-youtube-embed" style="position:relative;padding-top:56.25%;max-width:760px;margin:1.25rem 0 2rem 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1);background:#000;"><iframe src="https://www.youtube.com/embed/DcYLT37ImBY" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
+<p>這幾天，我反覆看了好幾遍一個「用強化學習訓練 AI 玩《寶可夢》」的實驗。</p>
+<p>一開始，我純粹是被技術吸引。我想看看 PPO（Proximal Policy Optimization，近端策略最佳化）這類強化學習演算法，究竟能把一款 1996 年的遊戲玩到什麼程度。可是看到後來，我慢慢發現，真正有意思的已經不是 AI 到底能不能破關。</p>
+<p>而是它失敗的方式。</p>
+<p>它會被沒有意義的新鮮刺激吸引，會因為一次巨大的負向回饋而長期避開某個地方，會反覆使用過去最成功的策略，即使環境早已改變，也會為了最大化某個指標，做出從整體目標來看極其荒謬的選擇。</p>
+<p>這些行為當然可以從 reward function、exploration policy 與過去的訓練經驗解釋。但看久了，還是很難不想到自己。</p>
+<p>我們很多看似複雜的選擇，會不會也只是某套長年累積下來的獎勵機制，在不同情境裡反覆運作？</p>
+<p>所以這篇並不是技術教學。比較像是我看完大量失敗 episode 之後，留下來的一些筆記。</p>
+<p><strong>◆ 新鮮，不等於前進</strong></p>
+<p>實驗早期，工程師給 AI 一項很直覺的獎勵：探索新的畫面。只要看到以前沒看過的東西，它就能得到正向回饋。</p>
+<p>如果希望 AI 自己探索遊戲世界，這聽起來很合理。問題是，模型很快就找到了一個比真正探索地圖便宜得多的方法。</p>
+<p>水面。</p>
+<p>《寶可夢》的水面有持續變動的動畫。對人來說，那只是幾個重複閃動的像素；但如果新奇性的判定設計得不夠好，每一次微小變化，都可能被模型視為一個新的狀態。</p>
+<p>結果，AI 走到真新鎮的水邊之後，就不走了。</p>
+<p>它站在那裡反覆觀看水面的動畫，不斷取得廉價的新奇感。</p>
+<p>從 reward 的角度來看，它非常成功。</p>
+<p>從遊戲本身來看，它哪裡都沒去。</p>
+<p>我看到這裡時，下意識看了一眼自己的手機。</p>
+<p>這個畫面實在太熟悉了。</p>
+<p>人腦本來就對新奇刺激敏感。新的訊息、新的聲音、新的人、新的爭議，都會拉走我們的注意力。這套機制原本幫助我們探索環境，但到了短影音、社群媒體與無限捲動的介面裡，它也很容易被反過來利用。</p>
+<p>Threads 上又出現一則新的爭論，YouTube 又推來一支新的影片，新聞網站又多了一個「你可能錯過」的事件。每一則都是真的「新」，但新和重要從來不是同一件事。</p>
+<p>我們很容易把資訊攝取誤認成探索，把頻繁切換誤認成學習，把不斷刷新畫面誤認成自己仍在前進。</p>
+<p>強化學習裡，如果 novelty reward 設計得不好，agent 就可能找到一種便宜的方法不斷刷獎勵。人也一樣。如果我們沒有重新定義心中的「什麼值得注意」，人生很可能在持續獲得刺激的同時，幾乎沒有真正移動。</p>
+<p>問題不是我們失去了好奇心，而是我們把好奇心花在太便宜的地方。</p>
+<p><strong>◆ 一次失敗如何改變之後所有選擇</strong></p>
+<p>實驗裡還有一段讓我印象很深。AI 曾經走進寶可夢中心，操作電腦，把自己一隻等級較高的寶可夢存了進去。</p>
+<p>這個動作本身沒有什麼不可逆的災難，但工程師當時設定的獎勵函數裡，隊伍總等級下降代表嚴重的負向回饋。</p>
+<p>從 AI 的角度來看，那次操作等於遭受巨大懲罰。</p>
+<p>後來，即使隊伍裡的寶可夢已經傷得很重，它仍傾向避開寶可夢中心。</p>
+<p>我不太想把這種行為直接擬人化成真正的「心理創傷」。它沒有人的主觀痛苦，也沒有我們熟悉的創傷記憶。但在行為層次上，它確實呈現了一個很熟悉的現象：一次高強度的負面經驗，改變了往後的策略選擇。</p>
+<p>這讓我想到人。</p>
+<p>一次創業失敗，可能讓一個人之後看到任何創業機會，都先想到風險；一次公開報告時的難堪，可能讓一個人多年後站到麥克風前，身體仍先緊張起來；一次關係裡的背叛，也可能讓一個人在下一段關係開始之前，就先築起一道防線。</p>
+<p>這些反應並不愚蠢。很多時候，它們在當時都有合理的形成原因。</p>
+<p>真正需要問的是：一個曾經合理的保護機制，會不會在環境改變後，逐漸變成新的限制？</p>
+<p>AI 不會停下來重新解釋那一次失敗。它不會問：「真正造成損失的，是寶可夢中心本身，還是我當時做了一個不適當的操作？」它只會從 reward history 裡學到：這裡很危險。</p>
+<p>而人的優勢，理論上就在這裡。</p>
+<p>我們有可能把一段經驗重新拆開，把「那一次失敗」與「所有類似情境」分開，不是假裝風險不存在，而是重新估計風險。</p>
+<p>有些人生困境之所以維持很多年，未必是我們沒有能力，而是某個早期的巨大負回饋，至今仍在替我們做決定。</p>
+<p><strong>◆ 成功經驗也會形成路徑依賴</strong></p>
+<p>等到 AI 抵達尼比市，挑戰小剛（Brock）時，它遇到另一個典型問題。</p>
+<p>在此前的遊戲過程裡，它靠「撞擊（Tackle）」打贏了很多普通對手，因此「撞擊」逐漸成為一個可靠策略。它使用得多、成功次數高、回饋穩定，自然就會在新的環境裡繼續使用。</p>
+<p>偏偏小剛使用的是岩石系寶可夢，原本有效的策略突然失靈。</p>
+<p>AI 就這樣一遍又一遍地使用自己最熟悉的招式，一遍又一遍失敗。</p>
+<p>更有意思的是，它其實已經擁有更適合的技能，只是那個技能過去使用得少、經驗不足，所以在策略選擇裡始終排不到前面。</p>
+<p>直到某次原本慣用的招式 PP 耗盡，它被迫嘗試另一個技能，才意外突破。</p>
+<p>這個例子我很難不往自己身上想。</p>
+<p>我們通常把成功經驗當成資產。但成功經驗有一個很少被談到的副作用：它會提高某一套行為的權重。</p>
+<p>你曾經靠努力工作得到回報，下一次遇到問題，就更容易選擇「再多做一點」；你曾經靠分析解決問題，下一次面對不確定，就更容易再蒐集一輪資料；你曾經靠某種研究方法發表論文，就更容易把新的研究問題重新塞回同一套方法。</p>
+<p>過去的成功愈大，那套策略在我們心中的 prior 就愈強。</p>
+<p>直到有一天，環境改變了。</p>
+<p>新的問題需要新的工具，但我們第一個反應往往不是換工具，而是更用力地使用舊工具。</p>
+<p>這可能才是成功真正危險的地方。失敗會逼你懷疑自己的方法，成功卻很容易讓你把方法誤認成真理。</p>
+<p>所以有時候，突破並不是學到一個全新的能力，而是終於被迫停止使用那個自己最擅長的能力。</p>
+<p><strong>◆ 當代理指標偷偷變成真正目標</strong></p>
+<p>遊戲進行到月見山附近時，出現了整個實驗裡最荒謬、也最有啟發性的一幕。</p>
+<p>有個 NPC 會以 500 元出售鯉魚王（Magikarp）。從一般玩家的角度來看，遊戲前期不斷買鯉魚王當然沒有什麼意義。</p>
+<p>但 AI 不在乎正常玩家怎麼想，它只在乎 reward。</p>
+<p>而當時的獎勵函數裡，隊伍寶可夢的總等級是一項正向指標。買一隻五級鯉魚王，總等級立刻增加；幾乎沒有學習成本，也沒有戰鬥風險，只要付錢，reward 就上升。</p>
+<p>如果你的目標就是最大化這個數字，那麼買鯉魚王其實是一個非常合理的選擇。</p>
+<p>從遊戲的真正目標來看，這件事卻荒謬得令人發笑。</p>
+<p>我覺得這也是整個實驗最值得帶回現實的一幕。</p>
+<p>因為人非常擅長做同一件事。</p>
+<p>我們設定一個原本只是代理變數的指標，久而久之，卻開始把指標本身當成目標。</p>
+<p>論文數量原本只是研究成果的一種衡量，最後可能變成「我要再多一篇」；引用次數原本只是影響力的代理指標，最後變成每天確認數字；線上課程本來是為了學能力，最後變成蒐集課程；社群媒體原本是為了交流，最後變成追蹤讚數與觸及率。</p>
+<p>工作尤其容易如此。KPI 一旦可以被精確計算，人很快就會學會如何最佳化 KPI。</p>
+<p>但能被最佳化的東西，不一定就是我們真正想要的東西。</p>
+<p>所以看著 AI 一直買鯉魚王，我真正想到的不是「這個 AI 好笨」，而是另一個更難回答的問題：我現在的人生裡，有沒有什麼其實也只是鯉魚王？</p>
+<p>看起來數字一直上升，但如果真的到了下一個道館，那些東西到底能不能幫我？</p>
+<p>這個問題比「我最近有沒有很努力」重要得多。</p>
+<p><strong>◆ 每個人都有自己的沿牆走策略</strong></p>
+<p>實驗裡還觀察到一個很有意思的移動模式：AI 在探索複雜地圖時，逐漸形成一種沿著邊界前進的偏好。</p>
+<p>從演算法角度來看，這非常合理。在未知環境裡，沿著牆走是一種便宜的 heuristic。它不需要完整的世界模型，也不必規劃所有可能路徑，只要遵守簡單規則，就可以降低迷失的風險。</p>
+<p>這讓我想到，我們每個人大概也都有自己的「沿牆走」。</p>
+<p>遇到問題時，有人先蒐集資料，有人先問別人的意見，有人直接開始做，有人開始規劃，有人投入更多工作，也有人逃回熟悉的娛樂。</p>
+<p>這些習慣並不一定不好。很多時候，它們正是我們過去能在複雜環境裡生存下來的原因。</p>
+<p>真正的問題還是同一個：這個 heuristic 現在還有效嗎？</p>
+<p>在某些地圖裡，沿著牆真的能找到出口；但在另外一些地圖裡，它可能只是讓你沿著同一個區域不斷繞圈。</p>
+<p>所以有時候，比「我為什麼又失敗了」更值得問的問題是：我每次遇到不確定時，究竟都會做什麼？</p>
+<p>如果把過去五年的行為畫成一張軌跡圖，我會看到什麼規律？</p>
+<p>也許我們以為自己每天做了很多不同的決定，但從更高的尺度來看，我們可能只是在反覆執行少數幾個策略。</p>
+<p><strong>◆ 人可以反過來檢查自己的獎勵函數</strong></p>
+<p>看完這個實驗，我最後留下來的感覺，反而不是對 AI 能力的驚嘆，而是對「覺察」這件事有了更具體的理解。</p>
+<p>強化學習 agent 的行為，受到 reward function、環境與過去經驗共同塑造。它會不斷更新策略，想辦法取得更高的預期報酬。</p>
+<p>如果獎勵設錯了，它就會非常認真地做錯事；如果一次負回饋太強，它就可能從此避開某個區域；如果某個策略曾經成功很多次，它就會愈來愈依賴那個策略；如果環境裡存在一個廉價取得 reward 的漏洞，它就可能一直站在水邊看水。</p>
+<p>這些事情之所以讓我有感，是因為人並沒有離這套機制那麼遠。</p>
+<p>我們也會被即時回饋訓練，也會形成習慣，會趨利避害，會重複曾經成功的選擇，也會為了錯誤的指標，把自己訓練成一個非常有效率、但方向完全錯誤的人。</p>
+<p>但人至少多了一個可能性。</p>
+<p>我們可以偶爾停下來，反過來看自己的 reward function。</p>
+<p>我為什麼那麼在乎這個數字？為什麼每次焦慮，我就會做這件事？為什麼那一次失敗，直到今天還在決定我的選擇？為什麼我明知道這些資訊不重要，手還是會下意識打開？為什麼某一套曾經讓我成功的方法，我現在已經知道不再有效，卻還是不願意放掉？</p>
+<p>能夠問出這些問題，不代表我們就能立刻改變。但至少代表，我們不必永遠只是被自己的歷史資料往前推。</p>
+<p>AI 可以花兩萬次 episode 慢慢修正策略，人沒有兩萬次人生。</p>
+<p>所以我們真正需要的，也許不是把每一條錯路都親自走過一次，而是偶爾停下來看一眼自己的軌跡。</p>
+<p>確認自己現在究竟是在探索世界，還是只是在看水面閃動；確認自己真的正在累積能力，還是只是在買更多鯉魚王；確認那面曾經保護自己的牆，現在究竟仍在指引方向，還是已經讓自己沿著同一條路走了很多年。</p>
+<p>強化學習最有意思的地方，從來不只是機器如何學會做選擇。</p>
+<p>它也提醒我，一個系統最後會成為什麼樣子，很大程度取決於它究竟獎勵什麼。</p>
+<p>而對人來說，也許最重要的自由之一，就是我們仍然有機會重新回答這個問題。</p>
+
+
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var API = "https://hw-chang-site-views.hw-chang-site-admin-worker.workers.dev";
+  function pathToFile(pathname) {
+    var p = (pathname || "").replace(/^\/+|\/+$/g, "");
+    if (!p || p === "index" || p === "index.html") return "index.md";
+    p = p.replace(/\/(?:index)?\.html?$/i, "");
+    p = p.replace(/\/index$/i, "");
+    p = p.replace(/\.html?$/i, "");
+    if (!p) return "index.md";
+    if (p === "students") return "students/index.qmd";
+    if (!/\.(md|qmd)$/i.test(p)) {
+      p = p + "/index.md";
+    }
+    return p;
+  }
+
+  var file = pathToFile(window.location.pathname);
+  var payload = JSON.stringify({ path: file });
+
+  try {
+    if (window.fetch) {
+      fetch(API + "/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: payload,
+        mode: "cors",
+        keepalive: true
+      }).catch(function () {});
+    } else if (navigator.sendBeacon) {
+      navigator.sendBeacon(API + "/api/track", payload);
+    }
+  } catch (e) {}
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/changhsiuwei\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© 2025–2026 張修瑋 (H.W. Chang) · National Taipei University</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
