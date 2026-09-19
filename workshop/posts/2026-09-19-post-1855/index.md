@@ -9,6 +9,8 @@ youtube: "https://youtu.be/RXCQBrE0Few"
 title: "從動手做到 Agentic AI 驗證"
 ---
 
+**資料來源：[UCI Online Retail](https://archive.ics.uci.edu/dataset/352/online+retail)** 
+
 當 AI 已經能寫出公式、產生 Python 程式碼，甚至協助完成資料分析，我們還需要讓學生親手操作嗎？
 
 在設計這套課程時，我一直思考這個問題。如果課堂只剩下「把題目貼給 AI，再把答案交出來」，學生可能很快就能完成作業，卻不一定知道自己算的是什麼。同樣一份交易資料，有人算出明細筆數，有人算出發票張數，兩個數字都能順利產生，但它們回答的其實是不同問題。
