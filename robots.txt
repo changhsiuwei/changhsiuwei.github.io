@@ -1,0 +1,130 @@
+﻿# ==============================================================================
+# Robots.txt for https://changhsiuwei.com
+# Academic Personal Website of Dr. Hsiu-Wei Chang (張修瑋 助理教授)
+# Department of Accountancy, National Taipei University (國立臺北大學會計學系)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Global Crawler Rules (Search Engines & Web Spiders)
+# ------------------------------------------------------------------------------
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /about/
+Allow: /activities/
+Allow: /publications/
+Allow: /lab/
+Allow: /knowledge/
+Allow: /workshop/
+Allow: /students/
+Allow: /images/
+Allow: /assets/
+Allow: /site_libs/
+Allow: /Chang_HsiuWei_CV.pdf
+
+# Disallow internal assets, build directories, and draft staging
+Disallow: /cloud_admin/
+Disallow: /post_ready/
+Disallow: /r-library/
+Disallow: /search.json
+Disallow: /listings.json
+Disallow: /students/password_hash.txt
+Disallow: /students/_password.html
+
+# ------------------------------------------------------------------------------
+# 2. AI & Large Language Model (LLM) Crawlers - Explicitly Welcomed
+# Optimized for AI Search, Retrieval-Augmented Generation (RAG), and Citations
+# ------------------------------------------------------------------------------
+
+# OpenAI (ChatGPT, GPT-4o, SearchGPT)
+User-agent: GPTBot
+Allow: /
+Disallow: /cloud_admin/
+Disallow: /post_ready/
+Disallow: /students/password_hash.txt
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic (Claude 3.5 Sonnet, Claude Opus)
+User-agent: ClaudeBot
+Allow: /
+Disallow: /cloud_admin/
+Disallow: /post_ready/
+Disallow: /students/password_hash.txt
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Google (Gemini, AI Overviews, NotebookLM)
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: GoogleOther-Image
+Allow: /
+
+User-agent: GoogleOther-Video
+Allow: /
+
+# Perplexity AI (Answer Engine & Real-time Citations)
+User-agent: PerplexityBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI (Llama models & Meta Assistant)
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Microsoft Copilot & Bing AI
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+# ByteDance (Doubao, TikTok AI)
+User-agent: Bytespider
+Allow: /
+
+# Cohere (Command R+, Embeddings)
+User-agent: cohere-ai
+Allow: /
+
+# Mistral AI, Open-Source LLMs & Common Crawl Foundation
+User-agent: CCBot
+Allow: /
+
+# Amazon AI (Titan, Alexa)
+User-agent: Amazonbot
+Allow: /
+
+# Diffbot (Web Knowledge Graph)
+User-agent: Diffbot
+Allow: /
+
+# ------------------------------------------------------------------------------
+# 3. Canonical Sitemap & Host Information
+# ------------------------------------------------------------------------------
+Sitemap: https://changhsiuwei.com/sitemap.xml
+Host: https://changhsiuwei.com

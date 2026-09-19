@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-19">
+
+<title>從動手做到 Agentic AI 驗證 – 張修瑋 H.W. Chang</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../profile.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-844969dab530614281f321c59c099772.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-bb31ac030351f78e95611f244dfbedf2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">張修瑋 H.W. Chang</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">首頁</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/index.html"> 
+<span class="menu-text">個人資訊</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../activities/index.html"> 
+<span class="menu-text">近期活動</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications/index.html"> 
+<span class="menu-text">學術出版</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../lab/index.html"> 
+<span class="menu-text">教學與研究</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../knowledge/index.html"> 
+<span class="menu-text">AI 知識站</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../workshop/index.html"> 
+<span class="menu-text">AI 工具坊</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../students/index.html"> 
+<span class="menu-text">學生專區</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#第一站feel-the-pain先知道自己在算什麼" id="toc-第一站feel-the-pain先知道自己在算什麼" class="nav-link active" data-scroll-target="#第一站feel-the-pain先知道自己在算什麼">第一站：Feel the Pain，先知道自己在算什麼</a></li>
+  <li><a href="#用真實交易資料讓問題自然浮現" id="toc-用真實交易資料讓問題自然浮現" class="nav-link" data-scroll-target="#用真實交易資料讓問題自然浮現">用真實交易資料，讓問題自然浮現</a></li>
+  <li><a href="#從-t00-到-t08逐步建立查核能力" id="toc-從-t00-到-t08逐步建立查核能力" class="nav-link" data-scroll-target="#從-t00-到-t08逐步建立查核能力">從 T00 到 T08，逐步建立查核能力</a>
+  <ul class="collapse">
+  <li><a href="#先分清楚筆數與不同編號數" id="toc-先分清楚筆數與不同編號數" class="nav-link" data-scroll-target="#先分清楚筆數與不同編號數">先分清楚「筆數」與「不同編號數」</a></li>
+  <li><a href="#再處理金額重複與缺漏" id="toc-再處理金額重複與缺漏" class="nav-link" data-scroll-target="#再處理金額重複與缺漏">再處理金額、重複與缺漏</a></li>
+  <li><a href="#最後用分類與分組檢查數字是否對得回來" id="toc-最後用分類與分組檢查數字是否對得回來" class="nav-link" data-scroll-target="#最後用分類與分組檢查數字是否對得回來">最後，用分類與分組檢查數字是否對得回來</a></li>
+  </ul></li>
+  <li><a href="#pareto-8020不要把常見說法當成預設答案" id="toc-pareto-8020不要把常見說法當成預設答案" class="nav-link" data-scroll-target="#pareto-8020不要把常見說法當成預設答案">Pareto 80/20：不要把常見說法當成預設答案</a></li>
+  <li><a href="#第二站讓-ai-產生程式碼但保留學生的操作與判斷" id="toc-第二站讓-ai-產生程式碼但保留學生的操作與判斷" class="nav-link" data-scroll-target="#第二站讓-ai-產生程式碼但保留學生的操作與判斷">第二站：讓 AI 產生程式碼，但保留學生的操作與判斷</a></li>
+  <li><a href="#第三站從生成程式碼走向有工具邊界的-agentic-ai" id="toc-第三站從生成程式碼走向有工具邊界的-agentic-ai" class="nav-link" data-scroll-target="#第三站從生成程式碼走向有工具邊界的-agentic-ai">第三站：從生成程式碼，走向有工具邊界的 Agentic AI</a></li>
+  <li><a href="#最後一站不是問-ai你確定嗎而是建立獨立驗證" id="toc-最後一站不是問-ai你確定嗎而是建立獨立驗證" class="nav-link" data-scroll-target="#最後一站不是問-ai你確定嗎而是建立獨立驗證">最後一站：不是問 AI「你確定嗎」，而是建立獨立驗證</a></li>
+  <li><a href="#配套教材讓不同起點的學生都能跟上" id="toc-配套教材讓不同起點的學生都能跟上" class="nav-link" data-scroll-target="#配套教材讓不同起點的學生都能跟上">配套教材：讓不同起點的學生都能跟上</a></li>
+  <li><a href="#我們要培養的不只是更快得到答案的能力" id="toc-我們要培養的不只是更快得到答案的能力" class="nav-link" data-scroll-target="#我們要培養的不只是更快得到答案的能力">我們要培養的，不只是更快得到答案的能力</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">從動手做到 Agentic AI 驗證</h1>
+<p class="subtitle lead">AI 算出答案，就代表答案正確嗎？</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">AI</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 19, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="post-materials-bar" style="margin: 1.25rem 0 2rem 0; display: flex; flex-wrap: wrap; gap: 10px;"><a href="https://drive.google.com/drive/folders/1lhBog3jROoxZ5V9mx2W4cLNLHhnseFQv?usp=drive_link" target="_blank" rel="noopener noreferrer" class="activity-materials-link activity-slides-link">📊 簡報下載 ↗</a>
+<a href="https://drive.google.com/drive/folders/1lhBog3jROoxZ5V9mx2W4cLNLHhnseFQv?usp=drive_link" target="_blank" rel="noopener noreferrer" class="activity-materials-link activity-handout-link">📄 講義／演講原文 ↗</a>
+<a href="https://youtu.be/RXCQBrE0Few" target="_blank" rel="noopener noreferrer" class="activity-materials-link activity-youtube-link">▶ YouTube 影片 (線上收看) ↗</a></div>
+<div class="post-youtube-embed" style="position:relative;padding-top:56.25%;max-width:760px;margin:1.25rem 0 2rem 0;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1);background:#000;"><iframe src="https://www.youtube.com/embed/RXCQBrE0Few" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
+<p><strong>資料來源：<a href="https://archive.ics.uci.edu/dataset/352/online+retail">UCI Online Retail</a></strong></p>
+<p>當 AI 已經能寫出公式、產生 Python 程式碼，甚至協助完成資料分析，我們還需要讓學生親手操作嗎？</p>
+<p>在設計這套課程時，我一直思考這個問題。如果課堂只剩下「把題目貼給 AI，再把答案交出來」，學生可能很快就能完成作業，卻不一定知道自己算的是什麼。同樣一份交易資料，有人算出明細筆數，有人算出發票張數，兩個數字都能順利產生，但它們回答的其實是不同問題。</p>
+<p>因此，我把這次的教學影片命名為「從動手做到 Agentic AI 驗證」。</p>
+<p>這條學習路徑不急著從最自動化的工具開始，而是先讓學生親手理解資料、經歷操作中的困難，再逐步引入 AI 生成程式碼與代理工具。最後，回到一個最重要的問題：</p>
+<p><strong>這個結果，我們有什麼證據可以相信？</strong></p>
+<section id="第一站feel-the-pain先知道自己在算什麼" class="level2">
+<h2 class="anchored" data-anchor-id="第一站feel-the-pain先知道自己在算什麼">第一站：Feel the Pain，先知道自己在算什麼</h2>
+<p>我把傳統手動操作的階段稱為「Feel the Pain」。</p>
+<p>這裡的 Pain，不是刻意讓學生做繁瑣的工作，而是讓那些容易被自動化掩蓋的問題，先被看見。</p>
+<p>例如，打開一份交易資料，看到同一個發票編號出現七次，這七列究竟代表七张發票、七位客戶，還是同一張發票中的七筆商品明細？</p>
+<p>如果這件事沒有弄清楚，即使後面的公式完全正確，最後得到的也可能不是題目要的答案。</p>
+<p>又例如，要計算一張發票的金額，不能只把單價加起來。學生必須先理解每筆商品的數量與單價，逐筆計算金額，再將同一張發票的明細合計。當題目進一步變成「平均每張發票金額」，分母也必須是發票張數，而不是商品明細筆數。</p>
+<p>這些看起來很基本的操作，其實正是在建立資料分析最重要的基礎：<strong>先定義一筆資料代表什麼，再決定如何計算。</strong></p>
+<p>我希望學生先經歷這個過程。之後交給 AI 的，才是一個自己理解過的任務，而不只是一句模糊的要求。</p>
+</section>
+<section id="用真實交易資料讓問題自然浮現" class="level2">
+<h2 class="anchored" data-anchor-id="用真實交易資料讓問題自然浮現">用真實交易資料，讓問題自然浮現</h2>
+<p>這套實作使用 UCI Machine Learning Repository 的 Online Retail 資料集。它收錄一家英國線上零售業者在 2010 年 12 月至 2011 年 12 月間的交易，包含 541,909 筆紀錄，原始 Excel 有發票編號、商品編號、商品說明、數量、日期、單價、客戶編號與國家等八個欄位。<a href="https://archive.ics.uci.edu/dataset/352/online+retail">資料來源：UCI Online Retail</a></p>
+<p>選擇這份資料，不只是因為它有足夠多的紀錄，而是因為它能讓學生接觸到真實資料處理中的判斷問題。</p>
+<p>在實作中，我們會遇到缺少客戶編號的明細、負數量、零單價，以及看起來相同的交易紀錄。這些情況不能一律被視為「髒資料」，更不能為了讓表格整齊，就全部刪除。</p>
+<p>缺少客戶編號，是否代表這筆交易不應計入金額？同一張發票出現相同商品，是否就一定是重複輸入？看到負數，應該保留、排除，還是另外分類？</p>
+<p>這些問題沒有辦法只靠按下一個「清理資料」按鈕解決。我希望學生練習的，是先說明分析目的，再決定處理規則，並且保留能夠回查的原始資料。</p>
+</section>
+<section id="從-t00-到-t08逐步建立查核能力" class="level2">
+<h2 class="anchored" data-anchor-id="從-t00-到-t08逐步建立查核能力">從 T00 到 T08，逐步建立查核能力</h2>
+<p>課程從 T00 的資料認識開始，再透過 T01～T08，將計算、資料品質與驗證連成一條完整的學習路徑。</p>
+<section id="先分清楚筆數與不同編號數" class="level3">
+<h3 class="anchored" data-anchor-id="先分清楚筆數與不同編號數">先分清楚「筆數」與「不同編號數」</h3>
+<p>前面的任務先處理最基本、也最容易混淆的問題：全部商品明細有幾筆？有填客戶編號的明細有幾筆？不同商品、不同發票與不同客戶各有多少？</p>
+<p>「有填客戶編號的明細筆數」不等於「不同客戶人數」。一位客戶可能購買多次，一次購買又可能包含多種商品。如果把這些層級混在一起，後面的平均數、比例與客戶分析就會失去意義。</p>
+</section>
+<section id="再處理金額重複與缺漏" class="level3">
+<h3 class="anchored" data-anchor-id="再處理金額重複與缺漏">再處理金額、重複與缺漏</h3>
+<p>接著，學生開始計算交易金額，檢查完全重複的明細，以及「發票編號＋商品編號」相同的紀錄。</p>
+<p>這兩種重複的意義並不相同。八個原始欄位完全一致，是一種查核情況；同一張發票出現相同商品，則是另一種。程式可以幫忙找出候選資料，但是否應該刪除，仍然需要進一步判斷。</p>
+<p>缺漏檢查也不只停在「少了幾筆資料」。我們會繼續問：缺少客戶編號的交易，涉及多少金額？如果直接排除，分析範圍會改變多少？</p>
+<p>讓學生看到缺漏對結果的影響，比單純記住一個刪除空白值的指令，更有學習價值。</p>
+</section>
+<section id="最後用分類與分組檢查數字是否對得回來" class="level3">
+<h3 class="anchored" data-anchor-id="最後用分類與分組檢查數字是否對得回來">最後，用分類與分組檢查數字是否對得回來</h3>
+<p>當資料依照規則分成不同類別，或依國家、年月、商品重新分組後，還需要做一次很重要的檢查：各部分能不能加回原始總數？</p>
+<p>這就是控制總數的用途。</p>
+<p>例如，分類後的筆數加總，應該能與原始明細筆數核對；國家分組的金額再加總，也應該能與相同範圍的全檔金額對上。</p>
+<p>如果對不上，我們就有理由追問：是不是漏掉空白分類？篩選條件前後不同？金額單位混用了英鎊與分？還是某一步不小心重複計算？</p>
+<p>在這個階段，學生開始從「我有算出一個數字」，走向「我知道如何檢查這個數字」。</p>
+</section>
+</section>
+<section id="pareto-8020不要把常見說法當成預設答案" class="level2">
+<h2 class="anchored" data-anchor-id="pareto-8020不要把常見說法當成預設答案">Pareto 80/20：不要把常見說法當成預設答案</h2>
+<p>最後的 Pareto 分析，是我很希望學生停下來思考的一個練習。</p>
+<p>我們經常聽到「少數商品貢獻大部分銷售」或「80/20 法則」。但面對手上的資料，不能先假定結果一定符合八二比例，再畫一張看起來合理的圖。</p>
+<p>在課程中，我把它拆成兩個不同問題：</p>
+<p>第一個問題是：將商品依金額由高到低排列，累積到總金額的 80%，需要多少個商品？</p>
+<p>第二個問題是：取排名前 20% 的商品，它們實際貢獻多少比例的金額？<br>
+兩個問題方向不同，答案也不必然相同。</p>
+<p>這個練習讓學生理解，圖表不只是呈現工具。在畫圖之前，必須先決定資料範圍、排序方式、累積方法與分母。否則，即使畫面漂亮，也可能只是把錯誤包裝得更有說服力。</p>
+</section>
+<section id="第二站讓-ai-產生程式碼但保留學生的操作與判斷" class="level2">
+<h2 class="anchored" data-anchor-id="第二站讓-ai-產生程式碼但保留學生的操作與判斷">第二站：讓 AI 產生程式碼，但保留學生的操作與判斷</h2>
+<p>理解手動流程之後，我們再把 AI 放進來。</p>
+<p>這次我刻意把 Colab 的操作拆開，讓提示詞、AI 回覆、計算程式碼與答案欄各自有清楚的位置。</p>
+<p>每一題都先提供可修改的提示詞。學生可以直接複製到自己使用的 AI 工具，也可以調整要求，再請 AI 產生 Python 程式碼。取得回覆後，先閱讀它採用的範圍與方法，再把檢查過的程式碼貼回 Colab 執行。</p>
+<p>程式執行之後，學生還需要把結果填進對應的答案欄，最後才進行核對。</p>
+<p>我保留這些步驟，是希望學生能分辨幾件不同的事情：提出問題、產生程式、執行計算，以及確認答案，不能被混成同一個動作。</p>
+<p><strong>AI 說它算好了，不代表程式真的執行過；程式執行成功，也不代表計算口徑正確。</strong></p>
+<p>提示詞因此不只是「幫我算一下」，而是一份簡短的工作規格。它需要交代使用哪些資料、保留哪些紀錄、如何處理缺值、金額用什麼單位，以及最後應該輸出哪些欄位。</p>
+<p>當學生開始能夠寫清楚這些條件，也就開始具備與 AI 合作的能力。</p>
+</section>
+<section id="第三站從生成程式碼走向有工具邊界的-agentic-ai" class="level2">
+<h2 class="anchored" data-anchor-id="第三站從生成程式碼走向有工具邊界的-agentic-ai">第三站：從生成程式碼，走向有工具邊界的 Agentic AI</h2>
+<p>在這套課程裡，我也把「請 AI 寫程式」與「讓代理使用工具」分開說明。</p>
+<p>前者是 AI 提供程式碼，由學生檢查並執行；後者則是讓代理在事先設定的範圍內，呼叫計算與驗證工具，再根據工具回傳的結果進行說明。</p>
+<p>這個差別很重要。</p>
+<p>如果只是讓模型自行產生一段「分析已完成、結果正確」的文字，並沒有增加可信度。因此，這裡的 Agentic AI 設計不讓模型任意執行所有操作，而是限制它可以使用的工具與任務範圍。</p>
+<p>計算交給計算工具，驗證交給驗證器，AI 則負責協調流程與解釋結果。</p>
+<p>即使接上 API，也不能把失敗當成成功。服務無法回應、模型設定不接受，或工具沒有完成驗證，都應該明確呈現，而不是換一段流暢的文字，把問題掩蓋過去。<br>
+我希望學生理解：自動化的程度越高，越需要清楚的權限、狀態與紀錄。</p>
+</section>
+<section id="最後一站不是問-ai你確定嗎而是建立獨立驗證" class="level2">
+<h2 class="anchored" data-anchor-id="最後一站不是問-ai你確定嗎而是建立獨立驗證">最後一站：不是問 AI「你確定嗎」，而是建立獨立驗證</h2>
+<p>這套課程最核心的安排，是把獨立驗證放在最後一道關卡。</p>
+<p>所謂獨立驗證，不是再問同一個 AI 一次：「你確定答案正確嗎？」而是透過另外的計算與檢查流程，重新回到原始資料，確認結果是否符合事先定義的規則。</p>
+<p>在這份實作中，驗證器會重新讀取原始 Excel，檢查各項任務結果，而不是根據 AI 的說明文字決定是否通過。</p>
+<p>這也不代表驗證器永遠不會出錯。驗證程式本身仍然需要測試，規則也需要被理解。它的價值，是讓我們多了一條可檢查、可重現的證據路徑，而不是只依賴模型的自信語氣。</p>
+<p>對會計與商業資料分析而言，最後真正需要交付的，不只是一張表或一個數字，還包括來源、處理規則、計算过程，以及發現問題時可以往回追查的紀錄。</p>
+</section>
+<section id="配套教材讓不同起點的學生都能跟上" class="level2">
+<h2 class="anchored" data-anchor-id="配套教材讓不同起點的學生都能跟上">配套教材：讓不同起點的學生都能跟上</h2>
+<p>配合這條學習路徑，我整理了中英文 Colab 筆記本，並區分學生版與教師版。</p>
+<p>學生版的重點是清楚的任務說明、已預填且可修改的提示詞、獨立的程式碼操作區，以及逐項填答與核對。教師版則提供參考數值顯示，方便課堂引導與討論。</p>
+<p>兩種語言使用相同的任務編號與計算規則。中文說明協助學生理解操作，Python 變數與資料欄位名稱則保留英文，避免翻譯造成執行上的混淆。</p>
+<p>在教學安排上，也不必一開始就要求每位學生申請 API。先透過外部 AI 工具完成「提示詞 → 程式碼 → 執行 → 核對」的流程，再進一步介紹 API 與代理工具，就能讓學生逐步看懂自動化增加了什麼能力，又帶來哪些新的責任。</p>
+</section>
+<section id="我們要培養的不只是更快得到答案的能力" class="level2">
+<h2 class="anchored" data-anchor-id="我們要培養的不只是更快得到答案的能力">我們要培養的，不只是更快得到答案的能力</h2>
+<p>「從動手做到 Agentic AI 驗證」想傳達的，不是手動操作比較好，也不是所有工作都應該交給 AI。</p>
+<p>我更在意的是：學生能不能理解自己正在處理的問題，能不能把要求說清楚，以及在收到結果之後，知道應該怎麼查核。</p>
+<p>手動練習，讓我們看見資料與規則；AI 生成程式碼，讓我們練習描述需求與檢查方法；Agentic AI，讓我們思考工具協作與權限；獨立驗證，則提醒我們不能把專業責任交給一段看似合理的回覆。</p>
+<p>工具可以幫我們減少重複操作，但對結果的理解與判斷，仍然需要自己建立。</p>
+<p>歡迎透過這支影片，跟著同一份資料走過這條路徑。也歡迎老師、助教與同學分享實作中的問題：哪一步最容易混淆？哪一個 AI 產生的結果看似合理，實際上卻需要重新檢查？</p>
+<p>這些問題，正是把 AI 帶進課堂後，值得一起學習的地方。</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+(function () {
+  var API = "https://hw-chang-site-views.hw-chang-site-admin-worker.workers.dev";
+  function pathToFile(pathname) {
+    var p = (pathname || "").replace(/^\/+|\/+$/g, "");
+    if (!p || p === "index" || p === "index.html") return "index.md";
+    p = p.replace(/\/(?:index)?\.html?$/i, "");
+    p = p.replace(/\/index$/i, "");
+    p = p.replace(/\.html?$/i, "");
+    if (!p) return "index.md";
+    if (p === "students") return "students/index.qmd";
+    if (!/\.(md|qmd)$/i.test(p)) {
+      p = p + "/index.md";
+    }
+    return p;
+  }
+
+  var file = pathToFile(window.location.pathname);
+  var payload = JSON.stringify({ path: file });
+
+  try {
+    if (window.fetch) {
+      fetch(API + "/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: payload,
+        mode: "cors",
+        keepalive: true
+      }).catch(function () {});
+    } else if (navigator.sendBeacon) {
+      navigator.sendBeacon(API + "/api/track", payload);
+    }
+  } catch (e) {}
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/changhsiuwei\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© 2025–2026 張修瑋 (H.W. Chang) · National Taipei University</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
