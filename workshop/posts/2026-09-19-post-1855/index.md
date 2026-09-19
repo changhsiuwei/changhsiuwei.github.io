@@ -2,11 +2,11 @@
 description: ""
 date: "2026-09-19"
 categories: ["AI"]
-title: "從動手做到Agentic AI 驗證"
 subtitle: "AI 算出答案，就代表答案正確嗎？"
 slides: "https://drive.google.com/drive/folders/1lhBog3jROoxZ5V9mx2W4cLNLHhnseFQv?usp=drive_link"
 handout: "https://drive.google.com/drive/folders/1lhBog3jROoxZ5V9mx2W4cLNLHhnseFQv?usp=drive_link"
 youtube: "https://youtu.be/RXCQBrE0Few"
+title: "從動手做到 Agentic AI 驗證"
 ---
 
 當 AI 已經能寫出公式、產生 Python 程式碼，甚至協助完成資料分析，我們還需要讓學生親手操作嗎？
