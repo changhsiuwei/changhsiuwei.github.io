@@ -119,9 +119,9 @@ Material Disclosure & Corporate Transparency
 <div class="carousel-inner">
 
 <div class="carousel-item active">
-::: {.grid}
+<div class="grid">
 
-::: {.g-col-12 .g-col-md-5}
+<div class="g-col-12 g-col-md-5">
 <div class="text-center p-2" style="background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.05);">
 <a href="images/deloitte-tax-challenge-2026.png" target="_blank" title="點擊檢視高解析原圖">
 <img src="images/deloitte-tax-challenge-2026.png" alt="2026 勤業眾信稅務達人挑戰賽感謝狀" class="img-fluid rounded" style="max-height:420px;width:auto;display:inline-block;">
@@ -132,9 +132,9 @@ Material Disclosure & Corporate Transparency
 </a>
 </div>
 </div>
-:::
+</div>
 
-::: {.g-col-12 .g-col-md-7 style="display:flex;flex-direction:column;justify-content:center;"}
+<div class="g-col-12 g-col-md-7" style="display:flex;flex-direction:column;justify-content:center;">
 <div class="card p-4 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
 <div style="margin-bottom:8px;">
   <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">Deloitte 勤業眾信 · 產學榮譽（達人軍）</span>
@@ -150,23 +150,23 @@ Material Disclosure & Corporate Transparency
 <div><strong>指導學生</strong>：盧霈華、張郁佳、鄭兆璿、王力成、蔡宜芳</div>
 </div>
 </div>
-:::
+</div>
 
-:::
+</div>
 </div>
 
 <div class="carousel-item">
-::: {.grid}
+<div class="grid">
 
-::: {.g-col-12 .g-col-md-5}
+<div class="g-col-12 g-col-md-5">
 <div class="text-center p-2" style="background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.05);">
 <a href="images/ntpu-ai-agent-competition-2026.png" target="_blank" title="點擊檢視高解析原圖">
 <img src="images/ntpu-ai-agent-competition-2026.png" alt="北聯大人工智慧代理創新創業跨域競賽指導證明（第二名）" class="img-fluid rounded" style="max-height:420px;width:auto;display:inline-block;">
 </a>
 </div>
-:::
+</div>
 
-::: {.g-col-12 .g-col-md-7 style="display:flex;flex-direction:column;justify-content:center;"}
+<div class="g-col-12 g-col-md-7" style="display:flex;flex-direction:column;justify-content:center;">
 <div class="card p-4 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
 <div style="margin-bottom:8px;">
   <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">北聯大跨域競賽 · 產學榮譽（第二名）</span>
@@ -182,9 +182,9 @@ Material Disclosure & Corporate Transparency
 <div><strong>日期</strong>：2026/05/22</div>
 </div>
 </div>
-:::
+</div>
 
-:::
+</div>
 </div>
 
 <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:14px;">
@@ -200,6 +200,7 @@ Material Disclosure & Corporate Transparency
 <span aria-hidden="true" style="color:#C9A227;font-size:24px;font-weight:700;line-height:40px;">›</span>
 <span class="visually-hidden">下一則</span>
 </button>
+</div>
 </div>
 </div>
 
