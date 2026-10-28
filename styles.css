@@ -14,3 +14,19 @@ body {
 .navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.05);
 }
+
+/* 指導學生榮譽輪播：深色指示器與切換鍵（淺色背景可見） */
+#honorCarousel .carousel-indicators [data-bs-target] {
+  background-color: #001F3F;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+#honorCarousel .carousel-control-prev-icon,
+#honorCarousel .carousel-control-next-icon {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+}
+#honorCarousel .carousel-control-prev,
+#honorCarousel .carousel-control-next {
+  width: 5%;
+}

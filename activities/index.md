@@ -81,6 +81,14 @@ subtitle: "Invited Presentations & Latest News"
 :::
 
 ::: {.g-col-12 .g-col-md-2}
+**May 22**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 國立臺北大學新創產學發展中心
+*指導「請問統編有需要嗎」團隊參加「北聯大—人工智慧代理創新創業跨域競賽」榮獲第二名*
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **Apr 17**
 :::
 ::: {.g-col-12 .g-col-md-10}

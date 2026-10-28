@@ -115,6 +115,14 @@ Material Disclosure & Corporate Transparency
 
 ## 指導學生榮譽
 
+<div id="honorCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
+<div class="carousel-indicators">
+<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="勤業眾信稅務達人挑戰賽"></button>
+<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="1" aria-label="北聯大人工智慧代理競賽"></button>
+</div>
+<div class="carousel-inner">
+
+<div class="carousel-item active">
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-5}
@@ -149,6 +157,50 @@ Material Disclosure & Corporate Transparency
 :::
 
 :::
+</div>
+
+<div class="carousel-item">
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-5}
+<div class="text-center p-2" style="background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+<a href="images/ntpu-ai-agent-competition-2026.png" target="_blank" title="點擊檢視高解析原圖">
+<img src="images/ntpu-ai-agent-competition-2026.png" alt="北聯大人工智慧代理創新創業跨域競賽指導證明（第二名）" class="img-fluid rounded" style="max-height:420px;width:auto;display:inline-block;">
+</a>
+</div>
+:::
+
+::: {.g-col-12 .g-col-md-7 style="display:flex;flex-direction:column;justify-content:center;"}
+<div class="card p-4 shadow-sm h-100 border-start border-warning border-4" style="background:#fffdfa;border-radius:12px;">
+<div style="margin-bottom:8px;">
+  <span class="badge bg-primary" style="font-size:12px;padding:5px 10px;">北聯大跨域競賽 · 產學榮譽（第二名）</span>
+</div>
+<h3 style="margin:4px 0 12px;font-size:20px;color:#001F3F;font-weight:700;">北聯大—人工智慧代理創新創業跨域競賽 · 榮獲「第二名」</h3>
+<p style="margin:0 0 14px;color:#475569;font-size:14px;line-height:1.6;">
+  茲感謝國立臺北大學新創產學發展中心頒發指導證明，致謝張修瑋老師指導「請問統編有需要嗎」團隊參加「北聯大—人工智慧代理創新創業跨域競賽」，成績表現優異，榮獲第二名，肯定卓越之教學指導與創新創業培育成果。
+</p>
+<div style="font-size:12px;color:#64748b;line-height:1.8;border-top:1px dashed #e2e8f0;padding-top:10px;">
+<div><strong>頒發單位</strong>：國立臺北大學新創產學發展中心</div>
+<div><strong>主任</strong>：江振宇</div>
+<div><strong>指導團隊</strong>：「請問統編有需要嗎」（榮獲 第二名）</div>
+<div><strong>日期</strong>：2026/05/22</div>
+</div>
+</div>
+:::
+
+:::
+</div>
+
+</div>
+<button class="carousel-control-prev" type="button" data-bs-target="#honorCarousel" data-bs-slide="prev">
+<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+<span class="visually-hidden">上一則</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#honorCarousel" data-bs-slide="next">
+<span class="carousel-control-next-icon" aria-hidden="true"></span>
+<span class="visually-hidden">下一則</span>
+</button>
+</div>
 
 ## 最新動態
 
@@ -159,6 +211,7 @@ Material Disclosure & Corporate Transparency
 | 2026/08 | <i class="bi bi-mic text-primary"></i> 中華會計學會：Google Sheets × 生成式 AI 教學研討會（給會計初學者的 AI 工具坊） |
 | 2026/08 | <i class="bi bi-lightbulb"></i> 受邀至莎美娜實業股份有限公司進行企業 AI 內訓 |
 | 2026/07 | <i class="bi bi-lightbulb"></i> 受邀至國立台北市召會第四聚會所「駕馭 AI 的智慧少年」 |
+| 2026/05 | <i class="bi bi-award text-warning"></i> 指導「請問統編有需要嗎」團隊參加「北聯大—人工智慧代理創新創業跨域競賽」榮獲第二名 |
 | 2026/04 | <i class="bi bi-mic text-primary"></i> 受邀至國立臺北商業大學演講「AI 代理人在財會自動化的應用」 |
 | 2026/04 | <i class="bi bi-file-earmark-text text-primary"></i> 「機器學習於銷售預算之應用」正式被《會計審計論叢》接受發表 |
 | 2026/03 | <i class="bi bi-mortarboard text-primary"></i> 長庚大學 AI 精煉班授課：AI 與財報深度洞察 |
