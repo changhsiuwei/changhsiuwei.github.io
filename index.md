@@ -154,6 +154,7 @@ Material Disclosure & Corporate Transparency
 
 | 日期 | 事件 |
 |------|------|
+| 2026/10 | <i class="bi bi-lightbulb"></i> 前往莎美娜上海昆山廠進行企業 AI 內訓（主題：企業 Agentic AI 的設計與實務） |
 | 2026/08 | <i class="bi bi-award text-warning"></i> 指導臺北大學會計學系團隊參加「2026 勤業眾信稅務達人挑戰賽」榮獲「達人軍」殊榮 |
 | 2026/08 | <i class="bi bi-mic text-primary"></i> 中華會計學會：Google Sheets × 生成式 AI 教學研討會（給會計初學者的 AI 工具坊） |
 | 2026/08 | <i class="bi bi-lightbulb"></i> 受邀至莎美娜實業股份有限公司進行企業 AI 內訓 |

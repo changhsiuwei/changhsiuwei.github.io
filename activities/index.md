@@ -13,6 +13,14 @@ subtitle: "Invited Presentations & Latest News"
 ::: {.grid}
 
 ::: {.g-col-12 .g-col-md-2}
+**October 14–16**
+:::
+::: {.g-col-12 .g-col-md-10}
+#### 莎美娜實業股份有限公司（上海昆山廠）
+*【企業AI內訓】：企業 Agentic AI 的設計與實務*
+:::
+
+::: {.g-col-12 .g-col-md-2}
 **September 7**
 :::
 ::: {.g-col-12 .g-col-md-10}
