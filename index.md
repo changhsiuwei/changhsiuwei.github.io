@@ -181,7 +181,7 @@ Material Disclosure & Corporate Transparency
 </p>
 <div style="font-size:12px;color:#64748b;line-height:1.8;border-top:1px dashed #e2e8f0;padding-top:10px;">
 <div><strong>頒發單位</strong>：國立臺北大學新創產學發展中心</div>
-<div><strong>主任</strong>：江振宇</div>
+<div><strong>指導老師</strong>：張修瑋（國立臺北大學會計學系 助理教授）</div>
 <div><strong>指導團隊</strong>：「請問統編有需要嗎」（榮獲 第二名）</div>
 <div><strong>日期</strong>：2026/05/22</div>
 </div>
