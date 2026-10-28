@@ -116,9 +116,9 @@ Material Disclosure & Corporate Transparency
 ## 指導學生榮譽
 
 <div id="honorCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
-<div class="carousel-indicators">
-<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="勤業眾信稅務達人挑戰賽"></button>
-<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="1" aria-label="北聯大人工智慧代理競賽"></button>
+<div class="carousel-indicators" style="position:static;margin:14px 0 0;">
+<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="勤業眾信稅務達人挑戰賽" style="width:12px;height:12px;border-radius:50%;background-color:#001F3F;border:none;"></button>
+<button type="button" data-bs-target="#honorCarousel" data-bs-slide-to="1" aria-label="北聯大人工智慧代理競賽" style="width:12px;height:12px;border-radius:50%;background-color:#001F3F;border:none;"></button>
 </div>
 <div class="carousel-inner">
 
@@ -192,12 +192,12 @@ Material Disclosure & Corporate Transparency
 </div>
 
 </div>
-<button class="carousel-control-prev" type="button" data-bs-target="#honorCarousel" data-bs-slide="prev">
-<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+<button class="carousel-control-prev" type="button" data-bs-target="#honorCarousel" data-bs-slide="prev" style="width:44px;height:44px;top:45%;bottom:auto;background-color:#001F3F;border-radius:50%;opacity:0.9;border:none;">
+<span aria-hidden="true" style="color:#C9A227;font-size:26px;font-weight:700;line-height:44px;">‹</span>
 <span class="visually-hidden">上一則</span>
 </button>
-<button class="carousel-control-next" type="button" data-bs-target="#honorCarousel" data-bs-slide="next">
-<span class="carousel-control-next-icon" aria-hidden="true"></span>
+<button class="carousel-control-next" type="button" data-bs-target="#honorCarousel" data-bs-slide="next" style="width:44px;height:44px;top:45%;bottom:auto;background-color:#001F3F;border-radius:50%;opacity:0.9;border:none;">
+<span aria-hidden="true" style="color:#C9A227;font-size:26px;font-weight:700;line-height:44px;">›</span>
 <span class="visually-hidden">下一則</span>
 </button>
 </div>
