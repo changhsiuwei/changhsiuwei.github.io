@@ -186,6 +186,7 @@ Material Disclosure & Corporate Transparency
 
 </div>
 </div>
+</div>
 
 <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:14px;">
 <button class="carousel-control-prev" type="button" data-bs-target="#honorCarousel" data-bs-slide="prev" aria-label="上一則" style="position:static;width:40px;height:40px;background-color:rgba(0,31,63,0.55);border-radius:50%;opacity:1;border:none;transform:none;">
@@ -200,7 +201,6 @@ Material Disclosure & Corporate Transparency
 <span aria-hidden="true" style="color:#C9A227;font-size:24px;font-weight:700;line-height:40px;">›</span>
 <span class="visually-hidden">下一則</span>
 </button>
-</div>
 </div>
 </div>
 
